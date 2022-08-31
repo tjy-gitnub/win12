@@ -16,10 +16,6 @@ main.addEventListener('mousemove', function (e) {
         const cy = e.clientY;
         let dx = cx - deltaLeft
         let dy = cy - deltaTop
-        if (dx < 0) dx = 0
-        if (dy < 0) dy = 0
-        if (dx > 500) dx = 500
-        if (dy > 300) dy = 300
         wd.setAttribute('style', `left:${dx}px;top:${dy}px`)
     }
 })

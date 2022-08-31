@@ -1,3 +1,29 @@
+@font-face {
+    font-family: SettingsIcons;
+    src: url(icons.woff2) format("woff2")
+}
+
+@font-face {
+    font-display: block;
+    font-family: "booticon";
+    src: url("../../fonts/bootstrap-icons.woff2?8d200481aa7f02a2d63a331fc782cfaf") format("woff2"),
+        url("../../fonts/bootstrap-icons.woff?8d200481aa7f02a2d63a331fc782cfaf") format("woff");
+}
+
+.title{
+    font-size: 35px;
+    margin: 0;
+}
+
+.s-icon{
+    font-family: SettingsIcons;
+}
+
+html{
+    width: 100%;
+    overflow-x: hidden;
+}
+
 #win-setting {
     display: flex;
     height: calc(100% - 32px);
@@ -6,6 +32,10 @@
 #win-setting>* {
     height: 100%
 }
+#win-setting>.page {
+    width: calc(100% - 300px);
+}
+
 
 #win-setting>.menu {
     width: 300px;
@@ -53,11 +83,10 @@
     margin-left: 5px;
     margin-top: 40px;
     height: calc(100% - 123px);
-    overflow: auto;
 }
 
 #win-setting>.menu>list>a {
-    padding: 5px 8px;
+    padding: 5px 12px;
     font-size: 15px;
     display: flex;
 }
@@ -70,4 +99,62 @@
     height: 20px;
     width: 20px;
     margin: 1px 10px 0 0;
+}
+
+
+.setting-list {
+    display: flex;
+    flex-direction: column;
+    padding: 0 5px;
+    margin-bottom: 0;
+    border-radius: 10px;
+    width: 100%;
+}
+
+.setting-list>* {
+    width: calc(100% - 50px);
+    color: var(--text);
+    background-color: #ffffff50;
+    margin-bottom: 5px;
+    border-radius: 10px;
+    border: 2px solid #7f7f7f30;
+    text-decoration: none;
+    display: flex;
+    padding: 10px 15px;
+    transition: 100ms;
+}
+
+.setting-list>*:hover {
+    color: var(--text);
+    background-color: #ffffff90;
+    text-decoration: none;
+    transition: 200ms;
+}
+
+
+.setting-list>a>icon{
+    font-family: SettingsIcons;
+    font-size: 20px;
+    margin:10px 20px 0 5px;
+}
+.setting-list>a>icon.b{
+    font-family: booticon;
+}
+
+.setting-list>a>div>p:first-child{
+    font-size: 20px;
+    margin:0 0 -12px 0;
+}
+
+.setting-list>a>div>p:last-child{
+    font-size: 10px;
+    color: #7f7f7f;
+    margin-bottom: 2px;
+}
+
+.setting-list>a>.then{
+    position: absolute;
+    right: 30px;
+    margin-top: 12px;
+    color: #7f7f7f;
 }

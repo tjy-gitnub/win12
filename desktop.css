@@ -37,6 +37,7 @@ body {
     display: flex;
     justify-content: center;
     width: 100%;
+    z-index: 98;
 }
 
 .dock {
@@ -48,6 +49,8 @@ body {
     padding: 7px 10px;
     margin: 0 3px;
     display: flex;
+    transition: 200ms;
+    bottom: 0;
 }
 
 .dock>* {
@@ -58,6 +61,49 @@ body {
 .dock>.bi {
     font-size: 28px;
     margin-top: -8px;
+}
+
+.dock.about {
+    width: 280px;
+    font-size: 18px;
+    display: block;
+    overflow: hidden;
+}
+.dock.about>p {
+    margin-top: 50px;
+    font-size: 15px;
+    padding-left: 15px;
+    display: none;
+    opacity: 0;
+    transition: 600ms;
+}
+
+.dock.about:hover {
+    background-color: #cccccca0;
+}
+.dock.about:active>p {
+    display: block;
+}
+
+.dock.about:active {
+    font-size: 13px;
+    padding: 10px 45px;
+}
+
+.dock.about.show {
+    height: 220px;
+    width: 500px;
+    margin-top: -180px;
+    font-size: 23px;
+}
+.dock.about.show>p {
+    display: block;
+    margin-top: 5px;
+    opacity: 1;
+}
+
+.dock.about.show:hover {
+    background-color: #eeeeeea0;
 }
 
 #start-btn {
@@ -87,7 +133,7 @@ body {
     display: none;
     position: absolute;
     bottom: 0px;
-    top: 300px;
+    height: 500px;
     width: 800px;
     left: calc(50% - 400px);
     border-radius: 20px;
@@ -106,7 +152,7 @@ body {
 
 #start-menu.show {
     display: flex;
-    top: 100px;
+    height: 594px;
     bottom: 60px;
     opacity: 1;
 }
@@ -135,14 +181,17 @@ input-before {
     margin-left: 5px;
     margin-top: 40px;
 }
+
 #s-m-l>list>a {
     padding: 3px 8px;
     font-size: 15px;
     display: flex;
 }
+
 #s-m-l>list>a>p {
     margin: 5px 7px;
 }
+
 #s-m-l>list>a>img {
     height: 25px;
     width: 25px;
@@ -158,36 +207,43 @@ input-before {
     opacity: 0;
     margin-top: 80px;
 }
-#s-m-r>*{
+
+#s-m-r>* {
     margin-bottom: 50px !important;
     transition: 600ms;
     opacity: 0;
 }
-#s-m-r>.pinned{
+
+#s-m-r>.pinned {
     margin-bottom: 80px !important;
     transition: 800ms;
 }
-#start-menu.show>#s-m-r{
+
+#start-menu.show>#s-m-r {
     height: 100%;
     opacity: 1;
     margin-top: 0;
 }
-#start-menu.show>#s-m-r>*{
+
+#start-menu.show>#s-m-r>* {
     opacity: 1;
-    margin-bottom: 0!important;
+    margin-bottom: 0 !important;
 }
 
-#s-m-r>.row1{
+#s-m-r>.row1 {
     display: flex;
 }
-#s-m-r>.row1>.tool{
+
+#s-m-r>.row1>.tool {
     width: 200px;
     padding: 5px 10px 0 0;
 }
-#s-m-r>.row1>.tool>*{
+
+#s-m-r>.row1>.tool>* {
     float: right;
 }
-#s-m-r>.row1>.folder{
+
+#s-m-r>.row1>.folder {
     display: flex;
     padding: 10px 10px;
     margin: 15px 15px;
@@ -195,50 +251,59 @@ input-before {
     background-color: #ffffff50;
     width: calc(100% - 200px);
 }
-#s-m-r>.row1>.folder>.sm-app{
+
+#s-m-r>.row1>.folder>.sm-app {
     height: 72px;
 }
-#s-m-r>.pinned{
+
+#s-m-r>.pinned {
     padding: 10px 10px;
     margin: 0 10px 0 15px;
     border-radius: 10px;
     background-color: #ffffff50;
 }
-#s-m-r>.pinned>.apps{
+
+#s-m-r>.pinned>.apps {
     display: flex;
     flex-wrap: wrap;
     padding-left: 15px;
 }
-#s-m-r>.pinned>.title{
+
+#s-m-r>.pinned>.title {
     padding: 5px 0 5px 10px;
     font-size: 18px;
     font-weight: 530;
     display: flex;
 }
-#s-m-r>.pinned>.title>*{
+
+#s-m-r>.pinned>.title>* {
     width: 100%;
 }
 
-#s-m-r>.tuijian{
+#s-m-r>.tuijian {
     padding: 10px 10px;
     margin: 15px 10px 0 15px;
     border-radius: 10px;
     background-color: #ffffff50;
 }
-#s-m-r>.tuijian>.apps{
+
+#s-m-r>.tuijian>.apps {
     display: flex;
     flex-wrap: wrap;
     padding-left: 15px;
 }
-#s-m-r>.tuijian>.title{
+
+#s-m-r>.tuijian>.title {
     padding: 5px 0 5px 10px;
     font-size: 18px;
     font-weight: 530;
     display: flex;
 }
-#s-m-r>.tuijian>.title>*{
+
+#s-m-r>.tuijian>.title>* {
     width: 100%;
 }
+
 #s-m-user {
     height: 100px;
     width: 100px;
@@ -279,7 +344,7 @@ input-before {
     border-bottom-color: #2983cc;
 }
 
-.btn{
+.btn {
     border: 0px solid;
     border-radius: 10px;
     padding: 7px 10px;
@@ -287,7 +352,7 @@ input-before {
     background-color: #00000000;
 }
 
-.btn-icon{
+.btn-icon {
     border: 0px solid;
     border-radius: 10px;
     padding: 1px 5px;
@@ -297,7 +362,8 @@ input-before {
     height: 33px;
     width: 33px;
 }
-.btn-icon.big{
+
+.btn-icon.big {
     padding: 3px 7px;
     font-size: 19px;
 }
@@ -306,33 +372,35 @@ input-before {
     background-color: #7f7f7f30;
 }
 
-.btn:active{
+.btn:active {
     font-size: 17px;
     padding: 4px 8px;
 }
 
-.btn-icon.big:active{
+.btn-icon.big:active {
     font-size: 13px;
     padding: 6px 10px;
 }
 
-.more-btn{
+.more-btn {
     background: #ffffff70;
     padding: 0;
     border-radius: 5px;
     font-size: 12px;
     float: right;
-    padding:2px 5px;
+    padding: 2px 5px;
     border: 1px solid #7f7f7f30;
 }
-.more-btn:hover{
+
+.more-btn:hover {
     background-color: #ffffff50;
 }
-.more-btn>.bi{
+
+.more-btn>.bi {
     font-size: 10px;
 }
 
-.sm-app{
+.sm-app {
     width: 72px;
     height: 80px;
     border-radius: 10px;
@@ -340,33 +408,39 @@ input-before {
     transition: 200ms;
     padding: 0 3px;
 }
-.sm-app>*:first-child{
+
+.sm-app>*:first-child {
     height: 34px;
     width: 34px;
     margin-top: 12px;
     transition: 200ms;
 }
-.sm-app>*:last-child{
+
+.sm-app>*:last-child {
     margin-top: -3px;
     transition: 200ms;
     font-size: 10px;
     line-height: 13px;
 }
-.sm-app:hover{
+
+.sm-app:hover {
     background-color: #ffffff70;
 }
-.sm-app:active{
+
+.sm-app:active {
     padding-top: 4px;
 }
-.sm-app:active>*:last-child{
+
+.sm-app:active>*:last-child {
     margin-top: 1px;
 }
-.sm-app:active>*:first-child{
+
+.sm-app:active>*:first-child {
     height: 26px;
     width: 26px;
 }
 
-.tj-obj{
+.tj-obj {
     width: 50%;
     height: 55px;
     border-radius: 10px;
@@ -375,24 +449,29 @@ input-before {
     display: flex;
     padding: 10px 3px 10px 10px;
 }
-.tj-obj>img{
+
+.tj-obj>img {
     height: 35px;
     width: 35px;
     transition: 200ms;
 }
-.tj-obj>div>*:first-child{
+
+.tj-obj>div>*:first-child {
     margin: 3px 0 2px 5px;
     font-size: 15px;
     line-height: 13px;
 }
-.tj-obj>div>*:last-child{
+
+.tj-obj>div>*:last-child {
     font-size: 10px;
     line-height: 13px;
     margin-left: 6px;
 }
-.tj-obj:hover{
+
+.tj-obj:hover {
     background-color: #ffffff70;
 }
+
 /* hi */
 
 dropdown {
@@ -429,7 +508,6 @@ list {
     padding-left: 0;
     margin-bottom: 0;
     border-radius: 10px;
-
 }
 
 list>* {
@@ -476,12 +554,15 @@ list>.text:hover {
     background-color: unset;
 }
 
-.window{
+.window {
     position: fixed;
     width: 50%;
     height: 50%;
-    top: 25%;
-    left: 25%;
+    top: 10%;
+    left: 15%;
+    margin-left: 10%;
+    margin-top: 7%;
+    /* 真的是胡整，margin-top和margin-left的百分比都是以width为标准，脑壳乔的 */
     background-color: #ffffff70;
     backdrop-filter: blur(50px);
     border-radius: 10px;
@@ -491,41 +572,55 @@ list>.text:hover {
     transition: 200ms;
     overflow: hidden;
 }
-.window.show-begin{
+
+.window.show-begin {
     display: block;
 }
-.window.show{
+
+.window.show {
+    margin-left: 0;
+    margin-top: 0;
     height: 80%;
     width: 70%;
-    top: 10%;
-    left: 15%;
     opacity: 1;
 }
-.window.notrans{
+
+.window.notrans {
     transition: unset !important;
 }
 
-.window>.titbar{
+.window>.titbar {
     background-color: #ffffff30;
     border-radius: 10px 10px 0 0;
     height: 32px;
     padding: 0 0 0 5px;
     display: flex;
 }
-.window>.titbar>p{
+
+.window>.titbar>p {
     font-size: 16px;
     width: 100px;
     margin-top: 3px;
 }
-.window>.titbar>.icon{
+
+.window>.titbar>.icon {
     margin: 6px 5px 0 0;
     height: 20px;
     width: 20px;
 }
-.window>.titbar>div{
+
+.window>.titbar>div {
     width: calc(100% - 125px);
 }
-.wbtg{
+
+.window.max{
+    width: 100%;
+    height: 100%;
+    left: 0 !important;
+    top: 0 !important;
+}
+
+.wbtg {
     height: 100%;
     float: right;
     width: 45px;
@@ -534,13 +629,16 @@ list>.text:hover {
     font-size: 13px;
     transition: 100ms;
 }
-.wbtg.red{
+
+.wbtg.red {
     border-top-right-radius: 10px;
 }
-.wbtg:hover{
+
+.wbtg:hover {
     background-color: #7f7f7f30;
 }
-.wbtg.red:hover{
+
+.wbtg.red:hover {
     background-color: #c42b1c;
     color: #fff;
 }

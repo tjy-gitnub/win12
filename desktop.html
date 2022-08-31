@@ -9,9 +9,11 @@
 	<title>Win12</title>
 	<!-- Windows 12 网页版 谭景元原创  -->
 
-	<!-- Windows 12 网页版是一个开放源项目,希望在网络上复制 Windows12 的桌面体验,
+	<!-- Windows 12 网页版是一个开放源项目,
+	希望让用户在网络上预先体验 Windows 12,
+	内容可能与 Windows 12 正式版本不一致。
 	使用标准网络技术,例妙如 Html、CSS 和 Javascript
-	此项目绝不附属于微软,且不应与微软操作系统或产品混淆
+	此项目绝不附属于微软,且不应与微软操作系统或产品混淆,
 	这也不是 Windows365 cloud PC
 	本项目中微软、Windows和其他示范产品是微软公司组的商标 -->
 </head>
@@ -232,11 +234,16 @@
 				</svg>
 			</a>
 		</div>
-		<div class="dock">
-			<!-- 任务栏固定的应用 -->
-			<i class="bi bi-gear"></i>
-			<i class="bi bi-folder"></i>
-			<i class="bi bi-browser-edge"></i>
+		<div class="dock about"
+			onclick="if($(this).hasClass('show'))$(this).removeClass('show');else $(this).addClass('show')">
+			Windows 12 网页版 谭景元原创
+			<p>Windows 12 网页版是一个开放源项目,<br>
+				希望让用户在网络上预先体验 Windows 12,<br>
+				内容可能与 Windows 12 正式版本不一致。<br>
+				使用标准网络技术,例如 Html,CSS 和 JS<br>
+				此项目绝不附属于微软,且不应与微软操作系统或产品混淆,<br>
+				这也不是 Windows365 cloud PC<br>
+				本项目中微软、Windows和其他示范产品是微软公司组的商标</p>
 		</div>
 	</div>
 	<div class="window setting">
@@ -246,7 +253,7 @@
 			<div>
 				<a href="#" class="a wbtg red" onclick="hidewin('setting')">
 					<i class="bi bi-x-lg"></i>
-					<a href="#" class="a wbtg">
+					<a href="#" class="a wbtg max" onclick="maxwin('setting')">
 						<i class="bi bi-app"></i>
 					</a>
 					<a href="#" class="a wbtg">
@@ -267,7 +274,9 @@
 				<input type="text" class="input" placeholder="查找设置" style="padding-left: 30px;">
 				<input-before class="bi bi-search"></input-before>
 				<list>
-					<a href="#">
+					<a href="#" style="background-color: #ffffff70">
+						<span
+							style="background-color: #2983cc;border-radius: 10px;position: relative;left: -5px;top:1px;height: 20px;">&nbsp;</span>
 						<img src="apps/setting/icons/system.webp">
 						系统
 					</a>
@@ -313,9 +322,7 @@
 					</a>
 				</list>
 			</div>
-			<div class="page">
-				hello
-			</div>
+			<iframe src="apps/setting/system.html" frameborder="0" class="page"></iframe>
 		</div>
 		<link rel="stylesheet" href="apps/setting/main.css">
 		<script src="apps/setting/main.js"></script>
@@ -329,6 +336,20 @@
 			setTimeout(() => {
 				$('.window.' + name).addClass('notrans');
 			}, 200);
+		}
+		function maxwin(name) {
+			if ($('.window.' + name).hasClass('max')) {
+				$('.window.' + name).removeClass('max');
+				setTimeout(() => {
+					$('.window.' + name).addClass('notrans');
+				}, 200);
+				$('.window.' + name + '>.titbar>div>.wbtg.max').html('<i class="bi bi-app"></i>');
+			} else {
+				$('.window.' + name).removeClass('notrans');
+				$('.window.' + name).addClass('max');
+				$('.window.' + name + '>.titbar>div>.wbtg.max').html('<svg version="1.1" width="12" height="12" viewBox="0,0,37.65105,35.84556" style="margin-top:4px;"><g transform="translate(-221.17804,-161.33903)"><g data-paper-data="{&quot;isPaintingLayer&quot;:true}" fill="none" fill-rule="nonzero" stroke="#000000" stroke-width="2" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="10" stroke-dasharray="" stroke-dashoffset="0" style="mix-blend-mode: normal"><path d="M224.68734,195.6846c-2.07955,-2.10903 -2.00902,-6.3576 -2.00902,-6.3576l0,-13.72831c0,0 -0.23986,-1.64534 2.00902,-4.69202c1.97975,-2.68208 4.91067,-2.00902 4.91067,-2.00902h14.06315c0,0 3.77086,-0.23314 5.80411,1.67418c2.03325,1.90732 1.33935,5.02685 1.33935,5.02685v13.39347c0,0 0.74377,4.01543 -1.33935,6.3576c-2.08312,2.34217 -5.80411,1.67418 -5.80411,1.67418h-13.39347c0,0 -3.50079,0.76968 -5.58035,-1.33935z"/><path d="M229.7952,162.85325h16.06111c0,0 5.96092,-0.36854 9.17505,2.64653c3.21412,3.01506 2.11723,7.94638 2.11723,7.94638v18.55642"/></g></g></svg>')
+
+			}
 		}
 		function hidewin(name) {
 			$('.window.' + name).removeClass('notrans');
