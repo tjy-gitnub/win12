@@ -1,0 +1,73 @@
+#win-setting {
+    display: flex;
+    height: calc(100% - 32px);
+}
+
+#win-setting>* {
+    height: 100%
+}
+
+#win-setting>.menu {
+    width: 300px;
+    padding: 10px 5px 5px 10px;
+}
+
+#win-setting>.menu>.user {
+    display: flex;
+    padding: 10px 10px;
+    border-radius: 10px;
+    margin-bottom: 10px;
+    transition: 200ms;
+}
+
+#win-setting>.menu>.user:hover {
+    background-color: #ffffff70;
+}
+
+#win-setting>.menu>.user>div>p:first-child {
+    font-size: 25px;
+    margin-bottom: -7px;
+}
+
+#win-setting>.menu>.user>div {
+    padding: 0px 0 0 10px;
+}
+
+#win-setting>.menu>.user>.bi {
+    background-color: #eeeeeeee;
+    box-shadow: 0 0 10px #7f7f7f7f;
+    width: 60px;
+    height: 60px;
+    font-size: 45px;
+    border-radius: 50%;
+}
+
+#win-setting>.menu>.user>.bi::before {
+    position: relative;
+    top: -7px;
+    left: 7px;
+}
+
+#win-setting>.menu>list {
+    padding-bottom: 10px;
+    margin-left: 5px;
+    margin-top: 40px;
+    height: calc(100% - 123px);
+    overflow: auto;
+}
+
+#win-setting>.menu>list>a {
+    padding: 5px 8px;
+    font-size: 15px;
+    display: flex;
+}
+
+#win-setting>.menu>list>a>p {
+    margin: 5px 7px;
+}
+
+#win-setting>.menu>list>a>img {
+    height: 20px;
+    width: 20px;
+    margin: 1px 10px 0 0;
+}
