@@ -37,8 +37,13 @@
 			<input type="text" class="input" alt="hi" placeholder="在这里输入你要搜索的内容">
 			<input-before class="bi bi-search"></input-before>
 			<list>
-				<a href="#"><img src="icon/setting.png">
-					<p>设置</p>
+				<a href="#" onclick="
+				showwin('setting');
+				$('#start-menu').removeClass('show');
+				setTimeout(() => {
+					$('#start-menu').removeClass('show-begin');
+				}, 200);"><img src="icon/setting.png">
+					<p>设置<i>(可用)</i></p>
 				</a>
 				<a href="#"><img src="icon/explorer.png">
 					<p>文件资源管理器</p>
@@ -67,14 +72,19 @@
 				<div class="tool">
 					<p style="font-size: 40px;margin-bottom: -10px;">12:00</p>
 					<p>星期一, 2368年13月34日</p>
-					<a href="#" class="a btn btn-icon" onclick="
-						let rect=this.getBoundingClientRect();
-						showdropdown('power',
-							'top',rect.bottom+5,
-							'right',document.body.clientWidth-rect.right);">
+					<a href="#" class="a btn btn-icon power" onclick="$(this).addClass('show')">
 						<i class="bi bi-power"></i>
+						<i class="bi bi-arrow-counterclockwise"></i>
 					</a>
-					<a href="#" class="a btn btn-icon big">
+					<a href="#" class="a btn btn-icon big" onclick="
+					if($('#start-menu').hasClass('max')){
+						$('#start-menu>#s-m-r>.row1>.tool>.btn-icon.big').html('<i class=\'bi bi-arrows-angle-expand\'></i>');
+						$('#start-menu').removeClass('max');
+					}else{
+						$('#start-menu>#s-m-r>.row1>.tool>.btn-icon.big').html('<i class=\'bi bi-arrows-angle-contract\'></i>');
+						$('#start-menu').addClass('max');
+					}
+					">
 						<i class="bi bi-arrows-angle-expand"></i>
 					</a>
 				</div>
@@ -246,7 +256,7 @@
 				本项目中微软、Windows和其他示范产品是微软公司组的商标</p>
 		</div>
 	</div>
-	<div class="window setting">
+	<div class="window setting show show-begin notrans">
 		<div class="titbar">
 			<img src="icon/setting.png" class="icon">
 			<p>设置</p>
@@ -276,7 +286,7 @@
 				<list>
 					<a href="#" style="background-color: #ffffff70">
 						<span
-							style="background-color: #2983cc;border-radius: 10px;position: relative;left: -5px;top:1px;height: 20px;">&nbsp;</span>
+							style="background-color: #2983cc;border-radius: 10px;position: relative;left: -10px;top:1px;height: 20px;margin-right: -4px;">&nbsp;</span>
 						<img src="apps/setting/icons/system.webp">
 						系统
 					</a>
@@ -322,11 +332,135 @@
 					</a>
 				</list>
 			</div>
-			<iframe src="apps/setting/system.html" frameborder="0" class="page"></iframe>
+			<div class="page" style="overflow: auto;">
+				<p class="title">系统</p>
+				<div style="display: flex;">
+					<p class="s-icon" style="font-size: 70px;margin: -8px 10px 0px 20px;"></p>
+					<div>
+						<p style="font-size: 28px;text-overflow: ellipsis;white-space: nowrap;">Desktop-PingGai</p>
+						<p style="color: #7f7f7f;margin:-8px 0 -5px 0;">瓶盖</p>
+						<a href="#" style="color: #2983cc;text-decoration: underline;">重命名</a>
+					</div>
+				</div>
+				<div class="setting-list">
+					<a href="#">
+						<icon></icon>
+						<div>
+							<p>显示</p>
+							<p>显示器、亮度、夜间模式、显示描述</p>
+						</div>
+						<i class="bi bi-chevron-right"></i>
+					</a>
+					<a href="#">
+						<icon></icon>
+						<div>
+							<p>声音</p>
+							<p>声音级别、输入、输出、声音设备</p>
+						</div>
+						<i class="bi bi-chevron-right"></i>
+					</a>
+					<a href="#">
+						<icon></icon>
+						<div>
+							<p>通知</p>
+							<p>来自系统和应用的警报</p>
+						</div>
+						<i class="bi bi-chevron-right"></i>
+					</a>
+					<a href="#">
+						<icon></icon>
+						<div>
+							<p>专注助手</p>
+							<p>通知、自动规则</p>
+						</div>
+						<i class="bi bi-chevron-right"></i>
+					</a>
+					<a href="#">
+						<icon class="b">&#xF186;</icon>
+						<div>
+							<p>电源</p>
+							<p>睡眠、电池使用情况、节电模式</p>
+						</div>
+						<i class="bi bi-chevron-right"></i>
+					</a>
+					<a href="#">
+						<icon></icon>
+						<div>
+							<p>存储</p>
+							<p>存储空间、驱动器、配置规则</p>
+						</div>
+						<i class="bi bi-chevron-right"></i>
+					</a>
+					<a href="#">
+						<icon></icon>
+						<div>
+							<p>多任务处理</p>
+							<p>贴靠窗口、桌面、任务切换</p>
+						</div>
+						<i class="bi bi-chevron-right"></i>
+					</a>
+					<a href="#">
+						<icon></icon>
+						<div>
+							<p>激活</p>
+							<p>激活状态、订阅、产品密钥</p>
+						</div>
+						<i class="bi bi-chevron-right"></i>
+					</a>
+					<a href="#">
+						<icon></icon>
+						<div>
+							<p>疑难解答</p>
+							<p>建议的疑难解答、首选项和历史记录</p>
+						</div>
+						<i class="bi bi-chevron-right"></i>
+					</a>
+					<a href="#">
+						<icon></icon>
+						<div>
+							<p>恢复</p>
+							<p>重置、高级启动、返回</p>
+						</div>
+						<i class="bi bi-chevron-right"></i>
+					</a>
+					<a href="#">
+						<icon></icon>
+						<div>
+							<p>投影到此电脑</p>
+							<p>权限、配对 PIN、可发现性</p>
+						</div>
+						<i class="bi bi-chevron-right"></i>
+					</a>
+					<a href="#">
+						<icon></icon>
+						<div>
+							<p>远程桌面</p>
+							<p>远程桌面用户、连接权限</p>
+						</div>
+						<i class="bi bi-chevron-right"></i>
+					</a>
+					<a href="#">
+						<icon></icon>
+						<div>
+							<p>剪贴板</p>
+							<p>剪贴和复制历史记录、同步、清除</p>
+						</div>
+						<i class="bi bi-chevron-right"></i>
+					</a>
+					<a href="#">
+						<icon></icon>
+						<div>
+							<p>关于</p>
+							<p>设备规格、重命名电脑、Windows 规格</p>
+						</div>
+						<i class="bi bi-chevron-right"></i>
+					</a>
+				</div>
+			</div>
 		</div>
 		<link rel="stylesheet" href="apps/setting/main.css">
-		<script src="apps/setting/main.js"></script>
 	</div>
+	<script src="window-drag.js"></script>
 	<script>
 		function showwin(name) {
 			$('.window.' + name).addClass('show-begin');

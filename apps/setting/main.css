@@ -7,19 +7,19 @@
     font-display: block;
     font-family: "booticon";
     src: url("../../fonts/bootstrap-icons.woff2?8d200481aa7f02a2d63a331fc782cfaf") format("woff2"),
-        url("../../fonts/bootstrap-icons.woff?8d200481aa7f02a2d63a331fc782cfaf") format("woff");
+  url("../../fonts/bootstrap-icons.woff?8d200481aa7f02a2d63a331fc782cfaf") format("woff");
 }
 
-.title{
+.title {
     font-size: 35px;
     margin: 0;
 }
 
-.s-icon{
+.s-icon {
     font-family: SettingsIcons;
 }
 
-html{
+html {
     width: 100%;
     overflow-x: hidden;
 }
@@ -32,13 +32,15 @@ html{
 #win-setting>* {
     height: 100%
 }
+
 #win-setting>.page {
-    width: calc(100% - 300px);
+    flex-grow:1
 }
 
 
 #win-setting>.menu {
-    width: 300px;
+    width: 30%;
+    min-width: 200px;
     padding: 10px 5px 5px 10px;
 }
 
@@ -58,15 +60,20 @@ html{
     font-size: 25px;
     margin-bottom: -7px;
 }
+#win-setting>.menu>.user>div>p:last-child{
+    overflow: hidden;text-overflow: ellipsis;white-space: nowrap;
+}
 
 #win-setting>.menu>.user>div {
     padding: 0px 0 0 10px;
+    overflow: hidden;text-overflow: ellipsis;white-space: nowrap;
 }
 
 #win-setting>.menu>.user>.bi {
     background-color: #eeeeeeee;
     box-shadow: 0 0 10px #7f7f7f7f;
     width: 60px;
+    min-width: 60px;
     height: 60px;
     font-size: 45px;
     border-radius: 50%;
@@ -79,16 +86,19 @@ html{
 }
 
 #win-setting>.menu>list {
-    padding-bottom: 10px;
+    padding-bottom: 13px;
     margin-left: 5px;
     margin-top: 40px;
     height: calc(100% - 123px);
+    overflow-y: auto;
+    padding-right: 5px;
 }
 
 #win-setting>.menu>list>a {
-    padding: 5px 12px;
+    padding: 5px 15px;
     font-size: 15px;
     display: flex;
+    margin-bottom: 5px;
 }
 
 #win-setting>.menu>list>a>p {
@@ -112,7 +122,7 @@ html{
 }
 
 .setting-list>* {
-    width: calc(100% - 50px);
+    width: 100%;
     color: var(--text);
     background-color: #ffffff50;
     margin-bottom: 5px;
@@ -132,29 +142,36 @@ html{
 }
 
 
-.setting-list>a>icon{
+.setting-list>a>icon {
     font-family: SettingsIcons;
     font-size: 20px;
-    margin:10px 20px 0 5px;
+    margin: 10px 20px 0 5px;
 }
-.setting-list>a>icon.b{
+
+.setting-list>a>icon.b {
     font-family: booticon;
 }
 
-.setting-list>a>div>p:first-child{
+.setting-list>a>div>p:first-child {
     font-size: 20px;
-    margin:0 0 -12px 0;
+    margin: 0 0 0 0;
 }
 
-.setting-list>a>div>p:last-child{
+.setting-list>a>div>p:last-child {
     font-size: 10px;
     color: #7f7f7f;
-    margin-bottom: 2px;
+    margin-bottom: 0px;
 }
 
-.setting-list>a>.then{
-    position: absolute;
-    right: 30px;
-    margin-top: 12px;
+.setting-list>a>.bi {
+    flex-grow: 1;
+    margin-top: 15px;
     color: #7f7f7f;
+    font-size: 20px;
+}
+
+.setting-list>a>.bi::before {
+    position: relative;
+    float: right;
+    right: 5px;
 }
