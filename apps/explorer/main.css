@@ -1,0 +1,222 @@
+#win-explorer{
+    display: flex;
+}
+
+#win-explorer>.menu{
+    width: 250px;
+    height: 100%;
+}
+
+#win-explorer>.menu>.card{
+    margin: 10px;
+    border-radius: 10px;
+    background-color: #ffffff50;
+    padding: 3px;
+}
+
+#win-explorer>.menu>.card>.title{
+    padding: 6px 10px;
+    font-weight: 550;
+}
+
+#win-explorer>.menu>.card>list>a{
+    padding: 4px 5px 4px 20px;
+    font-size: 15px;
+    border-radius: 7px;
+    transition: 100ms;
+    display: flex;
+}
+
+#win-explorer>.menu>.card>list>a.check{
+    background-color: #ffffff80;
+}
+
+#win-explorer>.menu>.pinned>list>a>img{
+    width: 18px;
+    height: 18px;
+    margin-top: 2px;
+    margin-right: 5px;
+}
+
+#win-explorer>.menu>.tags>list>a>span{
+    width: 13px;
+    height: 13px;
+    margin-left: 4px;
+    margin-top: 4px;
+    margin-right: 7px;
+    border-radius: 50%;
+    box-shadow: 0 0 5px #7f7f7f7f;
+}
+
+#win-explorer>.main{
+    flex-grow: 1;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+#win-explorer>.main>.tool{
+    width: 100%;
+    height: 60px;
+    display: flex;
+    padding: 5px 10px;
+}
+
+#win-explorer>.main>.tool>.b{
+    height: 40px;
+    padding: 7px;
+    border-radius: 10px;
+    transition: 100ms;
+}
+
+#win-explorer>.main>.tool>.b.t{
+    display: flex;
+    font-size: 15px;
+}
+
+#win-explorer>.main>.tool>.b.t>img{
+    display: flex;
+    margin-right: 5px;
+}
+
+#win-explorer>.main>.tool>.b:hover{
+    background-color: #ffffff50;
+}
+
+#win-explorer>.main>.tool>.b>img{
+    width: 25px;
+    height: 25px;
+}
+
+#win-explorer>.main>.tool>.hr{
+    width: 2px;
+    height: 35px;
+    background-color: #7f7f7f7f;
+    border-radius: 10px;
+    margin: 2.5px 7px;
+}
+
+#win-explorer>.main>.content{
+    width: 100%;
+    flex-grow: 1;
+    background-color: #ffffff50;
+    border-radius: 10px;
+    margin: -10px 10px 40px 0;
+    padding: 8px;
+}
+
+#win-explorer>.main>.content>.title{
+    margin:5px 0 10px 15px;
+    font-size: 35px;
+}
+
+#win-explorer>.main>.content>.tool{
+    height: 40px;
+    width: 100%;
+    display: flex;
+    padding: 10px 0 0 10px;
+}
+
+#win-explorer>.main>.content>.tool>.btn>.bi::before{
+    position: relative;
+    top: -2px;
+}
+
+#win-explorer>.main>.content>.tool>.btn{
+    transition: 100ms;
+}
+
+#win-explorer>.main>.content>.tool>.tit>img{
+    width: 22px;
+    height: 22px;
+    margin-top: 2px;
+}
+
+#win-explorer>.main>.content>.tool>.tit{
+    display: flex;
+    margin-top: 3px;
+    margin-left: 5px;
+}
+
+#win-explorer>.main>.content>.tool>.search{
+    flex-grow: 1;
+}
+
+#win-explorer>.main>.content>.tool>.search>*{
+    float: right;
+    margin-right: 10px;
+}
+
+#win-explorer>.main>.content>.tool>.search>.input{
+    width: 300px;
+    padding-left: 30px;
+}
+
+#win-explorer>.main>.content>.tool>.search>input-before{
+    margin-top: 4px;
+    margin-right: -23px;
+}
+
+#win-explorer>.main>.content>.class{
+    margin-left: 20px;
+    display: flex;
+}
+
+#win-explorer>.main>.content>.class>img{
+    width: 20px;
+    height: 20px;
+    margin-top: 3px;
+    margin-right: 5px;
+    filter:brightness(0.9);
+}
+
+#win-explorer>.main>.content>.group{
+    display: flex;
+    flex-wrap: wrap;
+    padding: 10px 20px;
+}
+
+#win-explorer>.main>.content>.group>.item{
+    width: 280px;
+    margin: 5px;
+    height:  80px;
+    background-color: #ffffff50;
+    border-radius: 10px;
+    transition: 100ms;
+    display: flex;
+}
+
+#win-explorer>.main>.content>.group>.item:hover{
+    background-color: #ffffff90;
+}
+
+#win-explorer>.main>.content>.group>.item>img{
+    width: 55px;
+    height: 55px;
+    margin-top: 18px;
+    margin-left: 10px;
+}
+
+#win-explorer>.main>.content>.group>.item>div{
+    flex-grow: 1;
+    padding: 5px 5px 0 0;
+}
+
+#win-explorer>.main>.content>.group>.item>div>.bar{
+    width: calc(100% - 10px);
+    height: 8px;
+    border-radius: 10px;
+    background-color: #aaa;
+    margin: 5px 5px;
+}
+
+#win-explorer>.main>.content>.group>.item>div>.bar>.content{
+    height: 100%;
+    background-color: #4a91cb;
+    border-radius: 10px;
+}
+
+#win-explorer>.main>.content>.group>.item>div>.info{
+    color: #888;
+    font-size: 14px;
+}

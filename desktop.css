@@ -155,6 +155,24 @@ body {
     height: 21px;
 }
 
+#search-btn{
+    font-size: 24px;
+    height: 35px;
+    width: 35px;
+    margin-top: -6px;
+    margin-left: 3px;
+    color: #333;
+    transition: 200ms;
+}
+
+#search-btn:hover{
+    opacity: 0.6;
+}
+#search-btn:active{
+    font-size: 20px;
+    padding: 3px 0 0 4px;
+}
+
 #start-menu {
     display: none;
     position: absolute;
@@ -434,6 +452,89 @@ input-before {
 
 
 
+#search-win {
+    display: none;
+    position: absolute;
+    bottom: 0px;
+    height: 500px;
+    width: 600px;
+    left: calc(50% - 300px);
+    border-radius: 20px;
+    background-color: #ffffff70;
+    backdrop-filter: blur(80px);
+    opacity: 0;
+    transition: 200ms;
+    box-shadow: 0 0 15px #7f7f7f7f;
+    border: 2px solid #7f7f7f10;
+    z-index: 99;
+    padding: 10px;
+}
+
+#search-win.show-begin {
+    display: flex;
+    flex-direction: column;
+}
+
+#search-win.show {
+    display: flex;
+    flex-direction: column;
+    height: 600px;
+    bottom: 60px;
+    opacity: 1;
+}
+
+#search-win>.input {
+    padding-left: 30px;
+}
+
+#search-win>.tab{
+    display: flex;
+    margin-top: 25px;
+    margin-bottom: 10px;
+}
+
+#search-win>.tab>a{
+    padding: 4px 7px 3px 7px;
+    color: #000;
+    margin: 0 0;
+    text-align: center;
+    border-radius: 10px;
+    transition: 100ms;
+}
+#search-win>.tab>a:hover{
+    background-color: #ffffff50;
+}
+#search-win>.tab>a.now{
+    background-color: #ffffff50;
+}
+#search-win>.tab>a.now::after{
+    content: '';
+    display: block;
+    position: relative;
+    bottom: 0;
+    background-color: #2983cc;
+    width: 100%;
+    height: 3px;
+    border-radius: 3px;
+}
+#search-win>.ans{
+    display: flex;
+    flex-grow: 1;
+}
+#search-win>.ans>.list{
+    width: 250px;
+    height: 100%;
+}
+#search-win>.ans>.list>list>a:hover{
+    background-color: #ffffff50;
+}
+#search-win>.ans>.view{
+    flex-grow: 1;
+    height: 100%;
+}
+
+
+
 .input {
     background-color: #fbfbfb;
     border-radius: 10px;
@@ -708,7 +809,6 @@ list>.text:hover {
 
 .window>.titbar>p {
     font-size: 16px;
-    width: 100px;
     margin-top: 3px;
 }
 
@@ -719,7 +819,7 @@ list>.text:hover {
 }
 
 .window>.titbar>div {
-    width: calc(100% - 125px);
+    flex-grow: 1;
 }
 
 .window>.content{

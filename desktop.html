@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" style="height: 100%;">
+
 <head>
 	<meta charset="UTF-8" />
 	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -18,7 +19,6 @@
 </head>
 
 <body>
-	<script src="./jq.min.js"></script>
 	<dropdown id="power">
 		<!-- 关机菜单 -->
 		<list>
@@ -33,7 +33,15 @@
 				<i class="bi bi-person"></i>
 			</div>
 			<p style="width: 100%;text-align: center;margin: -50px 0 20px 0;font-size: 30px;">Administartor</p>
-			<input type="text" class="input" alt="hi" placeholder="在这里输入你要搜索的内容">
+			<input type="text" class="input" alt="hi" placeholder="在这里输入你要搜索的内容" onclick="$('#start-menu').removeClass('show');
+				setTimeout(() => {
+					$('#start-menu').removeClass('show-begin');
+				}, 200);
+				$('#search-win').addClass('show-begin');
+				setTimeout(() => {
+					$('#search-win').addClass('show');
+				}, 0);
+				$('#search-input').focus();">
 			<input-before class="bi bi-search"></input-before>
 			<list>
 				<a href="#" onclick="
@@ -44,8 +52,13 @@
 				}, 200);"><img src="icon/setting.png">
 					<p>设置<i>(可用)</i></p>
 				</a>
-				<a href="#"><img src="icon/explorer.png">
-					<p>文件资源管理器</p>
+				<a href="#" onclick="
+				showwin('explorer');
+				$('#start-menu').removeClass('show');
+				setTimeout(() => {
+					$('#start-menu').removeClass('show-begin');
+				}, 200);"><img src="icon/explorer.png">
+					<p>文件资源管理器<i>(可用)</i></p>
 				</a>
 				<a href="#"><img src="icon/edge.png">
 					<p>Microsoft Edge</p>
@@ -114,9 +127,14 @@
 						<img src="icon/edge.png">
 						<p>Microsoft Edge</p>
 					</a>
-					<a href="#" class="a sm-app">
+					<a href="#" class="a sm-app" onclick="
+					showwin('explorer');
+					$('#start-menu').removeClass('show');
+					setTimeout(() => {
+						$('#start-menu').removeClass('show-begin');
+					}, 200);">
 						<img src="icon/explorer.png">
-						<p>文件资源管理器</p>
+						<p>文件资源管理器<i>(可用)</i></p>
 					</a>
 					<a href="#" class="a sm-app">
 						<img src="icon/getstarted.png">
@@ -201,6 +219,42 @@
 			</div>
 		</div>
 	</div>
+	<div id="search-win">
+		<!-- 搜索框 -->
+		<input type="text" class="input" placeholder="在这里输入你要搜索的内容" id="search-input" oninput="
+		if(this.value.length>0){
+			let rand=['农夫山泉瓶盖简介.txt','瓶盖构造图.png','瓶盖结构说明.docx','可口可乐瓶盖.jpg','可口可乐瓶盖历史.pptx','瓶盖质量统计分析.xlsx','农夫山泉瓶盖.svg','瓶盖介绍.doc'];
+			$('#search-win>.ans>.list>list').html('<a href=\'#\'>'+rand[this.value.length%8]+'</a>'+'<a href=\'#\'>'+rand[(this.value.length+3)%8]+'</a>');
+		}else
+			$('#search-win>.ans>.list>list').html('什么也没有')
+		$('#search-span').text(this.value);
+		">
+		<input-before class="bi bi-search"></input-before>
+		<div class="tab">
+			<a href="#" class="now">全部</a>
+			<a href="#">应用</a>
+			<a href="#">文档</a>
+			<a href="#">网页</a>
+			<a href="#">电子邮件</a>
+			<a href="#">人员</a>
+			<a href="#">设置</a>
+			<a href="#">视频</a>
+			<a href="#">文件夹</a>
+			<a href="#">音乐</a>
+			<a href="#">照片</a>
+		</div>
+		<div class="ans">
+			<div class="list">
+				<list>
+					什么也没有
+				</list>
+			</div>
+			<div class="view">
+				<p class="bi bi-search" style="text-align: center;font-size: 50px;"></p>
+				<p style="text-align: center;font-size: 25px;">搜索 "<span id="search-span"></span>"</p>
+			</div>
+		</div>
+	</div>
 	<div id="dock-box">
 		<!-- Dock(任务)栏 -->
 		<div class="dock">
@@ -212,6 +266,12 @@
 					}, 200);
 				}
 				else{
+					if($('#search-win').hasClass('show')){
+						$('#search-win').removeClass('show');
+						setTimeout(() => {
+							$('#search-win').removeClass('show-begin');
+						}, 200);
+					}
 					$('#start-menu').addClass('show-begin');
 					setTimeout(() => {
 						$('#start-menu').addClass('show');
@@ -242,6 +302,26 @@
 					</g>
 				</svg>
 			</a>
+			<a href="#" id="search-btn" onclick="
+			if($('#search-win').hasClass('show')){
+				$('#search-win').removeClass('show');
+				setTimeout(() => {
+					$('#search-win').removeClass('show-begin');
+				}, 200);
+			}
+			else{
+				$('#start-menu').removeClass('show');
+				setTimeout(() => {
+					$('#start-menu').removeClass('show-begin');
+				}, 200);
+				$('#search-win').addClass('show-begin');
+				setTimeout(() => {
+					$('#search-win').addClass('show');
+				}, 0);
+				$('#search-input').focus();
+			}">
+				<i class="bi bi-search"></i>
+			</a>
 		</div>
 		<div class="dock about"
 			onclick="if($(this).hasClass('show'))$(this).removeClass('show');else $(this).addClass('show')">
@@ -255,7 +335,7 @@
 				本项目中微软、Windows和其他示范产品是微软公司组的商标</p>
 		</div>
 	</div>
-	<div class="window setting show show-begin notrans">
+	<div class="window setting">
 		<div class="titbar">
 			<img src="icon/setting.png" class="icon">
 			<p>设置</p>
@@ -459,48 +539,124 @@
 		</div>
 		<link rel="stylesheet" href="apps/setting/main.css">
 	</div>
-	<script src="window-drag.js"></script>
-	<script>
-		function showwin(name) {
-			$('.window.' + name).addClass('show-begin');
-			setTimeout(() => {
-				$('.window.' + name).addClass('show');
-			}, 0);
-			setTimeout(() => {
-				$('.window.' + name).addClass('notrans');
-			}, 200);
-		}
-		function maxwin(name) {
-			if ($('.window.' + name).hasClass('max')) {
-				$('.window.' + name).removeClass('max');
-				setTimeout(() => {
-					$('.window.' + name).addClass('notrans');
-				}, 200);
-				$('.window.' + name + '>.titbar>div>.wbtg.max').html('<i class="bi bi-app"></i>');
-			} else {
-				$('.window.' + name).removeClass('notrans');
-				$('.window.' + name).addClass('max');
-				$('.window.' + name + '>.titbar>div>.wbtg.max').html('<svg version="1.1" width="12" height="12" viewBox="0,0,37.65105,35.84556" style="margin-top:4px;"><g transform="translate(-221.17804,-161.33903)"><g data-paper-data="{&quot;isPaintingLayer&quot;:true}" fill="none" fill-rule="nonzero" stroke="#000000" stroke-width="2" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="10" stroke-dasharray="" stroke-dashoffset="0" style="mix-blend-mode: normal"><path d="M224.68734,195.6846c-2.07955,-2.10903 -2.00902,-6.3576 -2.00902,-6.3576l0,-13.72831c0,0 -0.23986,-1.64534 2.00902,-4.69202c1.97975,-2.68208 4.91067,-2.00902 4.91067,-2.00902h14.06315c0,0 3.77086,-0.23314 5.80411,1.67418c2.03325,1.90732 1.33935,5.02685 1.33935,5.02685v13.39347c0,0 0.74377,4.01543 -1.33935,6.3576c-2.08312,2.34217 -5.80411,1.67418 -5.80411,1.67418h-13.39347c0,0 -3.50079,0.76968 -5.58035,-1.33935z"/><path d="M229.7952,162.85325h16.06111c0,0 5.96092,-0.36854 9.17505,2.64653c3.21412,3.01506 2.11723,7.94638 2.11723,7.94638v18.55642"/></g></g></svg>')
-
-			}
-		}
-		function hidewin(name) {
-			$('.window.' + name).removeClass('notrans');
-			$('.window.' + name).removeClass('show');
-			setTimeout(() => {
-				$('.window.' + name).removeClass('show-begin');
-			}, 200);
-		}
-		function showdropdown(dropid, type1, pos1, type2, pos2) {
-			var dd = document.getElementById(dropid);
-			dd.style.setProperty(type1, pos1 + "px", "important");
-			dd.style.setProperty(type2, pos2 + "px", "important");
-			if (dd.style.display != "block") {
-				dd.style.setProperty("display", "block", "important");
-			} else
-				dd.style.setProperty("display", "none", "important");
-		}
-	</script>
+	<div class="window explorer">
+		<div class="titbar">
+			<img src="icon/explorer.png" class="icon">
+			<p>文件资源管理器</p>
+			<div>
+				<a href="#" class="a wbtg red" onclick="hidewin('explorer')">
+					<i class="bi bi-x-lg"></i>
+					<a href="#" class="a wbtg max" onclick="maxwin('explorer')">
+						<i class="bi bi-app"></i>
+					</a>
+					<a href="#" class="a wbtg">
+						<i class="bi bi-dash-lg"></i>
+					</a>
+				</a>
+			</div>
+		</div>
+		<div class="content" id="win-explorer">
+			<div class="menu">
+				<div class="card pinned">
+					<p class="title"><span style="font: 15px;">📌</span> 已固定</p>
+					<list>
+						<a href="#">
+							<img src="apps/explorer/icons/qa.png">快速访问
+						</a>
+						<a href="#">
+							<img src="apps/explorer/icons/od.png">OneDrive
+						</a>
+						<a href="#" class="check">
+							<span
+								style="background-color: #2983cc;width:4px;height: 19px;border-radius: 10px;margin-left: -12px;margin-right: 8px;margin-top: 1px;"></span>
+							<img src="apps/explorer/icons/thispc.png">此电脑
+						</a>
+						<a href="#">
+							<img src="apps/explorer/icons/rb.png">回收站
+						</a>
+					</list>
+				</div>
+				<div class="card tags">
+					<p class="title"><span style="font: 15px;">🏷</span> 标签</p>
+					<list>
+						<a href="#"><span style="background-color: red;"></span>红色</a>
+						<a href="#"><span style="background-color: #3981d9;"></span>蓝色</a>
+						<a href="#"><span style="background-color: yellow;"></span>黄色</a>
+						<a href="#"><span style="background-color: green;"></span>绿色</a>
+						<a href="#"><span style="background-color: #fc9816;"></span>橙色</a>
+						<a href="#"><span style="background-color: purple;"></span>紫色</a>
+						<a href="#"><span style="background-color: #ffcad4;"></span>粉色</a>
+					</list>
+				</div>
+			</div>
+			<div class="main">
+				<div class="tool">
+					<a href="#" class="a b t">
+						<img src="apps/explorer/icons/tool-new.png">新建
+					</a>
+					<div class="hr"></div>
+					<a href="#" class="a b">
+						<img src="apps/explorer/icons/tool-cut.png">
+					</a>
+					<a href="#" class="a b">
+						<img src="apps/explorer/icons/tool-copy.png">
+					</a>
+					<a href="#" class="a b">
+						<img src="apps/explorer/icons/tool-paste.png">
+					</a>
+					<a href="#" class="a b">
+						<img src="apps/explorer/icons/tool-rename.png">
+					</a>
+					<div class="hr"></div>
+					<a href="#" class="a b t">
+						<img src="apps/explorer/icons/tool-sort.png">排序方式
+					</a>
+					<a href="#" class="a b t">
+						<img src="apps/explorer/icons/tool-view.png">布局
+					</a>
+				</div>
+				<div class="content">
+					<div class="tool">
+						<a href="#" class="a btn btn-icon"><i class="bi bi-arrow-left"></i></a>
+						<a href="#" class="a btn btn-icon"><i class="bi bi-arrow-right"></i></a>
+						<a href="#" class="a btn btn-icon"><i class="bi bi-arrow-up"></i></a>
+						<p class="tit"><img src="apps/explorer/icons/thispc.png">此电脑</p>
+						<div class="search">
+							<input type="text" class="input" placeholder="在这里输入你要搜索的内容">
+							<input-before class="bi bi-search"></input-before>
+						</div>
+					</div>
+					<p class="title">此电脑</p>
+					<p class="class"><img src="apps/explorer/icons/disk.png"> 设备和驱动器</p>
+					<div class="group">
+						<a class="a item" href="#">
+							<img src="apps/explorer/icons/diskwin.png">
+							<div>
+								<p class="name">本地磁盘 (C:)</p>
+								<div class="bar">
+									<div class="content" style="width: 88%;"></div>
+								</div>
+								<p class="info">32.6 GB 可用, 共 143 GB</p>
+							</div>
+						</a>
+						<a class="a item" href="#">
+							<img src="apps/explorer/icons/disk.png">
+							<div>
+								<p class="name">本地磁盘 (D:)</p>
+								<div class="bar">
+									<div class="content" style="width: 15%;"></div>
+								</div>
+								<p class="info">185.3 GB 可用, 共 216 GB</p>
+							</div>
+						</a>
+					</div>
+				</div>
+			</div>
+		</div>
+		<link rel="stylesheet" href="apps/explorer/main.css">
+	</div>
+	<script src="desktop.max.js"></script>
+	<script src="./jq.min.js"></script>
 </body>
 
 </html>

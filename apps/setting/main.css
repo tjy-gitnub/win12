@@ -10,7 +10,7 @@
   url("../../fonts/bootstrap-icons.woff?8d200481aa7f02a2d63a331fc782cfaf") format("woff");
 }
 
-.title {
+#win-setting>.page>.title {
     font-size: 35px;
     margin: 0;
 }
