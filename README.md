@@ -6,7 +6,13 @@
 
 ## 效果展示
 ![这是开始菜单](https://user-images.githubusercontent.com/71509955/187807323-c749853e-a9ec-497c-9547-3d87ab0f3e72.png)
+*开始菜单*
 ![设置](https://user-images.githubusercontent.com/71509955/187807334-32ce9484-8e96-4e1e-ac61-54dac069d036.png)
+*设置*
+![文件资源管理器](https://user-images.githubusercontent.com/71509955/188390819-362a2986-95cb-4d79-84e4-333b4136a792.png)
+*文件资源管理器*
+
+还有搜索等等功能。
 更多功能还在制作之中...
 
 ## 在线体验
