@@ -5,7 +5,6 @@
 	<meta charset="UTF-8" />
 	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-	<link rel="stylesheet" href="./desktop.css" />
 	<title>Win12</title>
 	<!-- Windows 12 网页版 谭景元原创  -->
 
@@ -16,16 +15,81 @@
 	此项目绝不附属于微软,且不应与微软操作系统或产品混淆,
 	这也不是 Windows365 cloud PC
 	本项目中微软、Windows和其他示范产品是微软公司组的商标 -->
+	<link rel="stylesheet" href="./desktop.css" />
+	<!-- Apps style -->
+	<link rel="stylesheet" href="apps/setting/main.css">
+	<link rel="stylesheet" href="apps/explorer/main.css">
 </head>
 
-<body>
-	<dropdown id="power">
-		<!-- 关机菜单 -->
-		<list>
-			<a href="#"><i class="bi bi-power"></i> 关机</a>
-			<a href="#"><i class="bi bi-arrow-counterclockwise"></i> 重启</a>
-		</list>
-	</dropdown>
+<body onload="$('#loadback').addClass('hide');setTimeout(() => {$('#loadback').css('display','none')}, 200);">
+	<div id="loadback">
+		<style>
+			loading>svg>circle:first-child {
+				stroke: #fff;
+				fill: none;
+				stroke-width: 2px;
+				stroke-linecap: round;
+				animation: spin-infinite 1.6s linear 0s infinite normal none running;
+				-webkit-transform-origin: 50% 50%;
+				transform-origin: 50% 50%;
+				transition: all .2s ease-in-out 0s
+			}
+			loading>svg>circle:last-child {
+				fill: #00000000;
+			}
+			loading>svg {
+				background-color: #00000000;
+				border-radius: 50%;
+			}
+			@keyframes spin-infinite {
+				0% {
+					stroke-dasharray: .01px, 43.97px;
+					-webkit-transform: rotate(0deg);
+					transform: rotate(0deg)
+				}
+				50% {
+					stroke-dasharray: 21.99px, 21.99px;
+					-webkit-transform: rotate(450deg);
+					transform: rotate(450deg)
+				}
+				to {
+					stroke-dasharray: .01px, 43.97px;
+					-webkit-transform: rotate(3turn);
+					transform: rotate(3turn)
+				}
+			}
+		</style>
+		<svg style="position: absolute;left: calc(50% - 125px);top:20%;" version="1.1" xmlns="http://www.w3.org/2000/svg"
+			xmlns:xlink="http://www.w3.org/1999/xlink" width="250" height="250" viewBox="0,0,141.01231,139.7904">
+			<g transform="translate(-249.49385,-110.1048)">
+				<g data-paper-data="{&quot;isPaintingLayer&quot;:true}" fill-rule="nonzero" stroke="none" stroke-width="0"
+					stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="10" stroke-dasharray=""
+					stroke-dashoffset="0" style="mix-blend-mode: normal">
+					<g>
+						<path
+							d="M249.91007,176.97859v-37.06258c0,0 -0.61201,-15.50218 6.44566,-22.55984c6.65481,-6.65481 21.75412,-7.25137 21.75412,-7.25137h38.674c0,0 -5.63996,23.50704 -5.63996,34.44402c0,12.14542 4.83426,33.03404 4.83426,33.03404c0,0 -14.30746,5.32223 -33.64257,5.43854c-19.06387,0.11467 -32.4255,-6.04281 -32.4255,-6.04281z"
+							fill="#c349b3" />
+						<path
+							d="M322.8133,175.97146c0,0 -5.43854,-18.43537 -5.43854,-31.42262c0,-11.24451 6.24424,-34.44402 6.24424,-34.44402h38.67399c0,0 15.09931,0.59657 21.75412,7.25138c7.05766,7.05765 6.44567,22.55983 6.44567,22.55983v37.06257c0,0 -13.50808,-6.9902 -34.28384,-6.44566c-19.42489,0.50913 -33.39565,5.43854 -33.39565,5.43854z"
+							data-paper-data="{&quot;index&quot;:null}" fill="#af63c7" />
+						<path
+							d="M390.49279,183.02141v37.06258c0,0 0.61199,15.50217 -6.44567,22.55983c-6.65481,6.65481 -21.75412,7.25138 -21.75412,7.25138h-38.67399c0,0 5.63995,-17.9772 5.63995,-35.04831c0,-15.863 -4.63281,-31.82548 -4.63281,-31.82548c0,0 12.3084,-5.19058 31.58281,-5.63996c17.27865,-0.40286 34.28384,5.63996 34.28384,5.63996z"
+							data-paper-data="{&quot;index&quot;:null}" fill="#5f79e1" />
+						<path
+							d="M317.58956,184.83425c0,0 4.4314,15.78166 4.4314,32.22833c0,17.11804 -5.63996,32.83262 -5.63996,32.83262h-38.67399c0,0 -15.09932,-0.59657 -21.75413,-7.25138c-7.05766,-7.05767 -6.44566,-22.55983 -6.44566,-22.55983v-37.06258c0,0 14.36466,6.61326 33.43265,6.44566c18.72762,-0.1646 34.6497,-4.63282 34.6497,-4.63282z"
+							data-paper-data="{&quot;index&quot;:null}" fill="#8072d3" />
+					</g>
+				</g>
+			</g>
+		</svg>
+		<loading>
+			<svg style="position: absolute;left: calc(50% - 25px);top: 80%;" width="50px" height="50px" viewBox="0 0 16 16">
+				<circle cx="8px" cy="8px" r="7px"></circle>
+				<circle cx="8px" cy="8px" r="6px"></circle>
+			</svg>
+		</loading>
+	</div>
+	<script src="./jq.min.js"></script>
 	<div id="start-menu">
 		<!-- 开始菜单 -->
 		<div id="s-m-l">
@@ -49,43 +113,30 @@
 				$('#start-menu').removeClass('show');
 				setTimeout(() => {
 					$('#start-menu').removeClass('show-begin');
-				}, 200);"><img src="icon/setting.png">
-					<p>设置<i>(可用)</i></p>
-				</a>
+				}, 200);"><img src="icon/setting.png"><p>设置<i>(可用)</i></p></a>
 				<a href="#" onclick="
 				showwin('explorer');
 				$('#start-menu').removeClass('show');
 				setTimeout(() => {
 					$('#start-menu').removeClass('show-begin');
 				}, 200);"><img src="icon/explorer.png">
-					<p>文件资源管理器<i>(可用)</i></p>
-				</a>
-				<a href="#"><img src="icon/edge.png">
-					<p>Microsoft Edge</p>
-				</a>
+					<p>文件资源管理器<i>(可用)</i></p></a>
+				<a href="#"><img src="icon/edge.png"><p>Microsoft Edge</p></a>
 			</list>
 		</div>
 		<div id="s-m-r">
 			<div class="row1">
 				<div class="folder">
-					<a href="#" class="a sm-app">
-						<img src="icon/folder/docs.png">
-						<p>文档</p>
-					</a>
-					<a href="#" class="a sm-app">
-						<img src="icon/folder/pics.png">
-						<p>图片</p>
-					</a>
-					<a href="#" class="a sm-app">
-						<img src="icon/folder/music.png">
-						<p>音乐</p>
-					</a>
-				</div>
+					<a href="#" class="a sm-app"><img src="icon/folder/docs.png"><p>文档</p></a>
+					<a href="#" class="a sm-app"><img src="icon/folder/pics.png"><p>图片</p></a>
+					<a href="#" class="a sm-app"><img src="icon/folder/music.png"><p>音乐</p></a></div>
 				<div class="tool">
 					<p style="font-size: 40px;margin-bottom: -10px;">12:00</p>
 					<p>星期一, 2368年13月34日</p>
 					<a href="#" class="a btn btn-icon power" onclick="$(this).addClass('show')">
-						<i class="bi bi-power"></i>
+						<span class="bi bi-power"></span>
+						<i class="bi bi-power" onclick="$('#start-menu').removeClass('show');
+						setTimeout(() => {window.location='shutdown.html';},200);"></i>
 						<i class="bi bi-arrow-counterclockwise"></i>
 					</a>
 					<a href="#" class="a btn btn-icon big" onclick="
@@ -111,64 +162,28 @@
 					</div>
 				</div>
 				<div class="apps">
-					<a href="#" class="a sm-app">
-						<img src="icon/calc.png">
-						<p>计算器</p>
-					</a>
-					<a href="#" class="a sm-app">
-						<img src="icon/camera.png">
-						<p>相机</p>
-					</a>
-					<a href="#" class="a sm-app">
-						<img src="icon/defender.png">
-						<p>Windows 安全中心</p>
-					</a>
-					<a href="#" class="a sm-app">
-						<img src="icon/edge.png">
-						<p>Microsoft Edge</p>
-					</a>
+					<a href="#" class="a sm-app"><img src="icon/calc.png"><p>计算器</p></a>
+					<a href="#" class="a sm-app"><img src="icon/camera.png"><p>相机</p></a>
+					<a href="#" class="a sm-app"><img src="icon/defender.png"><p>Windows 安全中心</p></a>
+					<a href="#" class="a sm-app"><img src="icon/edge.png"><p>Microsoft Edge</p></a>
 					<a href="#" class="a sm-app" onclick="
 					showwin('explorer');
 					$('#start-menu').removeClass('show');
 					setTimeout(() => {
 						$('#start-menu').removeClass('show-begin');
-					}, 200);">
-						<img src="icon/explorer.png">
-						<p>文件资源管理器<i>(可用)</i></p>
-					</a>
-					<a href="#" class="a sm-app">
-						<img src="icon/getstarted.png">
-						<p>入门</p>
-					</a>
-					<a href="#" class="a sm-app">
-						<img src="icon/notepad.png">
-						<p>记事本</p>
-					</a>
+					}, 200);"><img src="icon/explorer.png"><p>文件资源管理器<i>(可用)</i></p></a>
+					<a href="#" class="a sm-app"><img src="icon/getstarted.png"><p>入门</p></a>
+					<a href="#" class="a sm-app"><img src="icon/notepad.png"><p>记事本</p></a>
 					<a href="#" class="a sm-app" onclick="
 							showwin('setting');
 							$('#start-menu').removeClass('show');
 							setTimeout(() => {
 								$('#start-menu').removeClass('show-begin');
-							}, 200);">
-						<img src="icon/setting.png">
-						<p>设置 <i>(可用)</i></p>
-					</a>
-					<a href="#" class="a sm-app">
-						<img src="icon/store.png">
-						<p>Microsoft Store</p>
-					</a>
-					<a href="#" class="a sm-app">
-						<img src="icon/taskmanager.png">
-						<p>任务管理器</p>
-					</a>
-					<a href="#" class="a sm-app">
-						<img src="icon/teams.png">
-						<p>Teams</p>
-					</a>
-					<a href="#" class="a sm-app">
-						<img src="icon/terminal.png">
-						<p>终端</p>
-					</a>
+							}, 200);"><img src="icon/setting.png"><p>设置 <i>(可用)</i></p></a>
+					<a href="#" class="a sm-app"><img src="icon/store.png"><p>Microsoft Store</p></a>
+					<a href="#" class="a sm-app"><img src="icon/taskmanager.png"><p>任务管理器</p></a>
+					<a href="#" class="a sm-app"><img src="icon/teams.png"><p>Teams</p></a>
+					<a href="#" class="a sm-app"><img src="icon/terminal.png"><p>终端</p></a>
 				</div>
 			</div>
 			<div class="tuijian">
@@ -180,41 +195,11 @@
 					</div>
 				</div>
 				<div class="apps">
-					<a href="#" class="a tj-obj">
-						<img src="icon/files/ppt.png">
-						<div>
-							<p>科学地使用瓶盖.pptx</p>
-							<p>5 分钟前</p>
-						</div>
-					</a>
-					<a href="#" class="a tj-obj">
-						<img src="icon/files/img.png">
-						<div>
-							<p>可口可乐瓶盖.jpg</p>
-							<p>7 分钟前</p>
-						</div>
-					</a>
-					<a href="#" class="a tj-obj">
-						<img src="icon/files/img.png">
-						<div>
-							<p>瓶盖构造图.jpg</p>
-							<p>16 分钟前</p>
-						</div>
-					</a>
-					<a href="#" class="a tj-obj">
-						<img src="icon/files/word.png">
-						<div>
-							<p>瓶盖的构造及作用.docx</p>
-							<p>24 分钟前</p>
-						</div>
-					</a>
-					<a href="#" class="a tj-obj">
-						<img src="icon/files/excel.png">
-						<div>
-							<p>可口可乐瓶盖厚度.xlsx</p>
-							<p>35 分钟前</p>
-						</div>
-					</a>
+					<a href="#" class="a tj-obj"><img src="icon/files/ppt.png"><div><p>科学地使用瓶盖.pptx</p><p>5 分钟前</p></div></a>
+					<a href="#" class="a tj-obj"><img src="icon/files/img.png"><div><p>可口可乐瓶盖.jpg</p><p>7 分钟前</p></div></a>
+					<a href="#" class="a tj-obj"><img src="icon/files/img.png"><div><p>瓶盖构造图.jpg</p><p>16 分钟前</p></div></a>
+					<a href="#" class="a tj-obj"><img src="icon/files/word.png"><div><p>瓶盖的构造及作用.docx</p><p>24 分钟前</p></div></a>
+					<a href="#" class="a tj-obj"><img src="icon/files/excel.png"><div><p>可口可乐瓶盖厚度.xlsx</p><p>35 分钟前</p></div></a>
 				</div>
 			</div>
 		</div>
@@ -231,17 +216,9 @@
 		">
 		<input-before class="bi bi-search"></input-before>
 		<div class="tab">
-			<a href="#" class="now">全部</a>
-			<a href="#">应用</a>
-			<a href="#">文档</a>
-			<a href="#">网页</a>
-			<a href="#">电子邮件</a>
-			<a href="#">人员</a>
-			<a href="#">设置</a>
-			<a href="#">视频</a>
-			<a href="#">文件夹</a>
-			<a href="#">音乐</a>
-			<a href="#">照片</a>
+			<a href="#" class="now">全部</a><a href="#">应用</a><a href="#">文档</a><a href="#">网页</a>
+			<a href="#">电子邮件</a><a href="#">人员</a><a href="#">设置</a><a href="#">视频</a>
+			<a href="#">文件夹</a><a href="#">音乐</a><a href="#">照片</a>
 		</div>
 		<div class="ans">
 			<div class="list">
@@ -342,12 +319,8 @@
 			<div>
 				<a href="#" class="a wbtg red" onclick="hidewin('setting')">
 					<i class="bi bi-x-lg"></i>
-					<a href="#" class="a wbtg max" onclick="maxwin('setting')">
-						<i class="bi bi-app"></i>
-					</a>
-					<a href="#" class="a wbtg">
-						<i class="bi bi-dash-lg"></i>
-					</a>
+					<a href="#" class="a wbtg max" onclick="maxwin('setting')"><i class="bi bi-app"></i></a>
+					<a href="#" class="a wbtg"><i class="bi bi-dash-lg"></i></a>
 				</a>
 			</div>
 		</div>
@@ -363,52 +336,19 @@
 				<input type="text" class="input" placeholder="查找设置" style="padding-left: 30px;">
 				<input-before class="bi bi-search"></input-before>
 				<list>
-					<a href="#" style="background-color: #ffffff70">
-						<span
-							style="background-color: #2983cc;border-radius: 10px;position: relative;left: -10px;top:1px;height: 20px;margin-right: -4px;">&nbsp;</span>
-						<img src="apps/setting/icons/system.webp">
-						系统
-					</a>
-					<a href="#">
-						<img src="apps/setting/icons/blueteeth.webp">
-						蓝牙和其他设备
-					</a>
-					<a href="#">
-						<img src="apps/setting/icons/network.webp">
-						网络和 Internet
-					</a>
-					<a href="#">
-						<img src="apps/setting/icons/personal.webp">
-						个性化
-					</a>
-					<a href="#">
-						<img src="apps/setting/icons/apps.webp">
-						应用
-					</a>
-					<a href="#">
-						<img src="apps/setting/icons/user.webp">
-						账户
-					</a>
-					<a href="#">
-						<img src="apps/setting/icons/time.webp">
-						时间和语言
-					</a>
-					<a href="#">
-						<img src="apps/setting/icons/game.webp">
-						游戏
-					</a>
-					<a href="#">
-						<img src="apps/setting/icons/help.webp">
-						辅助功能
-					</a>
-					<a href="#">
-						<img src="apps/setting/icons/safe.webp">
-						隐私和安全性
-					</a>
-					<a href="#">
-						<img src="apps/setting/icons/update.webp">
-						Windows 更新
-					</a>
+					<a href="#" style="background-color: #ffffff70"><span
+						style="background-color: #2983cc;border-radius: 10px;position: relative;left: -10px;top:1px;height: 20px;margin-right: -4px;">
+						&nbsp;</span><img src="apps/setting/icons/system.webp">系统</a>
+					<a href="#"><img src="apps/setting/icons/blueteeth.webp">蓝牙和其他设备</a>
+					<a href="#"><img src="apps/setting/icons/network.webp">网络和 Internet</a>
+					<a href="#"><img src="apps/setting/icons/personal.webp">个性化</a>
+					<a href="#"><img src="apps/setting/icons/apps.webp">应用</a>
+					<a href="#"><img src="apps/setting/icons/user.webp">账户</a>
+					<a href="#"><img src="apps/setting/icons/time.webp">时间和语言</a>
+					<a href="#"><img src="apps/setting/icons/game.webp">游戏</a>
+					<a href="#"><img src="apps/setting/icons/help.webp">辅助功能</a>
+					<a href="#"><img src="apps/setting/icons/safe.webp">隐私和安全性</a>
+					<a href="#"><img src="apps/setting/icons/update.webp">Windows 更新</a>
 				</list>
 			</div>
 			<div class="page" style="overflow: auto;">
@@ -422,122 +362,23 @@
 					</div>
 				</div>
 				<div class="setting-list">
-					<a href="#">
-						<icon></icon>
-						<div>
-							<p>显示</p>
-							<p>显示器、亮度、夜间模式、显示描述</p>
-						</div>
-						<i class="bi bi-chevron-right"></i>
-					</a>
-					<a href="#">
-						<icon></icon>
-						<div>
-							<p>声音</p>
-							<p>声音级别、输入、输出、声音设备</p>
-						</div>
-						<i class="bi bi-chevron-right"></i>
-					</a>
-					<a href="#">
-						<icon></icon>
-						<div>
-							<p>通知</p>
-							<p>来自系统和应用的警报</p>
-						</div>
-						<i class="bi bi-chevron-right"></i>
-					</a>
-					<a href="#">
-						<icon></icon>
-						<div>
-							<p>专注助手</p>
-							<p>通知、自动规则</p>
-						</div>
-						<i class="bi bi-chevron-right"></i>
-					</a>
-					<a href="#">
-						<icon class="b">&#xF186;</icon>
-						<div>
-							<p>电源</p>
-							<p>睡眠、电池使用情况、节电模式</p>
-						</div>
-						<i class="bi bi-chevron-right"></i>
-					</a>
-					<a href="#">
-						<icon></icon>
-						<div>
-							<p>存储</p>
-							<p>存储空间、驱动器、配置规则</p>
-						</div>
-						<i class="bi bi-chevron-right"></i>
-					</a>
-					<a href="#">
-						<icon></icon>
-						<div>
-							<p>多任务处理</p>
-							<p>贴靠窗口、桌面、任务切换</p>
-						</div>
-						<i class="bi bi-chevron-right"></i>
-					</a>
-					<a href="#">
-						<icon></icon>
-						<div>
-							<p>激活</p>
-							<p>激活状态、订阅、产品密钥</p>
-						</div>
-						<i class="bi bi-chevron-right"></i>
-					</a>
-					<a href="#">
-						<icon></icon>
-						<div>
-							<p>疑难解答</p>
-							<p>建议的疑难解答、首选项和历史记录</p>
-						</div>
-						<i class="bi bi-chevron-right"></i>
-					</a>
-					<a href="#">
-						<icon></icon>
-						<div>
-							<p>恢复</p>
-							<p>重置、高级启动、返回</p>
-						</div>
-						<i class="bi bi-chevron-right"></i>
-					</a>
-					<a href="#">
-						<icon></icon>
-						<div>
-							<p>投影到此电脑</p>
-							<p>权限、配对 PIN、可发现性</p>
-						</div>
-						<i class="bi bi-chevron-right"></i>
-					</a>
-					<a href="#">
-						<icon></icon>
-						<div>
-							<p>远程桌面</p>
-							<p>远程桌面用户、连接权限</p>
-						</div>
-						<i class="bi bi-chevron-right"></i>
-					</a>
-					<a href="#">
-						<icon></icon>
-						<div>
-							<p>剪贴板</p>
-							<p>剪贴和复制历史记录、同步、清除</p>
-						</div>
-						<i class="bi bi-chevron-right"></i>
-					</a>
-					<a href="#">
-						<icon></icon>
-						<div>
-							<p>关于</p>
-							<p>设备规格、重命名电脑、Windows 规格</p>
-						</div>
-						<i class="bi bi-chevron-right"></i>
-					</a>
+					<a href="#"><icon></icon><div><p>显示</p><p>显示器、亮度、夜间模式、显示描述</p></div><i class="bi bi-chevron-right"></i></a>
+					<a href="#"><icon></icon><div><p>声音</p><p>声音级别、输入、输出、声音设备</p></div><i class="bi bi-chevron-right"></i></a>
+					<a href="#"><icon></icon><div><p>通知</p><p>来自系统和应用的警报</p></div><i class="bi bi-chevron-right"></i></a>
+					<a href="#"><icon></icon><div><p>专注助手</p><p>通知、自动规则</p></div><i class="bi bi-chevron-right"></i></a>
+					<a href="#"><icon class="b">&#xF186;</icon><div><p>电源</p><p>睡眠、电池使用情况、节电模式</p></div><i class="bi bi-chevron-right"></i></a>
+					<a href="#"><icon></icon><div><p>存储</p><p>存储空间、驱动器、配置规则</p></div><i class="bi bi-chevron-right"></i></a>
+					<a href="#"><icon></icon><div><p>多任务处理</p><p>贴靠窗口、桌面、任务切换</p></div><i class="bi bi-chevron-right"></i></a>
+					<a href="#"><icon></icon><div><p>激活</p><p>激活状态、订阅、产品密钥</p></div><i class="bi bi-chevron-right"></i></a>
+					<a href="#"><icon></icon><div><p>疑难解答</p><p>建议的疑难解答、首选项和历史记录</p></div><i class="bi bi-chevron-right"></i></a>
+					<a href="#"><icon></icon><div><p>恢复</p><p>重置、高级启动、返回</p></div><i class="bi bi-chevron-right"></i></a>
+					<a href="#"><icon></icon><div><p>投影到此电脑</p><p>权限、配对 PIN、可发现性</p></div><i class="bi bi-chevron-right"></i></a>
+					<a href="#"><icon></icon><div><p>远程桌面</p><p>远程桌面用户、连接权限</p></div><i class="bi bi-chevron-right"></i></a>
+					<a href="#"><icon></icon><div><p>剪贴板</p><p>剪贴和复制历史记录、同步、清除</p></div><i class="bi bi-chevron-right"></i></a>
+					<a href="#"><icon></icon><div><p>关于</p><p>设备规格、重命名电脑、Windows 规格</p></div><i class="bi bi-chevron-right"></i></a>
 				</div>
 			</div>
 		</div>
-		<link rel="stylesheet" href="apps/setting/main.css">
 	</div>
 	<div class="window explorer">
 		<div class="titbar">
@@ -591,29 +432,13 @@
 			</div>
 			<div class="main">
 				<div class="tool">
-					<a href="#" class="a b t">
-						<img src="apps/explorer/icons/tool-new.png">新建
-					</a>
-					<div class="hr"></div>
-					<a href="#" class="a b">
-						<img src="apps/explorer/icons/tool-cut.png">
-					</a>
-					<a href="#" class="a b">
-						<img src="apps/explorer/icons/tool-copy.png">
-					</a>
-					<a href="#" class="a b">
-						<img src="apps/explorer/icons/tool-paste.png">
-					</a>
-					<a href="#" class="a b">
-						<img src="apps/explorer/icons/tool-rename.png">
-					</a>
-					<div class="hr"></div>
-					<a href="#" class="a b t">
-						<img src="apps/explorer/icons/tool-sort.png">排序方式
-					</a>
-					<a href="#" class="a b t">
-						<img src="apps/explorer/icons/tool-view.png">布局
-					</a>
+					<a href="#" class="a b t"><img src="apps/explorer/icons/tool-new.png">新建</a><div class="hr"></div>
+					<a href="#" class="a b"><img src="apps/explorer/icons/tool-cut.png"></a>
+					<a href="#" class="a b"><img src="apps/explorer/icons/tool-copy.png"></a>
+					<a href="#" class="a b"><img src="apps/explorer/icons/tool-paste.png"></a>
+					<a href="#" class="a b"><img src="apps/explorer/icons/tool-rename.png"></a><div class="hr"></div>
+					<a href="#" class="a b t"><img src="apps/explorer/icons/tool-sort.png">排序方式</a>
+					<a href="#" class="a b t"><img src="apps/explorer/icons/tool-view.png">布局</a>
 				</div>
 				<div class="content">
 					<div class="tool">
@@ -653,10 +478,7 @@
 				</div>
 			</div>
 		</div>
-		<link rel="stylesheet" href="apps/explorer/main.css">
 	</div>
-	<script src="desktop.max.js"></script>
-	<script src="./jq.min.js"></script>
+	<script src="desktop.js"></script>
 </body>
-
 </html>

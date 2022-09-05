@@ -53,6 +53,20 @@ body {
     border: 3px solid transparent;
 }
 
+#loadback{
+    background-color: #000;
+    width: 100%;
+    height: 100%;
+    z-index: 100;
+    position: absolute;
+    opacity: 1;
+    transition: 200ms;
+}
+
+#loadback.hide{
+    opacity: 0;
+}
+
 #dock-box {
     position: absolute;
     bottom: 10px;
@@ -322,7 +336,7 @@ input-before {
 }
 
 #s-m-r>.row1>.tool>.btn-icon.show {
-    width: 68px;
+    width: 100px;
     background-color: #ffffff30;
 }
 
@@ -333,10 +347,17 @@ input-before {
 #s-m-r>.row1>.tool>.btn-icon.power>.bi {
     position: relative;
     height: 33px;
-    border-radius: 10px;
     padding-left: 5px;
     padding-right: 5px;
     transition: 200ms;
+}
+
+#s-m-r>.row1>.tool>.btn-icon.power>i.bi-power {
+    border-radius: 10px 0 0 10px;
+}
+
+#s-m-r>.row1>.tool>.btn-icon.power>i.bi-arrow-counterclockwise {
+    border-radius: 0 10px 10px 0;
 }
 
 #s-m-r>.row1>.tool>.btn-icon>.bi-arrow-counterclockwise::before {
@@ -358,8 +379,12 @@ input-before {
     top: -2px;
 }
 
-#s-m-r>.row1>.tool>.btn-icon.show>.bi:hover {
-    background-color: #ffffff60;
+#s-m-r>.row1>.tool>.btn-icon.show>i {
+    background-color: #ffffff50;
+}
+
+#s-m-r>.row1>.tool>.btn-icon.show>i:hover {
+    background-color: #ffffff90;
 }
 
 #start-menu.max>#s-m-r>.row1>.tool{
@@ -533,8 +558,6 @@ input-before {
     height: 100%;
 }
 
-
-
 .input {
     background-color: #fbfbfb;
     border-radius: 10px;
@@ -683,36 +706,6 @@ input-before {
 
 .tj-obj:hover {
     background-color: #ffffff70;
-}
-
-/* hi */
-
-dropdown {
-    border-radius: 10px;
-    display: none;
-    position: fixed;
-    box-shadow: 0 0 5px var(--sd);
-    min-width: 200px;
-    background: #eeeeee30;
-    backdrop-filter: saturate(180%) blur(12px);
-    z-index: 999;
-    box-shadow: 0 0 5px #7f7f7f7f;
-}
-
-
-dropdown>list>* {
-    padding: 3px 10px;
-    border-radius: 0;
-}
-
-dropdown>list>*:last-child {
-    border-radius: 0 0 10px 10px;
-    padding-bottom: 5px;
-}
-
-dropdown>list>*:first-child {
-    border-top-left-radius: 10px;
-    border-top-right-radius: 10px;
 }
 
 list {
