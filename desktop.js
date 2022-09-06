@@ -56,3 +56,16 @@ explorer_tit.addEventListener('mousedown', function (e) {
 main.addEventListener('mouseup', function (e) {
     main.removeEventListener('mousemove', explorer_move);
 })
+const calc_tit = document.querySelector('.window.calc>.titbar');
+const calc_win = document.querySelector('.window.calc');
+function calc_move(e) {
+    calc_win.setAttribute('style', `left:${e.clientX - deltaLeft}px;top:${e.clientY - deltaTop}px`)
+}
+calc_tit.addEventListener('mousedown', function (e) {
+    deltaLeft = e.clientX - calc_win.offsetLeft;
+    deltaTop = e.clientY - calc_win.offsetTop;
+    main.addEventListener('mousemove', calc_move)
+})
+main.addEventListener('mouseup', function (e) {
+    main.removeEventListener('mousemove', calc_move);
+})

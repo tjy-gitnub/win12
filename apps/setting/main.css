@@ -3,13 +3,6 @@
     src: url(icons.woff2) format("woff2")
 }
 
-@font-face {
-    font-display: block;
-    font-family: "booticon";
-    src: url("../../fonts/bootstrap-icons.woff2?8d200481aa7f02a2d63a331fc782cfaf") format("woff2"),
-  url("../../fonts/bootstrap-icons.woff?8d200481aa7f02a2d63a331fc782cfaf") format("woff");
-}
-
 #win-setting>.page>.title {
     font-size: 35px;
     margin: 0;
