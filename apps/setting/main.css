@@ -125,6 +125,7 @@ html {
     display: flex;
     padding: 10px 15px;
     transition: 100ms;
+    box-shadow: 2px 2px 5px #7f7f7f6f;
 }
 
 .setting-list>*:hover {
@@ -142,7 +143,7 @@ html {
 }
 
 .setting-list>a>icon.b {
-    font-family: booticon;
+    font-family: bootstrap-icons;
 }
 
 .setting-list>a>div>p:first-child {

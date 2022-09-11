@@ -18,6 +18,7 @@ body {
 .a {
     color: var(--them-text);
     text-decoration: none;
+    cursor: pointer;
 }
 
 .a:hover {
@@ -66,8 +67,8 @@ body {
 .dock {
     border-radius: 10px;
     height: 100%;
-    background-color: #eeeeeea0;
-    backdrop-filter: blur(10px);
+    background-color: #ffffff70;
+    backdrop-filter: blur(20px);
     box-shadow: 0 0 5px #7f7f7f7f;
     padding: 7px 10px;
     margin: 0 3px;
@@ -110,7 +111,7 @@ body {
 }
 
 .dock.about:hover {
-    background-color: #cccccca0;
+    background-color: #dddddd70;
 }
 
 .dock.about:active>p {
@@ -136,7 +137,52 @@ body {
 }
 
 .dock.about.show:hover {
-    background-color: #eeeeeea0;
+    background-color: #ffffff70;
+}
+
+#taskbar{
+    padding: 3px 5px;
+    transition: 100ms;
+}
+
+#taskbar>a{
+    border-radius: 10px;
+    height: 34px;
+    width: 34px;
+    transition: 100ms;
+    padding: 4px 0 0 5px;
+    display: block;
+}
+
+#taskbar>a:hover{
+    background-color: #ffffff50;
+}
+
+#taskbar>a>img{
+    width: 24px;
+    height: 24px;
+}
+
+#taskbar>a::after{
+    content: '';
+    display: block;
+    width: 18px;
+    background-color: #2983cc;
+    height: 4px;
+    border-radius: 2px;
+    position: relative;
+    bottom: 3px;
+    left: 3px;
+}
+
+#taskbar>a:hover:after{
+    width: 22px;
+    background-color: #2983cc;
+    height: 4px;
+    border-radius: 2px;
+    position: relative;
+    bottom: 3px;
+    left: 1px;
 }
 
 #start-btn {
@@ -188,8 +234,8 @@ body {
     width: 800px;
     left: calc(50% - 400px);
     border-radius: 20px;
-    background-color: #ffffff70;
-    backdrop-filter: blur(80px);
+    background-color: #ffffff50;
+    backdrop-filter: blur(50px);
     opacity: 0;
     transition: 200ms;
     box-shadow: 0 0 15px #7f7f7f7f;
@@ -482,8 +528,8 @@ input-before {
     width: 600px;
     left: calc(50% - 300px);
     border-radius: 20px;
-    background-color: #ffffff70;
-    backdrop-filter: blur(80px);
+    background-color: #ffffff50;
+    backdrop-filter: blur(50px);
     opacity: 0;
     transition: 200ms;
     box-shadow: 0 0 15px #7f7f7f7f;
@@ -722,6 +768,7 @@ list>* {
     display: block;
     padding: 10px 20px;
     transition: 100ms;
+    cursor: pointer;
 }
 
 list>*:hover {
@@ -761,7 +808,7 @@ list>.text:hover {
     margin-left: 10%;
     margin-top: 7%;
     /* 真的是胡整，margin-top和margin-left的百分比都是以width为标准，脑壳乔的 */
-    background-color: #ffffff70;
+    background-color: #ffffff50;
     backdrop-filter: blur(50px);
     border-radius: 10px;
     border: 3px solid #7f7f7f20;
@@ -799,7 +846,6 @@ list>.text:hover {
 }
 
 .window>.titbar {
-    background-color: #ffffff30;
     border-radius: 10px 10px 0 0;
     height: 32px;
     padding: 0 0 0 5px;

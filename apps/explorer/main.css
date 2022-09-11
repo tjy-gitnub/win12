@@ -12,6 +12,7 @@
     border-radius: 10px;
     background-color: #ffffff50;
     padding: 3px;
+    box-shadow: 2px 2px 5px #7f7f7f6f;
 }
 
 #win-explorer>.menu>.card>.title{
@@ -97,12 +98,13 @@
 }
 
 #win-explorer>.main>.content{
-    width: 100%;
+    width: calc(100% - 10px);
     flex-grow: 1;
     background-color: #ffffff50;
     border-radius: 10px;
-    margin: -10px 10px 40px 0;
+    margin: -10px 20px 45px 0;
     padding: 8px;
+    box-shadow: 3px 3px 8px #7f7f7f6f;
 }
 
 #win-explorer>.main>.content>.title{
