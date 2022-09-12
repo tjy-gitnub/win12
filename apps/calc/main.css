@@ -34,11 +34,6 @@
     padding-top: 5px;
 }
 #win-calc>.keyb>.b.ans{
-    width: 71px;
-    margin: -157px 5px 5px 5px;
-    padding-top: 75px;
-    height: 233px;
-    border-radius: 35px;
     background-color: #2983cc50;
 }
 #win-calc>.keyb>.b.ans:hover{

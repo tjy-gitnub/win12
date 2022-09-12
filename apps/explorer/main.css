@@ -51,7 +51,7 @@
 
 #win-explorer>.main{
     flex-grow: 1;
-    height: 100%;
+    height: calc(100% - 32px);
     display: flex;
     flex-direction: column;
 }
@@ -102,9 +102,10 @@
     flex-grow: 1;
     background-color: #ffffff50;
     border-radius: 10px;
-    margin: -10px 20px 45px 0;
+    margin: -10px 10px 10px 0;
     padding: 8px;
     box-shadow: 3px 3px 8px #7f7f7f6f;
+    overflow-y: auto;
 }
 
 #win-explorer>.main>.content>.title{
