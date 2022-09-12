@@ -88,3 +88,4 @@ about_tit.addEventListener('mousedown', function (e) {
 main.addEventListener('mouseup', function (e) {
     main.removeEventListener('mousemove', about_move);
 })
+showwin('about');
