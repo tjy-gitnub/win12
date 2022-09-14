@@ -17,10 +17,10 @@
 	本项目中微软、Windows和其他示范产品是微软公司的商标 -->
 	<link rel="stylesheet" href="./desktop.css" />
 	<!-- Apps style -->
-	<link rel="stylesheet" href="apps/setting/main.css">
-	<link rel="stylesheet" href="apps/explorer/main.css">
-	<link rel="stylesheet" href="apps/calc/main.css">
-	<link rel="stylesheet" href="apps/about/main.css">
+	<link rel="stylesheet" href="apps/style/setting.css">
+	<link rel="stylesheet" href="apps/style/explorer.css">
+	<link rel="stylesheet" href="apps/style/calc.css">
+	<link rel="stylesheet" href="apps/style/about.css">
 </head>
 
 <body onload="$('#loadback').addClass('hide');setTimeout(() => {$('#loadback').css('display','none')}, 200);">
@@ -52,10 +52,7 @@
 				<i class="bi bi-person"></i>
 			</div>
 			<p style="width: 100%;text-align: center;margin: -50px 0 20px 0;font-size: 30px;">Administartor</p>
-			<input type="text" class="input" alt="hi" placeholder="在这里输入你要搜索的内容" onclick="$('#start-menu').removeClass('show');
-				setTimeout(() => {
-					$('#start-menu').removeClass('show-begin');
-				}, 200);
+			<input type="text" class="input" alt="hi" placeholder="在这里输入你要搜索的内容" onclick="hide_startmenu();
 				$('#search-win').addClass('show-begin');
 				setTimeout(() => {
 					$('#search-win').addClass('show');
@@ -64,14 +61,11 @@
 			<input-before class="bi bi-search"></input-before>
 			<list>
 				<p class="text">可用</p>
-				<a onclick="showwin('setting');$('#start-menu').removeClass('show');
-				setTimeout(()=>{$('#start-menu').removeClass('show-begin');},200);">
+				<a onclick="showwin('setting');hide_startmenu();">
 				<img src="icon/setting.png"><p>设置</p></a>
-				<a onclick="showwin('explorer');$('#start-menu').removeClass('show');
-				setTimeout(()=>{$('#start-menu').removeClass('show-begin');},200);">
+				<a onclick="showwin('explorer');hide_startmenu();">
 				<img src="icon/explorer.png"><p>文件资源管理器</p></a>
-				<a onclick="showwin('calc');$('#start-menu').removeClass('show');
-				setTimeout(()=>{$('#start-menu').removeClass('show-begin');},200);">
+				<a onclick="showwin('calc');hide_startmenu();">
 				<img src="icon/calc.png"><p>计算器</p></a>
 				<p class="text">其它</p>
 				<a><img src="icon/camera.png"><p>相机</p></a>
@@ -116,21 +110,17 @@
 					</div>
 				</div>
 				<div class="apps">
-					<a class="a sm-app enable" onclick="showwin('calc');$('#start-menu').removeClass('show');
-					setTimeout(()=>{$('#start-menu').removeClass('show-begin');},200);">
+					<a class="a sm-app enable" onclick="showwin('calc');">
 					<img src="icon/calc.png"><p>计算器</p></a>
 					<a class="a sm-app"><img src="icon/camera.png"><p>相机</p></a>
 					<a class="a sm-app enable jump" href="https://github.com/tjy-gitnub/win12/issues" target="_blank">
 					<img src="icon/feedback.png"><p>反馈中心</p></a>
 					<a class="a sm-app"><img src="icon/defender.png"><p>Windows 安全中心</p></a>
-					<a class="a sm-app enable" onclick="showwin('about');$('#start-menu').removeClass('show');
-					setTimeout(()=>{$('#start-menu').removeClass('show-begin');}, 200);"><img src="icon/about.png"><p>关于Win12网页版</p></a>
-					<a class="a sm-app enable" onclick="showwin('explorer');$('#start-menu').removeClass('show');
-					setTimeout(()=>{$('#start-menu').removeClass('show-begin');}, 200);">
+					<a class="a sm-app enable" onclick="showwin('about');hide_startmenu();"><img src="icon/about.png"><p>关于Win12网页版</p></a>
+					<a class="a sm-app enable" onclick="showwin('explorer');hide_startmenu();">
 					<img src="icon/explorer.png"><p>文件资源管理器</p></a>
 					<a class="a sm-app"><img src="icon/notepad.png"><p>记事本</p></a>
-					<a class="a sm-app enable" onclick="showwin('setting');$('#start-menu').removeClass('show');
-					setTimeout(()=>{$('#start-menu').removeClass('show-begin');}, 200);">
+					<a class="a sm-app enable" onclick="showwin('setting');hide_startmenu();">
 					<img src="icon/setting.png"><p>设置 </p></a>
 					<a class="a sm-app"><img src="icon/store.png"><p>Microsoft Store</p></a>
 					<a class="a sm-app"><img src="icon/taskmanager.png"><p>任务管理器</p></a>
@@ -187,15 +177,14 @@
 	<div id="dock-box">
 		<!-- Dock(任务)栏 -->
 		<div class="dock">
-			<a id="start-btn" onclick="
+			<a class="dock-btn" id="start-btn" onclick="
 				if($('#start-menu').hasClass('show')){
-					$('#start-menu').removeClass('show');
-					setTimeout(() => {
-						$('#start-menu').removeClass('show-begin');
-					}, 200);
+					hide_startmenu();
 				}
 				else{
+					$('#start-btn').addClass('show');
 					if($('#search-win').hasClass('show')){
+						$('#search-btn').removeClass('show');
 						$('#search-win').removeClass('show');
 						setTimeout(() => {
 							$('#search-win').removeClass('show-begin');
@@ -228,25 +217,24 @@
 						<path d="M39.755 0 138 0 138 0 138 140.549C114.987 150.681 91.9742 159.212 68.9614 158.946 45.1752 160.012 22.9872 145.082 0 138.15L0 39.7981C0 17.8182 17.7989 0 39.755 0Z" fill="url(#sf4)" fill-rule="evenodd" transform="matrix(1 -1.22465e-16 -1.22465e-16 -1 897 512)"></path>
 					</g></svg>
 			</a>
-			<a id="search-btn" onclick="
+			<a class="dock-btn" id="search-btn" onclick="
 			if($('#search-win').hasClass('show')){
+				$('#search-btn').removeClass('show');
 				$('#search-win').removeClass('show');
 				setTimeout(() => {
 					$('#search-win').removeClass('show-begin');
 				}, 200);
 			}
 			else{
-				$('#start-menu').removeClass('show');
-				setTimeout(() => {
-					$('#start-menu').removeClass('show-begin');
-				}, 200);
+				$('#search-btn').addClass('show');
+				hide_startmenu();
 				$('#search-win').addClass('show-begin');
 				setTimeout(() => {
 					$('#search-win').addClass('show');
 				}, 0);
 				$('#search-input').focus();
 			}">
-				<i class="bi bi-search"></i>
+				<svg width="26" height="26" viewBox="0,0,313,313" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" overflow="hidden"><defs><clipPath id="search-clip1"><rect x="288" y="257" width="313" height="313"/></clipPath><linearGradient x1="338.45" y1="228.45" x2="551.55" y2="597.55" gradientUnits="userSpaceOnUse" spreadMethod="reflect" id="search-fill1"><stop offset="0" stop-color="#2983CC"/><stop offset="0.09" stop-color="#2983CC"/><stop offset="0.34" stop-color="#A964C8"/><stop offset="0.77"/><stop offset="1"/></linearGradient></defs><g clip-path="url(#search-clip1)" transform="translate(-288 -257)"><path d="M517.98 458.696C559.356 402.228 547.127 322.905 490.667 281.524 434.207 240.143 354.896 252.373 313.521 308.841 272.145 365.309 284.374 444.631 340.833 486.012 385.458 518.719 446.139 518.698 490.74 485.959L490.721 485.959C491.306 486.739 491.93 487.48 492.632 488.201L567.702 563.282C575.316 570.902 587.664 570.907 595.283 563.292 602.902 555.677 602.906 543.327 595.293 535.707L520.223 460.626C519.526 459.921 518.776 459.269 517.98 458.676ZM523.011 383.732C523.011 442.969 474.997 490.99 415.768 490.99 356.539 490.99 308.525 442.969 308.525 383.732 308.525 324.495 356.539 276.474 415.768 276.474 474.997 276.474 523.011 324.495 523.011 383.732Z" fill="url(#search-fill1)" fill-rule="evenodd"/></g></svg>
 			</a>
 		</div>
 		<div class="dock" id="taskbar" style="display: none;" count="0">
@@ -265,14 +253,11 @@
 	</div>
 	<div class="window setting">
 		<div class="titbar">
-			<img src="icon/setting.png" class="icon">
-			<p>设置</p>
+			<img src="icon/setting.png" class="icon"><p>设置</p>
 			<div>
-				<a class="a wbtg red" onclick="hidewin('setting')">
-					<i class="bi bi-x-lg"></i>
-					<a class="a wbtg max" onclick="maxwin('setting')"><i class="bi bi-app"></i></a>
-					<a class="a wbtg"><i class="bi bi-dash-lg"></i></a>
-				</a>
+				<a class="a wbtg red" onclick="hidewin('setting')"><i class="bi bi-x-lg"></i></a>
+				<a class="a wbtg max" onclick="maxwin('setting')"><i class="bi bi-app"></i></a>
+				<a class="a wbtg" onclick="minwin('setting')"><i class="bi bi-dash-lg"></i></a>
 			</div>
 		</div>
 		<div class="content" id="win-setting">
@@ -289,17 +274,17 @@
 				<list>
 					<a style="background-color: #ffffff70"><span
 						style="background-color: #2983cc;border-radius: 10px;position: relative;left: -10px;top:1px;height: 20px;margin-right: -4px;">
-						&nbsp;</span><img src="apps/setting/icons/system.png">系统</a>
-					<a><img src="apps/setting/icons/blueteeth.png">蓝牙和其他设备</a>
-					<a><img src="apps/setting/icons/network.png">网络和 Internet</a>
-					<a><img src="apps/setting/icons/personal.png">个性化</a>
-					<a><img src="apps/setting/icons/apps.png">应用</a>
-					<a><img src="apps/setting/icons/user.png">账户</a>
-					<a><img src="apps/setting/icons/time.png">时间和语言</a>
-					<a><img src="apps/setting/icons/game.png">游戏</a>
-					<a><img src="apps/setting/icons/help.png">辅助功能</a>
-					<a><img src="apps/setting/icons/safe.png">隐私和安全性</a>
-					<a><img src="apps/setting/icons/update.png">Windows 更新</a>
+						&nbsp;</span><img src="apps/icons/setting/system.png">系统</a>
+					<a><img src="apps/icons/setting/blueteeth.png">蓝牙和其他设备</a>
+					<a><img src="apps/icons/setting/network.png">网络和 Internet</a>
+					<a><img src="apps/icons/setting/personal.png">个性化</a>
+					<a><img src="apps/icons/setting/apps.png">应用</a>
+					<a><img src="apps/icons/setting/user.png">账户</a>
+					<a><img src="apps/icons/setting/time.png">时间和语言</a>
+					<a><img src="apps/icons/setting/game.png">游戏</a>
+					<a><img src="apps/icons/setting/help.png">辅助功能</a>
+					<a><img src="apps/icons/setting/safe.png">隐私和安全性</a>
+					<a><img src="apps/icons/setting/update.png">Windows 更新</a>
 				</list>
 			</div>
 			<div class="page" style="overflow: auto;">
@@ -336,15 +321,9 @@
 			<img src="icon/explorer.png" class="icon">
 			<p>文件资源管理器</p>
 			<div>
-				<a class="a wbtg red" onclick="hidewin('explorer')">
-					<i class="bi bi-x-lg"></i>
-					<a class="a wbtg max" onclick="maxwin('explorer')">
-						<i class="bi bi-app"></i>
-					</a>
-					<a class="a wbtg">
-						<i class="bi bi-dash-lg"></i>
-					</a>
-				</a>
+				<a class="a wbtg red" onclick="hidewin('explorer')"><i class="bi bi-x-lg"></i></a>
+				<a class="a wbtg max" onclick="maxwin('explorer')"><i class="bi bi-app"></i></a>
+				<a class="a wbtg" onclick="minwin('explorer')"><i class="bi bi-dash-lg"></i></a>
 			</div>
 		</div>
 		<div class="content" id="win-explorer">
@@ -352,20 +331,12 @@
 				<div class="card pinned">
 					<p class="title"><span style="font: 15px;">📌</span> 已固定</p>
 					<list>
-						<a>
-							<img src="apps/explorer/icons/qa.png">快速访问
-						</a>
-						<a>
-							<img src="apps/explorer/icons/od.png">OneDrive
-						</a>
-						<a class="check">
-							<span
-								style="background-color: #2983cc;width:4px;height: 19px;border-radius: 10px;margin-left: -12px;margin-right: 8px;margin-top: 1px;"></span>
-							<img src="apps/explorer/icons/thispc.png">此电脑
-						</a>
-						<a>
-							<img src="apps/explorer/icons/rb.png">回收站
-						</a>
+						<a><img src="apps/icons/explorer/qa.png">快速访问</a>
+						<a><img src="apps/icons/explorer/od.png">OneDrive</a>
+						<a class="check"><span
+							style="background-color: #2983cc;width:4px;height: 19px;border-radius: 10px;margin-left: -12px;margin-right: 8px;margin-top: 1px;"></span>
+							<img src="apps/icons/explorer/thispc.png">此电脑</a>
+						<a><img src="apps/icons/explorer/rb.png">回收站</a>
 					</list>
 				</div>
 				<div class="card tags">
@@ -383,30 +354,30 @@
 			</div>
 			<div class="main">
 				<div class="tool">
-					<a class="a b t"><img src="apps/explorer/icons/tool-new.png">新建</a><div class="hr"></div>
-					<a class="a b"><img src="apps/explorer/icons/tool-cut.png"></a>
-					<a class="a b"><img src="apps/explorer/icons/tool-copy.png"></a>
-					<a class="a b"><img src="apps/explorer/icons/tool-paste.png"></a>
-					<a class="a b"><img src="apps/explorer/icons/tool-rename.png"></a><div class="hr"></div>
-					<a class="a b t"><img src="apps/explorer/icons/tool-sort.png">排序方式</a>
-					<a class="a b t"><img src="apps/explorer/icons/tool-view.png">布局</a>
+					<a class="a b t"><img src="apps/icons/explorer/tool-new.png">新建</a><div class="hr"></div>
+					<a class="a b"><img src="apps/icons/explorer/tool-cut.png"></a>
+					<a class="a b"><img src="apps/icons/explorer/tool-copy.png"></a>
+					<a class="a b"><img src="apps/icons/explorer/tool-paste.png"></a>
+					<a class="a b"><img src="apps/icons/explorer/tool-rename.png"></a><div class="hr"></div>
+					<a class="a b t"><img src="apps/icons/explorer/tool-sort.png">排序方式</a>
+					<a class="a b t"><img src="apps/icons/explorer/tool-view.png">布局</a>
 				</div>
 				<div class="content">
 					<div class="tool">
 						<a class="a btn btn-icon"><i class="bi bi-arrow-left"></i></a>
 						<a class="a btn btn-icon"><i class="bi bi-arrow-right"></i></a>
 						<a class="a btn btn-icon"><i class="bi bi-arrow-up"></i></a>
-						<p class="tit"><img src="apps/explorer/icons/thispc.png">此电脑</p>
+						<p class="tit"><img src="apps/icons/explorer/thispc.png">此电脑</p>
 						<div class="search">
 							<input type="text" class="input" placeholder="在这里输入你要搜索的内容">
 							<input-before class="bi bi-search"></input-before>
 						</div>
 					</div>
 					<p class="title">此电脑</p>
-					<p class="class"><img src="apps/explorer/icons/disk.png"> 设备和驱动器</p>
+					<p class="class"><img src="apps/icons/explorer/disk.png"> 设备和驱动器</p>
 					<div class="group">
 						<a class="a item">
-							<img src="apps/explorer/icons/diskwin.png">
+							<img src="apps/icons/explorer/diskwin.png">
 							<div>
 								<p class="name">本地磁盘 (C:)</p>
 								<div class="bar">
@@ -416,7 +387,7 @@
 							</div>
 						</a>
 						<a class="a item">
-							<img src="apps/explorer/icons/disk.png">
+							<img src="apps/icons/explorer/disk.png">
 							<div>
 								<p class="name">本地磁盘 (D:)</p>
 								<div class="bar">
@@ -435,21 +406,15 @@
 			<img src="icon/calc.png" class="icon">
 			<p>计算器</p>
 			<div>
-				<a class="a wbtg red" onclick="hidewin('calc')">
-					<i class="bi bi-x-lg"></i>
-					<a class="a wbtg max" style="pointer-events: none;color: #aaa;">
-						<i class="bi bi-app"></i>
-					</a>
-					<a class="a wbtg">
-						<i class="bi bi-dash-lg"></i>
-					</a>
-				</a>
+				<a class="a wbtg red" onclick="hidewin('calc')"><i class="bi bi-x-lg"></i></a>
+				<a class="a wbtg max" style="pointer-events: none;color: #aaa;"><i class="bi bi-app"></i></a>
+				<a class="a wbtg" onclick="minwin('calc')"><i class="bi bi-dash-lg"></i></a>
 			</div>
 		</div>
 		<div class="content" id="win-calc">
 			<input id="calc-input" value="">
 			<div class="keyb">
-				<a class="a b" onClick="pe('calc-input').value*=document.getElementById('calc-input').value">𝑥²</a>
+				<a class="a b" onClick="document.getElementById('calc-input').value*=document.getElementById('calc-input').value">𝑥²</a>
 				<a class="a b" onClick="document.getElementById('calc-input').value=Math.sqrt(document.getElementById('calc-input').value)">√𝑥</a>
 				<a class="a b" onClick="document.getElementById('calc-input').value=''">C</a>
 				<a class="a b" onClick="document.getElementById('calc-input').value+='+'">+</a>
@@ -477,22 +442,16 @@
 			<img src="icon/about.png" class="icon">
 			<p>关于 Windows12 网页版</p>
 			<div>
-				<a class="a wbtg red" onclick="hidewin('about')">
-					<i class="bi bi-x-lg"></i>
-					<a class="a wbtg max" onclick="maxwin('about')">
-						<i class="bi bi-app"></i>
-					</a>
-					<a class="a wbtg">
-						<i class="bi bi-dash-lg"></i>
-					</a>
-				</a>
+				<a class="a wbtg red" onclick="hidewin('about')"><i class="bi bi-x-lg"></i></a>
+				<a class="a wbtg max" onclick="maxwin('about')"><i class="bi bi-app"></i></a>
+				<a class="a wbtg" onclick="minwin('about')"><i class="bi bi-dash-lg"></i></a>
 			</div>
 		</div>
 		<div class="content" id="win-about">
 			<div class="menu">
 				<list>
-					<a onclick="$('#win-about>.about').show(200);$('#win-about>.update').hide(200);">简介</a>
-					<a onclick="$('#win-about>.update').show(200);$('#win-about>.about').hide(200);">更新记录</a>
+					<a onclick="$('#win-about>.about').show(200);$('#win-about>.update').hide(200);"><img src="apps/icons/about/info.svg" height="17px" width="19px">简介</a>
+					<a onclick="$('#win-about>.update').show(200);$('#win-about>.about').hide(200);"><img src="apps/icons/about/update.svg" height="20px" width="18px">更新记录</a>
 				</list>
 			</div>
 			<div class="cnt about">
@@ -516,6 +475,15 @@
 			<div class="cnt update" style="display: none;">
 				<h1 class="tit"><span></span>更新记录</h1>
 				<div style="margin-left: 20px;">
+					<details><summary><span>v1.1.0</span> 增加最小化功能,图标美化</summary>
+						<p>&emsp;&emsp;-新增最小化窗口功能<br>
+						&emsp;&emsp;-图标部分美化<br>
+						&emsp;&emsp;-开始、搜索按钮点击动画美化<br>
+						&emsp;&emsp;-修复计算器 "𝑥²" 键无效的问题<br>
+						&emsp;&emsp;-修复窗口打开并最大化后最小化不正常的问题<br>
+						&emsp;&emsp;-修复多次打开应用任务栏显示错误的问题<br>
+						&emsp;&emsp;-简化js关于拖动窗口的代码</p>
+					</details>
 					<details><summary><span>v1.0.1</span> Bug和一些错别字</summary>
 						<p>&emsp;&emsp;上传了才发现有 Bug 😅</p>
 					</details>

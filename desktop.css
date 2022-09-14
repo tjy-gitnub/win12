@@ -184,45 +184,31 @@ body {
     left: 1px;
 }
 
-#start-btn {
+.dock-btn {
     transition: 200ms;
     width: 32px;
     height: 26px;
 }
 
-#start-btn>svg {
+.dock-btn>svg {
     transition: 200ms;
 }
 
-#start-btn:hover {
+.dock-btn:hover {
     opacity: 0.6;
 }
 
-#start-btn:active {
+.dock-btn:active {
     padding: 2.5px 5.5px;
 }
 
-#start-btn:active>svg {
+.dock-btn:active>svg {
     width: 21px;
     height: 21px;
 }
 
-#search-btn{
-    font-size: 24px;
-    height: 35px;
-    width: 35px;
-    margin-top: -6px;
-    margin-left: 3px;
-    color: #333;
-    transition: 200ms;
-}
-
-#search-btn:hover{
-    opacity: 0.6;
-}
-#search-btn:active{
-    font-size: 20px;
-    padding: 3px 0 0 4px;
+.dock-btn.show{
+    filter: hue-rotate(380deg) brightness(1.1);
 }
 
 #start-menu {
@@ -834,12 +820,16 @@ list>.text:hover {
     background-color: #ffffff50;
     backdrop-filter: blur(50px);
     border-radius: 10px;
-    border: 3px solid #7f7f7f20;
+    border: 2px solid #7f7f7f20;
     display: none;
     opacity: 0;
     transition: 200ms;
     overflow: hidden;
     box-shadow: 0 0 15px #7f7f7f7f;
+}
+
+.window.min{
+    margin-top: 17%;
 }
 
 .window.show-begin {

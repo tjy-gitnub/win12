@@ -1,6 +1,6 @@
 @font-face {
     font-family: SettingsIcons;
-    src: url(icons.woff2) format("woff2")
+    src: url(../icons/setting/icons.woff2) format("woff2")
 }
 
 #win-setting>.page>.title {

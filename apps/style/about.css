@@ -11,6 +11,11 @@
 
 #win-about>.menu>list>*{
     padding: 5px 10px;
+    display: flex;
+}
+
+#win-about>.menu>list>*>img{
+    margin: 2px 5px 0 0;
 }
 
 #win-about>.cnt{
