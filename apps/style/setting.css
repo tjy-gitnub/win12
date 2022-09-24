@@ -125,7 +125,7 @@ html {
     display: flex;
     padding: 10px 15px;
     transition: 100ms;
-    box-shadow: 2px 2px 5px #7f7f7f6f;
+    box-shadow: 3px 3px 6px #7f7f7f7f;
 }
 
 .setting-list>*:hover {

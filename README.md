@@ -1,5 +1,7 @@
 # Windows 12 网页版
 
+> 开学了，更新频率降低，感谢支持
+
 ## 前言
 最近看到 Windows 12 概念版(Power by PowerPoint)后深受启发，决定做一个Windows12网页版，就像 [Windows 11 网页版](https://win11.blueedge.me/)一样。
 话不多说，来看一下截图

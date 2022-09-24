@@ -6,6 +6,11 @@ p {
     margin: 0;
 }
 
+
+html{
+    position: fixed;
+}
+
 body {
     background: url('./bg.svg') center;
     background-size: cover;
@@ -53,7 +58,7 @@ body {
 }
 
 #dock-box {
-    position: absolute;
+    position: fixed;
     bottom: 10px;
     height: 40px;
     display: flex;
@@ -67,7 +72,7 @@ body {
     height: 100%;
     background-color: #ffffff70;
     backdrop-filter: blur(20px);
-    box-shadow: 0 0 5px #7f7f7f7f;
+    box-shadow: 3px 3px 6px 1px #7f7f7f7f;
     padding: 7px 10px;
     margin: 0 3px;
     display: flex;
@@ -213,9 +218,10 @@ body {
 
 #start-menu {
     display: none;
-    position: absolute;
-    bottom: 0px;
-    height: calc(90% - 120px);
+    position: fixed;
+    bottom: 0;
+    height: 500px;
+    max-height: calc(90% - 120px);
     width: 800px;
     left: calc(50% - 400px);
     border-radius: 20px;
@@ -223,7 +229,7 @@ body {
     backdrop-filter: blur(50px);
     opacity: 0;
     transition: 200ms;
-    box-shadow: 0 0 15px #7f7f7f7f;
+    box-shadow: 3px 3px 15px 1px #7f7f7f7f;
     border: 2px solid #7f7f7f10;
     z-index: 99;
 }
@@ -234,8 +240,8 @@ body {
 
 #start-menu.show {
     display: flex;
-    height: calc(100% - 120px);
-    max-height: 594px;
+    height: 594px;
+    max-height: calc(100% - 120px);
     bottom: 60px;
     opacity: 1;
 }
@@ -319,6 +325,7 @@ input-before {
     overflow: hidden;
     opacity: 0;
     margin-top: 80px;
+    margin-left: -15px;
 }
 
 #s-m-r>* {
@@ -331,6 +338,7 @@ input-before {
 #s-m-r>.pinned {
     margin-bottom: 80px !important;
     transition: 800ms;
+    box-shadow: 3px 3px 6px #7f7f7f7f;
 }
 
 #start-menu.show>#s-m-r {
@@ -373,6 +381,7 @@ input-before {
 #s-m-r>.row1>.tool>.btn-icon.show {
     width: 100px;
     background-color: #ffffff30;
+    box-shadow: 3px 3px 6px #7f7f7f7f;
 }
 
 #s-m-r>.row1>.tool>.btn-icon.show:hover {
@@ -434,6 +443,7 @@ input-before {
     border-radius: 10px;
     background-color: #ffffff50;
     flex-grow: 1;
+    box-shadow: 3px 3px 6px #7f7f7f7f;
 }
 
 #s-m-r>.row1>.folder>.sm-app {
@@ -470,6 +480,7 @@ input-before {
     margin: 15px 10px 0 15px;
     border-radius: 10px;
     background-color: #ffffff50;
+    box-shadow: 3px 3px 6px #7f7f7f7f;
 }
 
 #s-m-r>.tuijian>.apps {
@@ -502,20 +513,24 @@ input-before {
     background-color: #ececec;
     font-size: 80px;
     transition: 200ms;
+    box-shadow: 3px 3px 6px #7f7f7f7f;
 }
 
-#s-m-user>.bi {
+#s-m-user>svg {
     position: relative;
-    top: -15px;
-    left: 10px;
+    top: -8px;
+    left: 15px;
+    width: 70px;
+    height: 70px;
 }
 
 
 #search-win {
     display: none;
-    position: absolute;
+    position: fixed;
     bottom: 0px;
-    height: calc(90% - 120px);
+    height: 500px;
+    max-height: calc(90% - 120px);
     width: 600px;
     left: calc(50% - 300px);
     border-radius: 20px;
@@ -523,7 +538,7 @@ input-before {
     backdrop-filter: blur(50px);
     opacity: 0;
     transition: 200ms;
-    box-shadow: 0 0 15px #7f7f7f7f;
+    box-shadow: 3px 3px 15px 1px #7f7f7f7f;
     border: 2px solid #7f7f7f10;
     z-index: 99;
     padding: 10px;
@@ -535,8 +550,8 @@ input-before {
 }
 
 #search-win.show {
-    height: calc(100% - 120px);
-    max-height: 594px;
+    max-height: calc(100% - 120px);
+    height: 594px;
     display: flex;
     flex-direction: column;
     bottom: 60px;
@@ -825,7 +840,7 @@ list>.text:hover {
     opacity: 0;
     transition: 200ms;
     overflow: hidden;
-    box-shadow: 0 0 15px #7f7f7f7f;
+    box-shadow: 3px 3px 15px 1px #7f7f7f7f;
 }
 
 .window.min{
@@ -901,6 +916,7 @@ list>.text:hover {
     padding-top: 5px;
     font-size: 13px;
     transition: 100ms;
+    border-radius: 3px;
 }
 
 .wbtg.red {
@@ -908,7 +924,7 @@ list>.text:hover {
 }
 
 .wbtg:hover {
-    background-color: #7f7f7f30;
+    background-color: #7f7f7f50;
 }
 
 .wbtg.red:hover {
