@@ -215,7 +215,7 @@
 
 #win-explorer>.main>.content>.group>.item>div>.bar>.content{
     height: 100%;
-    background-color: #4a91cb;
+    background-image: linear-gradient(90deg, #ad6eca, #4998d9);
     border-radius: 10px;
 }
 

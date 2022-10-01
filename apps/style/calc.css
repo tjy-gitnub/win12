@@ -33,11 +33,14 @@
     background-color: #ffffff30;
     padding-top: 5px;
 }
+#win-calc>.keyb>.b.u{
+    padding-top: 3px;
+}
 #win-calc>.keyb>.b.ans{
-    background-color: #2983cc50;
+    background-image: linear-gradient(120deg, #ad6eca88, #3b91d888);
 }
 #win-calc>.keyb>.b.ans:hover{
-    background-color: #2983cc40;
+    background-image: linear-gradient(120deg, #ad6ecacc, #3b91d8cc);
 }
 #win-calc>.keyb>span{
     width: 71px;
