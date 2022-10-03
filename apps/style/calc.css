@@ -30,7 +30,7 @@
     transition: 100ms;
     border-radius: 50%;
     box-shadow: 3px 3px 6px #7f7f7f7f;
-    background-color: #ffffff30;
+    background: radial-gradient(circle, #ffffff50,#ffffff50);
     padding-top: 5px;
 }
 #win-calc>.keyb>.b.u{

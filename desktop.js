@@ -1,3 +1,88 @@
+// 列表 悬停、点击 效果
+function getElementLeft(element){
+    var actualLeft = element.offsetLeft;
+    var current = element.offsetParent;
+    while (current !== null){
+        actualLeft += current.offsetLeft-current.scrollLeft;
+        current = current.parentElement;
+    }
+    return actualLeft;
+}
+function getElementTop(element){
+    var actualTop = 0;
+    var current = element;
+    while (current !== null){
+        actualTop += current.offsetTop-current.scrollTop;
+        console.log(current,-current.scrollTop);
+        current = current.parentElement;
+    }
+    return actualTop;
+}
+function sleep(d) {
+    let st=new Date().getTime();
+    while (new Date().getTime()<st+d);
+}
+let lista=document.querySelectorAll('#s-m-l>list>a,.sm-app.enable,#win-about>.menu>list>a,.tj-obj');
+lista.forEach(la => {
+    la.addEventListener('mousemove',(e)=>{
+        la.style.background=`radial-gradient(circle at ${e.clientX - $(la).offset()['left']}px ${e.clientY - $(la).offset()['top']}px,#ffffff70 50%,#00000000)`;
+    });
+    la.addEventListener('mouseleave',(e)=>{
+        la.style.background='';
+    });
+    la.addEventListener('mousedown',(e)=>{
+        lt=e.clientX - $(la).offset()['left']
+        rt=e.clientY - $(la).offset()['top']
+        la.style.background=`radial-gradient(circle at ${lt}px ${rt}px,#ffffff10 0%,#ffffff70 50%,#00000000)`;
+        setTimeout(() => {
+            la.style.background=`radial-gradient(circle at ${lt}px ${rt}px,#ffffff15 25%,#ffffff70 25%,#00000000)`;
+        }, 50);
+        setTimeout(() => {
+            la.style.background=`radial-gradient(circle at ${lt}px ${rt}px,#ffffff25 40%,#ffffff70 10%,#00000000)`;
+        }, 100);
+        setTimeout(() => {
+            la.style.background=`radial-gradient(circle at ${lt}px ${rt}px,#ffffff40 45%,#ffffff50 5%,#00000000)`;
+        }, 150);
+        setTimeout(() => {
+            la.style.background=`radial-gradient(circle at ${lt}px ${rt}px,#ffffff60 48%,#ffffff30 2%,#00000000)`;
+        }, 200);
+        setTimeout(() => {
+            la.style.background=`radial-gradient(circle at ${lt}px ${rt}px,#ffffff70 50%,#00000000)`;
+        }, 250);
+    });
+});
+lista=document.querySelectorAll('.setting-list>a,#win-explorer>.main>.content>.group>.item,#win-calc>.keyb>.b:not(.ans)');
+lista.forEach(la => {
+    la.addEventListener('mousemove',(e)=>{
+        la.style.background=`radial-gradient(circle at ${e.clientX - $(la).offset()['left']}px ${e.clientY - $(la).offset()['top']}px,#ffffffa5 20%,#ffffff50)`;
+    });
+    la.addEventListener('mouseleave',(e)=>{
+        la.style.background='';
+    });
+    la.addEventListener('click',(e)=>{
+        lt=e.clientX - $(la).offset()['left']
+        rt=e.clientY - $(la).offset()['top']
+        setTimeout(() => {
+            la.style.background=`radial-gradient(circle at ${lt}px ${rt}px,#ffffff20 2%,#ffffffa5 10%,#ffffff50)`;
+        }, 0);
+        setTimeout(() => {
+            la.style.background=`radial-gradient(circle at ${lt}px ${rt}px,#ffffff55 10%,#ffffffa3 15%,#ffffff50)`;
+        }, 70);
+        setTimeout(() => {
+            la.style.background=`radial-gradient(circle at ${lt}px ${rt}px,#ffffff70 30%,#ffffffa0 5%,#ffffff50)`;
+        }, 130);
+        setTimeout(() => {
+            la.style.background=`radial-gradient(circle at ${lt}px ${rt}px,#ffffff95 50%,#ffffff80 3%,#ffffff50)`;
+        }, 180);
+        setTimeout(() => {
+            la.style.background=`radial-gradient(circle at ${lt}px ${rt}px,#ffffff9e 80%,#ffffff70 2%,#ffffff50)`;
+        }, 210);
+        setTimeout(() => {
+            la.style.background=`radial-gradient(circle at ${lt}px ${rt}px,#ffffffa5 20%,#ffffff50)`;
+        }, 220);
+    });
+});
+// 窗口操作
 function showwin(name) {
     if ($('#taskbar>.' + name).length != 0) return;
     $('.window.' + name).addClass('show-begin');
@@ -52,11 +137,13 @@ function minwin(name) {
         setTimeout(() => { $('.window.' + name).removeClass('show-begin'); }, 200);
     }
 }
+// 开始菜单
 function hide_startmenu(params) {
     $('#start-menu').removeClass('show');
     $('#start-btn').removeClass('show');
     setTimeout(() => { $('#start-menu').removeClass('show-begin'); }, 200);
 }
+// 拖拽窗口
 const page = document.getElementsByTagName('html')[0];
 const titbars = document.querySelectorAll('.window>.titbar');
 const wins = document.querySelectorAll('.window');

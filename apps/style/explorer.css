@@ -183,7 +183,7 @@
     width: 280px;
     margin: 5px;
     height:  80px;
-    background-color: #ffffff50;
+    background: radial-gradient(circle, #ffffff50,#ffffff50);
     border-radius: 10px;
     transition: 100ms;
     display: flex;

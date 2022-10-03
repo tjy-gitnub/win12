@@ -111,7 +111,7 @@ html {
 .setting-list>* {
     width: 100%;
     color: var(--text);
-    background-color: #ffffff50;
+    background: radial-gradient(circle, #ffffff50,#ffffff50);
     margin-bottom: 5px;
     border-radius: 10px;
     border: 2px solid #7f7f7f30;
@@ -123,8 +123,6 @@ html {
 }
 
 .setting-list>*:hover {
-    color: var(--text);
-    background-color: #ffffff90;
     text-decoration: none;
     transition: 200ms;
 }

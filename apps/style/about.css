@@ -30,11 +30,11 @@
 }
 
 #win-about>.cnt .tit>span{
-    background-color: #2983cc;
+    background: linear-gradient(180deg, #ad6eca, #3b91d8);
     border-radius: 10px;
     width: 6px;
     margin: 5px 5px;
-    transition: 200ms;
+    transition: 100ms;
     opacity: 0;
 }
 
