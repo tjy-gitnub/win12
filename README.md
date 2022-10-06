@@ -7,12 +7,12 @@
 话不多说，来看一下截图
 
 ## 效果展示
-![这是开始菜单](https://user-images.githubusercontent.com/71509955/187807323-c749853e-a9ec-497c-9547-3d87ab0f3e72.png)
-*开始菜单*
-![设置](https://user-images.githubusercontent.com/71509955/187807334-32ce9484-8e96-4e1e-ac61-54dac069d036.png)
+![image](https://user-images.githubusercontent.com/71509955/194317185-b64e87c7-4035-4f48-b726-e6cda5f9d81a.png)
+*开始*
+![image](https://user-images.githubusercontent.com/71509955/194317323-772154ec-b463-403e-9213-78087282263b.png)
 *设置*
-![文件资源管理器](https://user-images.githubusercontent.com/71509955/188390819-362a2986-95cb-4d79-84e4-333b4136a792.png)
-*文件资源管理器*
+![image](https://user-images.githubusercontent.com/71509955/194317552-d8ba5f44-fbff-4e4c-b104-0a4a589c3655.png)
+*深色模式*
 
 还有搜索、计算器等等功能。
 更多功能还在制作之中...
