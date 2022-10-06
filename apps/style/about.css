@@ -43,10 +43,10 @@
 }
 
 #win-about>.update>div>details{
-    background-color: #ffffff50;
+    background-color: var(--card);
     padding: 10px;
     border-radius: 10px;
-    box-shadow: 3px 3px 5px #7f7f7f7f;
+    box-shadow: 3px 3px 5px var(--sd);
     margin: 10px 10px 0 0;
     transition: 200ms;
 }

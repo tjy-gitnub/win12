@@ -10,9 +10,9 @@
 #win-explorer>.menu>.card{
     margin: 10px;
     border-radius: 10px;
-    background-color: #ffffff50;
+    background-color: var(--card);
     padding: 3px;
-    box-shadow: 2px 2px 5px #7f7f7f7f;
+    box-shadow: 2px 2px 5px var(--sd);
 }
 
 #win-explorer>.menu>.card>.title{
@@ -29,7 +29,7 @@
 }
 
 #win-explorer>.menu>.card>list>a.check{
-    background-color: #ffffff80;
+    background-color: var(--hover);
 }
 
 #win-explorer>.menu>.pinned>list>a>img{
@@ -46,7 +46,7 @@
     margin-top: 4px;
     margin-right: 7px;
     border-radius: 50%;
-    box-shadow: 0 0 5px #7f7f7f7f;
+    box-shadow: 0 0 5px var(--sd);
 }
 
 #win-explorer>.main{
@@ -81,7 +81,7 @@
 }
 
 #win-explorer>.main>.tool>.b:hover{
-    background-color: #ffffff50;
+    background-color: var(--hover);
 }
 
 #win-explorer>.main>.tool>.b>img{
@@ -100,11 +100,11 @@
 #win-explorer>.main>.content{
     width: calc(100% - 10px);
     flex-grow: 1;
-    background-color: #ffffff50;
+    background-color: var(--card);
     border-radius: 10px;
     margin: -10px 10px 10px 0;
     padding: 8px;
-    box-shadow: 3px 3px 8px #7f7f7f7f;
+    box-shadow: 3px 3px 8px var(--sd);
     overflow-y: auto;
 }
 
@@ -183,14 +183,10 @@
     width: 280px;
     margin: 5px;
     height:  80px;
-    background: radial-gradient(circle, #ffffff50,#ffffff50);
+    background: radial-gradient(circle, var(--card),var(--card));
     border-radius: 10px;
     transition: 100ms;
     display: flex;
-}
-
-#win-explorer>.main>.content>.group>.item:hover{
-    background-color: #ffffff90;
 }
 
 #win-explorer>.main>.content>.group>.item>img{

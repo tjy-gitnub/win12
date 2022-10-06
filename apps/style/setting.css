@@ -46,7 +46,7 @@ html {
 }
 
 #win-setting>.menu>.user:hover {
-    background-color: #ffffff70;
+    background-color: var(--hover);
 }
 
 #win-setting>.menu>.user>div>p:first-child {
@@ -63,8 +63,8 @@ html {
 }
 
 #win-setting>.menu>.user>svg {
-    background-color: #eeeeeeee;
-    box-shadow: 0 0 10px #7f7f7f7f;
+    background-color: var(--bggrey);
+    box-shadow: 0 0 10px var(--sd);
     width: 60px;
     min-width: 60px;
     height: 60px;
@@ -111,7 +111,7 @@ html {
 .setting-list>* {
     width: 100%;
     color: var(--text);
-    background: radial-gradient(circle, #ffffff50,#ffffff50);
+    background: radial-gradient(circle, var(--card),var(--card));
     margin-bottom: 5px;
     border-radius: 10px;
     border: 2px solid #7f7f7f30;
@@ -119,12 +119,13 @@ html {
     display: flex;
     padding: 10px 15px;
     transition: 100ms;
-    box-shadow: 3px 3px 6px #7f7f7f7f;
+    box-shadow: 3px 3px 6px var(--sd);
 }
 
 .setting-list>*:hover {
     text-decoration: none;
     transition: 200ms;
+    /* backdrop-filter: hue-rotate(250deg); */
 }
 
 
@@ -135,7 +136,7 @@ html {
     background-image:linear-gradient(100deg, #ad6eca, #3b91d8); 
     -webkit-background-clip:text; 
     -webkit-text-fill-color:transparent;
-    filter: saturate(130%) brightness(0.8);
+    filter: saturate(130%) brightness(var(--icobn));
 }
 
 .setting-list>a>icon.b {

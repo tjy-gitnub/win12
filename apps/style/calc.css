@@ -11,6 +11,7 @@
     background-color: #00000000;
     font-size: 50px;
     text-align: end;
+    color: var(--text);
 }
 
 #win-calc>.keyb{
@@ -28,9 +29,9 @@
     font-size: 40px;
     text-align: center;
     transition: 100ms;
-    border-radius: 50%;
-    box-shadow: 3px 3px 6px #7f7f7f7f;
-    background: radial-gradient(circle, #ffffff50,#ffffff50);
+    border-radius: 10px;
+    box-shadow: 3px 3px 5px var(--sd);
+    background: radial-gradient(circle, var(--card),var(--card));
     padding-top: 5px;
 }
 #win-calc>.keyb>.b.u{

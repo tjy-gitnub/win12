@@ -43,7 +43,7 @@
 	</div>
 	<script src="./jq.min.js"></script>
 	<!-- 预加载设置图标 -->
-	<p style="font-family: SettingsIcons;display: n;">&nbsp;</p>
+	<p style="font-family: SettingsIcons;">&nbsp;</p>
 	<div id="start-menu">
 		<!-- 开始菜单 -->
 		<div id="s-m-l">
@@ -79,8 +79,8 @@
 					<a class="a sm-app"><img src="icon/folder/pics.png"><p>图片</p></a>
 					<a class="a sm-app"><img src="icon/folder/music.png"><p>音乐</p></a></div>
 				<div class="tool">
-					<p style="font-size: 40px;margin-bottom: -10px;">12:00</p>
-					<p>星期一, 2368年13月34日</p>
+					<p style="font-size: 40px;margin-bottom: -10px;" class="time">12:00</p>
+					<p class="date">星期一, 2368年13月34日</p>
 					<a class="a btn btn-icon power" onclick="$(this).addClass('show')">
 						<span class="bi bi-power"></span>
 						<i class="bi bi-power" onclick="$('#start-menu').removeClass('show');
@@ -175,6 +175,10 @@
 			</div>
 		</div>
 	</div>
+	<div id="datebox">
+		<div class="tit">12:00</div>
+		<div>hh</div>
+	</div>
 	<div id="dock-box">
 		<!-- Dock(任务)栏 -->
 		<div class="dock">
@@ -251,9 +255,21 @@
 				这也不是 Windows365 cloud PC<br>
 				本项目中微软、Windows和其他示范产品是微软公司的商标</p>
 		</div>
-		<div class="dock">
-			12:00
-			10月1日
+		<div class="a dock date" onclick="if($('#datebox').hasClass('show')){
+			$('#datebox').removeClass('show');
+			setTimeout(() => {
+				$('#datebox').removeClass('show-begin');
+			}, 200);
+		}
+		else{
+			$('#datebox').css('left',$(this).position().left-125);
+			$('#datebox').addClass('show-begin');
+			setTimeout(() => {
+				$('#datebox').addClass('show');
+			}, 0);
+		}">
+			<p class="time">12:00</p>
+			<p class="date">2022/10/1</p>
 		</div>
 	</div>
 	<div class="window setting">
@@ -277,7 +293,7 @@
 				<input type="text" class="input" placeholder="查找设置" style="padding-left: 30px;">
 				<input-before class="bi bi-search"></input-before>
 				<list>
-					<a style="background-color: #ffffff70"><span
+					<a style="background-color: var(--hover)"><span
 						style="background-image: linear-gradient(180deg, #ad6eca, #3b91d8);border-radius: 10px;position: relative;left: -10px;top:1px;height: 20px;margin-right: -4px;">
 						&nbsp;</span><img src="apps/icons/setting/system.png">系统</a>
 					<a><img src="apps/icons/setting/blueteeth.png">蓝牙和其他设备</a>
@@ -412,7 +428,7 @@
 			<p>计算器</p>
 			<div>
 				<a class="a wbtg red" onclick="hidewin('calc')"><i class="bi bi-x-lg"></i></a>
-				<a class="a wbtg max" style="pointer-events: none;color: #aaa;"><i class="bi bi-app"></i></a>
+				<a class="a wbtg max" style="pointer-events: none;color: #777;"><i class="bi bi-app"></i></a>
 				<a class="a wbtg" onclick="minwin('calc')"><i class="bi bi-dash-lg"></i></a>
 			</div>
 		</div>
@@ -480,6 +496,13 @@
 			<div class="cnt update" style="display: none;">
 				<h1 class="tit"><span></span>更新记录</h1>
 				<div style="margin-left: 20px;">
+					<details><summary><span>v1.1.4</span> 动画优化、显示时间</summary>
+						<p>&emsp;&emsp;-优化窗口最大最小化动、开始、搜索等动画<br>
+						&emsp;&emsp;-计算器外观优化<br>
+						&emsp;&emsp;-"准备"深色主题😏<br>
+						&emsp;&emsp;-在开始菜单中显示当前的时间<br>
+						&emsp;&emsp;-一些细节优化<br>
+					</details>
 					<details><summary><span>v1.1.3</span> 列表 悬停、点击 效果</summary>
 						<p>&emsp;&emsp;-在开始菜单、设置、关于、文件资源管理器、计算器中使用新的列表悬停、点击效果<br>
 						&emsp;&emsp;-在任务栏、关于中使用主题色(蓝紫渐变)<br>
@@ -524,6 +547,13 @@
 				</div>
 			</div>
 		</div>
+	</div>
+	<div class="msg">
+		<div class="main">
+			<p class="tit">你对列表的悬停、点击效果满意吗?</p>
+			<p class="cont">&emsp;&emsp;请问你对列表的悬停、点击效果满意吗?因为性能和开发方面的问题，在下一个版本中此效果可能会被取消。请在github中提交Issues来告诉我你的想法，我将根据反馈进行改进。感谢支持!</p>
+		</div>
+		<div class="a hide" onclick="$('.msg').removeClass('show')">&RightAngleBracket;</div>
 	</div>
 	<script src="desktop.js"></script>
 </body>
