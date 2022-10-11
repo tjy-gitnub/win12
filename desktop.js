@@ -1,64 +1,5 @@
-// 列表 悬停、点击 效果
-let lista=document.querySelectorAll('#s-m-l>list>a,.sm-app.enable,#win-about>.menu>list>a,.tj-obj');
-lista.forEach(la => {
-    la.addEventListener('mousemove',(e)=>{
-        la.style.background=`radial-gradient(circle at ${e.clientX - $(la).offset()['left']}px ${e.clientY - $(la).offset()['top']}px,#ffffff70,#00000000)`;
-    });
-    la.addEventListener('mouseleave',(e)=>{
-        la.style.background='';
-    });
-    la.addEventListener('mousedown',(e)=>{
-        lt=e.clientX - $(la).offset()['left']
-        rt=e.clientY - $(la).offset()['top']
-        la.style.background=`radial-gradient(circle at ${lt}px ${rt}px,#ffffff10 0%,#ffffff70 50%,#00000000)`;
-        setTimeout(() => {
-            la.style.background=`radial-gradient(circle at ${lt}px ${rt}px,#ffffff15 25%,#ffffff70 25%,#00000000)`;
-        }, 50);
-        setTimeout(() => {
-            la.style.background=`radial-gradient(circle at ${lt}px ${rt}px,#ffffff25 40%,#ffffff70 10%,#00000000)`;
-        }, 100);
-        setTimeout(() => {
-            la.style.background=`radial-gradient(circle at ${lt}px ${rt}px,#ffffff40 45%,#ffffff50 5%,#00000000)`;
-        }, 150);
-        setTimeout(() => {
-            la.style.background=`radial-gradient(circle at ${lt}px ${rt}px,#ffffff60 48%,#ffffff30 2%,#00000000)`;
-        }, 200);
-        setTimeout(() => {
-            la.style.background=`radial-gradient(circle at ${lt}px ${rt}px,#ffffff70 50%,#00000000)`;
-        }, 250);
-    });
-});
-lista=document.querySelectorAll('.setting-list>a,#win-explorer>.main>.content>.group>.item,#win-calc>.keyb>.b:not(.ans)');
-lista.forEach(la => {
-    la.addEventListener('mousemove',(e)=>{
-        la.style.background=`radial-gradient(circle at ${e.clientX - $(la).offset()['left']}px ${e.clientY - $(la).offset()['top']}px,#ffffffa5,var(--card))`;
-    });
-    la.addEventListener('mouseleave',(e)=>{
-        la.style.background='';
-    });
-    la.addEventListener('click',(e)=>{
-        lt=e.clientX - $(la).offset()['left']
-        rt=e.clientY - $(la).offset()['top']
-        setTimeout(() => {
-            la.style.background=`radial-gradient(circle at ${lt}px ${rt}px,#ffffff20 2%,#ffffffa5 10%,var(--card))`;
-        }, 0);
-        setTimeout(() => {
-            la.style.background=`radial-gradient(circle at ${lt}px ${rt}px,#ffffff55 10%,#ffffffa3 15%,var(--card))`;
-        }, 70);
-        setTimeout(() => {
-            la.style.background=`radial-gradient(circle at ${lt}px ${rt}px,#ffffff70 30%,#ffffffa0 5%,var(--card))`;
-        }, 130);
-        setTimeout(() => {
-            la.style.background=`radial-gradient(circle at ${lt}px ${rt}px,#ffffff95 50%,#ffffff80 3%,var(--card))`;
-        }, 180);
-        setTimeout(() => {
-            la.style.background=`radial-gradient(circle at ${lt}px ${rt}px,#ffffff9e 80%,#ffffff70 2%,var(--card))`;
-        }, 210);
-        setTimeout(() => {
-            la.style.background=`radial-gradient(circle at ${lt}px ${rt}px,#ffffffa5 20%,var(--card))`;
-        }, 220);
-    });
-});
+var version='2.0';
+
 // 日期、时间
 function loadtime() {
     let d=new Date();
@@ -66,6 +7,10 @@ function loadtime() {
         d.getFullYear()}年${d.getMonth().toString().padStart(2,'0')}月${
         d.getDate().toString().padStart(2,'0')}日`);
     $('#s-m-r>.row1>.tool>.time').text(`${d.getHours().toString().padStart(2,'0')}:${
+        d.getMinutes().toString().padStart(2,'0')}:${d.getSeconds().toString().padStart(2,'0')}`);
+    $('.dock.date>.date').text(`${d.getFullYear()}/${d.getMonth().toString().padStart(2,'0')}/${
+        d.getDate().toString().padStart(2,'0')}`);
+    $('.dock.date>.time').text(`${d.getHours().toString().padStart(2,'0')}:${
         d.getMinutes().toString().padStart(2,'0')}:${d.getSeconds().toString().padStart(2,'0')}`);
 }
 setInterval(loadtime,1000);
@@ -133,12 +78,29 @@ function hide_startmenu(params) {
 const page = document.getElementsByTagName('html')[0];
 const titbars = document.querySelectorAll('.window>.titbar');
 const wins = document.querySelectorAll('.window');
-let deltaLeft = 0, deltaTop = 0;
+let deltaLeft = 0, deltaTop = 0, fil=false;
 for (let i = 0; i < wins.length; i++) {
     const win = wins[i];
     const titbar = titbars[i];
     function win_move(e) {
-        win.setAttribute('style', `left:${e.clientX - deltaLeft}px;top:${e.clientY - deltaTop}px`)
+        if(e.clientY-deltaTop<0){
+            win.setAttribute('style', `left:${e.clientX-deltaLeft}px;top:0px`);
+            if(win.classList[1]!='calc'){
+                $('#window-fill').addClass('top');
+                setTimeout(() => {
+                    $('#window-fill').addClass('fill');
+                }, 0);
+                fil=win;
+            }
+        }else if(fil){
+            $('#window-fill').removeClass('fill');
+            setTimeout(() => {
+                $('#window-fill').removeClass('top');
+            }, 200);
+            fil=false;
+        }else{
+            win.setAttribute('style', `left:${e.clientX-deltaLeft}px;top:${e.clientY-deltaTop}px`);
+        }
     }
     titbar.addEventListener('mousedown', (e) => {
         deltaLeft = e.clientX - win.offsetLeft;
@@ -147,9 +109,32 @@ for (let i = 0; i < wins.length; i++) {
     })
     page.addEventListener('mouseup', () => {
         page.removeEventListener('mousemove', win_move);
+        if(fil){
+            maxwin(fil.classList[1]);
+            fil=false;
+            setTimeout(() => {
+                $('#window-fill').removeClass('fill');
+                $('#window-fill').removeClass('top');
+            }, 200);
+        }
     })
 }
 showwin('about');
-setTimeout(() => {
-    $('.msg').addClass('show');
-}, 2000);
+var ca = document.cookie.split(';');
+for(var i=0; i<ca.length; i++) 
+{
+    var c = ca[i].trim();
+    var vi=c.substring('version='.length,c.length);
+    if (vi!=version || c.indexOf('version=')!=0) {
+        console.log('!=');
+        $('.msg.update>.main>.tit').html('<strong>新版本</strong> '+$('#win-about>.cnt.update>div>details:first-child>summary').text());
+        $('.msg.update>.main>.cont').html($('#win-about>.cnt.update>div>details:first-child>p').html());
+        document.cookie="version="+version+";expires=Thu, 18 Dec 9999 12:00:00 GMT";
+        $(()=>{
+            setTimeout(() => {
+                $('.msg.update').addClass('show');
+            }, 2000);
+        });
+    }
+}
+console.log(document.cookie);

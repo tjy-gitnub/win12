@@ -189,6 +189,10 @@
     display: flex;
 }
 
+#win-explorer>.main>.content>.group>.item:hover{
+    background-color: var(--hover);
+}
+
 #win-explorer>.main>.content>.group>.item>img{
     width: 55px;
     height: 55px;

@@ -1,20 +1,6 @@
 @import "./bootstrap-icons.css";
 @import "./base.css";
 
-/* :root{
-    --text:#ddd;
-    --bg:#000000;
-    --bg30:#00000030;
-    --bg50:#00000050;
-    --bg70:#00000070;
-    --sd:#00000070;
-    --card:#ffffff10;
-    --hover:#ffffff40;
-    --bggrey:#444;
-    --icobn:1.1;
-    --bgul: url('./bg-dark.svg');
-} */
-
 :root{
     --text:#000;
     --bg:#ffffff;
@@ -29,10 +15,27 @@
     --bgul: url('./bg.svg');
 }
 
+:root.dark{
+    --text:#ddd;
+    --bg:#000000;
+    --bg30:#00000030;
+    --bg50:#00000050;
+    --bg70:#00000070;
+    --sd:#00000070;
+    --card:#ffffff10;
+    --hover:#ffffff40;
+    --bggrey:#444;
+    --icobn:1.1;
+    --bgul: url('./bg-dark.svg');
+}
+
+*{
+    transition: 100ms;
+}
+
 p {
     margin: 0;
 }
-
 
 html{
     position: fixed;
@@ -133,11 +136,12 @@ body {
     padding-left: 15px;
     display: none;
     opacity: 0;
-    transition: 600ms;
+    transition: 300ms;
+    transition-delay: 200ms;
 }
 
 .dock.about:hover {
-    background-color: #dddddd70;
+    background-color: var(--bggrey);
 }
 
 .dock.about:active>p {
@@ -215,6 +219,23 @@ body {
 
 .dock.date>.date{
     margin-top: -8px;
+}
+
+.dock.theme{
+    transition: 200ms cubic-bezier(0.9, 0, 0.1, 1);
+    border-radius: 50%;
+    width: 40px;
+    padding-left: 3.5px;
+    text-align: center;
+    box-shadow: 0 0 6px 1px var(--sd);
+}
+
+.dock.theme:hover{
+    background-color: var(--bggrey);
+}
+
+.dock.theme:active{
+    transform: rotate(300deg);
 }
 
 .dock-btn {
@@ -779,7 +800,7 @@ input-before {
 }
 
 .sm-app.enable:hover {
-    background-color: #ffffff70;
+    background-color: var(--hover);
 }
 
 .sm-app.enable>*:first-child {
@@ -806,21 +827,21 @@ input-before {
 }
 
 .sm-app:active {
-    padding-top: 4px;
+    padding-top: 5px;
 }
 
 .sm-app:active>*:last-child {
-    margin-top: 1px;
+    margin-top: 2px;
 }
 
 .sm-app:active>*:first-child {
-    height: 26px;
-    width: 26px;
-    filter: contrast(0.4) brightness(0.8) blur(1px);
+    height: 24px;
+    width: 24px;
+    filter: contrast(0.4) brightness(0.8);
 }
 
 .sm-app.enable:active>*:first-child {
-    filter: blur(1px);
+    filter: blur(0.6px);
 }
 
 .tj-obj {
@@ -884,6 +905,10 @@ list>*:hover {
     transition: 200ms;
 }
 
+list>*:active{
+    transform: rotate3d(1,-1,0,20deg);
+}
+
 list>hr {
     width: calc(100% - 12px);
     padding: 0 !important;
@@ -909,9 +934,9 @@ list>.text:hover {
     background-color: var(--bg50);
     backdrop-filter: blur(50px) saturate(130%);
     position: fixed;
-    right: -400px;
+    right: -430px;
     bottom: 60px;
-    width: 400px;
+    width: 430px;
     min-height: 150px;
     z-index: 999;
     border-radius: 10px;
@@ -920,23 +945,37 @@ list>.text:hover {
     font-size: 15px;
     display: flex;
     transition: 400ms cubic-bezier(0.9, 0, 0.1, 1);
+    transform: rotate3d(2,1,0,50deg);
 }
 
 .msg.show{
     right: 20px;
+    transform: none;
+}
+.msg>.main{
+    flex-grow: 1;
 }
 
 .msg>.hide{
     height: 35px;
-    padding: 0 13px;
+    width: 35px;
+    min-width: 35px;
+    padding-left: 6px;
     margin-right: -5px;
     border-radius: 5px;
-    text-align: center;
-    font-size: 20px;
+    font-size: 23px;
 }
 
 .msg>.hide:hover{
-    background-color: var(--hover);
+    padding-left: 0;
+}
+
+.msg>.hide:active{
+    padding-left: 25px;
+}
+
+.msg:not(.show)>.hide{
+    padding-left: 25px;
 }
 
 .msg>.main>.tit{
@@ -964,9 +1003,10 @@ list>.text:hover {
     border: 2px solid #7f7f7f20;
     display: none;
     opacity: 0;
-    transition: cubic-bezier(0.9, 0, 0.1, 1) 500ms;
+    transition: cubic-bezier(0.9, 0, 0.1, 1) 300ms;
     overflow: hidden;
     box-shadow: 3px 3px 15px 1px var(--sd);
+    z-index: 98;
 }
 
 .window.min{
@@ -1060,4 +1100,30 @@ list>.text:hover {
 .wbtg.red:hover {
     background-color: #c42b1c;
     color: #fff;
+}
+
+#window-fill{
+    background-color: var(--bg30);
+    backdrop-filter: blur(60px);
+    display: none;
+    position: fixed;
+    transition: cubic-bezier(0.9, 0, 0.1, 1) 200ms;
+    margin: 10px;
+    border-radius: 20px;
+    border: 4px solid var(--bg30);
+}
+
+#window-fill.top{
+    width: 0;
+    height: 0;
+    top: 0;
+    left: 50%;
+    display: block;
+}
+
+#window-fill.top.fill{
+    width: calc(100% - 20px);
+    height: calc(100% - 20px);
+    top: 0;
+    left: 0;
 }

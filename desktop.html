@@ -255,7 +255,7 @@
 				这也不是 Windows365 cloud PC<br>
 				本项目中微软、Windows和其他示范产品是微软公司的商标</p>
 		</div>
-		<div class="a dock date" onclick="if($('#datebox').hasClass('show')){
+		<div class="a dock date" onclick="/*if($('#datebox').hasClass('show')){
 			$('#datebox').removeClass('show');
 			setTimeout(() => {
 				$('#datebox').removeClass('show-begin');
@@ -267,11 +267,23 @@
 			setTimeout(() => {
 				$('#datebox').addClass('show');
 			}, 0);
+		}*/">
+			<p class="time">12:34:56</p>
+			<p class="date">2022/10/01</p>
+		</div>
+		<div class="a dock theme" onclick="if($('.dock.theme>.bi').hasClass('bi-moon-fill')){
+			$('.dock.theme>.bi').removeClass('bi-moon-fill');
+			$('.dock.theme>.bi').addClass('bi-brightness-high-fill');
+			$(':root').removeClass('dark');
+		}else{
+			$('.dock.theme>.bi').removeClass('bi-brightness-high-fill');
+			$('.dock.theme>.bi').addClass('bi-moon-fill');
+			$(':root').addClass('dark');
 		}">
-			<p class="time">12:00</p>
-			<p class="date">2022/10/1</p>
+			<i class="bi bi-brightness-high-fill"></i>
 		</div>
 	</div>
+	<div id="window-fill"></div>
 	<div class="window setting">
 		<div class="titbar">
 			<img src="icon/setting.png" class="icon"><p>设置</p>
@@ -496,6 +508,14 @@
 			<div class="cnt update" style="display: none;">
 				<h1 class="tit"><span></span>更新记录</h1>
 				<div style="margin-left: 20px;">
+					<details><summary><span>v2.0.0</span> 深色主题、更新提示、新点击效果、拖至顶部最大化</summary>
+						<p>&emsp;&emsp;-支持深色模式<br>
+						&emsp;&emsp;-在每次更新后显示更新提示<br>
+						&emsp;&emsp;-去除原 win10 主题点击、悬停动画<br>
+						&emsp;&emsp;-新的列表项点击动画<br>
+						&emsp;&emsp;-将窗口拖至顶部最大化<br>
+						&emsp;&emsp;-优化开始菜单固定项点击效果<br>
+					</details>
 					<details><summary><span>v1.1.4</span> 动画优化、显示时间</summary>
 						<p>&emsp;&emsp;-优化窗口最大最小化动、开始、搜索等动画<br>
 						&emsp;&emsp;-计算器外观优化<br>
@@ -548,12 +568,12 @@
 			</div>
 		</div>
 	</div>
-	<div class="msg">
+	<div class="msg update">
 		<div class="main">
-			<p class="tit">你对列表的悬停、点击效果满意吗?</p>
-			<p class="cont">&emsp;&emsp;请问你对列表的悬停、点击效果满意吗?因为性能和开发方面的问题，在下一个版本中此效果可能会被取消。请在github中提交Issues来告诉我你的想法，我将根据反馈进行改进。感谢支持!</p>
+			<p class="tit">更新提示</p>
+			<p class="cont"></p>
 		</div>
-		<div class="a hide" onclick="$('.msg').removeClass('show')">&RightAngleBracket;</div>
+		<div class="a hide" onclick="$('.msg').removeClass('show')"><i class="bi bi-arrow-right-short"></i></div>
 	</div>
 	<script src="desktop.js"></script>
 </body>

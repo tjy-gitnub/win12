@@ -124,8 +124,7 @@ html {
 
 .setting-list>*:hover {
     text-decoration: none;
-    transition: 200ms;
-    /* backdrop-filter: hue-rotate(250deg); */
+    background-color: var(--hover);
 }
 
 
