@@ -1,5 +1,90 @@
 var version='2.0';
-
+// 列表点击
+let lists=document.querySelectorAll('#s-m-l>list>a,#win-about>.menu>list>a,.tj-obj,#win-calc>.keyb>.b');
+lists.forEach(la => {
+    la.addEventListener('mousedown',(e)=>{
+        x=-e.clientX+$(la).offset()['left']+(la.offsetWidth/2);
+        y=e.clientY-$(la).offset()['top']-(la.offsetHeight/2);
+        la.style.perspective=`300`;
+        la.style.transform=`rotateX(${-y}deg) rotateY(${-x/4}deg)`;
+        setTimeout(() => {
+            la.style.transform='none';
+        }, 200);
+    });
+});
+document.getElementsByTagName('html')[0].oncontextmenu=function(e){
+    return false;
+}
+// 右键菜单
+let cms={
+    'titbar':[
+        function(arg) {
+            if(arg=='calc')
+                return 'null'
+            if($('.window.'+arg).hasClass("max"))
+                return ['<i class="bi bi-window-stack"></i> 还原',`maxwin('${arg}')`];
+            else
+                return ['<i class="bi bi-window-fullscreen"></i> 最大化',`maxwin('${arg}')`];
+        },
+        function (arg) {
+            return ['<i class="bi bi-window-dash"></i> 最小化',`minwin('${arg}')`];
+        },
+        function (arg) {
+            return ['<i class="bi bi-window-x"></i> 关闭',`hidewin('${arg}')`];
+        },
+    ],
+    'desktop':[
+        ['<i class="bi bi-circle-square"></i> 切换主题','toggletheme()'],
+        ['<i class="bi bi-info-circle"></i> 关于 Win12 网页版',`$('#win-about>.about').show(200);$('#win-about>.update').hide();showwin('about');if($('.window.about').hasClass('min'))minwin('about');`],
+    ],
+    'winx':[
+        ['<i class="bi bi-gear"></i> 设置',`showwin('setting')`],
+        ['<i class="bi bi-folder2-open"></i> 文件资源管理器',`showwin('explorer')`],
+        ['<i class="bi bi-search"></i> 搜索',`$('#search-btn').addClass('show');hide_startmenu();
+        $('#search-win').addClass('show-begin');setTimeout(() => {$('#search-win').addClass('show');
+        $('#search-input').focus();}, 0);`],
+        '<hr>',
+        ['<i class="bi bi-power"></i> 关机',`window.location='shutdown.html'`],
+        ['<i class="bi bi-arrow-counterclockwise"></i> 重启',`window.location='reload.html'`],
+    ]
+}
+function showcm(e,cl,arg) {
+    $('#cm').css('left',e.clientX);
+    $('#cm').css('top',e.clientY);
+    let h='';
+    cms[cl].forEach(item=>{
+        if(typeof(item)=='function'){
+            ret=item(arg);
+            if(ret=='null')return true;
+            h+=`<a class="a" onmousedown="${ret[1]}">${ret[0]}</a>\n`;
+        }else if(typeof(item)=='string'){
+            h+=item+'\n';
+        }else{
+            h+=`<a class="a" onmousedown="${item[1]}">${item[0]}</a>\n`;
+        }
+    })
+    $('#cm>list')[0].innerHTML=h;
+    $('#cm').addClass('show-begin');
+    setTimeout(() => {
+        $('#cm').addClass('show');
+    }, 0);
+    $('#cm>.foc').focus();
+    setTimeout(() => {
+        if(e.clientY+$('#cm')[0].offsetHeight>$('html')[0].offsetHeight){
+            $('#cm').css('top',e.clientY-$('#cm')[0].offsetHeight);
+        }
+        if(e.clientX+$('#cm')[0].offsetWidth>$('html')[0].offsetWidth){
+            $('#cm').css('left',e.clientX-$('#cm')[0].offsetWidth);
+        }
+    }, 200);
+}
+$('#cm>.foc').blur(()=>{
+    let x=event.target.parentNode;
+    $(x).removeClass('show');
+    setTimeout(() => {
+        $(x).removeClass('show-begin');
+    }, 200);
+});
 // 日期、时间
 function loadtime() {
     let d=new Date();
@@ -69,10 +154,22 @@ function minwin(name) {
     }
 }
 // 开始菜单
-function hide_startmenu(params) {
+function hide_startmenu() {
     $('#start-menu').removeClass('show');
     $('#start-btn').removeClass('show');
     setTimeout(() => { $('#start-menu').removeClass('show-begin'); }, 200);
+}
+// 主题
+function toggletheme() {
+    if($('.dock.theme>.bi').hasClass('bi-moon-fill')){
+        $('.dock.theme>.bi').removeClass('bi-moon-fill');
+        $('.dock.theme>.bi').addClass('bi-brightness-high-fill');
+        $(':root').removeClass('dark');
+    }else{
+        $('.dock.theme>.bi').removeClass('bi-brightness-high-fill');
+        $('.dock.theme>.bi').addClass('bi-moon-fill');
+        $(':root').addClass('dark');
+    }
 }
 // 拖拽窗口
 const page = document.getElementsByTagName('html')[0];
@@ -126,15 +223,18 @@ for(var i=0; i<ca.length; i++)
     var c = ca[i].trim();
     var vi=c.substring('version='.length,c.length);
     if (vi!=version || c.indexOf('version=')!=0) {
-        console.log('!=');
-        $('.msg.update>.main>.tit').html('<strong>新版本</strong> '+$('#win-about>.cnt.update>div>details:first-child>summary').text());
+        $('.msg.update>.main>.tit').html('<i class="bi bi-stars" style="background-image: linear-gradient(100deg, #ad6eca, #3b91d8);-webkit-background-clip: text;-webkit-text-fill-color: transparent;text-shadow:3px 3px 5px var(--sd);filter:saturate(200%) brightness(0.9);"></i> '+$('#win-about>.cnt.update>div>details:first-child>summary').text());
         $('.msg.update>.main>.cont').html($('#win-about>.cnt.update>div>details:first-child>p').html());
         document.cookie="version="+version+";expires=Thu, 18 Dec 9999 12:00:00 GMT";
-        $(()=>{
+        document.getElementsByTagName('body')[0].onload=function (){
+            $('#loadback').addClass('hide');setTimeout(() => {$('#loadback').css('display','none')}, 200);
             setTimeout(() => {
                 $('.msg.update').addClass('show');
             }, 2000);
-        });
+        };
+    }else{
+        document.getElementsByTagName('body')[0].onload=function (){
+            $('#loadback').addClass('hide');setTimeout(() => {$('#loadback').css('display','none')}, 200);
+        };
     }
 }
-console.log(document.cookie);

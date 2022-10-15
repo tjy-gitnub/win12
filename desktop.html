@@ -23,8 +23,8 @@
 	<link rel="stylesheet" href="apps/style/about.css">
 </head>
 
-<body onload="$('#loadback').addClass('hide');setTimeout(() => {$('#loadback').css('display','none')}, 200);">
-	<div id="loadback" style="background-color:#000;width:100%;height:100%;z-index:105;position:absolute;opacity:1;transition:200ms;cursor:none;">
+<body>
+	<div id="loadback" style="background-color:#000;width:100%;height:100%;z-index:105;position:absolute;transition:200ms;cursor:none;">
 		<style>#loadback.hide{opacity:0;}
 			loading>svg>circle:first-child{stroke:#fff;fill:none;stroke-width:2px;stroke-linecap:round;
 				animation:spin-infinite 1.8s linear 0s infinite normal none running;transform-origin:50% 50%;
@@ -199,7 +199,7 @@
 					setTimeout(() => {
 						$('#start-menu').addClass('show');
 					}, 0);//非常神奇,我也不知道为什么去掉就不行
-				}">
+				}" oncontextmenu="showcm(event,'winx',null)">
 				<!-- 开始按钮 -->
 				<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="26" height="26" viewBox="0,0,306,305">
 					<defs><clipPath id="clip0"><rect x="897" y="208" width="306" height="305"></rect>
@@ -271,21 +271,19 @@
 			<p class="time">12:34:56</p>
 			<p class="date">2022/10/01</p>
 		</div>
-		<div class="a dock theme" onclick="if($('.dock.theme>.bi').hasClass('bi-moon-fill')){
-			$('.dock.theme>.bi').removeClass('bi-moon-fill');
-			$('.dock.theme>.bi').addClass('bi-brightness-high-fill');
-			$(':root').removeClass('dark');
-		}else{
-			$('.dock.theme>.bi').removeClass('bi-brightness-high-fill');
-			$('.dock.theme>.bi').addClass('bi-moon-fill');
-			$(':root').addClass('dark');
-		}">
+		<div class="a dock theme" onclick="toggletheme()">
 			<i class="bi bi-brightness-high-fill"></i>
 		</div>
 	</div>
+	<div style="position: absolute;top: 0;left: 0;width: 100%;height: 100%;z-index: 0;" oncontextmenu="showcm(event,'desktop',null)"></div>
+	<div id="cm">
+		<input class="foc">
+		<list>
+		</list>
+	</div>
 	<div id="window-fill"></div>
 	<div class="window setting">
-		<div class="titbar">
+		<div class="titbar" oncontextmenu="showcm(event,'titbar','setting')">
 			<img src="icon/setting.png" class="icon"><p>设置</p>
 			<div>
 				<a class="a wbtg red" onclick="hidewin('setting')"><i class="bi bi-x-lg"></i></a>
@@ -350,7 +348,7 @@
 		</div>
 	</div>
 	<div class="window explorer">
-		<div class="titbar">
+		<div class="titbar" oncontextmenu="showcm(event,'titbar','explorer')">
 			<img src="icon/explorer.png" class="icon">
 			<p>文件资源管理器</p>
 			<div>
@@ -435,7 +433,7 @@
 		</div>
 	</div>
 	<div class="window calc">
-		<div class="titbar">
+		<div class="titbar" oncontextmenu="showcm(event,'titbar','calc')">
 			<img src="icon/calc.png" class="icon">
 			<p>计算器</p>
 			<div>
@@ -471,7 +469,7 @@
 		</div>
 	</div>
 	<div class="window about">
-		<div class="titbar">
+		<div class="titbar" oncontextmenu="showcm(event,'titbar','about')">
 			<img src="icon/about.png" class="icon">
 			<p>关于 Windows12 网页版</p>
 			<div>
@@ -508,41 +506,50 @@
 			<div class="cnt update" style="display: none;">
 				<h1 class="tit"><span></span>更新记录</h1>
 				<div style="margin-left: 20px;">
+					<details><summary><span>v2.1.0</span> 右键菜单，细节优化更改</summary>
+						<p>&emsp;&emsp;-在窗口标题、桌面、开始菜单支持右键菜单<br>
+						&emsp;&emsp;-在其它元素上禁用右键菜单<br>
+						&emsp;&emsp;-列表点击根据鼠标位置偏移<br>
+						&emsp;&emsp;-新增更新消息图标<br>
+						&emsp;&emsp;-修复了按钮点击缩小效果不正常显示的问题<br>
+						&emsp;&emsp;-修复了更新消息在开机前显示的问题<br>
+						&emsp;&emsp;-细节优化</p>
+					</details>
 					<details><summary><span>v2.0.0</span> 深色主题、更新提示、新点击效果、拖至顶部最大化</summary>
 						<p>&emsp;&emsp;-支持深色模式<br>
 						&emsp;&emsp;-在每次更新后显示更新提示<br>
 						&emsp;&emsp;-去除原 win10 主题点击、悬停动画<br>
 						&emsp;&emsp;-新的列表项点击动画<br>
 						&emsp;&emsp;-将窗口拖至顶部最大化<br>
-						&emsp;&emsp;-优化开始菜单固定项点击效果<br>
+						&emsp;&emsp;-优化开始菜单固定项点击效果</p>
 					</details>
 					<details><summary><span>v1.1.4</span> 动画优化、显示时间</summary>
 						<p>&emsp;&emsp;-优化窗口最大最小化动、开始、搜索等动画<br>
 						&emsp;&emsp;-计算器外观优化<br>
 						&emsp;&emsp;-"准备"深色主题😏<br>
 						&emsp;&emsp;-在开始菜单中显示当前的时间<br>
-						&emsp;&emsp;-一些细节优化<br>
+						&emsp;&emsp;-一些细节优化</p>
 					</details>
 					<details><summary><span>v1.1.3</span> 列表 悬停、点击 效果</summary>
 						<p>&emsp;&emsp;-在开始菜单、设置、关于、文件资源管理器、计算器中使用新的列表悬停、点击效果<br>
 						&emsp;&emsp;-在任务栏、关于中使用主题色(蓝紫渐变)<br>
 						&emsp;&emsp;-任务栏应用圆角优化<br>
 						&emsp;&emsp;-增加任务栏右下角托盘(未完全实现)<br>
-						&emsp;&emsp;-使启动时不显示鼠标，更加逼真<br>
+						&emsp;&emsp;-使启动时不显示鼠标，更加逼真</p>
 					</details>
 					<details><summary><span>v1.1.2</span> 外观优化</summary>
 						<p>&emsp;&emsp;-透明效果改善<br>
 						&emsp;&emsp;-在所有应用中使用主题色(蓝紫渐变)<br>
 						&emsp;&emsp;-Dock(任务)栏圆角优化<br>
 						&emsp;&emsp;-在设置中使用新的头像<br>
-						&emsp;&emsp;-加速窗口动画，更加贴近原生<br>
+						&emsp;&emsp;-加速窗口动画，更加贴近原生</p>
 					</details>
 					<details><summary><span>v1.1.1</span> 外观优化，修复了一些 Bug</summary>
 						<p>&emsp;&emsp;-外观优化，阴影增加<br>
 						&emsp;&emsp;-修复了开始、搜索菜单关闭时高度会闪一下的问题<br>
 						&emsp;&emsp;-开始菜单用户头像美化<br>
 						&emsp;&emsp;-修复了"关于"应用切换标签时文字改变导致动画流畅的问题<br>
-						&emsp;&emsp;-使页面不能滚动，更加逼真<br>
+						&emsp;&emsp;-使页面不能滚动，更加逼真</p>
 					</details>
 					<details><summary><span>v1.1.0</span> 增加最小化功能,图标美化</summary>
 						<p>&emsp;&emsp;-新增最小化窗口功能<br>
@@ -570,7 +577,7 @@
 	</div>
 	<div class="msg update">
 		<div class="main">
-			<p class="tit">更新提示</p>
+			<p class="tit"></p>
 			<p class="cont"></p>
 		</div>
 		<div class="a hide" onclick="$('.msg').removeClass('show')"><i class="bi bi-arrow-right-short"></i></div>
