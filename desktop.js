@@ -1,4 +1,4 @@
-var version='2.0';
+var version='2.1.0';
 // 列表点击
 let lists=document.querySelectorAll('#s-m-l>list>a,#win-about>.menu>list>a,.tj-obj,#win-calc>.keyb>.b');
 lists.forEach(la => {
