@@ -1,6 +1,6 @@
-var version='2.1.0';
+var version='2.1.1';
 // 列表点击
-let lists=document.querySelectorAll('#s-m-l>list>a,#win-about>.menu>list>a,.tj-obj,#win-calc>.keyb>.b');
+let lists=document.querySelectorAll('list>a,.tj-obj,#cs>list>a');
 lists.forEach(la => {
     la.addEventListener('mousedown',(e)=>{
         x=-e.clientX+$(la).offset()['left']+(la.offsetWidth/2);
@@ -10,6 +10,14 @@ lists.forEach(la => {
         setTimeout(() => {
             la.style.transform='none';
         }, 200);
+    });
+    la.addEventListener('mousemove',(e)=>{
+        x=e.clientX-$(la).offset()['left'];
+        y=e.clientY-$(la).offset()['top'];
+        $(la).css('cssText',`background:radial-gradient(circle at ${x}px ${y}px, var(--hover) 10%,#00000000);`)
+    });
+    la.addEventListener('mouseout',()=>{
+        $(la).css('cssText',`background:radial-gradient(#00000000,#00000000);`)
     });
 });
 document.getElementsByTagName('html')[0].oncontextmenu=function(e){
@@ -38,6 +46,17 @@ let cms={
         ['<i class="bi bi-info-circle"></i> 关于 Win12 网页版',`$('#win-about>.about').show(200);$('#win-about>.update').hide();showwin('about');if($('.window.about').hasClass('min'))minwin('about');`],
     ],
     'winx':[
+        function(arg) {
+            if($('#start-menu').hasClass("show"))
+                return ['<i class="bi bi-box-arrow-in-down"></i> 关闭开始菜单',`hide_startmenu()`];
+            else
+                return ['<i class="bi bi-box-arrow-in-up"></i> 打开开始菜单',`$('#start-btn').addClass('show');
+                if($('#search-win').hasClass('show')){$('#search-btn').removeClass('show');
+                $('#search-win').removeClass('show');setTimeout(() => {$('#search-win').removeClass('show-begin');
+                }, 200);}$('#start-menu').addClass('show-begin');setTimeout(() => {$('#start-menu').addClass('show');
+                }, 0);`];
+        },
+        '<hr>',
         ['<i class="bi bi-gear"></i> 设置',`showwin('setting')`],
         ['<i class="bi bi-folder2-open"></i> 文件资源管理器',`showwin('explorer')`],
         ['<i class="bi bi-search"></i> 搜索',`$('#search-btn').addClass('show');hide_startmenu();
@@ -46,6 +65,22 @@ let cms={
         '<hr>',
         ['<i class="bi bi-power"></i> 关机',`window.location='shutdown.html'`],
         ['<i class="bi bi-arrow-counterclockwise"></i> 重启',`window.location='reload.html'`],
+    ],
+    'dockabout':[
+        function (arg) {
+            if(arg)
+                return ['<i class="bi bi-arrow-bar-down"></i> 收起',`$('.dock.about').removeClass('show')`]
+            else
+                return ['<i class="bi bi-arrow-bar-up"></i> 展开',`$('.dock.about').addClass('show')`]
+        },
+        ['<i class="bi bi-info-circle"></i> 更多信息',`$('#win-about>.about').show(200);$('#win-about>.update').hide();
+        showwin('about');if($('.window.about').hasClass('min'))minwin('about');`]
+    ],
+    'msgupdate':[
+        ['<i class="bi bi-layout-text-window-reverse"></i> 查看详细',`showwin('about');if($('.window.about').hasClass('min'))
+        minwin('about');$('#win-about>.update').show(200);$('#win-about>.about').hide();
+        $('#win-about>.update>div>details:first-child').attr('open','open')`],
+        ['<i class="bi bi-box-arrow-right"></i> 关闭',`$('.msg.update').removeClass('show')`]
     ]
 }
 function showcm(e,cl,arg) {
@@ -74,7 +109,7 @@ function showcm(e,cl,arg) {
             $('#cm').css('top',e.clientY-$('#cm')[0].offsetHeight);
         }
         if(e.clientX+$('#cm')[0].offsetWidth>$('html')[0].offsetWidth){
-            $('#cm').css('left',e.clientX-$('#cm')[0].offsetWidth);
+            $('#cm').css('left',$('html')[0].offsetWidth-$('#cm')[0].offsetWidth-5);
         }
     }, 200);
 }
@@ -88,7 +123,7 @@ $('#cm>.foc').blur(()=>{
 // 日期、时间
 function loadtime() {
     let d=new Date();
-    $('#s-m-r>.row1>.tool>.date').text(`星期${[null,'一','二','三','四','五','六','日'][d.getDay()]}, ${
+    $('#s-m-r>.row1>.tool>.date').text(`星期${['日','一','二','三','四','五','六'][d.getDay()]}, ${
         d.getFullYear()}年${d.getMonth().toString().padStart(2,'0')}月${
         d.getDate().toString().padStart(2,'0')}日`);
     $('#s-m-r>.row1>.tool>.time').text(`${d.getHours().toString().padStart(2,'0')}:${

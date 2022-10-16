@@ -13,6 +13,7 @@
     --bggrey:#ddd;
     --icobn:0.8;
     --bgul: url('./bg.svg');
+    --mm: #ffffffc0;
 }
 
 :root.dark{
@@ -27,6 +28,7 @@
     --bggrey:#444;
     --icobn:1.1;
     --bgul: url('./bg-dark.svg');
+    --mm:#ffffff50;
 }
 
 body,p{
@@ -168,6 +170,11 @@ body {
 
 .dock.about.show:hover {
     background-color: var(--bg70);
+}
+
+.dock.about.show:active {
+    font-size: 23px;
+    padding: 7px 0 7px 10px;
 }
 
 #taskbar{
@@ -786,7 +793,7 @@ input-before {
 
 #cm.show{
     max-height: 100%;
-    transition: 200ms ease-in-out;
+    transition: 100ms ease-in-out;
 }
 
 #cm>list>*{
@@ -985,12 +992,19 @@ list>.text:hover {
     display: flex;
     transition: 400ms cubic-bezier(0.9, 0, 0.1, 1);
     transform: rotate3d(2,1,0,50deg);
+    cursor: pointer;
+}
+
+.msg:hover{
+    transition: 80ms;
+    background-color: var(--hover);
 }
 
 .msg.show{
     right: 20px;
     transform: none;
 }
+
 .msg>.main{
     flex-grow: 1;
 }

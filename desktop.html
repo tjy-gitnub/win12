@@ -198,7 +198,7 @@
 					$('#start-menu').addClass('show-begin');
 					setTimeout(() => {
 						$('#start-menu').addClass('show');
-					}, 0);//非常神奇,我也不知道为什么去掉就不行
+					}, 0);
 				}" oncontextmenu="showcm(event,'winx',null)">
 				<!-- 开始按钮 -->
 				<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="26" height="26" viewBox="0,0,306,305">
@@ -244,7 +244,7 @@
 		</div>
 		<div class="dock" id="taskbar" style="display: none;" count="0">
 		</div>
-		<div class="dock about"
+		<div class="dock about" oncontextmenu="showcm(event,'dockabout',$(this).hasClass('show'))"
 			onclick="if($(this).hasClass('show')){$(this).removeClass('show')}else{$(this).addClass('show')}">
 			Windows 12 网页版 谭景元原创
 			<p>Windows 12 网页版是一个开放源项目,<br>
@@ -506,6 +506,14 @@
 			<div class="cnt update" style="display: none;">
 				<h1 class="tit"><span></span>更新记录</h1>
 				<div style="margin-left: 20px;">
+					<details><summary><span>v2.1.1</span> 更多右键菜单，win10主题列表悬停效果</summary>
+						<p>&emsp;&emsp;-在开始、任务栏、更新消息支持更多右键菜单<br>
+						&emsp;&emsp;-右键菜单超出界面的优化<br>
+						&emsp;&emsp;-列表win10悬停效果<br>
+						&emsp;&emsp;-点击或右击消息可在窗口中查看详细<br>
+						&emsp;&emsp;-修复了时间无法显示星期日的问题<br>
+						&emsp;&emsp;-细节优化</p>
+					</details>
 					<details><summary><span>v2.1.0</span> 右键菜单，细节优化更改</summary>
 						<p>&emsp;&emsp;-在窗口标题、桌面、开始菜单支持右键菜单<br>
 						&emsp;&emsp;-在其它元素上禁用右键菜单<br>
@@ -575,8 +583,10 @@
 			</div>
 		</div>
 	</div>
-	<div class="msg update">
-		<div class="main">
+	<div class="msg update" oncontextmenu="showcm(event,'msgupdate',null)">
+		<div class="main"onclick="showwin('about');if($('.window.about').hasClass('min'))minwin('about');
+			$('#win-about>.update').show(200);$('#win-about>.about').hide();
+			$('#win-about>.update>div>details:first-child').attr('open','open')">
 			<p class="tit"></p>
 			<p class="cont"></p>
 		</div>
