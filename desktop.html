@@ -21,6 +21,7 @@
 	<link rel="stylesheet" href="apps/style/explorer.css">
 	<link rel="stylesheet" href="apps/style/calc.css">
 	<link rel="stylesheet" href="apps/style/about.css">
+	<base target="_blank">
 </head>
 
 <body>
@@ -51,7 +52,8 @@
 				<svg viewBox="0,0,257,344" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" overflow="hidden"><defs><clipPath id="user-clip0"><rect x="382" y="195" width="257" height="344"/></clipPath><linearGradient x1="351.462" y1="233.56" x2="669.496" y2="500.422" gradientUnits="userSpaceOnUse" spreadMethod="reflect" id="user-fill1"><stop offset="0" stop-color="#A964C8"/><stop offset="0.35" stop-color="#A964C8"/><stop offset="0.87" stop-color="#2D8AD5"/><stop offset="1" stop-color="#2D8AD5"/></linearGradient><linearGradient x1="351.462" y1="233.56" x2="669.496" y2="500.422" gradientUnits="userSpaceOnUse" spreadMethod="reflect" id="user-fill2"><stop offset="0" stop-color="#A964C8"/><stop offset="0.35" stop-color="#A964C8"/><stop offset="0.87" stop-color="#2D8AD5"/><stop offset="1" stop-color="#2D8AD5"/></linearGradient></defs><g clip-path="url(#user-clip0)" transform="translate(-382 -195)"><path d="M637.755 433.872C642.215 515.221 579.577 537.983 508.011 537.983 436.444 537.983 376.676 507.833 383.513 437.11 383.109 425.234 389.59 414.133 398.634 409.891 413.82 402.768 444.753 402.936 507.484 402.997 570.214 403.058 609.164 402.279 621.521 407.947 633.878 413.614 638.011 424.609 637.755 433.872Z" fill="url(#user-fill1)" fill-rule="evenodd"/><path d="M422 285C422 235.847 461.623 196 510.5 196 559.377 196 599 235.847 599 285 599 334.153 559.377 374 510.5 374 461.623 374 422 334.153 422 285Z" fill="url(#user-fill2)" fill-rule="evenodd"/></g></svg>
 			</div>
 			<p style="width: 100%;text-align: center;margin: -50px 0 20px 0;font-size: 30px;">Administartor</p>
-			<input type="text" class="input" alt="hi" placeholder="在这里输入你要搜索的内容" onclick="hide_startmenu();
+			<input type="text" class="input" alt="hi" placeholder="在这里输入你要搜索的内容" onfocus="hide_startmenu();
+				$('#search-btn').addClass('show');
 				$('#search-win').addClass('show-begin');
 				setTimeout(() => {
 					$('#search-win').addClass('show');
@@ -201,8 +203,9 @@
 					}, 0);
 				}" oncontextmenu="showcm(event,'winx',null)">
 				<!-- 开始按钮 -->
-				<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="26" height="26" viewBox="0,0,306,305">
-					<defs><clipPath id="clip0"><rect x="897" y="208" width="306" height="305"></rect>
+					<svg class="menu" viewBox="0,0,440,439" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" overflow="hidden"><defs><clipPath id="clip-start1"><rect x="134" y="59" width="440" height="439"/></clipPath></defs><g clip-path="url(#clip-start1)" transform="translate(-134 -59)"><path d="M233.479 67.5001 475.521 67.5001C525.767 67.5001 566.5 108.233 566.5 158.479L566.5 490.5 142.5 490.5 142.5 158.479C142.5 108.233 183.233 67.5001 233.479 67.5001Z" stroke="#7F7F7F" stroke-width="14.6667" stroke-linecap="round" stroke-miterlimit="8" fill="#A6A6A6" fill-rule="evenodd"/><path d="M208.5 132.5 334.716 132.5" stroke="#D9D9D9" stroke-width="14.6667" stroke-linecap="round" stroke-miterlimit="8" fill="none" fill-rule="evenodd"/><path d="M208.5 175.5 386.34 175.5" stroke="#D9D9D9" stroke-width="14.6667" stroke-linecap="round" stroke-miterlimit="8" fill="none" fill-rule="evenodd"/><path d="M208.5 221.5 271.608 221.5" stroke="#D9D9D9" stroke-width="14.6667" stroke-linecap="round" stroke-miterlimit="8" fill="none" fill-rule="evenodd"/></g></svg>
+			
+				<svg class="ico" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="26" height="26" viewBox="0,0,306,305"><defs><clipPath id="clip0"><rect x="897" y="208" width="306" height="305"></rect>
 					</clipPath><linearGradient x1="885.371" y1="221.859" x2="1214.63" y2="498.141" gradientUnits="userSpaceOnUse" spreadMethod="reflect" id="sf1">
 						<stop offset="0" stop-color="#A964C8"></stop><stop offset="0.18" stop-color="#A964C8"></stop><stop offset="0.36" stop-color="#A266E4"></stop>
 						<stop offset="0.73" stop-color="#346ED8"></stop><stop offset="0.91" stop-color="#2D8AD5"></stop><stop offset="1" stop-color="#2D8AD5"></stop>
@@ -220,8 +223,7 @@
 						<path d="M40.0431 0 139 0 139 0 139 140.549C115.82 150.681 92.6407 159.212 69.4611 158.946 45.5026 160.012 23.1537 145.082 0 138.15L0 39.7981C0 17.8182 17.9278 0 40.0431 0Z" fill="url(#sf2)" fill-rule="evenodd" transform="matrix(-1 0 0 1 1203 208)"></path>
 						<path d="M1163.19 512 1064.8 512 1064.8 512 1064 379.593C1088.35 388.648 1113.49 394.507 1136.24 394.774 1158.49 394.241 1180.75 380.925 1203 374L1203 472.245C1203 494.201 1185.18 512 1163.19 512Z" fill="url(#sf3)" fill-rule="evenodd"></path>
 						<path d="M39.755 0 138 0 138 0 138 140.549C114.987 150.681 91.9742 159.212 68.9614 158.946 45.1752 160.012 22.9872 145.082 0 138.15L0 39.7981C0 17.8182 17.7989 0 39.755 0Z" fill="url(#sf4)" fill-rule="evenodd" transform="matrix(1 -1.22465e-16 -1.22465e-16 -1 897 512)"></path>
-					</g></svg>
-			</a>
+					</g></svg></a>
 			<a class="dock-btn" id="search-btn" onclick="
 			if($('#search-win').hasClass('show')){
 				$('#search-btn').removeClass('show');
@@ -239,10 +241,12 @@
 				}, 0);
 				$('#search-input').focus();
 			}">
-				<svg width="26" height="26" viewBox="0,0,313,313" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" overflow="hidden"><defs><clipPath id="search-clip1"><rect x="288" y="257" width="313" height="313"/></clipPath><linearGradient x1="338.45" y1="228.45" x2="551.55" y2="597.55" gradientUnits="userSpaceOnUse" spreadMethod="reflect" id="search-fill1"><stop offset="0" stop-color="#2983CC"/><stop offset="0.09" stop-color="#2983CC"/><stop offset="0.34" stop-color="#A964C8"/><stop offset="0.77"/><stop offset="1"/></linearGradient></defs><g clip-path="url(#search-clip1)" transform="translate(-288 -257)"><path d="M517.98 458.696C559.356 402.228 547.127 322.905 490.667 281.524 434.207 240.143 354.896 252.373 313.521 308.841 272.145 365.309 284.374 444.631 340.833 486.012 385.458 518.719 446.139 518.698 490.74 485.959L490.721 485.959C491.306 486.739 491.93 487.48 492.632 488.201L567.702 563.282C575.316 570.902 587.664 570.907 595.283 563.292 602.902 555.677 602.906 543.327 595.293 535.707L520.223 460.626C519.526 459.921 518.776 459.269 517.98 458.676ZM523.011 383.732C523.011 442.969 474.997 490.99 415.768 490.99 356.539 490.99 308.525 442.969 308.525 383.732 308.525 324.495 356.539 276.474 415.768 276.474 474.997 276.474 523.011 324.495 523.011 383.732Z" fill="url(#search-fill1)" fill-rule="evenodd"/></g></svg>
+				<!-- <svg viewBox="0,0,313,313" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" overflow="hidden"><defs><clipPath id="search-clip1"><rect x="288" y="257" width="313" height="313"/></clipPath><linearGradient x1="338.45" y1="228.45" x2="551.55" y2="597.55" gradientUnits="userSpaceOnUse" spreadMethod="reflect" id="search-fill1"><stop offset="0" stop-color="#2983CC"/><stop offset="0.09" stop-color="#2983CC"/><stop offset="0.34" stop-color="#A964C8"/><stop offset="0.77"/><stop offset="1"/></linearGradient></defs><g clip-path="url(#search-clip1)" transform="translate(-288 -257)"><path d="M517.98 458.696C559.356 402.228 547.127 322.905 490.667 281.524 434.207 240.143 354.896 252.373 313.521 308.841 272.145 365.309 284.374 444.631 340.833 486.012 385.458 518.719 446.139 518.698 490.74 485.959L490.721 485.959C491.306 486.739 491.93 487.48 492.632 488.201L567.702 563.282C575.316 570.902 587.664 570.907 595.283 563.292 602.902 555.677 602.906 543.327 595.293 535.707L520.223 460.626C519.526 459.921 518.776 459.269 517.98 458.676ZM523.011 383.732C523.011 442.969 474.997 490.99 415.768 490.99 356.539 490.99 308.525 442.969 308.525 383.732 308.525 324.495 356.539 276.474 415.768 276.474 474.997 276.474 523.011 324.495 523.011 383.732Z" fill="url(#search-fill1)" fill-rule="evenodd"/></g></svg> -->
+				<svg class="out" width="26" height="26" viewBox="0,0,398,406" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" overflow="hidden"><defs><clipPath id="clip-search0"><rect x="77" y="29" width="398" height="406"/></clipPath></defs><g clip-path="url(#clip-search0)" transform="translate(-77 -29)"><path d="M77 195C77 103.873 151.097 30 242.5 30 333.903 30 408 103.873 408 195 408 286.127 333.903 360 242.5 360 151.097 360 77 286.127 77 195ZM122.372 195C122.372 261.069 176.155 314.629 242.5 314.629 308.845 314.629 362.628 261.069 362.628 195 362.628 128.931 308.845 75.3717 242.5 75.3717 176.155 75.3717 122.372 128.931 122.372 195Z" fill="#595959" fill-rule="evenodd"/><path d="M329.14 331.039C317.792 319.691 317.792 301.292 329.14 289.944L329.14 289.944C340.488 278.596 358.887 278.596 370.235 289.944L465.351 385.06C476.699 396.408 476.699 414.807 465.351 426.155L465.351 426.155C454.003 437.503 435.604 437.503 424.256 426.155Z" fill="#595959" fill-rule="evenodd"/></g></svg>
+				<svg class="in" width="20" height="20" viewBox="0,0,245,245" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" overflow="hidden"><defs><clipPath id="clip-search1"><rect x="121" y="76" width="245" height="245"/></clipPath><linearGradient x1="99.764" y1="115.514" x2="387.236" y2="281.486" gradientUnits="userSpaceOnUse" spreadMethod="reflect" id="fill-search1"><stop offset="0" stop-color="#A964C8"/><stop offset="0.26" stop-color="#A964C8"/><stop offset="1" stop-color="#2D8AD5"/></linearGradient></defs><g clip-path="url(#clip-search1)" transform="translate(-121 -76)"><path d="M122 198.5C122 131.397 176.397 77 243.5 77 310.603 77 365 131.397 365 198.5 365 265.603 310.603 320 243.5 320 176.397 320 122 265.603 122 198.5Z" fill="url(#fill-search1)" fill-rule="evenodd"/></g></svg>
 			</a>
 		</div>
-		<div class="dock" id="taskbar" style="display: none;" count="0">
+		<div class="dock" id="taskbar" style="display: flex;" count="0">
 		</div>
 		<div class="dock about" oncontextmenu="showcm(event,'dockabout',$(this).hasClass('show'))"
 			onclick="if($(this).hasClass('show')){$(this).removeClass('show')}else{$(this).addClass('show')}">
@@ -506,6 +510,14 @@
 			<div class="cnt update" style="display: none;">
 				<h1 class="tit"><span></span>更新记录</h1>
 				<div style="margin-left: 20px;">
+					<details><summary><span>v2.2.0</span> 开始、搜索按钮动画，右键菜单优化，新列表点击效果</summary>
+						<p>&emsp;&emsp;-开始、搜索按钮新增点击动画<br>
+						&emsp;&emsp;-优化右键菜单<br>
+						&emsp;&emsp;-桌面右键菜单新增<br>
+						&emsp;&emsp;-新的列表点击效果<br>
+						&emsp;&emsp;-任务栏动画效果优化<br>
+						&emsp;&emsp;-细节优化和修复</p>
+					</details>
 					<details><summary><span>v2.1.1</span> 更多右键菜单，win10主题列表悬停效果</summary>
 						<p>&emsp;&emsp;-在开始、任务栏、更新消息支持更多右键菜单<br>
 						&emsp;&emsp;-右键菜单超出界面的优化<br>

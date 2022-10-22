@@ -89,6 +89,12 @@ body {
     border: 3px solid transparent;
 }
 
+list>a:active,.tj-obj:active,#cs>list>a:active,#win-calc>.keyb>.b:active{
+    transform: scale(0.95);
+    filter: blur(0.5px);
+    transition: 80ms;
+}
+
 #dock-box {
     position: fixed;
     bottom: 10px;
@@ -179,7 +185,8 @@ body {
 
 #taskbar{
     padding: 3px 5px;
-    transition: 100ms;
+    transition: 80ms;
+    overflow: hidden;
 }
 
 #taskbar>a{
@@ -249,16 +256,13 @@ body {
     transition: 200ms;
     width: 32px;
     height: 26px;
-}
-
-.dock-btn>svg {
-    transition: 200ms;
+    overflow: hidden;
 }
 
 .dock-btn:hover {
-    opacity: 0.6;
+    filter: brightness(1.2);
 }
-
+/* 
 .dock-btn:active {
     padding: 2.5px 5.5px;
 }
@@ -269,6 +273,49 @@ body {
 }
 
 .dock-btn.show{
+    filter: hue-rotate(380deg) brightness(1.1);
+} */
+
+#start-btn>svg.menu{
+    position: relative;
+    top: 27px;
+    transition: 200ms;
+}
+
+#start-btn.show>svg.menu {
+    top: 0;
+    transition-delay: 300ms;
+}
+
+#start-btn>svg.ico {
+    position: relative;
+    top: -32px;
+    transition: 200ms;
+    left: 0;
+    transition-delay: 100ms;
+}
+
+#start-btn.show>svg.ico {
+    width: 13px;
+    left: 6px;
+    top: -26px;
+}
+
+#search-btn>svg.in {
+    position: relative;
+    display: block;
+    top: -29px;
+    left: 2.9px;
+    width: 16px;
+    height: 16px;
+    transition: 200ms;
+}
+
+#search-btn.show>svg.in{
+    width: 18px;
+    height: 18px;
+    left: 1.9px;
+    top: -30px;
     filter: hue-rotate(380deg) brightness(1.1);
 }
 
@@ -793,12 +840,11 @@ input-before {
 
 #cm.show{
     max-height: 100%;
-    transition: 100ms ease-in-out;
 }
 
 #cm>list>*{
     padding: 3px 10px;
-    transition: 50ms;
+    transition: 100ms;
     border-radius: 8px;
 }
 
@@ -991,7 +1037,6 @@ list>.text:hover {
     font-size: 15px;
     display: flex;
     transition: 400ms cubic-bezier(0.9, 0, 0.1, 1);
-    transform: rotate3d(2,1,0,50deg);
     cursor: pointer;
 }
 
@@ -1002,7 +1047,6 @@ list>.text:hover {
 
 .msg.show{
     right: 20px;
-    transform: none;
 }
 
 .msg>.main{

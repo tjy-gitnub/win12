@@ -29,7 +29,7 @@
 }
 
 #win-explorer>.menu>.card>list>a.check{
-    background-color: var(--hover);
+    background-color: var(--hover) !important;
 }
 
 #win-explorer>.menu>.pinned>list>a>img{

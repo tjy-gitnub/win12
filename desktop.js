@@ -1,20 +1,11 @@
-var version='2.1.1';
+var version='2.2.0';
 // 列表点击
 let lists=document.querySelectorAll('list>a,.tj-obj,#cs>list>a');
 lists.forEach(la => {
-    la.addEventListener('mousedown',(e)=>{
-        x=-e.clientX+$(la).offset()['left']+(la.offsetWidth/2);
-        y=e.clientY-$(la).offset()['top']-(la.offsetHeight/2);
-        la.style.perspective=`300`;
-        la.style.transform=`rotateX(${-y}deg) rotateY(${-x/4}deg)`;
-        setTimeout(() => {
-            la.style.transform='none';
-        }, 200);
-    });
     la.addEventListener('mousemove',(e)=>{
         x=e.clientX-$(la).offset()['left'];
         y=e.clientY-$(la).offset()['top'];
-        $(la).css('cssText',`background:radial-gradient(circle at ${x}px ${y}px, var(--hover) 10%,#00000000);`)
+        $(la).css('cssText',`background:radial-gradient(circle at ${x}px ${y}px,var(--hover) 10%, #00000000);`)
     });
     la.addEventListener('mouseout',()=>{
         $(la).css('cssText',`background:radial-gradient(#00000000,#00000000);`)
@@ -43,7 +34,10 @@ let cms={
     ],
     'desktop':[
         ['<i class="bi bi-circle-square"></i> 切换主题','toggletheme()'],
+        ['<i class="bi bi-github"></i> 在 Github 中查看此项目',`window.open('https://github.com/tjy-gitnub/win12','_blank');`],
+        ['<i class="bi bi-chat-left-text"></i> 发送反馈',`window.open('https://github.com/tjy-gitnub/win12/issues','_blank');`],
         ['<i class="bi bi-info-circle"></i> 关于 Win12 网页版',`$('#win-about>.about').show(200);$('#win-about>.update').hide();showwin('about');if($('.window.about').hasClass('min'))minwin('about');`],
+        
     ],
     'winx':[
         function(arg) {
@@ -140,7 +134,10 @@ function showwin(name) {
     $('.window.' + name).addClass('show-begin');
     $('#taskbar').attr('count', Number($('#taskbar').attr('count')) + 1)
     $('#taskbar').html(`${$('#taskbar').html()}<a class="${name}" onclick="minwin(\'${name}\')"><img src="icon/${name}.png"></a>`);
-    if ($('#taskbar').attr('count') == '1') $('#taskbar').show();
+    if ($('#taskbar').attr('count') == '1') $('#taskbar').css('display','flex');
+    setTimeout(() => {
+        $('#taskbar').css('width',10+$('#taskbar').attr('count')*34);
+    }, 0);
     setTimeout(() => { $('.window.' + name).addClass('show'); }, 0);
     setTimeout(() => { $('.window.' + name).addClass('notrans'); }, 400);
     $('.window.' + name).attr('style', `top: 10%;left: 15%;`);
@@ -151,7 +148,11 @@ function hidewin(name) {
     $('.window.' + name).removeClass('show');
     $('#taskbar').attr('count', Number($('#taskbar').attr('count')) - 1)
     $('#taskbar>.' + name).remove();
-    if ($('#taskbar').attr('count') == '0') $('#taskbar').hide();
+    $('#taskbar').css('width',10+$('#taskbar').attr('count')*34);
+    setTimeout(() => {
+        
+    if ($('#taskbar').attr('count') == '0') $('#taskbar').css('display','none');
+    }, 80);
     setTimeout(() => { $('.window.' + name).removeClass('show-begin'); }, 400);
     $('.window.' + name + '>.titbar>div>.wbtg.max').html('<i class="bi bi-app"></i>');
 }
