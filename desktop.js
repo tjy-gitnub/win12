@@ -1,4 +1,4 @@
-var version = '2.3.0';
+var version = '2.3.1';
 // 列表点击
 let lists = document.querySelectorAll('list>a,#cs>list>a');
 lists.forEach(la => {
@@ -14,6 +14,8 @@ lists.forEach(la => {
 document.getElementsByTagName('html')[0].oncontextmenu = function (e) {
     return false;
 }
+// 禁止拖拽图片
+$('img').on('dragstart',()=>{return false;});
 // 右键菜单
 let cms = {
     'titbar': [

@@ -8,12 +8,15 @@
     --bg50:#ffffff50;
     --bg70:#ffffff70;
     --sd:#7f7f7f7f;
-    --card:#ffffff50;
+    --card:#f7f7f750;
     --hover:#ffffff70;
+    --hover-b:#00000017;
     --bggrey:#ddd;
     --icobn:0.8;
     --bgul: url('./bg.svg');
+    /* --bgul: url('https://win11.blueedge.me/img/wallpaper/default/img0.jpg'); */
     --mm: #ffffffc0;
+    --cm: #fafafaaa;
 }
 
 :root.dark{
@@ -23,12 +26,14 @@
     --bg50:#00000050;
     --bg70:#00000070;
     --sd:#00000070;
-    --card:#ffffff10;
+    --card:#52525250;
     --hover:#ffffff40;
+    --hover-b:#ffffff30;
     --bggrey:#444;
     --icobn:1.1;
     --bgul: url('./bg-dark.svg');
     --mm:#ffffff50;
+    --cm: #252525cc;
 }
 
 body,p{
@@ -921,13 +926,13 @@ input-before {
     box-shadow: 3px 3px 6px 1px var(--sd);
     z-index: 101;
     border-radius: 10px;
-    border: 2px solid #8f8f8f50;
-    background: var(--bg70);
-    backdrop-filter: blur(30px) saturate(120%);
+    border: 2px solid #8f8f8f30;
+    background: var(--cm);
+    backdrop-filter: blur(20px) saturate(2);
     min-width: 200px;
     overflow: hidden;
     transition: max-height 200ms ease-in-out;
-    padding: 5px;
+    padding: 4px;
     max-height: 0;
 }
 
@@ -940,11 +945,24 @@ input-before {
     max-height: 100%;
 }
 
-#cm>list>*{
-    padding: 2px 8px;
+#cm>list>a{
+    padding: 5px 8px;
+    margin: 2px 0;
     transition: 80ms;
-    border-radius: 8px;
+    border-radius: 7px;
     font-size: 15px;
+    display: flex;
+    line-height: 19px;
+}
+
+#cm>list>a>.bi{
+    font-size: 19px;
+    margin-right: 4px;
+    display: block;
+}
+
+#cm>list>*:hover{
+    background-color: var(--hover-b);
 }
 
 #cm>.foc{
