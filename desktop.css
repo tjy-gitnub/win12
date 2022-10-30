@@ -60,6 +60,10 @@ a.jump{
     color: #2983cc;
 }
 
+hr{
+    background-color: #afafaf50;
+}
+
 body {
     color: var(--text);
     user-select: none;
@@ -89,7 +93,7 @@ body {
     border: 3px solid transparent;
 }
 
-list>a:active,.tj-obj:active,#cs>list>a:active,#win-calc>.keyb>.b:active{
+list>a:active,.tj-obj:active,#cs>list>a:active,#win-calc>.keyb>.b:active,#datebox>.cont>.body>p:active{
     transform: scale(0.95);
     filter: blur(0.5px);
     transition: 80ms;
@@ -149,7 +153,7 @@ list>a:active,.tj-obj:active,#cs>list>a:active,#win-calc>.keyb>.b:active{
 }
 
 .dock.about:hover {
-    background-color: var(--bggrey);
+    background-color: var(--mm);
 }
 
 .dock.about:active>p {
@@ -205,6 +209,61 @@ list>a:active,.tj-obj:active,#cs>list>a:active,#win-calc>.keyb>.b:active{
 #taskbar>a>img{
     width: 24px;
     height: 24px;
+    transition: 100ms;
+}
+
+#taskbar>a:not(.min)>img{
+    animation: task-show 1s;
+}
+
+@keyframes task-show {
+    0%{
+        margin-top: 0;
+        margin-bottom: 0;
+    }
+    20%{
+        margin-top: 3px;
+        margin-bottom: -3px;
+    }
+    35%{
+        margin-top: -7px;
+        margin-bottom: 7px;
+    }
+    55%{
+        margin-top: 1px;
+        margin-bottom: -1px;
+    }
+    75%{
+        margin-top: -4px;
+        margin-bottom: 4px;
+    }
+    100%{
+        margin-top: 0;
+        margin-bottom: 0;
+    }
+}
+
+#taskbar>a.min>img{
+    animation: task-hide 1s;
+}
+
+@keyframes task-hide {
+    0%{
+        margin-top: 0;
+        margin-bottom: 0;
+    }
+    20%{
+        margin-top: -3px;
+        margin-bottom: 3px;
+    }
+    60%{
+        margin-top: 10px;
+        margin-bottom: -10px;
+    }
+    100%{
+        margin-top: 0;
+        margin-bottom: 0;
+    }
 }
 
 #taskbar>a::after{
@@ -245,7 +304,7 @@ list>a:active,.tj-obj:active,#cs>list>a:active,#win-calc>.keyb>.b:active{
 }
 
 .dock.theme:hover{
-    background-color: var(--bggrey);
+    background-color: var(--mm);
 }
 
 .dock.theme:active{
@@ -262,19 +321,6 @@ list>a:active,.tj-obj:active,#cs>list>a:active,#win-calc>.keyb>.b:active{
 .dock-btn:hover {
     filter: brightness(1.2);
 }
-/* 
-.dock-btn:active {
-    padding: 2.5px 5.5px;
-}
-
-.dock-btn:active>svg {
-    width: 21px;
-    height: 21px;
-}
-
-.dock-btn.show{
-    filter: hue-rotate(380deg) brightness(1.1);
-} */
 
 #start-btn>svg.menu{
     position: relative;
@@ -304,8 +350,8 @@ list>a:active,.tj-obj:active,#cs>list>a:active,#win-calc>.keyb>.b:active{
 #search-btn>svg.in {
     position: relative;
     display: block;
-    top: -29px;
-    left: 2.9px;
+    top: -1.81rem;
+    left: 0.2rem;
     width: 16px;
     height: 16px;
     transition: 200ms;
@@ -314,7 +360,7 @@ list>a:active,.tj-obj:active,#cs>list>a:active,#win-calc>.keyb>.b:active{
 #search-btn.show>svg.in{
     width: 18px;
     height: 18px;
-    left: 1.9px;
+    left: 0.11rem;
     top: -30px;
     filter: hue-rotate(380deg) brightness(1.1);
 }
@@ -325,8 +371,8 @@ list>a:active,.tj-obj:active,#cs>list>a:active,#win-calc>.keyb>.b:active{
     bottom: -500px;
     height: 500px;
     max-height: calc(90% - 120px);
-    width: 800px;
-    left: calc(50% - 400px);
+    width: 860px;
+    left: calc(50% - 430px);
     border-radius: 20px;
     background-color: var(--bg50);
     backdrop-filter: blur(80px) saturate(130%);
@@ -381,8 +427,8 @@ list>a:active,.tj-obj:active,#cs>list>a:active,#win-calc>.keyb>.b:active{
 }
 
 #start-menu.max>#s-m-l{
-    min-width: 250px;
-    width: 25%;
+    min-width: 300px;
+    width: 22%;
 }
 
 #s-m-l>.input {
@@ -438,9 +484,9 @@ input-before {
     display: flex;
     margin-top: 40px;
     margin-bottom: -40px;
-    transition: 200ms ease-out;
+    transition: 300ms cubic-bezier(0.4, 0.4, 0.4, 1);
     transition-delay: 200ms;
-    opacity: 0.4;
+    opacity: 0;
 }
 
 #start-menu.show>#s-m-r>.row1{
@@ -551,7 +597,7 @@ input-before {
     box-shadow: 3px 3px 6px var(--sd);
     margin-top: 60px;
     margin-bottom: -60px;
-    transition: 300ms ease-out;
+    transition: 300ms cubic-bezier(0.6, 0.6, 0.4, 1);
     transition-delay: 300ms;
     opacity: 0;
 }
@@ -589,8 +635,8 @@ input-before {
     box-shadow: 3px 3px 6px var(--sd);
     margin-top: 80px;
     margin-bottom: -80px;
-    transition: 400ms ease-out;
-    transition-delay: 400ms;
+    transition: 300ms cubic-bezier(0.6, 0.6, 0.4, 1);
+    transition-delay: 500ms;
     opacity: 0;
 }
 
@@ -688,16 +734,17 @@ input-before {
 
 #search-win>.tab>a{
     padding: 4px 7px 3px 7px;
-    margin: 0 0;
+    margin: 0 1px;
     text-align: center;
     border-radius: 10px;
     transition: 100ms;
+    cursor: pointer;
 }
 #search-win>.tab>a:hover{
-    background-color: #ffffff30;
+    background-color: var(--hover);
 }
 #search-win>.tab>a.now{
-    background-color: #ffffff30;
+    background-color: var(--hover);
 }
 #search-win>.tab>a.now::after{
     content: '';
@@ -729,14 +776,13 @@ input-before {
 #datebox{
     display: none;
     position: fixed;
-    bottom: 0px;
-    height: 300px;
+    bottom: -430px;
+    height: 430px;
     width: 350px;
     border-radius: 20px;
     background-color: var(--bg50);
     backdrop-filter: blur(80px) saturate(130%);
     -webkit-backdrop-filter: blur(80px) saturate(130%);
-    opacity: 0;
     transition: 200ms;
     box-shadow: 3px 3px 15px 1px var(--sd);
     border: 2px solid #7f7f7f10;
@@ -750,11 +796,61 @@ input-before {
 }
 
 #datebox.show {
-    height: 400px;
     display: flex;
     flex-direction: column;
     bottom: 60px;
-    opacity: 1;
+}
+
+#datebox>.tit{
+    padding: 3px 5px;
+    margin: 0;
+}
+
+#datebox>.tit>.time{
+    font-size: 50px;
+    line-height: 50px;
+}
+
+#datebox>.tit>.date{
+    margin-left: 5px;
+}
+
+#datebox>.cont{
+    width: 100%;
+    flex-grow: 1;
+}
+
+#datebox>.cont>.head{
+    width: 100%;
+    display: flex;
+}
+
+#datebox>.cont>.head>p{
+    width: 46.5px;
+    text-align: center;
+}
+
+#datebox>.cont>.body{
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: 5px;
+}
+
+#datebox>.cont>.body>*{
+    width: 46.5px;
+    height: 46.5px;
+    border-radius: 50%;
+    text-align: center;
+    padding-top: 10px;
+}
+
+#datebox>.cont>.body>p.today{
+    background: linear-gradient(120deg, #ad6eca, #3b91d8);
+    color: #eee;
+}
+
+#datebox>.cont>.body>p:hover{
+    background-color: var(--hover);
 }
 
 .input {
@@ -825,17 +921,19 @@ input-before {
     box-shadow: 3px 3px 6px 1px var(--sd);
     z-index: 101;
     border-radius: 10px;
-    background: var(--card);
+    border: 2px solid #8f8f8f50;
+    background: var(--bg70);
     backdrop-filter: blur(30px) saturate(120%);
     min-width: 200px;
     overflow: hidden;
     transition: max-height 200ms ease-in-out;
-    padding: 3px;
+    padding: 5px;
     max-height: 0;
 }
 
 #cm.show-begin{
     display: block;
+    transition: max-height 200ms ease-in-out,top 50ms,left 50ms;
 }
 
 #cm.show{
@@ -843,9 +941,10 @@ input-before {
 }
 
 #cm>list>*{
-    padding: 3px 10px;
-    transition: 100ms;
+    padding: 2px 8px;
+    transition: 80ms;
     border-radius: 8px;
+    font-size: 15px;
 }
 
 #cm>.foc{
@@ -868,10 +967,14 @@ input-before {
     font-size: 12px;
     float: right;
     padding: 4px 5px;
+    transition: 100ms;
+    outline: 0 solid var(--text);
 }
 
 .more-btn:hover {
     filter: brightness(0.94);
+    outline-width: 2px;
+    outline-offset: 1px;
 }
 
 .more-btn>.bi {
@@ -879,11 +982,11 @@ input-before {
 }
 
 .sm-app {
-    width: 72px;
+    width: 85px;
     height: 80px;
     border-radius: 10px;
     text-align: center;
-    transition: 100ms;
+    transition: 80ms;
     padding: 0 3px;
     color: #888;
     cursor: inherit;
@@ -906,14 +1009,14 @@ input-before {
     height: 34px;
     width: 34px;
     margin-top: 12px;
-    transition: 100ms;
+    transition: 80ms;
     filter: contrast(0.4) brightness(0.8);
     text-shadow: 3px 3px 5px var(--sd);
 }
 
 .sm-app>*:last-child {
     margin-top: -3px;
-    transition: 100ms;
+    transition: 80ms;
     font-size: 10px;
     line-height: 13px;
 }
@@ -968,10 +1071,11 @@ input-before {
     font-size: 10px;
     line-height: 13px;
     margin-left: 6px;
+    color: #7f7f7f;
 }
 
 .tj-obj:hover {
-    background-color: #ffffff70;
+    background-color: var(--hover);
 }
 
 list {
@@ -1016,6 +1120,7 @@ list>hr:hover {
 
 list>.text {
     margin: 0;
+    cursor:inherit;
 }
 
 list>.text:hover {
@@ -1103,18 +1208,18 @@ list>.text:hover {
     border: 2px solid #7f7f7f20;
     display: none;
     opacity: 0;
-    transition: cubic-bezier(0.9, 0, 0.1, 1) 300ms;
+    transition: cubic-bezier(0.9, 0, 0.1, 1) 200ms;
     overflow: hidden;
     box-shadow: 3px 3px 15px 1px var(--sd);
     z-index: 98;
 }
 
 .window.min{
-    height: 50px !important;
-    width: 40% !important;
-    top: calc(100% - 50px) !important;
-    left: 30% !important;
-    opacity: 0 !important;
+    height: 5% !important;
+    width: 5% !important;
+    top: calc(95%) !important;
+    left: 45% !important;
+    opacity: 0.5 !important;
 }
 
 .window.show-begin {

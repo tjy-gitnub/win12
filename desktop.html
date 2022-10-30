@@ -116,7 +116,7 @@
 					<a class="a sm-app enable" onclick="showwin('calc');hide_startmenu();">
 					<img src="icon/calc.png"><p>计算器</p></a>
 					<a class="a sm-app"><img src="icon/camera.png"><p>相机</p></a>
-					<a class="a sm-app enable jump" href="https://github.com/tjy-gitnub/win12/issues" target="_blank">
+					<a class="a sm-app enable jump" onclick="window.open('https:\/\/github.com/tjy-gitnub/win12/issues','_blank');">
 					<img src="icon/feedback.png"><p>反馈中心</p></a>
 					<a class="a sm-app"><img src="icon/defender.png"><p>Windows 安全中心</p></a>
 					<a class="a sm-app enable" onclick="showwin('about');hide_startmenu();"><img src="icon/about.png"><p>关于Win12网页版</p></a>
@@ -154,7 +154,7 @@
 		<input type="text" class="input" placeholder="在这里输入你要搜索的内容" id="search-input" oninput="
 		if(this.value.length>0){
 			let rand=['农夫山泉瓶盖简介.txt','瓶盖构造图.png','瓶盖结构说明.docx','可口可乐瓶盖.jpg','可口可乐瓶盖历史.pptx','瓶盖质量统计分析.xlsx','农夫山泉瓶盖.svg','瓶盖介绍.doc'];
-			$('#search-win>.ans>.list>list').html('<a href=\'#\'>'+rand[this.value.length%8]+'</a>'+'<a href=\'#\'>'+rand[(this.value.length+3)%8]+'</a>');
+			$('#search-win>.ans>.list>list').html('<a class=\'a\'>'+rand[this.value.length%8]+'</a>'+'<a class=\'a\'>'+rand[(this.value.length+3)%8]+'</a>');
 		}else
 			$('#search-win>.ans>.list>list').html('什么也没有')
 		$('#search-span').text(this.value);
@@ -178,9 +178,20 @@
 		</div>
 	</div>
 	<div id="datebox">
-		<div class="tit">12:00</div>
-		<div>hh</div>
+		<div class="tit">
+			<p class="time">12:29:19</p>
+			<p class="date">星期一, 2022年09月22日</p>
+			<hr>
+		</div>
+		<div class="cont">
+			<div class="head">
+				<p>一</p><p>二</p><p>三</p><p>四</p><p>五</p><p>六</p><p>日</p>
+			</div>
+			<div class="body">
+			</div>
+		</div>
 	</div>
+
 	<div id="dock-box">
 		<!-- Dock(任务)栏 -->
 		<div class="dock">
@@ -242,7 +253,7 @@
 				$('#search-input').focus();
 			}">
 				<!-- <svg viewBox="0,0,313,313" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" overflow="hidden"><defs><clipPath id="search-clip1"><rect x="288" y="257" width="313" height="313"/></clipPath><linearGradient x1="338.45" y1="228.45" x2="551.55" y2="597.55" gradientUnits="userSpaceOnUse" spreadMethod="reflect" id="search-fill1"><stop offset="0" stop-color="#2983CC"/><stop offset="0.09" stop-color="#2983CC"/><stop offset="0.34" stop-color="#A964C8"/><stop offset="0.77"/><stop offset="1"/></linearGradient></defs><g clip-path="url(#search-clip1)" transform="translate(-288 -257)"><path d="M517.98 458.696C559.356 402.228 547.127 322.905 490.667 281.524 434.207 240.143 354.896 252.373 313.521 308.841 272.145 365.309 284.374 444.631 340.833 486.012 385.458 518.719 446.139 518.698 490.74 485.959L490.721 485.959C491.306 486.739 491.93 487.48 492.632 488.201L567.702 563.282C575.316 570.902 587.664 570.907 595.283 563.292 602.902 555.677 602.906 543.327 595.293 535.707L520.223 460.626C519.526 459.921 518.776 459.269 517.98 458.676ZM523.011 383.732C523.011 442.969 474.997 490.99 415.768 490.99 356.539 490.99 308.525 442.969 308.525 383.732 308.525 324.495 356.539 276.474 415.768 276.474 474.997 276.474 523.011 324.495 523.011 383.732Z" fill="url(#search-fill1)" fill-rule="evenodd"/></g></svg> -->
-				<svg class="out" width="26" height="26" viewBox="0,0,398,406" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" overflow="hidden"><defs><clipPath id="clip-search0"><rect x="77" y="29" width="398" height="406"/></clipPath></defs><g clip-path="url(#clip-search0)" transform="translate(-77 -29)"><path d="M77 195C77 103.873 151.097 30 242.5 30 333.903 30 408 103.873 408 195 408 286.127 333.903 360 242.5 360 151.097 360 77 286.127 77 195ZM122.372 195C122.372 261.069 176.155 314.629 242.5 314.629 308.845 314.629 362.628 261.069 362.628 195 362.628 128.931 308.845 75.3717 242.5 75.3717 176.155 75.3717 122.372 128.931 122.372 195Z" fill="#595959" fill-rule="evenodd"/><path d="M329.14 331.039C317.792 319.691 317.792 301.292 329.14 289.944L329.14 289.944C340.488 278.596 358.887 278.596 370.235 289.944L465.351 385.06C476.699 396.408 476.699 414.807 465.351 426.155L465.351 426.155C454.003 437.503 435.604 437.503 424.256 426.155Z" fill="#595959" fill-rule="evenodd"/></g></svg>
+				<svg class="out" width="26" height="26" viewBox="0,0,398,406" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" overflow="hidden"><defs><clipPath id="clip-search0"><rect x="77" y="29" width="398" height="406"/></clipPath></defs><g clip-path="url(#clip-search0)" transform="translate(-77 -29)"><path style="fill: var(--text);filter:brightness(0.9);" d="M77 195C77 103.873 151.097 30 242.5 30 333.903 30 408 103.873 408 195 408 286.127 333.903 360 242.5 360 151.097 360 77 286.127 77 195ZM122.372 195C122.372 261.069 176.155 314.629 242.5 314.629 308.845 314.629 362.628 261.069 362.628 195 362.628 128.931 308.845 75.3717 242.5 75.3717 176.155 75.3717 122.372 128.931 122.372 195Z" fill-rule="evenodd"/><path style="fill: var(--text);filter:brightness(0.9);" d="M329.14 331.039C317.792 319.691 317.792 301.292 329.14 289.944L329.14 289.944C340.488 278.596 358.887 278.596 370.235 289.944L465.351 385.06C476.699 396.408 476.699 414.807 465.351 426.155L465.351 426.155C454.003 437.503 435.604 437.503 424.256 426.155Z" fill-rule="evenodd"/></g></svg>
 				<svg class="in" width="20" height="20" viewBox="0,0,245,245" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" overflow="hidden"><defs><clipPath id="clip-search1"><rect x="121" y="76" width="245" height="245"/></clipPath><linearGradient x1="99.764" y1="115.514" x2="387.236" y2="281.486" gradientUnits="userSpaceOnUse" spreadMethod="reflect" id="fill-search1"><stop offset="0" stop-color="#A964C8"/><stop offset="0.26" stop-color="#A964C8"/><stop offset="1" stop-color="#2D8AD5"/></linearGradient></defs><g clip-path="url(#clip-search1)" transform="translate(-121 -76)"><path d="M122 198.5C122 131.397 176.397 77 243.5 77 310.603 77 365 131.397 365 198.5 365 265.603 310.603 320 243.5 320 176.397 320 122 265.603 122 198.5Z" fill="url(#fill-search1)" fill-rule="evenodd"/></g></svg>
 			</a>
 		</div>
@@ -259,7 +270,7 @@
 				这也不是 Windows365 cloud PC<br>
 				本项目中微软、Windows和其他示范产品是微软公司的商标</p>
 		</div>
-		<div class="a dock date" onclick="/*if($('#datebox').hasClass('show')){
+		<div class="a dock date" onclick="if($('#datebox').hasClass('show')){
 			$('#datebox').removeClass('show');
 			setTimeout(() => {
 				$('#datebox').removeClass('show-begin');
@@ -271,7 +282,7 @@
 			setTimeout(() => {
 				$('#datebox').addClass('show');
 			}, 0);
-		}*/">
+		}">
 			<p class="time">12:34:56</p>
 			<p class="date">2022/10/01</p>
 		</div>
@@ -510,6 +521,14 @@
 			<div class="cnt update" style="display: none;">
 				<h1 class="tit"><span></span>更新记录</h1>
 				<div style="margin-left: 20px;">
+					<details><summary><span>v2.3.0</span> 开始外观优化、日历菜单、任务栏图标动画</summary>
+						<p>&emsp;&emsp;-开始菜单外观优化、更加松散<br>
+						&emsp;&emsp;-新增任务栏中的日历菜单<br>
+						&emsp;&emsp;-任务栏图标添加动画效果<br>
+						&emsp;&emsp;-窗口最小化动画优化<br>
+						&emsp;&emsp;-右键菜单的完善<br>
+						&emsp;&emsp;-细节优化和修复</p>
+					</details>
 					<details><summary><span>v2.2.0</span> 开始、搜索按钮动画，右键菜单优化，新列表点击效果</summary>
 						<p>&emsp;&emsp;-开始、搜索按钮新增点击动画<br>
 						&emsp;&emsp;-优化右键菜单<br>

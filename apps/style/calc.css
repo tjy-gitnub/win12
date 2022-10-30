@@ -28,10 +28,10 @@
     height: 71px;
     font-size: 40px;
     text-align: center;
-    transition: 100ms;
-    border-radius: 10px;
-    box-shadow: 3px 3px 5px var(--sd);
-    background: radial-gradient(circle, var(--card),var(--card));
+    transition: 80ms;
+    border-radius: 8px;
+    box-shadow: 2px 2px 4px var(--sd);
+    background: var(--card);
     padding-top: 5px;
 }
 #win-calc>.keyb>.b.u{
@@ -50,5 +50,5 @@
 }
 
 #win-calc>.keyb>.b:hover{
-    background-color: #ffffff70;
+    background-color: var(--mm);
 }
