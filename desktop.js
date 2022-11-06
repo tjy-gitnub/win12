@@ -1,4 +1,4 @@
-var version = '2.3.1';
+let updated=false,aftload=false;
 // 列表点击
 let lists = document.querySelectorAll('list>a,#cs>list>a');
 lists.forEach(la => {
@@ -35,12 +35,12 @@ let cms = {
         },
     ],
     'desktop': [
+        ['<i class="bi bi-arrow-clockwise"></i> 刷新', `$('#desktop').css('opacity','0');setTimeout(()=>{$('#desktop').css('opacity','1');},100);`],
         ['<i class="bi bi-circle-square"></i> 切换主题', 'toggletheme()'],
         ['<i class="bi bi-github"></i> 在 Github 中查看此项目', `window.open('https://github.com/tjy-gitnub/win12','_blank');`],
         ['<i class="bi bi-chat-left-text"></i> 发送反馈', `window.open('https://github.com/tjy-gitnub/win12/issues','_blank');`],
         ['<i class="bi bi-info-circle"></i> 关于 Win12 网页版', `$('#win-about>.about').show(200);$('#win-about>.update').hide();showwin('about');if($('.window.about').hasClass('min'))minwin('about');`],
-
-    ],
+        ],
     'winx': [
         function (arg) {
             if ($('#start-menu').hasClass("show"))
@@ -62,12 +62,20 @@ let cms = {
         ['<i class="bi bi-power"></i> 关机', `window.location='shutdown.html'`],
         ['<i class="bi bi-arrow-counterclockwise"></i> 重启', `window.location='reload.html'`],
     ],
+    'smapp':[
+        function(arg) {
+            return ['<i class="bi bi-window"></i> 打开', `showwin('${arg[0]}');hide_startmenu();`];
+        },
+        function(arg) {
+            return ['<i class="bi bi-link-45deg"></i> 在桌面创建链接', "$('#desktop').append(`<div class='b' ondblclick=showwin('"+arg[0]+"')><img src='icon/"+arg[0]+".png'><p>"+arg[1]+"</p></div>`)"];
+        }
+    ],
     'dockabout': [
         function (arg) {
             if (arg)
-                return ['<i class="bi bi-arrow-bar-down"></i> 收起', `$('.dock.about').removeClass('show')`]
+                return ['<i class="bi bi-arrow-bar-down"></i> 收起', `$('.dock.about').removeClass('show')`];
             else
-                return ['<i class="bi bi-arrow-bar-up"></i> 展开', `$('.dock.about').addClass('show')`]
+                return ['<i class="bi bi-arrow-bar-up"></i> 展开', `$('.dock.about').addClass('show')`];
         },
         ['<i class="bi bi-info-circle"></i> 更多信息', `$('#win-about>.about').show(200);$('#win-about>.update').hide();
         showwin('about');if($('.window.about').hasClass('min'))minwin('about');`]
@@ -89,11 +97,11 @@ function showcm(e, cl, arg) {
                 if (typeof (item) == 'function') {
                     ret = item(arg);
                     if (ret == 'null') return true;
-                    h += `<a class="a" onmousedown="${ret[1]}">${ret[0]}</a>\n`;
+                    h += `<a class="a" onclick="${ret[1]}">${ret[0]}</a>\n`;
                 } else if (typeof (item) == 'string') {
                     h += item + '\n';
                 } else {
-                    h += `<a class="a" onmousedown="${item[1]}">${item[0]}</a>\n`;
+                    h += `<a class="a" onclick="${item[1]}">${item[0]}</a>\n`;
                 }
             })
             $('#cm>list')[0].innerHTML = h;
@@ -149,6 +157,56 @@ $('#cm>.foc').blur(() => {
         $(x).removeClass('show-begin');
     }, 200);
 });
+// 下拉菜单
+dps={
+    'notepad-file':[
+        ['<i class="bi bi-file-earmark-plus"></i> 新建',`$('#win-notepad>.text-box').addClass('down');
+        setTimeout(()=>{$('#win-notepad>.text-box').val('');$('#win-notepad>.text-box').removeClass('down')},200);`],
+        ['<i class="bi bi-box-arrow-right"></i> 另存为',`$('#win-notepad>.save').attr('href','data:text/txt;,'+encodeURIComponent($('#win-notepad>.text-box').val()));
+        $('#win-notepad>.save')[0].click();`],
+        '<hr>',
+        ['<i class="bi bi-x"></i> 退出',`hidewin('notepad')`],
+    ]
+}
+function showdp(e, cl, arg) {
+    let off=$(e).offset();
+    $('#dp').css('left', off.left);
+    $('#dp').css('top', off.top+e.offsetHeight);
+    let h = '';
+    dps[cl].forEach(item => {
+        if (typeof (item) == 'function') {
+            ret = item(arg);
+            if (ret == 'null') return true;
+            h += `<a class="a" onmousedown="${ret[1]}">${ret[0]}</a>\n`;
+        } else if (typeof (item) == 'string') {
+            h += item + '\n';
+        } else {
+            h += `<a class="a" onmousedown="${item[1]}">${item[0]}</a>\n`;
+        }
+    })
+    $('#dp>list')[0].innerHTML = h;
+    $('#dp').addClass('show-begin');
+    $('#dp>.foc').focus();
+    setTimeout(() => {
+        $('#dp').addClass('show');
+    }, 0);
+    setTimeout(() => {
+        if (off.top + e.offsetHeight + $('#dp')[0].offsetHeight > $('html')[0].offsetHeight) {
+            $('#dp').css('top', off.top - $('#dp')[0].offsetHeight);
+        }
+        if (off.left + $('#dp')[0].offsetWidth > $('html')[0].offsetWidth) {
+            $('#dp').css('left', $('html')[0].offsetWidth - $('#dp')[0].offsetWidth - 5);
+        }
+    }, 200);
+}
+$('#dp>.foc').blur(() => {
+    let x = event.target.parentNode;
+    $(x).removeClass('show');
+    setTimeout(() => {
+        $(x).removeClass('show-begin');
+    }, 200);
+});
+
 // 日期、时间
 let da = new Date();
 let date = `星期${['日', '一', '二', '三', '四', '五', '六'][da.getDay()]}, ${da.getFullYear()}年${(da.getMonth() + 1).toString().padStart(2, '0')}月${da.getDate().toString().padStart(2, '0')}日`
@@ -246,15 +304,8 @@ function hide_startmenu() {
 }
 // 主题
 function toggletheme() {
-    if ($('.dock.theme>.bi').hasClass('bi-moon-fill')) {
-        $('.dock.theme>.bi').removeClass('bi-moon-fill');
-        $('.dock.theme>.bi').addClass('bi-brightness-high-fill');
-        $(':root').removeClass('dark');
-    } else {
-        $('.dock.theme>.bi').removeClass('bi-brightness-high-fill');
-        $('.dock.theme>.bi').addClass('bi-moon-fill');
-        $(':root').addClass('dark');
-    }
+    $('.dock.theme').toggleClass('dk');
+    $(':root').toggleClass('dark');
 }
 // 拖拽窗口
 const page = document.getElementsByTagName('html')[0];
@@ -301,24 +352,36 @@ for (let i = 0; i < wins.length; i++) {
         }
     })
 }
-showwin('about');
-var ca = document.cookie.split(';');
-for (var i = 0; i < ca.length; i++) {
-    var c = ca[i].trim();
-    var vi = c.substring('version='.length, c.length);
-    if (vi != version || c.indexOf('version=') != 0) {
+
+// 启动
+document.getElementsByTagName('body')[0].onload = function nupd() {
+    $('#loadback').addClass('hide'); setTimeout(() => { $('#loadback').css('display', 'none') }, 200);
+    if(updated){
+        setTimeout(() => {
+            $('.msg.update').addClass('show');
+        }, 1000);
+    }
+    aftload=true;
+};
+
+// PWA 应用
+navigator.serviceWorker.register('sw.js',{scope:'./'});
+
+navigator.serviceWorker.addEventListener('message', function (e) {
+    if(e.data=='update'){
         $('.msg.update>.main>.tit').html('<i class="bi bi-stars" style="background-image: linear-gradient(100deg, #ad6eca, #3b91d8);-webkit-background-clip: text;-webkit-text-fill-color: transparent;text-shadow:3px 3px 5px var(--sd);filter:saturate(200%) brightness(0.9);"></i> ' + $('#win-about>.cnt.update>div>details:first-child>summary').text());
         $('.msg.update>.main>.cont').html($('#win-about>.cnt.update>div>details:first-child>p').html());
-        document.cookie = "version=" + version + ";expires=Thu, 18 Dec 9999 12:00:00 GMT";
-        document.getElementsByTagName('body')[0].onload = function () {
-            $('#loadback').addClass('hide'); setTimeout(() => { $('#loadback').css('display', 'none') }, 200);
-            setTimeout(() => {
-                $('.msg.update').addClass('show');
-            }, 2000);
-        };
-    } else {
-        document.getElementsByTagName('body')[0].onload = function () {
-            $('#loadback').addClass('hide'); setTimeout(() => { $('#loadback').css('display', 'none') }, 200);
-        };
+        $('#loadbackupdate').css('display','block');
+        updated=true;
+        if(aftload){
+            $('.msg.update').addClass('show');
+        }
     }
+});
+
+
+// v3更新 清除cookie
+if(document.cookie!=''){
+    document.cookie='version=3.0.0;expires=Thu, 01 Jan 1970 00:00:00 UTC;';
+    updated=true;
 }

@@ -1,0 +1,41 @@
+#win-notepad{
+    overflow: hidden;
+}
+
+#win-notepad>.tool{
+    width: 100%;
+    height: 35px;
+    padding-top: 5px;
+}
+
+#win-notepad>.text-box{
+    border-radius: 20px 20px 0 0;
+    width: 100%;
+    border: none;
+    background-color: var(--card);
+    outline: none;
+    box-shadow: 0 -5px 5px var(--sd);
+    padding: 10px;
+    resize: none;
+    font-size: 15px;
+    line-height: 19px;
+    color: var(--text);
+    height: calc(100% - 67px);
+    transition: 200ms;
+}
+
+#win-notepad>.text-box.down{
+    transform: translate(0,100%);
+}
+
+#win-notepad>.tool>a{
+    border-radius: 10px;
+    margin: 0 0 0 5px;
+    text-align: center;
+    padding: 5px 5px;
+    transition: 100ms;
+}
+
+#win-notepad>.tool>a:hover{
+    background-color: var(--hover);
+}
