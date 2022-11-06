@@ -18,7 +18,7 @@
 更多功能还在制作之中...
 
 ## 在线体验
-[在线预览](https://tjy-gitnub.github.io/win12/start.html)
+[在线预览](https://tjy-gitnub.github.io/win12/desktop.html)
 有点慢，稍等一下
 
 ## 安装和使用

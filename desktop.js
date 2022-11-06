@@ -369,9 +369,6 @@ navigator.serviceWorker.register('sw.js',{scope:'./'});
 
 navigator.serviceWorker.addEventListener('message', function (e) {
     if(e.data=='update'){
-        $('.msg.update>.main>.tit').html('<i class="bi bi-stars" style="background-image: linear-gradient(100deg, #ad6eca, #3b91d8);-webkit-background-clip: text;-webkit-text-fill-color: transparent;text-shadow:3px 3px 5px var(--sd);filter:saturate(200%) brightness(0.9);"></i> ' + $('#win-about>.cnt.update>div>details:first-child>summary').text());
-        $('.msg.update>.main>.cont').html($('#win-about>.cnt.update>div>details:first-child>p').html());
-        $('#loadbackupdate').css('display','block');
         updated=true;
         if(aftload){
             $('.msg.update').addClass('show');
@@ -383,5 +380,8 @@ navigator.serviceWorker.addEventListener('message', function (e) {
 // v3更新 清除cookie
 if(document.cookie!=''){
     document.cookie='version=3.0.0;expires=Thu, 01 Jan 1970 00:00:00 UTC;';
+    $('.msg.update>.main>.tit').html('<i class="bi bi-stars" style="background-image: linear-gradient(100deg, #ad6eca, #3b91d8);-webkit-background-clip: text;-webkit-text-fill-color: transparent;text-shadow:3px 3px 5px var(--sd);filter:saturate(200%) brightness(0.9);"></i> ' + $('#win-about>.cnt.update>div>details:first-child>summary').text());
+    $('.msg.update>.main>.cont').html($('#win-about>.cnt.update>div>details:first-child>p').html());
+    $('#loadbackupdate').css('display','block');
     updated=true;
 }
