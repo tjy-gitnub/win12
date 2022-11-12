@@ -1,4 +1,4 @@
-let updated=false,aftload=false;
+let updated = false, aftload = false;
 // 列表点击
 let lists = document.querySelectorAll('list>a,#cs>list>a');
 lists.forEach(la => {
@@ -11,12 +11,19 @@ lists.forEach(la => {
         $(la).css('cssText', `background:radial-gradient(#00000000,#00000000);`)
     });
 });
-document.getElementsByTagName('html')[0].oncontextmenu = function (e) {
-    return false;
-}
 // 禁止拖拽图片
-$('img').on('dragstart',()=>{return false;});
+$('img').on('dragstart', () => { return false; });
 // 右键菜单
+$('html').on('contextmenu', () => {
+    return false;
+});
+function stop(e) {
+    e.stopPropagation();
+}
+$('input,textarea').on('contextmenu', (e) => {
+    stop(e);
+    return true;
+});
 let cms = {
     'titbar': [
         function (arg) {
@@ -39,8 +46,8 @@ let cms = {
         ['<i class="bi bi-circle-square"></i> 切换主题', 'toggletheme()'],
         ['<i class="bi bi-github"></i> 在 Github 中查看此项目', `window.open('https://github.com/tjy-gitnub/win12','_blank');`],
         ['<i class="bi bi-chat-left-text"></i> 发送反馈', `window.open('https://github.com/tjy-gitnub/win12/issues','_blank');`],
-        ['<i class="bi bi-info-circle"></i> 关于 Win12 网页版', `$('#win-about>.about').show(200);$('#win-about>.update').hide();showwin('about');if($('.window.about').hasClass('min'))minwin('about');`],
-        ],
+        ['<i class="bi bi-info-circle"></i> 关于 Win12 网页版', `$('#win-about>.about').show(200);$('#win-about>.update').hide();openapp('about');if($('.window.about').hasClass('min'))minwin('about');`],
+    ],
     'winx': [
         function (arg) {
             if ($('#start-menu').hasClass("show"))
@@ -53,8 +60,8 @@ let cms = {
                 }, 0);`];
         },
         '<hr>',
-        ['<i class="bi bi-gear"></i> 设置', `showwin('setting')`],
-        ['<i class="bi bi-folder2-open"></i> 文件资源管理器', `showwin('explorer')`],
+        ['<i class="bi bi-gear"></i> 设置', `openapp('setting')`],
+        ['<i class="bi bi-folder2-open"></i> 文件资源管理器', `openapp('explorer')`],
         ['<i class="bi bi-search"></i> 搜索', `$('#search-btn').addClass('show');hide_startmenu();
         $('#search-win').addClass('show-begin');setTimeout(() => {$('#search-win').addClass('show');
         $('#search-input').focus();}, 0);`],
@@ -62,12 +69,12 @@ let cms = {
         ['<i class="bi bi-power"></i> 关机', `window.location='shutdown.html'`],
         ['<i class="bi bi-arrow-counterclockwise"></i> 重启', `window.location='reload.html'`],
     ],
-    'smapp':[
-        function(arg) {
-            return ['<i class="bi bi-window"></i> 打开', `showwin('${arg[0]}');hide_startmenu();`];
+    'smapp': [
+        function (arg) {
+            return ['<i class="bi bi-window"></i> 打开', `openapp('${arg[0]}');hide_startmenu();`];
         },
-        function(arg) {
-            return ['<i class="bi bi-link-45deg"></i> 在桌面创建链接', "$('#desktop').append(`<div class='b' ondblclick=showwin('"+arg[0]+"')><img src='icon/"+arg[0]+".png'><p>"+arg[1]+"</p></div>`)"];
+        function (arg) {
+            return ['<i class="bi bi-link-45deg"></i> 在桌面创建链接', "$('#desktop').append(`<div class='b' ondblclick=openapp('" + arg[0] + "')><img src='icon/" + arg[0] + ".png'><p>" + arg[1] + "</p></div>`)"];
         }
     ],
     'dockabout': [
@@ -78,13 +85,21 @@ let cms = {
                 return ['<i class="bi bi-arrow-bar-up"></i> 展开', `$('.dock.about').addClass('show')`];
         },
         ['<i class="bi bi-info-circle"></i> 更多信息', `$('#win-about>.about').show(200);$('#win-about>.update').hide();
-        showwin('about');if($('.window.about').hasClass('min'))minwin('about');`]
+        openapp('about');if($('.window.about').hasClass('min'))minwin('about');`]
     ],
     'msgupdate': [
-        ['<i class="bi bi-layout-text-window-reverse"></i> 查看详细', `showwin('about');if($('.window.about').hasClass('min'))
+        ['<i class="bi bi-layout-text-window-reverse"></i> 查看详细', `openapp('about');if($('.window.about').hasClass('min'))
         minwin('about');$('#win-about>.update').show(200);$('#win-about>.about').hide();
         $('#win-about>.update>div>details:first-child').attr('open','open')`],
         ['<i class="bi bi-box-arrow-right"></i> 关闭', `$('.msg.update').removeClass('show')`]
+    ],
+    'explorer.content': [
+        ['<i class="bi bi-arrow-clockwise"></i> 刷新', `$('#win-explorer>.main>.content>.view').css('opacity','0');setTimeout(()=>{$('#win-explorer>.main>.content>.view').css('opacity','1');},100);`],
+    ],
+    'explorer.folder': [
+        (arg) => {
+            return ['<i class="bi bi-folder2-open"></i> 打开', `apps.explorer.goto('${arg}')`];
+        }
     ]
 }
 function showcm(e, cl, arg) {
@@ -97,11 +112,11 @@ function showcm(e, cl, arg) {
                 if (typeof (item) == 'function') {
                     ret = item(arg);
                     if (ret == 'null') return true;
-                    h += `<a class="a" onclick="${ret[1]}">${ret[0]}</a>\n`;
+                    h += `<a class="a" onmousedown="${ret[1]}">${ret[0]}</a>\n`;
                 } else if (typeof (item) == 'string') {
                     h += item + '\n';
                 } else {
-                    h += `<a class="a" onclick="${item[1]}">${item[0]}</a>\n`;
+                    h += `<a class="a" onmousedown="${item[1]}">${item[0]}</a>\n`;
                 }
             })
             $('#cm>list')[0].innerHTML = h;
@@ -149,6 +164,7 @@ function showcm(e, cl, arg) {
             $('#cm').css('left', $('html')[0].offsetWidth - $('#cm')[0].offsetWidth - 5);
         }
     }, 200);
+    return false;
 }
 $('#cm>.foc').blur(() => {
     let x = event.target.parentNode;
@@ -158,20 +174,44 @@ $('#cm>.foc').blur(() => {
     }, 200);
 });
 // 下拉菜单
-dps={
-    'notepad-file':[
-        ['<i class="bi bi-file-earmark-plus"></i> 新建',`$('#win-notepad>.text-box').addClass('down');
+dps = {
+    'notepad.file': [
+        ['<i class="bi bi-file-earmark-plus"></i> 新建', `hidedp();$('#win-notepad>.text-box').addClass('down');
         setTimeout(()=>{$('#win-notepad>.text-box').val('');$('#win-notepad>.text-box').removeClass('down')},200);`],
-        ['<i class="bi bi-box-arrow-right"></i> 另存为',`$('#win-notepad>.save').attr('href','data:text/txt;,'+encodeURIComponent($('#win-notepad>.text-box').val()));
+        ['<i class="bi bi-box-arrow-right"></i> 另存为', `hidedp();$('#win-notepad>.save').attr('href','data:text/txt;,'+encodeURIComponent($('#win-notepad>.text-box').val()));
         $('#win-notepad>.save')[0].click();`],
         '<hr>',
-        ['<i class="bi bi-x"></i> 退出',`hidewin('notepad')`],
+        ['<i class="bi bi-x"></i> 退出', `hidedp();hidewin('notepad')`],
+    ],
+    'notepad.edit': [
+        ['<i class="bi bi-files"></i> 复制 <info>Ctrl+C</info>', ''],
+        ['<i class="bi bi-clipboard"></i> 粘贴 <info>Ctrl+V</info>', ''],
+        ['<i class="bi bi-scissors"></i> 剪切 <info>Ctrl+X</info>', ''],
+        '<hr>',
+        ['<i class="bi bi-arrow-return-left"></i> 撤销 <info>Ctrl+Z</info>', ''],
+        ['<i class="bi bi-arrow-clockwise"></i> 重做 <info>Ctrl+Y</info>', ''],
     ]
 }
+dpt = null;
 function showdp(e, cl, arg) {
-    let off=$(e).offset();
+    if ($('#dp').hasClass('show-begin')) {
+        $('#dp').removeClass('show');
+        setTimeout(() => {
+            $('#dp').removeClass('show-begin');
+            $(dpt).removeClass('showdp');
+        }, 200);
+        if (e != dpt) {
+            setTimeout(() => {
+                showdp(e, cl, arg);
+            }, 400);
+        }
+        return;
+    }
+    dpt = e;
+    $(e).addClass('showdp');
+    let off = $(e).offset();
     $('#dp').css('left', off.left);
-    $('#dp').css('top', off.top+e.offsetHeight);
+    $('#dp').css('top', off.top + e.offsetHeight);
     let h = '';
     dps[cl].forEach(item => {
         if (typeof (item) == 'function') {
@@ -186,7 +226,6 @@ function showdp(e, cl, arg) {
     })
     $('#dp>list')[0].innerHTML = h;
     $('#dp').addClass('show-begin');
-    $('#dp>.foc').focus();
     setTimeout(() => {
         $('#dp').addClass('show');
     }, 0);
@@ -199,13 +238,112 @@ function showdp(e, cl, arg) {
         }
     }, 200);
 }
-$('#dp>.foc').blur(() => {
-    let x = event.target.parentNode;
-    $(x).removeClass('show');
+function hidedp() {
+    $('#dp').removeClass('show');
     setTimeout(() => {
-        $(x).removeClass('show-begin');
+        $('#dp').removeClass('show-begin');
     }, 200);
-});
+    $(dpt).css('background-color', 'unset');
+}
+// 应用
+let apps = {
+    setting: {
+        init: () => { }
+    },
+    explorer: {
+        init: () => {
+            apps.explorer.reset();
+        },
+        reset: () => {
+            $('#win-explorer>.main>.content>.view')[0].innerHTML = `<style>#win-explorer>.main>.content>.view>.class{margin-left: 20px;display: flex;}
+            #win-explorer>.main>.content>.view>.class>img{width: 20px;height: 20px;margin-top: 3px;margin-right: 5px;filter:brightness(0.9);}
+            #win-explorer>.main>.content>.view>.group{display: flex;flex-wrap: wrap;padding: 10px 20px;}
+            #win-explorer>.main>.content>.view>.group>.item{width: 280px;margin: 5px;height:  80px;
+                background: radial-gradient(circle, var(--card),var(--card));border-radius: 10px;transition: 100ms;display: flex;}
+            #win-explorer>.main>.content>.view>.group>.item:hover{background-color: var(--hover);}
+            #win-explorer>.main>.content>.view>.group>.item>img{width: 55px;height: 55px;margin-top: 18px;margin-left: 10px;}
+            #win-explorer>.main>.content>.view>.group>.item>div{flex-grow: 1;padding: 5px 5px 0 0;}
+            #win-explorer>.main>.content>.view>.group>.item>div>.bar{width: calc(100% - 10px);height: 8px;border-radius: 10px;
+                background-color: var(--hover-b);margin: 5px 5px;}
+            #win-explorer>.main>.content>.view>.group>.item>div>.bar>.content{height: 100%;background-image: linear-gradient(90deg, #ad6eca, #4998d9);
+                border-radius: 10px;}
+            #win-explorer>.main>.content>.view>.group>.item>div>.info{color: #959595;font-size: 14px;}</style>
+            <p class="class"><img src="apps/icons/explorer/disk.png"> 设备和驱动器</p><div class="group">
+            <a class="a item" ondblclick="apps.explorer.goto('C:')" oncontextmenu="stop(event);return showcm(event,'explorer.folder','C:')">
+            <img src="apps/icons/explorer/diskwin.png"><div><p class="name">本地磁盘 (C:)</p>
+            <div class="bar"><div class="content" style="width: 88%;"></div>
+            </div><p class="info">32.6 GB 可用, 共 143 GB</p></div></a><a class="a item" ondblclick="apps.explorer.goto('D:')"
+            oncontextmenu="stop(event);return showcm(event,'explorer.folder','D:')">
+            <img src="apps/icons/explorer/disk.png"><div><p class="name">本地磁盘 (D:)</p><div class="bar"><div class="content" style="width: 15%;"></div>
+            </div><p class="info">185.3 GB 可用, 共 216 GB</p></div></a></div>`;
+            $('#win-explorer>.main>.content>.tool>.tit')[0].innerHTML = '此电脑';
+        },
+        goto: (path) => {
+            $('#win-explorer>.main>.content>.view')[0].innerHTML = '';
+            pathl = path.split('/');
+            let tmp = apps.explorer.path;
+            pathl.forEach(name => {
+                tmp = tmp[name];
+            });
+            if (tmp == null) {
+                $('#win-explorer>.main>.content>.view')[0].innerHTML = '<p class="info">此文件夹为空。</p>';
+            } else {
+                let ht = '';
+                for (folder in tmp) {
+                    ht += `<a class="a item" ondblclick="apps.explorer.goto('${path}/${folder}')" oncontextmenu="stop(event);return showcm(event,'explorer.folder','${path}/${folder}')">
+                        <img src="apps/icons/explorer/folder.png">${folder}</a>`;
+                }
+                $('#win-explorer>.main>.content>.view')[0].innerHTML = ht;
+            }
+            if (pathl.length == 1) {
+                $('#win-explorer>.main>.content>.tool>.goback').attr('onclick', 'apps.explorer.reset()');
+            } else {
+                $('#win-explorer>.main>.content>.tool>.goback').attr('onclick', `apps.explorer.goto('${path.substring(0, path.length - pathl[pathl.length - 1].length - 1)}')`);
+            }
+            $('#win-explorer>.main>.content>.tool>.tit')[0].innerHTML = path;
+        },
+        path: {
+            'C:': {
+                'Program Files': {
+                    'WindowsApps': null, 'Microsoft': null,
+                },
+                'Windows': {
+                    'Boot': null, 'System': null, 'System32': null
+                },
+                '用户': {
+                    'Administrator': {
+                        '文档': { 'IISExpress': null, 'PowerToys': null }, '图片': { '本机照片': null, '屏幕截图': null },
+                        'AppData': null, '音乐': { '录音机': null }
+                    }
+                }
+            },
+            'D:': {
+                'Microsoft': null,
+            }
+        }
+    },
+    calc: {
+        init: () => {
+            $('#calc-input').val('');
+        }
+    },
+    about: {
+        init: () => {
+            $('#win-about>.about').show();
+            $('#win-about>.update').hide();
+        }
+    },
+    notepad: {
+        init: () => {
+            $('#win-notepad>.text-box').addClass('down');
+            setTimeout(() => {
+                $('#win-notepad>.text-box').val('');
+                $('#win-notepad>.text-box').removeClass('down')
+            }, 200);
+        }
+    }
+}
+
 
 // 日期、时间
 let da = new Date();
@@ -235,16 +373,25 @@ for (let i = 1; i <= daysum; i++) {
     }
     $('#datebox>.cont>.body')[0].innerHTML += `<p>${i}</p>`;
 }
-// 窗口操作
-function showwin(name) {
+function openapp(name) {
     if ($('#taskbar>.' + name).length != 0) return;
-    $('.window.' + name).addClass('show-begin');
+    $('.window.' + name).addClass('load');
+    showwin(name);
     $('#taskbar').attr('count', Number($('#taskbar').attr('count')) + 1)
     $('#taskbar').html(`${$('#taskbar').html()}<a class="${name}" onclick="minwin(\'${name}\')"><img src="icon/${name}.png"></a>`);
     if ($('#taskbar').attr('count') == '1') $('#taskbar').css('display', 'flex');
     setTimeout(() => {
         $('#taskbar').css('width', 10 + $('#taskbar').attr('count') * 34);
     }, 0);
+    apps[name].init();
+    setTimeout(() => {
+        $('.window.' + name).removeClass('load');
+    }, 1000);
+
+}
+// 窗口操作
+function showwin(name) {
+    $('.window.' + name).addClass('show-begin');
     setTimeout(() => { $('.window.' + name).addClass('show'); }, 0);
     setTimeout(() => { $('.window.' + name).addClass('notrans'); }, 200);
     $('.window.' + name).attr('style', `top: 10%;left: 15%;`);
@@ -356,32 +503,36 @@ for (let i = 0; i < wins.length; i++) {
 // 启动
 document.getElementsByTagName('body')[0].onload = function nupd() {
     $('#loadback').addClass('hide'); setTimeout(() => { $('#loadback').css('display', 'none') }, 200);
-    if(updated){
+    if (updated) {
         setTimeout(() => {
             $('.msg.update').addClass('show');
         }, 1000);
     }
-    aftload=true;
+    aftload = true;
 };
 
 // PWA 应用
-navigator.serviceWorker.register('sw.js',{scope:'./'});
+navigator.serviceWorker.register('sw.js', { scope: './' });
+
+navigator.serviceWorker.controller.postMessage('update?');
 
 navigator.serviceWorker.addEventListener('message', function (e) {
-    if(e.data=='update'){
-        updated=true;
-        if(aftload){
-            $('.msg.update').addClass('show');
+    if (e.data == 'update') {
+        updated = true;
+        $('.msg.update>.main>.tit').html('<i class="bi bi-stars" style="background-image: linear-gradient(100deg, #ad6eca, #3b91d8);-webkit-background-clip: text;-webkit-text-fill-color: transparent;text-shadow:3px 3px 5px var(--sd);filter:saturate(200%) brightness(0.9);"></i> ' + $('#win-about>.cnt.update>div>details:first-child>summary').text());
+        $('.msg.update>.main>.cont').html($('#win-about>.cnt.update>div>details:first-child>p').html());
+        $('#loadbackupdate').css('display', 'block');
+        if (aftload) {
+            console.log('aftload');
         }
     }
 });
 
-
-// v3更新 清除cookie
-if(document.cookie!=''){
-    document.cookie='version=3.0.0;expires=Thu, 01 Jan 1970 00:00:00 UTC;';
+// 清除cookie
+if (document.cookie != '') {
+    document.cookie = 'version=0.0.0;expires=Thu, 01 Jan 1970 00:00:00 UTC;';
     $('.msg.update>.main>.tit').html('<i class="bi bi-stars" style="background-image: linear-gradient(100deg, #ad6eca, #3b91d8);-webkit-background-clip: text;-webkit-text-fill-color: transparent;text-shadow:3px 3px 5px var(--sd);filter:saturate(200%) brightness(0.9);"></i> ' + $('#win-about>.cnt.update>div>details:first-child>summary').text());
     $('.msg.update>.main>.cont').html($('#win-about>.cnt.update>div>details:first-child>p').html());
-    $('#loadbackupdate').css('display','block');
-    updated=true;
+    $('#loadbackupdate').css('display', 'block');
+    updated = true;
 }

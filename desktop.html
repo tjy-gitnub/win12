@@ -44,6 +44,7 @@
 		</loading><script>setTimeout(() => {document.getElementById('loadbacksvg').style.opacity=1;
 		document.getElementById('loadbackloading').style.opacity=1;}, 100);</script>
 	</div>
+	<!-- <img src="https://bing.com/th?id=OHR.Trossachs_ZH-CN9299955040_UHD.jpg&qlt=100" alt=""> -->
 	<script src="./jq.min.js"></script>
 	<!-- 预加载设置图标 -->
 	<p style="font-family: SettingsIcons;">&nbsp;</p>
@@ -64,14 +65,16 @@
 			<input-before class="bi bi-search"></input-before>
 			<list>
 				<p class="text">可用</p>
-				<a onclick="showwin('setting');hide_startmenu();">
-				<img src="icon/setting.png"><p>设置</p></a>
-				<a onclick="showwin('explorer');hide_startmenu();">
-				<img src="icon/explorer.png"><p>文件资源管理器</p></a>
-				<a onclick="showwin('calc');hide_startmenu();">
-				<img src="icon/calc.png"><p>计算器</p></a>
-				<a onclick="showwin('about');hide_startmenu();">
+				<a onclick="openapp('setting');hide_startmenu();">
+					<img src="icon/setting.png"><p>设置</p></a>
+				<a onclick="openapp('explorer');hide_startmenu();">
+					<img src="icon/explorer.png"><p>文件资源管理器</p></a>
+				<a onclick="openapp('calc');hide_startmenu();">
+					<img src="icon/calc.png"><p>计算器</p></a>
+				<a onclick="openapp('about');hide_startmenu();">
 					<img src="icon/about.png"><p>关于Win12网页版</p></a>
+				<a onclick="openapp('notepad');hide_startmenu();">
+					<img src="icon/notepad.png"><p>记事本</p></a>
 				<p class="text">其它</p>
 				<a><img src="icon/camera.png"><p>相机</p></a>
 			</list>
@@ -79,9 +82,12 @@
 		<div id="s-m-r">
 			<div class="row1">
 				<div class="folder">
-					<a class="a sm-app"><img src="icon/folder/docs.png"><p>文档</p></a>
-					<a class="a sm-app"><img src="icon/folder/pics.png"><p>图片</p></a>
-					<a class="a sm-app"><img src="icon/folder/music.png"><p>音乐</p></a></div>
+					<a class="a sm-app enable" onclick="openapp('explorer');apps.explorer.goto('C:/用户/Administrator/文档');
+						hide_startmenu();"><img src="icon/folder/docs.png"><p>文档</p></a>
+					<a class="a sm-app enable" onclick="openapp('explorer');apps.explorer.goto('C:/用户/Administrator/图片');
+						hide_startmenu();"><img src="icon/folder/pics.png"><p>图片</p></a>
+					<a class="a sm-app enable" onclick="openapp('explorer');apps.explorer.goto('C:/用户/Administrator/音乐');
+						hide_startmenu();"><img src="icon/folder/music.png"><p>音乐</p></a></div>
 				<div class="tool">
 					<p style="font-size: 40px;margin-bottom: -10px;" class="time">12:00</p>
 					<p class="date">星期一, 2368年13月34日</p>
@@ -115,19 +121,19 @@
 					</div>
 				</div>
 				<div class="apps">
-					<a class="a sm-app enable" onclick="showwin('calc');hide_startmenu();" oncontextmenu="showcm(event,'smapp',['calc','计算器'])">
+					<a class="a sm-app enable" onclick="openapp('calc');hide_startmenu();" oncontextmenu="return showcm(event,'smapp',['calc','计算器'])">
 						<img src="icon/calc.png"><p>计算器</p></a>
 					<a class="a sm-app"><img src="icon/camera.png"><p>相机</p></a>
 					<a class="a sm-app enable jump" onclick="window.open('https:\/\/github.com/tjy-gitnub/win12/issues','_blank');">
 						<img src="icon/feedback.png"><p>反馈中心</p></a>
 					<a class="a sm-app"><img src="icon/defender.png"><p>Windows 安全中心</p></a>
-					<a class="a sm-app enable" onclick="showwin('about');hide_startmenu();" oncontextmenu="showcm(event,'smapp',['about','关于 Win12 网页版'])">
+					<a class="a sm-app enable" onclick="openapp('about');hide_startmenu();" oncontextmenu="return showcm(event,'smapp',['about','关于 Win12 网页版'])">
 						<img src="icon/about.png"><p>关于Win12网页版</p></a>
-					<a class="a sm-app enable" onclick="showwin('explorer');hide_startmenu();" oncontextmenu="showcm(event,'smapp',['explorer','文件资源管理器'])">
+					<a class="a sm-app enable" onclick="openapp('explorer');hide_startmenu();" oncontextmenu="return showcm(event,'smapp',['explorer','文件资源管理器'])">
 						<img src="icon/explorer.png"><p>文件资源管理器</p></a>
-					<a class="a sm-app enable" onclick="showwin('notepad');hide_startmenu();" oncontextmenu="showcm(event,'smapp',['notepad','记事本'])">
+					<a class="a sm-app enable" onclick="openapp('notepad');hide_startmenu();" oncontextmenu="return showcm(event,'smapp',['notepad','记事本'])">
 						<img src="icon/notepad.png"><p>记事本</p></a>
-					<a class="a sm-app enable" onclick="showwin('setting');hide_startmenu();" oncontextmenu="showcm(event,'smapp',['setting','设置'])">
+					<a class="a sm-app enable" onclick="openapp('setting');hide_startmenu();" oncontextmenu="return showcm(event,'smapp',['setting','设置'])">
 						<img src="icon/setting.png"><p>设置 </p></a>
 					<a class="a sm-app"><img src="icon/store.png"><p>Microsoft Store</p></a>
 					<a class="a sm-app"><img src="icon/taskmanager.png"><p>任务管理器</p></a>
@@ -216,7 +222,7 @@
 					setTimeout(() => {
 						$('#start-menu').addClass('show');
 					}, 0);
-				}" oncontextmenu="showcm(event,'winx',null)">
+				}" oncontextmenu="return showcm(event,'winx',null)">
 				<!-- 开始按钮 -->
 					<svg class="menu" viewBox="0,0,440,439" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" overflow="hidden"><defs><clipPath id="clip-start1"><rect x="134" y="59" width="440" height="439"/></clipPath></defs><g clip-path="url(#clip-start1)" transform="translate(-134 -59)"><path d="M233.479 67.5001 475.521 67.5001C525.767 67.5001 566.5 108.233 566.5 158.479L566.5 490.5 142.5 490.5 142.5 158.479C142.5 108.233 183.233 67.5001 233.479 67.5001Z" stroke="#7F7F7F" stroke-width="14.6667" stroke-linecap="round" stroke-miterlimit="8" fill="#A6A6A6" fill-rule="evenodd"/><path d="M208.5 132.5 334.716 132.5" stroke="#D9D9D9" stroke-width="14.6667" stroke-linecap="round" stroke-miterlimit="8" fill="none" fill-rule="evenodd"/><path d="M208.5 175.5 386.34 175.5" stroke="#D9D9D9" stroke-width="14.6667" stroke-linecap="round" stroke-miterlimit="8" fill="none" fill-rule="evenodd"/><path d="M208.5 221.5 271.608 221.5" stroke="#D9D9D9" stroke-width="14.6667" stroke-linecap="round" stroke-miterlimit="8" fill="none" fill-rule="evenodd"/></g></svg>
 			
@@ -262,7 +268,7 @@
 		</div>
 		<div class="dock" id="taskbar" style="display: none;" count="0">
 		</div>
-		<div class="dock about" oncontextmenu="showcm(event,'dockabout',$(this).hasClass('show'))"
+		<div class="dock about" oncontextmenu="return showcm(event,'dockabout',$(this).hasClass('show'))"
 			onclick="if($(this).hasClass('show')){$(this).removeClass('show')}else{$(this).addClass('show')}">
 			Windows 12 网页版 谭景元原创
 			<p>Windows 12 网页版是一个开放源项目,<br>
@@ -294,16 +300,16 @@
 			<p class="date">2022/10/01</p>
 		</div>
 	</div>
-	<div id="desktop" oncontextmenu="showcm(event,'desktop',null)">
-		<div ondblclick="showwin('explorer');">
+	<div id="desktop" oncontextmenu="return showcm(event,'desktop',null)">
+		<div ondblclick="openapp('explorer');">
 			<img src="apps/icons/explorer/thispc.png" title="显示连接到此计算机的驱动器和硬件。">
 			<p>此电脑</p>
 		</div>
-		<div class="b" ondblclick="showwin('setting');">
+		<div class="b" ondblclick="openapp('setting');">
 			<img src="icon/setting.png">
 			<p>设置</p>
 		</div>
-		<div class="b" ondblclick="showwin('about');">
+		<div class="b" ondblclick="openapp('about');">
 			<img src="icon/about.png">
 			<p>关于 Win12 网页版</p>
 		</div>
@@ -314,19 +320,21 @@
 		</list>
 	</div>
 	<div id="dp">
-		<input class="foc">
 		<list>
 		</list>
 	</div>
 	<div id="window-fill"></div>
 	<div class="window setting">
-		<div class="titbar" oncontextmenu="showcm(event,'titbar','setting')">
+		<div class="titbar" oncontextmenu="return showcm(event,'titbar','setting')" ondblclick="maxwin('setting')">
 			<img src="icon/setting.png" class="icon"><p>设置</p>
 			<div>
 				<a class="a wbtg red" onclick="hidewin('setting')"><i class="bi bi-x-lg"></i></a>
 				<a class="a wbtg max" onclick="maxwin('setting')"><i class="bi bi-app"></i></a>
 				<a class="a wbtg" onclick="minwin('setting')"><i class="bi bi-dash-lg"></i></a>
 			</div>
+		</div>
+		<div class="loadback">
+			<img src="icon/setting.png" class="icon">
 		</div>
 		<div class="content" id="win-setting">
 			<div class="menu">
@@ -385,7 +393,7 @@
 		</div>
 	</div>
 	<div class="window explorer">
-		<div class="titbar" oncontextmenu="showcm(event,'titbar','explorer')">
+		<div class="titbar" oncontextmenu="return showcm(event,'titbar','explorer')" ondblclick="maxwin('explorer')">
 			<img src="icon/explorer.png" class="icon">
 			<p>文件资源管理器</p>
 			<div>
@@ -394,6 +402,9 @@
 				<a class="a wbtg" onclick="minwin('explorer')"><i class="bi bi-dash-lg"></i></a>
 			</div>
 		</div>
+		<div class="loadback">
+			<img src="icon/explorer.png" class="icon">
+		</div>
 		<div class="content" id="win-explorer">
 			<div class="menu">
 				<div class="card pinned">
@@ -401,7 +412,7 @@
 					<list>
 						<a><img src="apps/icons/explorer/qa.png">快速访问</a>
 						<a><img src="apps/icons/explorer/od.png">OneDrive</a>
-						<a class="check"><span
+						<a class="check" onclick="apps.explorer.reset();"><span
 							style="background:linear-gradient(180deg, #ad6eca, #3b91d8);width:4px;height: 19px;border-radius: 10px;margin-left: -12px;margin-right: 8px;margin-top: 1px;"></span>
 							<img src="apps/icons/explorer/thispc.png">此电脑</a>
 						<a><img src="apps/icons/explorer/rb.png">回收站</a>
@@ -430,47 +441,26 @@
 					<a class="a b t"><img src="apps/icons/explorer/tool-sort.png">排序方式</a>
 					<a class="a b t"><img src="apps/icons/explorer/tool-view.png">布局</a>
 				</div>
-				<div class="content">
+				<div class="content" oncontextmenu="return showcm(event,'explorer.content',null);">
 					<div class="tool">
 						<a class="a btn btn-icon"><i class="bi bi-arrow-left"></i></a>
 						<a class="a btn btn-icon"><i class="bi bi-arrow-right"></i></a>
-						<a class="a btn btn-icon"><i class="bi bi-arrow-up"></i></a>
-						<p class="tit"><img src="apps/icons/explorer/thispc.png">此电脑</p>
+						<a class="a btn btn-icon goback"><i class="bi bi-arrow-up"></i></a>
+						<p class="tit">此电脑</p>
 						<div class="search">
 							<input type="text" class="input" placeholder="在这里输入你要搜索的内容">
 							<input-before class="bi bi-search"></input-before>
 						</div>
 					</div>
-					<p class="title">此电脑</p>
-					<p class="class"><img src="apps/icons/explorer/disk.png"> 设备和驱动器</p>
-					<div class="group">
-						<a class="a item">
-							<img src="apps/icons/explorer/diskwin.png">
-							<div>
-								<p class="name">本地磁盘 (C:)</p>
-								<div class="bar">
-									<div class="content" style="width: 88%;"></div>
-								</div>
-								<p class="info">32.6 GB 可用, 共 143 GB</p>
-							</div>
-						</a>
-						<a class="a item">
-							<img src="apps/icons/explorer/disk.png">
-							<div>
-								<p class="name">本地磁盘 (D:)</p>
-								<div class="bar">
-									<div class="content" style="width: 15%;"></div>
-								</div>
-								<p class="info">185.3 GB 可用, 共 216 GB</p>
-							</div>
-						</a>
+					<div class="view">
+						<!-- 文件列表  -->
 					</div>
 				</div>
 			</div>
 		</div>
 	</div>
 	<div class="window calc">
-		<div class="titbar" oncontextmenu="showcm(event,'titbar','calc')">
+		<div class="titbar" oncontextmenu="return showcm(event,'titbar','calc')">
 			<img src="icon/calc.png" class="icon">
 			<p>计算器</p>
 			<div>
@@ -478,6 +468,9 @@
 				<a class="a wbtg max" style="pointer-events: none;color: #777;"><i class="bi bi-app"></i></a>
 				<a class="a wbtg" onclick="minwin('calc')"><i class="bi bi-dash-lg"></i></a>
 			</div>
+		</div>
+		<div class="loadback">
+			<img src="icon/calc.png" class="icon">
 		</div>
 		<div class="content" id="win-calc">
 			<input id="calc-input" value="">
@@ -506,7 +499,7 @@
 		</div>
 	</div>
 	<div class="window about">
-		<div class="titbar" oncontextmenu="showcm(event,'titbar','about')">
+		<div class="titbar" oncontextmenu="return showcm(event,'titbar','about')" ondblclick="maxwin('about')">
 			<img src="icon/about.png" class="icon">
 			<p>关于 Windows12 网页版</p>
 			<div>
@@ -514,6 +507,9 @@
 				<a class="a wbtg max" onclick="maxwin('about')"><i class="bi bi-app"></i></a>
 				<a class="a wbtg" onclick="minwin('about')"><i class="bi bi-dash-lg"></i></a>
 			</div>
+		</div>
+		<div class="loadback">
+			<img src="icon/about.png" class="icon">
 		</div>
 		<div class="content" id="win-about">
 			<div class="menu">
@@ -543,6 +539,19 @@
 			<div class="cnt update" style="display: none;">
 				<h1 class="tit"><span></span>更新记录</h1>
 				<div style="margin-left: 20px;">
+					<details><summary><span>v3.1.0</span> 增加文件浏览功能，一些新功能</summary>
+						<p>&emsp;&emsp;-文件资源管理器浏览功能<br>
+						&emsp;&emsp;-对PWA更新的优化<br>
+						&emsp;&emsp;-文件资源管理器右键菜单<br>
+						&emsp;&emsp;-增加应用启动的加载动画<br>
+						&emsp;&emsp;-增加应用启动初始化<br>
+						&emsp;&emsp;-记事本新增"编辑"菜单<br>
+						&emsp;&emsp;-下拉菜单整体优化<br>
+						&emsp;&emsp;-右键菜单优化<br>
+						&emsp;&emsp;-在输入框中允许浏览器的右键菜单<br>
+						&emsp;&emsp;-双击窗口标题栏最大化<br>
+						&emsp;&emsp;-细节优化和修复</p>
+					</details>
 					<details><summary><span>v3.0.0</span> 桌面图标、记事本、可安装到电脑</summary>
 						<p>&emsp;&emsp;-可以在Edge、Chrome等主流浏览器中将Win12安装为pwa应用¹<br>
 						&emsp;&emsp;-新增桌面图标，并增加桌面右键菜单"刷新"功能<br>
@@ -655,7 +664,7 @@
 		</div>
 	</div>
 	<div class="window notepad">
-		<div class="titbar" oncontextmenu="showcm(event,'titbar','notepad')">
+		<div class="titbar" oncontextmenu="return showcm(event,'titbar','notepad')" ondblclick="maxwin('notepad')">
 			<img src="icon/notepad.png" class="icon">
 			<p>记事本</p>
 			<div>
@@ -664,16 +673,20 @@
 				<a class="a wbtg" onclick="minwin('notepad')"><i class="bi bi-dash-lg"></i></a>
 			</div>
 		</div>
+		<div class="loadback">
+			<img src="icon/notepad.png" class="icon">
+		</div>
 		<div class="content" id="win-notepad">
 			<div class="tool">
-				<a class="a" onclick="showdp(this,'notepad-file',null)">文件</a>
+				<a class="a" onclick="showdp(this,'notepad.file',null)">文件</a>
+				<a class="a" onclick="showdp(this,'notepad.edit',null)">编辑</a>
 			</div>
 			<textarea class="text-box"></textarea>
 			<a href="" download="未命名.txt" style="opacity: 0;" class="save">另存为</a>
 		</div>
 	</div>
-	<div class="msg update" oncontextmenu="showcm(event,'msgupdate',null)">
-		<div class="main"onclick="showwin('about');if($('.window.about').hasClass('min'))minwin('about');
+	<div class="msg update" oncontextmenu="return showcm(event,'msgupdate',null)">
+		<div class="main"onclick="openapp('about');if($('.window.about').hasClass('min'))minwin('about');
 			$('#win-about>.update').show(200);$('#win-about>.about').hide();
 			$('#win-about>.update>div>details:first-child').attr('open','open')">
 			<p class="tit"></p>

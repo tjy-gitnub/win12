@@ -1,45 +1,51 @@
-let version='v3.0.0';
+let version = 'v3.1.0';
 this.addEventListener('fetch', function (event) {
-    event.respondWith(
-      caches.match(event.request).then(res => {
-        return res ||
-          fetch(event.request)
-            .then(responese => {
-              const responeseClone = responese.clone();
-              caches.open(version).then(cache => {
-                cache.put(event.request, responeseClone);
-              })
-              return responese;
+  event.respondWith(
+    caches.match(event.request).then(res => {
+      return res ||
+        fetch(event.request)
+          .then(responese => {
+            const responeseClone = responese.clone();
+            caches.open(version).then(cache => {
+              cache.put(event.request, responeseClone);
             })
-            .catch(err => {
-              console.log(err);
-            });
-      })
-    )
+            return responese;
+          })
+          .catch(err => {
+            console.log(err);
+          });
+    })
+  )
 });
 const cacheNames = [version];
-let flag=false;
+let flag = false;
 this.addEventListener('activate', function (event) {
-    event.waitUntil(
-        caches.keys().then(keys => {
-            return Promise.all[keys.map(key => {
-                if (!cacheNames.includes(key)) {
-                    setTimeout(() => {
-                    this.clients.matchAll().then(client => {
-						console.log(client);
-						while (true) {
-							try{
-							client[0].postMessage('update');
-							break;
-							}catch(TypeError){
-							console.log('error');
-							}
-						}
-                    });
-                    }, 2000);
-                    return caches.delete(key);
-                }
-            })]
-        })
-    );
+  event.waitUntil(
+    caches.keys().then(keys => {
+      return Promise.all[keys.map(key => {
+        if (!cacheNames.includes(key)) {
+          flag = true;
+          return caches.delete(key);
+        }
+      })]
+    })
+  );
+  event.waitUntil(
+    caches.open(version).then(function (cache) {
+			return cache.addAll([
+				'apps/icons/explorer/disk.png',
+				'apps/icons/explorer/diskwin.png',
+				'apps/icons/explorer/folder.png'
+			]);
+		})
+  );
+});
+
+this.addEventListener('message', function (e) {
+  if (e.data == 'update?') {
+    if (flag) {
+      e.source.postMessage('update');
+      flag = false;
+    }
+  }
 });
