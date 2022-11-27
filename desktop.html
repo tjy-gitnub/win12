@@ -187,6 +187,66 @@
 			</div>
 		</div>
 	</div>
+	<div id="widgets">
+		<div class="widgets">
+			<div class="bar">
+				<p class="tit">小组件</p>
+			</div>
+			<div class="content">
+				<!-- <div class="wg calc">
+					<div class="titbar">
+						<a class="a more" onclick="$('.wg.calc>.titbar>.menu').toggleClass('show')"><i class="bi bi-three-dots"></i></a>
+						<div class="menu">
+							<a class="a img">
+								<img src="icon/calc.png">
+							</a>
+							<a class="a"><i class="bi bi-arrows-move"></i></a>
+							<a class="a"><i class="bi bi-menu-app"></i></a>
+							<a class="a"><i class="bi bi-trash"></i></a>
+						</div>
+					</div>
+				</div> -->
+				<p style="grid-column: 2/5;grid-row: 2;font-size: 20px; color: #8f8f8fbf;text-align: center;">将于下一个版本推出</p>
+			</div>
+		</div>
+		<span class="hr"></span>
+		<div class="news">
+			<div class="bar">
+				<p class="tit">新闻</p>
+				<p style="flex-grow: 1;text-align: end;color: #7f7f7f;margin-right: 5px;margin-top: 2px;">注意: 新闻内容均不属实 </p>
+			</div>
+			<div class="content">
+				<div class="card" style="grid-column: 1/6;grid-row: 1/3;color: #fff;background: var(--bgul);background-position:-50px -370px;background-size: 150%;">
+					<p class="tit" style="font-size: 22px;margin: 110px 0 0 30px;">Windows12 网页版 v3.2.0 发布</p>
+					<a class="a" style="margin: 5px 0 0 250px;font-size: 17px;color: #9dd0fb;" onclick="hide_widgets();
+					openapp('about');if($('.window.about').hasClass('min'))minwin('about');
+					$('#win-about>.update').show(200);$('#win-about>.about').hide();
+					$('#win-about>.update>div>details:first-child').attr('open','open')">详细信息 ></a>
+				</div>
+				<div class="card" style="grid-column: 1/4;grid-row: 3/5;background:url(https://www.apple.com.cn/v/macos/ventura/a/images/router/compatible_devices__d5lgp6ypklua_large.jpg) center;background-size: cover;">
+					<p class="tit" style="font-size: 19px;margin: 50px 0 0 10px;color: #fff;">Windows13 即将发布，官方透露: 将自带 Macos 子系统</p>
+					<a class="a" style="margin: 5px 0 0 130px;font-size: 17px;color: #9dd0fb;">详细信息 ></a>
+				</div>
+				<div class="card" style="grid-column: 4/6;grid-row: 3/5;background:linear-gradient(#00000000,var(--bg) 70%),url(https://img-prod-cms-rt-microsoft-com.akamaized.net/cms/api/am/imageFileData/RE5aS2Y) center;background-size: cover;">
+					<p class="tit" style="font-size: 19px;margin: 100px 0 0 10px;">Windows11 将于下周停止支持</p>
+					<a class="a" style="margin: 5px 0 0 80px;font-size: 17px;">详细信息 ></a>
+				</div>
+				<div class="card" style="grid-column: 1/3;grid-row: 5/7;background:linear-gradient(#00000000,var(--bg) 70%),url(http://t1.roadlady.com/uploads/allimg/2109/124JL644-1.png) bottom;background-size: cover;">
+					<p class="tit" style="font-size: 19px;margin: 75px 0 0 10px;">美国一小孩做核酸被捅死，背后原因究竟为何</p>
+					<a class="a" style="margin: 0 0 0 80px;font-size: 17px;">详细信息 ></a>
+				</div>
+				<div class="card" style="grid-column: 3/6;grid-row: 5/8;background:linear-gradient(#00000000 0 30%,var(--bg) 95%),url(http://bkimg.cdn.bcebos.com/pic/728da9773912b31b87c632978e18367adbb4e1e2) bottom;background-size: cover;">
+					<p class="tit" style="font-size: 19px;margin: 210px 0 -20px 10px;">中国宇航员谭景元昨天下午成功登月</p>
+					<a class="a" style="margin: 0 0 0 170px;font-size: 17px;">详细信息 ></a>
+				</div>
+				<div class="card" style="grid-column: 1/3;grid-row: 7/9;background:#171b22;">
+					<p class="tit" style="font-size: 19px;margin: 50px 0 0 10px;color: #fff;">想给新闻增加更多奇思妙想? <br>快在github上来提交吧</p>
+					<a class="a" style="margin: 10px 0 0 70px;font-size: 17px;color: #9dd0fb;" onclick="
+					window.open('https://github.com/tjy-gitnub/win12/issues','_blank');">提交issues ></a>
+				</div>
+			</div>
+		</div>
+	</div>
 	<div id="datebox">
 		<div class="tit">
 			<p class="time">12:29:19</p>
@@ -217,7 +277,9 @@
 						setTimeout(() => {
 							$('#search-win').removeClass('show-begin');
 						}, 200);
+						hide_widgets();
 					}
+					if($('#widgets').hasClass('show'))hide_widgets();
 					$('#start-menu').addClass('show-begin');
 					setTimeout(() => {
 						$('#start-menu').addClass('show');
@@ -255,7 +317,8 @@
 			}
 			else{
 				$('#search-btn').addClass('show');
-				hide_startmenu();
+				if($('#start-menu').hasClass('show'))hide_startmenu();
+				if($('#widgets').hasClass('show'))hide_widgets();
 				$('#search-win').addClass('show-begin');
 				setTimeout(() => {
 					$('#search-win').addClass('show');
@@ -264,6 +327,31 @@
 			}">
 				<svg class="out" width="26" height="26" viewBox="0,0,398,406" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" overflow="hidden"><defs><clipPath id="clip-search0"><rect x="77" y="29" width="398" height="406"/></clipPath></defs><g clip-path="url(#clip-search0)" transform="translate(-77 -29)"><path style="fill: var(--text);filter:brightness(0.9);" d="M77 195C77 103.873 151.097 30 242.5 30 333.903 30 408 103.873 408 195 408 286.127 333.903 360 242.5 360 151.097 360 77 286.127 77 195ZM122.372 195C122.372 261.069 176.155 314.629 242.5 314.629 308.845 314.629 362.628 261.069 362.628 195 362.628 128.931 308.845 75.3717 242.5 75.3717 176.155 75.3717 122.372 128.931 122.372 195Z" fill-rule="evenodd"/><path style="fill: var(--text);filter:brightness(0.9);" d="M329.14 331.039C317.792 319.691 317.792 301.292 329.14 289.944L329.14 289.944C340.488 278.596 358.887 278.596 370.235 289.944L465.351 385.06C476.699 396.408 476.699 414.807 465.351 426.155L465.351 426.155C454.003 437.503 435.604 437.503 424.256 426.155Z" fill-rule="evenodd"/></g></svg>
 				<svg class="in" width="20" height="20" viewBox="0,0,245,245" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" overflow="hidden"><defs><clipPath id="clip-search1"><rect x="121" y="76" width="245" height="245"/></clipPath><linearGradient x1="99.764" y1="115.514" x2="387.236" y2="281.486" gradientUnits="userSpaceOnUse" spreadMethod="reflect" id="fill-search1"><stop offset="0" stop-color="#A964C8"/><stop offset="0.26" stop-color="#A964C8"/><stop offset="1" stop-color="#2D8AD5"/></linearGradient></defs><g clip-path="url(#clip-search1)" transform="translate(-121 -76)"><path d="M122 198.5C122 131.397 176.397 77 243.5 77 310.603 77 365 131.397 365 198.5 365 265.603 310.603 320 243.5 320 176.397 320 122 265.603 122 198.5Z" fill="url(#fill-search1)" fill-rule="evenodd"/></g></svg>
+			</a>
+			<a class="dock-btn" id="widgets-btn" onclick="
+			if($('#widgets').hasClass('show')){
+				hide_widgets();
+			}
+			else{
+				$('#widgets-btn').addClass('show');
+				if($('#search-win').hasClass('show')){
+					$('#search-btn').removeClass('show');
+					$('#search-win').removeClass('show');
+					setTimeout(() => {
+						$('#search-win').removeClass('show-begin');
+					}, 200);
+				}
+				if($('#start-menu').hasClass('show'))hide_startmenu();
+				$('#widgets').addClass('show-begin');
+				setTimeout(() => {
+					$('#widgets').addClass('show');
+				}, 0);
+				$('#widgets-input').focus();
+			}">
+				<svg viewBox="0,0,464,464" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" overflow="hidden" class="wid1"><defs><clipPath id="wid1-clip0"><rect x="655" y="70" width="464" height="464"/></clipPath><linearGradient x1="613.849" y1="144.008" x2="1161.15" y2="459.992" gradientUnits="userSpaceOnUse" spreadMethod="reflect" id="wid1-fill1"><stop offset="0" stop-color="#A964C8"/><stop offset="0.26" stop-color="#A964C8"/><stop offset="1" stop-color="#2D8AD5"/></linearGradient></defs><g clip-path="url(#wid1-clip0)" transform="translate(-655 -70)"><path d="M656 187.928C656 123.35 708.35 71 772.928 71L1002.07 71C1066.65 71 1119 123.35 1119 187.928L1119 416.072C1119 480.65 1066.65 533 1002.07 533L772.928 533C708.35 533 656 480.65 656 416.072Z" fill="url(#wid1-fill1)" fill-rule="evenodd"/></g></svg>
+				<svg viewBox="0,0,207,226" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" overflow="hidden" class="wid2"><defs><clipPath id="wid2-clip0"><rect x="316" y="202" width="207" height="226"/></clipPath><linearGradient x1="344.945" y1="185.866" x2="494.055" y2="444.134" gradientUnits="userSpaceOnUse" spreadMethod="reflect" id="wid2-fill1"><stop offset="0" stop-color="#11CCF1"/><stop offset="0.13" stop-color="#11CCF1"/><stop offset="1" stop-color="#2983CC"/></linearGradient></defs><g clip-path="url(#wid2-clip0)" transform="translate(-316 -202)"><path d="M317 260.165C317 228.041 343.041 202 375.165 202L463.835 202C495.959 202 522 228.041 522 260.165L522 369.835C522 401.959 495.959 428 463.835 428L375.165 428C343.041 428 317 401.959 317 369.835Z" fill="url(#wid2-fill1)" fill-rule="evenodd"/><path d="M349.5 249.5 393.5 249.5" stroke="#FFFFFF" stroke-width="14.6667" stroke-linecap="round" stroke-miterlimit="8" fill="none" fill-rule="evenodd"/><path d="M349.5 286.5 464.5 286.5" stroke="#FFFFFF" stroke-width="14.6667" stroke-linecap="round" stroke-miterlimit="8" fill="none" fill-rule="evenodd"/><path d="M349.5 323.5 422.5 323.5" stroke="#FFFFFF" stroke-width="14.6667" stroke-linecap="round" stroke-miterlimit="8" fill="none" fill-rule="evenodd"/></g></svg>
+				<svg viewBox="0,0,180,394" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" overflow="hidden" class="wid3"><defs><clipPath id="wid3-clip0"><rect x="111" y="202" width="180" height="394"/></clipPath><linearGradient x1="93.038" y1="212.37" x2="307.962" y2="584.63" gradientUnits="userSpaceOnUse" spreadMethod="reflect" id="wid3-fill1"><stop offset="0" stop-color="#E062D7"/><stop offset="0.13" stop-color="#E062D7"/><stop offset="1" stop-color="#A266E4"/></linearGradient></defs><g clip-path="url(#wid3-clip0)" transform="translate(-111 -202)"><path d="M111 265.803C111 230.565 139.565 202 174.803 202L226.197 202C261.435 202 290 230.565 290 265.803L290 531.197C290 566.435 261.435 595 226.197 595L174.803 595C139.565 595 111 566.435 111 531.197Z" fill="url(#wid3-fill1)" fill-rule="evenodd"/><path d="M144.5 250.5 217.5 250.5" stroke="#FFFFFF" stroke-width="14.6667" stroke-linecap="round" stroke-miterlimit="8" fill="none" fill-rule="evenodd"/><path d="M144.5 287.5 184.246 287.5" stroke="#FFFFFF" stroke-width="14.6667" stroke-linecap="round" stroke-miterlimit="8" fill="none" fill-rule="evenodd"/><path d="M144.5 324.5 230.931 324.5" stroke="#FFFFFF" stroke-width="14.6667" stroke-linecap="round" stroke-miterlimit="8" fill="none" fill-rule="evenodd"/></g></svg>
+				<svg viewBox="0,0,206,152" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" overflow="hidden" class="wid4"><defs><clipPath id="wid4-clip0"><rect x="317" y="444" width="206" height="152"/></clipPath><linearGradient x1="361.399" y1="419.366" x2="477.601" y2="620.634" gradientUnits="userSpaceOnUse" spreadMethod="reflect" id="wid4-fill1"><stop offset="0" stop-color="#D854CB"/><stop offset="0.13" stop-color="#D854CB"/><stop offset="1" stop-color="#A266E4"/></linearGradient></defs><g clip-path="url(#wid4-clip0)" transform="translate(-317 -444)"><path d="M317 498.466C317 468.938 340.938 445 370.466 445L468.534 445C498.062 445 522 468.938 522 498.466L522 541.534C522 571.062 498.062 595 468.534 595L370.466 595C340.938 595 317 571.062 317 541.534Z" fill="url(#wid4-fill1)" fill-rule="evenodd"/><path d="M356.5 548.5C370.917 521.094 385.333 493.688 400.5 492.521 415.667 491.355 434 538.837 447.5 541.503 461 544.168 479.417 520.386 481.5 508.515" stroke="#FFFFFF" stroke-width="14.6667" stroke-linecap="round" stroke-miterlimit="8" fill="none" fill-rule="evenodd"/></g></svg>
 			</a>
 		</div>
 		<div class="dock" id="taskbar" style="display: none;" count="0">
@@ -473,28 +561,28 @@
 			<img src="icon/calc.png" class="icon">
 		</div>
 		<div class="content" id="win-calc">
-			<input id="calc-input" value="">
+			<input id="calc-input" value="" onkeydown="if(event.keyCode == 13)$('#win-calc>.keyb>.ans').click()">
 			<div class="keyb">
-				<a class="a b" onClick="document.getElementById('calc-input').value*=document.getElementById('calc-input').value">𝑥²</a>
-				<a class="a b" onClick="document.getElementById('calc-input').value=Math.sqrt(document.getElementById('calc-input').value)">√𝑥</a>
-				<a class="a b" onClick="document.getElementById('calc-input').value=''">C</a>
-				<a class="a b u" onClick="document.getElementById('calc-input').value+='+'">+</a>
-				<a class="a b" onClick="document.getElementById('calc-input').value+='7'">7</a>
-				<a class="a b" onClick="document.getElementById('calc-input').value+='8'">8</a>
-				<a class="a b" onClick="document.getElementById('calc-input').value+='9'">9</a>
-				<a class="a b u" onClick="document.getElementById('calc-input').value+='-'">-</a>
-				<a class="a b" onClick="document.getElementById('calc-input').value+='4'">4</a>
-				<a class="a b" onClick="document.getElementById('calc-input').value+='5'">5</a>
-				<a class="a b" onClick="document.getElementById('calc-input').value+='6'">6</a>
-				<a class="a b u" onClick="document.getElementById('calc-input').value+='*'">×</a>
-				<a class="a b" onClick="document.getElementById('calc-input').value+='1'">1</a>
-				<a class="a b" onClick="document.getElementById('calc-input').value+='2'">2</a>
-				<a class="a b" onClick="document.getElementById('calc-input').value+='3'">3</a>
-				<a class="a b u" onClick="document.getElementById('calc-input').value+='/'">÷</a>
-				<a class="a b" onClick="document.getElementById('calc-input').value+='.'">.</a>
-				<a class="a b" onClick="document.getElementById('calc-input').value+='0'">0</a>
-				<a class="a b" onClick="document.getElementById('calc-input').value=document.getElementById('calc-input').value.substring(0,document.getElementById('calc-input').value.length-1);"><i class="bi bi-backspace"></i></a>
-				<a class="a b ans u" onClick="document.getElementById('calc-input').value=eval(document.getElementById('calc-input').value)"> =</a>
+				<a class="a b" onclick="$('#calc-input')[0].value*=$('#calc-input').val()">𝑥²</a>
+				<a class="a b" onclick="$('#calc-input').val(Math.sqrt($('#calc-input').val()))">√𝑥</a>
+				<a class="a b" onclick="$('#calc-input')[0].value=''">C</a>
+				<a class="a b u" onclick="apps.calc.add('+')">+</a>
+				<a class="a b" onclick="apps.calc.add('7')">7</a>
+				<a class="a b" onclick="apps.calc.add('8')">8</a>
+				<a class="a b" onclick="apps.calc.add('9')">9</a>
+				<a class="a b u" onclick="apps.calc.add('-')">-</a>
+				<a class="a b" onclick="apps.calc.add('4')">4</a>
+				<a class="a b" onclick="apps.calc.add('5')">5</a>
+				<a class="a b" onclick="apps.calc.add('6')">6</a>
+				<a class="a b u" onclick="apps.calc.add('*')">×</a>
+				<a class="a b" onclick="apps.calc.add('1')">1</a>
+				<a class="a b" onclick="apps.calc.add('2')">2</a>
+				<a class="a b" onclick="apps.calc.add('3')">3</a>
+				<a class="a b u" onclick="apps.calc.add('/')">÷</a>
+				<a class="a b" onclick="apps.calc.add('.')">.</a>
+				<a class="a b" onclick="apps.calc.add('0')">0</a>
+				<a class="a b" onclick="$('#calc-input').val($('#calc-input')[0].value.substring(0,$('#calc-input')[0].value.length-1));"><i class="bi bi-backspace"></i></a>
+				<a class="a b ans u" onclick="$('#calc-input')[0].value=eval($('#calc-input')[0].value)"> =</a>
 			</div>
 		</div>
 	</div>
@@ -539,6 +627,14 @@
 			<div class="cnt update" style="display: none;">
 				<h1 class="tit"><span></span>更新记录</h1>
 				<div style="margin-left: 20px;">
+					<details><summary><span>v3.2.0</span> 增加小组件菜单</summary>
+						<p>&emsp;&emsp;-增加了小组件(资讯和兴趣)菜单<br>
+						&emsp;&emsp;-小组件菜单中的新闻内容<br>
+						&emsp;&emsp;-小组件按钮动画效果<br>
+						&emsp;&emsp;-应用窗口标题栏样式新增<br>
+						&emsp;&emsp;-对计算器的计算代码的精简<br>
+						&emsp;&emsp;-细节优化和修复</p>
+					</details>
 					<details><summary><span>v3.1.0</span> 增加文件浏览功能，一些新功能</summary>
 						<p>&emsp;&emsp;-文件资源管理器浏览功能<br>
 						&emsp;&emsp;-对PWA更新的优化<br>
@@ -686,7 +782,7 @@
 		</div>
 	</div>
 	<div class="msg update" oncontextmenu="return showcm(event,'msgupdate',null)">
-		<div class="main"onclick="openapp('about');if($('.window.about').hasClass('min'))minwin('about');
+		<div class="main" onclick="openapp('about');if($('.window.about').hasClass('min'))minwin('about');
 			$('#win-about>.update').show(200);$('#win-about>.about').hide();
 			$('#win-about>.update>div>details:first-child').attr('open','open')">
 			<p class="tit"></p>

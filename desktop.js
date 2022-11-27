@@ -325,6 +325,9 @@ let apps = {
     calc: {
         init: () => {
             $('#calc-input').val('');
+        },
+        add: (arg) => {
+            $('#calc-input')[0].value += arg;
         }
     },
     about: {
@@ -443,11 +446,16 @@ function minwin(name) {
         setTimeout(() => { $('.window.' + name).removeClass('show-begin'); }, 200);
     }
 }
-// 开始菜单
+// 菜单隐藏
 function hide_startmenu() {
     $('#start-menu').removeClass('show');
     $('#start-btn').removeClass('show');
     setTimeout(() => { $('#start-menu').removeClass('show-begin'); }, 200);
+}
+function hide_widgets() {
+    $('#widgets').removeClass('show');
+    $('#widgets-btn').removeClass('show');
+    setTimeout(() => { $('#widgets').removeClass('show-begin'); }, 200);
 }
 // 主题
 function toggletheme() {
@@ -485,20 +493,20 @@ for (let i = 0; i < wins.length; i++) {
     titbar.addEventListener('mousedown', (e) => {
         deltaLeft = e.clientX - win.offsetLeft;
         deltaTop = e.clientY - win.offsetTop;
-        page.addEventListener('mousemove', win_move);
-    })
-    page.addEventListener('mouseup', () => {
-        page.removeEventListener('mousemove', win_move);
-        if (fil) {
-            maxwin(fil.classList[1]);
-            fil = false;
-            setTimeout(() => {
-                $('#window-fill').removeClass('fill');
-                $('#window-fill').removeClass('top');
-            }, 200);
-        }
+        page.onmousemove=win_move;
     })
 }
+page.addEventListener('mouseup', () => {
+    page.onmousemove=null
+    if (fil) {
+        maxwin(fil.classList[1]);
+        fil = false;
+        setTimeout(() => {
+            $('#window-fill').removeClass('fill');
+            $('#window-fill').removeClass('top');
+        }, 200);
+    }
+})
 
 // 启动
 document.getElementsByTagName('body')[0].onload = function nupd() {
