@@ -1,6 +1,6 @@
 # Windows 12 网页版
 
-> 开学了，更新频率降低，感谢支持
+> 版本3每一次更新都是功能更新，所以约每2周更新一次，感谢支持
 
 ## 前言
 最近看到 Windows 12 概念版(Power by PowerPoint)后深受启发，决定做一个Windows12网页版，就像 [Windows 11 网页版](https://win11.blueedge.me/)一样。
@@ -22,4 +22,4 @@
 有点慢，稍等一下
 
 ## 安装和使用
-下载代码，无需安装，打开start.html即可
+下载代码，无需安装，打开desktop.html即可
