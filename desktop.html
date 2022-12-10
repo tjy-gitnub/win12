@@ -21,6 +21,7 @@
 	<link rel="stylesheet" href="apps/style/calc.css">
 	<link rel="stylesheet" href="apps/style/about.css">
 	<link rel="stylesheet" href="apps/style/notepad.css">
+	<link rel="stylesheet" href="widgets.css">
 	<link rel="manifest" href="pwa/manifest.json">
 	<base target="_blank">
 </head>
@@ -55,7 +56,7 @@
 				<svg viewBox="0,0,257,344" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" overflow="hidden"><defs><clipPath id="user-clip0"><rect x="382" y="195" width="257" height="344"/></clipPath><linearGradient x1="351.462" y1="233.56" x2="669.496" y2="500.422" gradientUnits="userSpaceOnUse" spreadMethod="reflect" id="user-fill1"><stop offset="0" stop-color="#A964C8"/><stop offset="0.35" stop-color="#A964C8"/><stop offset="0.87" stop-color="#2D8AD5"/><stop offset="1" stop-color="#2D8AD5"/></linearGradient><linearGradient x1="351.462" y1="233.56" x2="669.496" y2="500.422" gradientUnits="userSpaceOnUse" spreadMethod="reflect" id="user-fill2"><stop offset="0" stop-color="#A964C8"/><stop offset="0.35" stop-color="#A964C8"/><stop offset="0.87" stop-color="#2D8AD5"/><stop offset="1" stop-color="#2D8AD5"/></linearGradient></defs><g clip-path="url(#user-clip0)" transform="translate(-382 -195)"><path d="M637.755 433.872C642.215 515.221 579.577 537.983 508.011 537.983 436.444 537.983 376.676 507.833 383.513 437.11 383.109 425.234 389.59 414.133 398.634 409.891 413.82 402.768 444.753 402.936 507.484 402.997 570.214 403.058 609.164 402.279 621.521 407.947 633.878 413.614 638.011 424.609 637.755 433.872Z" fill="url(#user-fill1)" fill-rule="evenodd"/><path d="M422 285C422 235.847 461.623 196 510.5 196 559.377 196 599 235.847 599 285 599 334.153 559.377 374 510.5 374 461.623 374 422 334.153 422 285Z" fill="url(#user-fill2)" fill-rule="evenodd"/></g></svg>
 			</div>
 			<p style="width: 100%;text-align: center;margin: -50px 0 20px 0;font-size: 30px;">Administartor</p>
-			<input type="text" class="input" alt="hi" placeholder="在这里输入你要搜索的内容" onfocus="hide_startmenu();
+			<input type="text" class="input" title="搜索" placeholder="在这里输入你要搜索的内容" onfocus="hide_startmenu();
 				$('#search-btn').addClass('show');
 				$('#search-win').addClass('show-begin');
 				setTimeout(() => {
@@ -91,12 +92,12 @@
 				<div class="tool">
 					<p style="font-size: 40px;margin-bottom: -10px;" class="time">12:00</p>
 					<p class="date">星期一, 2368年13月34日</p>
-					<a class="a btn btn-icon power" onclick="$(this).addClass('show')">
+					<a class="a btn btn-icon power" title="电源" onclick="$(this).addClass('show')">
 						<span class="bi bi-power"></span>
 						<i class="bi bi-power" onclick="$('#start-menu').removeClass('show');
-						setTimeout(() => {window.location='shutdown.html';},200);"></i>
+						setTimeout(() => {window.location='shutdown.html';},200);" title="关机"></i>
 						<i class="bi bi-arrow-counterclockwise" onclick="$('#start-menu').removeClass('show');
-						setTimeout(() => {window.location='reload.html';},200);"></i>
+						setTimeout(() => {window.location='reload.html';},200);" title="重启"></i>
 					</a>
 					<a class="a btn btn-icon big" onclick="
 					if($('#start-menu').hasClass('max')){
@@ -187,33 +188,66 @@
 			</div>
 		</div>
 	</div>
+	<script>
+		// $('').add()
+	</script>
 	<div id="widgets">
 		<div class="widgets">
 			<div class="bar">
 				<p class="tit">小组件</p>
+				<button onclick="widgets.widgets.add('calc')" class="a act btn btn-icon big" style="background: linear-gradient(100deg, #ad6ecaee, #3b91d8ee);color:#fff;"><i class="bi bi-plus-lg"></i></button>
 			</div>
 			<div class="content">
-				<!-- <div class="wg calc">
-					<div class="titbar">
-						<a class="a more" onclick="$('.wg.calc>.titbar>.menu').toggleClass('show')"><i class="bi bi-three-dots"></i></a>
-						<div class="menu">
-							<a class="a img">
-								<img src="icon/calc.png">
-							</a>
-							<a class="a"><i class="bi bi-arrows-move"></i></a>
-							<a class="a"><i class="bi bi-menu-app"></i></a>
-							<a class="a"><i class="bi bi-trash"></i></a>
+				<div class="template">
+					<div class="calc">
+						<div class="wg calc">
+							<div class="titbar">
+								<a title="更多" class="a more" onclick="$('.wg.calc>.titbar>.menu').toggleClass('show')"><i class="bi bi-three-dots"></i></a>
+								<div class="menu">
+									<a title="打开应用" class="a img" onclick="$('.wg.calc>.titbar>.menu').removeClass('show');hide_widgets();openapp('calc')">
+										<img src="icon/calc.png">
+									</a>
+									<a class="a" title="移动 (不可用)"><i class="bi bi-arrows-move"></i></a>
+									<a class="a" title="添加到桌面 (不可用)"><i class="bi bi-menu-app"></i></a>
+									<a class="a" title="删除" onclick="$('.wg.calc>.titbar>.menu').removeClass('show');widgets.widgets.remove('calc')"><i class="bi bi-trash"></i></a>
+								</div>
+							</div>
+							<div class="content">
+								<input value="" onkeydown="if(event.keyCode == 13)$('*:not(.template)>*>.wg.calc>.content>.keyb>.ans').click()">
+								<a style="grid-area: pow;" class="b" onclick="$('*:not(.template)>*>.wg.calc>.content>input')[0].value*=$('*:not(.template)>*>.wg.calc>.content>input').val()">𝑥²</a>
+								<a style="grid-area: sqrt;" class="b" onclick="$('*:not(.template)>*>.wg.calc>.content>input').val(Math.sqrt($('*:not(.template)>*>.wg.calc>.content>input').val()))">√𝑥</a>
+								<a style="grid-area: c;" class="b" onclick="$('*:not(.template)>*>.wg.calc>.content>input')[0].value=''">C</a>
+								<a style="grid-area: jia;" class="b u" onclick="widgets.calc.add('+')">+</a>
+								<a style="grid-area: n7;" class="b" onclick="widgets.calc.add('7')">7</a>
+								<a style="grid-area: n8;" class="b" onclick="widgets.calc.add('8')">8</a>
+								<a style="grid-area: n9;" class="b" onclick="widgets.calc.add('9')">9</a>
+								<a style="grid-area: jian;" class="b u" onclick="widgets.calc.add('-')">-</a>
+								<a style="grid-area: n4;" class="b" onclick="widgets.calc.add('4')">4</a>
+								<a style="grid-area: n5;" class="b" onclick="widgets.calc.add('5')">5</a>
+								<a style="grid-area: n6;" class="b" onclick="widgets.calc.add('6')">6</a>
+								<a style="grid-area: cheng;" class="b u" onclick="widgets.calc.add('*')">×</a>
+								<a style="grid-area: n1;" class="b" onclick="widgets.calc.add('1')">1</a>
+								<a style="grid-area: n2;" class="b" onclick="widgets.calc.add('2')">2</a>
+								<a style="grid-area: n3;" class="b" onclick="widgets.calc.add('3')">3</a>
+								<a style="grid-area: chu;" class="b u" onclick="widgets.calc.add('/')">÷</a>
+								<a style="grid-area: dot;" class="b" onclick="widgets.calc.add('.')">.</a>
+								<a style="grid-area: n0;" class="b" onclick="widgets.calc.add('0')">0</a>
+								<a style="grid-area: back;" class="b" onclick="$('*:not(.template)>*>.wg.calc>.content>input').val($('*:not(.template)>*>.wg.calc>.content>input')[0].value.substring(0,$('*:not(.template)>*>.wg.calc>.content>input')[0].value.length-1));"><i class="bi bi-backspace"></i></a>
+								<a style="grid-area: ans;" class="b ans u" onclick="$('*:not(.template)>*>.wg.calc>.content>input')[0].value=eval($('*:not(.template)>*>.wg.calc>.content>input')[0].value)"> =</a>
+							</div>
 						</div>
 					</div>
-				</div> -->
-				<p style="grid-column: 2/5;grid-row: 2;font-size: 20px; color: #8f8f8fbf;text-align: center;">将于下一个版本推出</p>
+				</div>
+				<div class="grid">
+
+				</div>
 			</div>
 		</div>
 		<span class="hr"></span>
 		<div class="news">
 			<div class="bar">
 				<p class="tit">新闻</p>
-				<p style="flex-grow: 1;text-align: end;color: #7f7f7f;margin-right: 5px;margin-top: 2px;">注意: 新闻内容均不属实 </p>
+				<p style="color: #7f7f7f;margin-right: 5px;margin-top: 2px;">注意: 新闻内容均不属实 </p>
 			</div>
 			<div class="content">
 				<div class="card" style="grid-column: 1/6;grid-row: 1/3;color: #fff;background: var(--bgul);background-position:-50px -370px;background-size: 150%;">
@@ -223,25 +257,25 @@
 					$('#win-about>.update').show(200);$('#win-about>.about').hide();
 					$('#win-about>.update>div>details:first-child').attr('open','open')">详细信息 ></a>
 				</div>
-				<div class="card" style="grid-column: 1/4;grid-row: 3/5;background:url(https://www.apple.com.cn/v/macos/ventura/a/images/router/compatible_devices__d5lgp6ypklua_large.jpg) center;background-size: cover;">
+				<div class="card" style="grid-column: 1/4;grid-row: 3/5;background:url(img/win13.jpg) center;background-size: cover;">
 					<p class="tit" style="font-size: 19px;margin: 50px 0 0 10px;color: #fff;">Windows13 即将发布，官方透露: 将自带 Macos 子系统</p>
 					<a class="a" style="margin: 5px 0 0 130px;font-size: 17px;color: #9dd0fb;">详细信息 ></a>
 				</div>
-				<div class="card" style="grid-column: 4/6;grid-row: 3/5;background:linear-gradient(#00000000,var(--bg) 70%),url(https://img-prod-cms-rt-microsoft-com.akamaized.net/cms/api/am/imageFileData/RE5aS2Y) center;background-size: cover;">
+				<div class="card" style="grid-column: 4/6;grid-row: 3/5;background:linear-gradient(#00000000,var(--bg) 70%),url(img/win11.jpg) center;background-size: cover;">
 					<p class="tit" style="font-size: 19px;margin: 100px 0 0 10px;">Windows11 将于下周停止支持</p>
 					<a class="a" style="margin: 5px 0 0 80px;font-size: 17px;">详细信息 ></a>
 				</div>
-				<div class="card" style="grid-column: 1/3;grid-row: 5/7;background:linear-gradient(#00000000,var(--bg) 70%),url(http://t1.roadlady.com/uploads/allimg/2109/124JL644-1.png) bottom;background-size: cover;">
+				<div class="card" style="grid-column: 1/3;grid-row: 5/7;background:linear-gradient(#00000000,var(--bg) 70%),url(img/hs.jpg) bottom;background-size: cover;">
 					<p class="tit" style="font-size: 19px;margin: 75px 0 0 10px;">美国一小孩做核酸被捅死，背后原因究竟为何</p>
 					<a class="a" style="margin: 0 0 0 80px;font-size: 17px;">详细信息 ></a>
 				</div>
-				<div class="card" style="grid-column: 3/6;grid-row: 5/8;background:linear-gradient(#00000000 0 30%,var(--bg) 95%),url(http://bkimg.cdn.bcebos.com/pic/728da9773912b31b87c632978e18367adbb4e1e2) bottom;background-size: cover;">
+				<div class="card" style="grid-column: 3/6;grid-row: 5/8;background:linear-gradient(#00000000 0 30%,var(--bg) 95%),url(img/yq.jpg) bottom;background-size: cover;">
 					<p class="tit" style="font-size: 19px;margin: 210px 0 -20px 10px;">中国宇航员谭景元昨天下午成功登月</p>
 					<a class="a" style="margin: 0 0 0 170px;font-size: 17px;">详细信息 ></a>
 				</div>
 				<div class="card" style="grid-column: 1/3;grid-row: 7/9;background:#171b22;">
 					<p class="tit" style="font-size: 19px;margin: 50px 0 0 10px;color: #fff;">想给新闻增加更多奇思妙想? <br>快在github上来提交吧</p>
-					<a class="a" style="margin: 10px 0 0 70px;font-size: 17px;color: #9dd0fb;" onclick="
+					<a class="a" title="https://github.com/tjy-gitnub/win12/issues" style="margin: 10px 0 0 70px;font-size: 17px;color: #9dd0fb;" onclick="
 					window.open('https://github.com/tjy-gitnub/win12/issues','_blank');">提交issues ></a>
 				</div>
 			</div>
@@ -265,7 +299,7 @@
 	<div id="dock-box">
 		<!-- Dock(任务)栏 -->
 		<div class="dock dock-start">
-			<a class="dock-btn" id="start-btn" onclick="
+			<a class="dock-btn" id="start-btn" title="开始" onclick="
 				if($('#start-menu').hasClass('show')){
 					hide_startmenu();
 				}
@@ -307,7 +341,7 @@
 						<path d="M1163.19 512 1064.8 512 1064.8 512 1064 379.593C1088.35 388.648 1113.49 394.507 1136.24 394.774 1158.49 394.241 1180.75 380.925 1203 374L1203 472.245C1203 494.201 1185.18 512 1163.19 512Z" fill="url(#sf3)" fill-rule="evenodd"></path>
 						<path d="M39.755 0 138 0 138 0 138 140.549C114.987 150.681 91.9742 159.212 68.9614 158.946 45.1752 160.012 22.9872 145.082 0 138.15L0 39.7981C0 17.8182 17.7989 0 39.755 0Z" fill="url(#sf4)" fill-rule="evenodd" transform="matrix(1 -1.22465e-16 -1.22465e-16 -1 897 512)"></path>
 					</g></svg></a>
-			<a class="dock-btn" id="search-btn" onclick="
+			<a class="dock-btn" id="search-btn" title="搜索" onclick="
 			if($('#search-win').hasClass('show')){
 				$('#search-btn').removeClass('show');
 				$('#search-win').removeClass('show');
@@ -328,7 +362,7 @@
 				<svg class="out" width="26" height="26" viewBox="0,0,398,406" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" overflow="hidden"><defs><clipPath id="clip-search0"><rect x="77" y="29" width="398" height="406"/></clipPath></defs><g clip-path="url(#clip-search0)" transform="translate(-77 -29)"><path style="fill: var(--text);filter:brightness(0.9);" d="M77 195C77 103.873 151.097 30 242.5 30 333.903 30 408 103.873 408 195 408 286.127 333.903 360 242.5 360 151.097 360 77 286.127 77 195ZM122.372 195C122.372 261.069 176.155 314.629 242.5 314.629 308.845 314.629 362.628 261.069 362.628 195 362.628 128.931 308.845 75.3717 242.5 75.3717 176.155 75.3717 122.372 128.931 122.372 195Z" fill-rule="evenodd"/><path style="fill: var(--text);filter:brightness(0.9);" d="M329.14 331.039C317.792 319.691 317.792 301.292 329.14 289.944L329.14 289.944C340.488 278.596 358.887 278.596 370.235 289.944L465.351 385.06C476.699 396.408 476.699 414.807 465.351 426.155L465.351 426.155C454.003 437.503 435.604 437.503 424.256 426.155Z" fill-rule="evenodd"/></g></svg>
 				<svg class="in" width="20" height="20" viewBox="0,0,245,245" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" overflow="hidden"><defs><clipPath id="clip-search1"><rect x="121" y="76" width="245" height="245"/></clipPath><linearGradient x1="99.764" y1="115.514" x2="387.236" y2="281.486" gradientUnits="userSpaceOnUse" spreadMethod="reflect" id="fill-search1"><stop offset="0" stop-color="#A964C8"/><stop offset="0.26" stop-color="#A964C8"/><stop offset="1" stop-color="#2D8AD5"/></linearGradient></defs><g clip-path="url(#clip-search1)" transform="translate(-121 -76)"><path d="M122 198.5C122 131.397 176.397 77 243.5 77 310.603 77 365 131.397 365 198.5 365 265.603 310.603 320 243.5 320 176.397 320 122 265.603 122 198.5Z" fill="url(#fill-search1)" fill-rule="evenodd"/></g></svg>
 			</a>
-			<a class="dock-btn" id="widgets-btn" onclick="
+			<a class="dock-btn" id="widgets-btn" title="小组件" onclick="
 			if($('#widgets').hasClass('show')){
 				hide_widgets();
 			}
@@ -367,7 +401,7 @@
 				这也不是 Windows365 cloud PC<br>
 				本项目中微软、Windows和其他示范产品是微软公司的商标</p>
 		</div>
-		<div class="a dock theme" onclick="toggletheme()">
+		<div class="a dock theme" title="切换主题" onclick="toggletheme()">
 			<svg viewBox="0,0,307,307" class="light" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" overflow="hidden"><defs><clipPath id="theme-light-clip0"><rect x="79" y="77" width="307" height="307"/></clipPath><linearGradient x1="128.499" y1="49.9991" x2="337.501" y2="412.001" gradientUnits="userSpaceOnUse" spreadMethod="reflect" id="theme-light-fill1"><stop offset="0" stop-color="#FFC567"/><stop offset="0.18" stop-color="#FFC567"/><stop offset="0.8" stop-color="#EE54F2"/></linearGradient></defs><g clip-path="url(#theme-light-clip0)" transform="translate(-79 -77)"><path d="M80 231C80 146.5 148.5 78 233 78 317.5 78 386 146.5 386 231 386 315.5 317.5 384 233 384 148.5 384 80 315.5 80 231Z" fill="url(#theme-light-fill1)" fill-rule="evenodd"/></g></svg>
 			<svg viewBox="0,0,275,294" class="dark" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" overflow="hidden"><defs><clipPath id="theme-dark-clip0"><rect x="525" y="230" width="275" height="294"/></clipPath><linearGradient x1="599.492" y1="203.887" x2="725.508" y2="550.113" gradientUnits="userSpaceOnUse" spreadMethod="reflect" id="theme-dark-fill1"><stop offset="0" stop-color="#2474B6"/><stop offset="0.42" stop-color="#2474B6"/><stop offset="0.98" stop-color="#FFD966"/><stop offset="1" stop-color="#FFD966"/></linearGradient></defs><g clip-path="url(#theme-dark-clip0)" transform="translate(-525 -230)"><path d="M635.002 236.062C638.664 240.491 639.245 246.694 636.469 251.721 625.869 271.094 620.334 292.809 620.372 314.869 620.372 388.255 680.469 447.679 754.537 447.679 764.199 447.679 773.604 446.675 782.643 444.759 788.307 443.538 794.156 445.809 797.493 450.526 801.036 455.459 800.803 462.148 796.925 466.824 767.803 502.434 724.103 523.073 677.976 523 593.458 523 525 455.217 525 371.701 525 308.846 563.757 254.933 618.942 232.083 624.588 229.708 631.132 231.329 635.002 236.062Z" fill="url(#theme-dark-fill1)" fill-rule="evenodd"/></g></svg>
 		</div>
@@ -620,13 +654,21 @@
 				</div>
 				<div style="margin-left: 20px;">
 					<h2 class="tit"><span></span>其它</h2>
-					<p>&emsp;&emsp;此项目已发布至 Github, <a href="https://github.com/tjy-gitnub/win12" class="jump">点击此处查看</a></p>
-					<p>&emsp;&emsp;若您对于该项目有任何意见或建议，请在 Github 上<a href="https://github.com/tjy-gitnub/win12/issues" class="jump">提交 issues</a>, 您的问题会被尽可能快地解决</p>
+					<p>&emsp;&emsp;此项目已发布至 Github, <a onclick="window.open('https://github.com/tjy-gitnub/win12','_blank');" title="https://github.com/tjy-gitnub/win12" class="jump">点击此处查看</a></p>
+					<p>&emsp;&emsp;若您对于该项目有任何意见或建议，请在 Github 上<a onclick="window.open('https://github.com/tjy-gitnub/win12/issues','_blank');" title="https://github.com/tjy-gitnub/win12/issues" class="jump">提交 issues</a>, 您的问题会被尽可能快地解决</p>
 				</div>
 			</div>
 			<div class="cnt update" style="display: none;">
 				<h1 class="tit"><span></span>更新记录</h1>
 				<div style="margin-left: 20px;">
+					<details><summary><span>v3.3.0</span> 增加计算器小组件</summary>
+						<p>&emsp;&emsp;-增加了计算器小组件<br>
+						&emsp;&emsp;-修复了小组件新闻图片无法加载的问题<br>
+						&emsp;&emsp;-移除了上一个版本的新窗口标题栏<br>
+						&emsp;&emsp;-在一些图标按钮上悬停鼠标显示提示<br>
+						&emsp;&emsp;-去除了所有链接的左下角链接提示<br>
+						&emsp;&emsp;-细节优化和修复</p>
+					</details>
 					<details><summary><span>v3.2.0</span> 增加小组件菜单</summary>
 						<p>&emsp;&emsp;-增加了小组件(资讯和兴趣)菜单<br>
 						&emsp;&emsp;-小组件菜单中的新闻内容<br>

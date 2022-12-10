@@ -44,8 +44,8 @@ let cms = {
     'desktop': [
         ['<i class="bi bi-arrow-clockwise"></i> 刷新', `$('#desktop').css('opacity','0');setTimeout(()=>{$('#desktop').css('opacity','1');},100);`],
         ['<i class="bi bi-circle-square"></i> 切换主题', 'toggletheme()'],
-        ['<i class="bi bi-github"></i> 在 Github 中查看此项目', `window.open('https://github.com/tjy-gitnub/win12','_blank');`],
-        ['<i class="bi bi-chat-left-text"></i> 发送反馈', `window.open('https://github.com/tjy-gitnub/win12/issues','_blank');`],
+        `<a onclick="window.open('https://github.com/tjy-gitnub/win12','_blank');" title="https://github.com/tjy-gitnub/win12"><i class="bi bi-github"></i> 在 Github 中查看此项目</a>`,
+        `<a onclick="window.open('https://github.com/tjy-gitnub/win12/issues','_blank');" title="https://github.com/tjy-gitnub/win12/issues"><i class="bi bi-chat-left-text"></i> 发送反馈</a>`,
         ['<i class="bi bi-info-circle"></i> 关于 Win12 网页版', `$('#win-about>.about').show(200);$('#win-about>.update').hide();openapp('about');if($('.window.about').hasClass('min'))minwin('about');`],
     ],
     'winx': [
@@ -343,6 +343,25 @@ let apps = {
                 $('#win-notepad>.text-box').val('');
                 $('#win-notepad>.text-box').removeClass('down')
             }, 200);
+        }
+    }
+}
+
+
+// 小组件
+let widgets={
+    widgets: {
+        add: (arg)=>{
+            if($('#widgets>.widgets>.content>.grid>.wg.'+arg).length!=0)return;
+            $('#widgets>.widgets>.content>.grid')[0].innerHTML+=$('#widgets>.widgets>.content>.template>.'+arg).html();
+        },
+        remove: (arg)=>{
+            $('#widgets>.widgets>.content>.grid>.wg.'+arg).remove();
+        }
+    },
+    calc:{
+        add: (arg) => {
+            $('*:not(.template)>*>.wg.calc>.content>input')[0].value += arg;
         }
     }
 }

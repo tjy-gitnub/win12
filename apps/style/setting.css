@@ -135,7 +135,7 @@ html {
     background-image:linear-gradient(100deg, #ad6eca, #3b91d8); 
     -webkit-background-clip:text; 
     -webkit-text-fill-color:transparent;
-    filter: saturate(130%) brightness(var(--icobn));
+    filter: saturate(130%) brightness(1.1);
 }
 
 .setting-list>a>icon.b {
