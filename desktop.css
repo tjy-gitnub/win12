@@ -10,11 +10,12 @@
     --sd: #7f7f7f7f;
     --card: #efefef60;
     --hover: #ffffff70;
+    --hover-half:#ffffff50;
     --hover-b: #00000017;
     --bggrey: #ddd;
     --bgul: url('./bg.svg');
     --mm: #ffffffc0;
-    --cm: #fafafaaa;
+    --cm: #fafafabb;
     --bar: #efefef37;
     --hr:#00000013;
 }
@@ -28,11 +29,12 @@
     --sd: #00000070;
     --card: #72727240;
     --hover: #ffffff40;
+    --hover-half:#ffffff20;
     --hover-b: #ffffff30;
     --bggrey: #444;
     --bgul: url('./bg-dark.svg');
     --mm: #ffffff50;
-    --cm: #252525aa;
+    --cm: #252525bb;
     --bar: #7272722a;
     --hr:#00000050;
 }
@@ -102,17 +104,33 @@ body {
     border: 4px solid transparent;
 }
 
+.act,
+list>a,
+#cs>list>a,
+#win-calc>.keyb>.b,
+#datebox>.cont>.body>p,
+.wg>.titbar>.more,
+.wg.calc>.content>.b{
+    transition: transform 400ms cubic-bezier(0.14, 1.02, 0.17, 0.03) !important;
+}
+
 .act:active,
 list>a:active,
-.tj-obj:active,
 #cs>list>a:active,
 #win-calc>.keyb>.b:active,
 #datebox>.cont>.body>p:active,
 .wg>.titbar>.more:active,
 .wg.calc>.content>.b:active{
-    transform: scale(0.95);
+    transform: scale(0.93);
     filter: blur(0.5px);
-    transition: 80ms;
+    /* transition: transform 500ms cubic-bezier(0.24, 0.86, 0.36, 0.44) !important; */
+}
+
+#s-m-l>list>a,
+#win-setting>.menu>list>a{
+    border: 2px solid #00000000;
+    /* background-clip: padding-box, border-box;
+    background-origin: padding-box, border-box; */
 }
 
 #dock-box {
@@ -136,7 +154,7 @@ list>a:active,
     padding: 7px 6px;
     margin: 0 3px;
     display: flex;
-    transition: 200ms;
+    transition: 200ms,transform 300ms cubic-bezier(0.14, 1.02, 0.17, 0.03);
     bottom: 0;
 }
 
@@ -145,10 +163,10 @@ list>a:active,
     padding-right: 3px;
 }
 
-.dock>.bi {
+/* .dock>.bi {
     font-size: 28px;
     margin-top: -8px;
-}
+} */
 
 .dock.about {
     cursor: pointer;
@@ -160,12 +178,12 @@ list>a:active,
 }
 
 .dock.about>p {
-    margin-top: 50px;
+    margin-top: 30px;
     font-size: 15px;
     padding-left: 15px;
     display: none;
     opacity: 0;
-    transition: 300ms;
+    transition: 200ms;
     transition-delay: 200ms;
 }
 
@@ -178,8 +196,7 @@ list>a:active,
 }
 
 .dock.about:active {
-    font-size: 13px;
-    padding: 10px 45px;
+    transform: scale(0.92);
 }
 
 .dock.about.show {
@@ -197,11 +214,6 @@ list>a:active,
 
 .dock.about.show:hover {
     background-color: var(--bg70);
-}
-
-.dock.about.show:active {
-    font-size: 23px;
-    padding: 7px 0 7px 10px;
 }
 
 #taskbar {
@@ -326,6 +338,11 @@ list>a:active,
     padding: 0px 5px;
     display: block;
     text-align: center;
+    overflow: hidden;
+}
+
+.dock.date:active {
+    transform: scale(0.9);
 }
 
 .dock.date:hover{
@@ -336,13 +353,38 @@ list>a:active,
     margin-top: -8px;
 }
 
-.dock.theme {
+.dock.date>p{
     transition: 200ms cubic-bezier(0.9, 0, 0.1, 1);
+}
+
+.dock.date.show>p {
+    margin-top: -50px;
+}
+
+.dock.date>.bi {
+    position: absolute;
+    display: block;
+    text-align: center;
+    left: 0;
+    top: 37px;
+    width: 100%;
+    transition: 200ms cubic-bezier(0.9, 0, 0.1, 1);
+}
+
+.dock.date.show>.bi {
+    top: 7px;
+}
+
+.dock.theme {
     width: 40px;
     padding-left: 3.5px;
     text-align: center;
     overflow: hidden;
     box-shadow: 0 0 6px 1px var(--sd);
+}
+
+.dock.theme:active {
+    transform: scale(0.84);
 }
 
 .dock.theme:hover {
@@ -398,13 +440,13 @@ list>a:active,
 
 #start-btn.show>svg.menu {
     top: 0;
-    transition-delay: 300ms;
+    transition-delay: 200ms;
 }
 
 #start-btn>svg.ico {
     position: relative;
     top: -32px;
-    transition: 200ms;
+    transition: 100ms;
     left: 0;
     transition-delay: 100ms;
 }
@@ -1063,13 +1105,28 @@ input-before {
 
 #widgets>.news>.content>.card{
     border-radius: 10px;
-    box-shadow: 3px 3px 5px var(--sd);
+    box-shadow: 3px 3px 4px var(--sd);
+    transform: scale(0.97);
+    transition: 100ms;
+}
+
+#widgets>.news>.content>.card:hover {
+    box-shadow: 4px 6px 7px var(--sd);
+    transform: none;
 }
 
 #widgets>.news>.content>.card>.tit{
     font-size: 18px;
     line-height: 1.2;
     margin: 30px 0 0 10px;
+    transform: scale(0.96);
+    transition: 100ms;
+    text-shadow: 3px 3px 5px var(--sd);
+}
+
+#widgets>.news>.content>.card:hover>.tit {
+    transform: none;
+    text-shadow: none;
 }
 
 #widgets>.news>.content>.card>.a{
@@ -1283,7 +1340,7 @@ input-before {
     border-radius: 10px;
     border: 2px solid #8f8f8f30;
     background: var(--cm);
-    backdrop-filter: blur(20px) saturate(2);
+    backdrop-filter: blur(25px) saturate(2);
     min-width: 200px;
     overflow: hidden;
     transition: max-height 200ms ease-in-out;
@@ -1455,24 +1512,24 @@ input-before {
 }
 
 .sm-app:active {
-    padding-top: 5px;
+    padding-top: 3px;
 }
 
 .sm-app:active>*:last-child {
-    margin-top: 2px;
+    margin-top: 0px;
 }
 
 .sm-app:active>*:first-child {
-    height: 24px;
-    width: 24px;
+    height: 28px;
+    width: 28px;
 }
 
 .sm-app.enable:active>*:first-child {
-    filter: blur(0.6px);
+    filter: blur(1px);
 }
 
 .sm-app:active>*:first-child {
-    filter: blur(0.6px) contrast(0.3) brightness(0.7);
+    filter: blur(1px) contrast(0.3) brightness(0.7);
 }
 
 .tj-obj {
@@ -1525,16 +1582,15 @@ list>* {
     border-radius: 10px;
     position: relative;
     display: block;
-    padding: 10px 20px;
-    transition: 100ms;
+    padding: 2px 20px;
+    /* transition: 50ms; */
     cursor: pointer;
 }
 
 list>*:hover {
     color: var(--text);
-    background-color: var(--hover);
+    background-color: var(--hover-half);
     text-decoration: none;
-    transition: 200ms;
 }
 
 list>hr {
@@ -1576,6 +1632,7 @@ list>.text:hover {
     display: flex;
     transition: 400ms cubic-bezier(0.9, 0, 0.1, 1);
     cursor: pointer;
+    border: 2px solid #8f8f8f30;
 }
 
 .msg:hover {
@@ -1627,18 +1684,14 @@ list>.text:hover {
 
 .window {
     position: fixed;
-    width: 50%;
-    height: 50%;
-    top: 10%;
-    left: 15%;
-    margin-left: 10%;
-    margin-top: 7%;
-    /* 真的是胡整，margin-top和margin-left的百分比都是以width为标准，脑壳乔的 */
-    background-color: var(--bg50);
+    height: 80%;
+    width: 70%;
+    transform: scale(0.7);
+    background-color: var(--bg70);
     backdrop-filter: blur(80px) saturate(130%);
     -webkit-backdrop-filter: blur(80px) saturate(130%);
     border-radius: 10px;
-    border: 2px solid #7f7f7f20;
+    border: 2px solid #8f8f8f30;
     display: none;
     opacity: 0;
     transition: cubic-bezier(0.9, 0, 0.1, 1) 200ms;
@@ -1648,11 +1701,10 @@ list>.text:hover {
 }
 
 .window.min {
-    height: 5% !important;
-    width: 5% !important;
     top: calc(95%) !important;
-    left: 45% !important;
-    opacity: 0.5 !important;
+    left: 15% !important;
+    transform: scale(0.3) !important;
+    transition: cubic-bezier(0.9, 0, 0.1, 1) 200ms,top 200ms 100ms;
 }
 
 .window.show-begin {
@@ -1660,8 +1712,7 @@ list>.text:hover {
 }
 
 .window.show {
-    margin-left: 0;
-    margin-top: 0;
+    transform: none;
     height: 80%;
     width: 70%;
     opacity: 1;
@@ -1738,6 +1789,7 @@ list>.text:hover {
     top: 0 !important;
     border-radius: 0;
     border: none;
+    transition: cubic-bezier(0.9, 0, 0.1, 1) 200ms,top 200ms 100ms;
 }
 
 .wbtg {
@@ -1747,13 +1799,12 @@ list>.text:hover {
     text-align: center;
     padding-top: 5px;
     font-size: 13px;
-    transition: 100ms;
+    transition: 50ms;
     border-radius: 3px;
 }
 
 .wbtg.red {
     border-top-right-radius: 10px;
-    border-bottom-right-radius: 10px;
 }
 
 .wbtg:hover {
@@ -1763,6 +1814,10 @@ list>.text:hover {
 .wbtg.red:hover {
     background-color: #d80d1c;
     color: #fff;
+}
+
+.window.max .wbtg.red{
+    border-top-right-radius: 3px;
 }
 
 #window-fill {

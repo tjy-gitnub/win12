@@ -30,12 +30,17 @@
 
 #win-notepad>.tool>a{
     border-radius: 10px;
-    margin: 0 0 0 5px;
+    margin: -5px 0 0 5px;
     text-align: center;
-    padding: 5px 5px;
+    padding: 3px 5px;
+    display: inline-block;
     transition: 100ms;
 }
 
 #win-notepad>.tool>a:hover{
     background-color: var(--hover);
+}
+
+#win-notepad>.tool>a:active{
+    transform: scale(0.7);
 }

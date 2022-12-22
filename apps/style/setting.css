@@ -42,7 +42,7 @@ html {
     padding: 10px 10px;
     border-radius: 10px;
     margin-bottom: 10px;
-    transition: 200ms;
+    /* transition: 200ms; */
 }
 
 #win-setting>.menu>.user:hover {
@@ -85,7 +85,7 @@ html {
     padding: 5px 15px;
     font-size: 15px;
     display: flex;
-    margin-bottom: 5px;
+    margin-bottom: 3px;
 }
 
 #win-setting>.menu>list>a>p {
@@ -98,6 +98,9 @@ html {
     margin: 1px 10px 0 0;
 }
 
+#win-setting>.menu>list>a.check {
+    background-color: var(--hover)!important;
+}
 
 .setting-list {
     display: flex;
@@ -118,13 +121,19 @@ html {
     text-decoration: none;
     display: flex;
     padding: 10px 15px;
-    transition: 100ms;
+    /* transition: 100ms; */
     box-shadow: 3px 3px 6px var(--sd);
+    transition: transform 300ms cubic-bezier(0.14, 1.02, 0.17, 0.03) !important;
 }
 
 .setting-list>*:hover {
     text-decoration: none;
     background-color: var(--hover);
+}
+
+.setting-list>*:active {
+    transform: scale(0.98);
+    /* filter: blur(0.5px); */
 }
 
 

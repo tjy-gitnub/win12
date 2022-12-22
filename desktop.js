@@ -1,14 +1,14 @@
 let updated = false, aftload = false;
-// 列表点击
-let lists = document.querySelectorAll('list>a,#cs>list>a');
+// 列表点击 + 边框发光
+let lists = document.querySelectorAll(`#s-m-l>list>a,#win-setting>.menu>list>a`);
 lists.forEach(la => {
     la.addEventListener('mousemove', (e) => {
         x = e.clientX - $(la).offset()['left'];
         y = e.clientY - $(la).offset()['top'];
-        $(la).css('cssText', `background:radial-gradient(circle at ${x}px ${y}px,var(--hover) 10%, #00000000);`)
+        $(la).css('cssText', `background:radial-gradient(circle at ${x}px ${y}px,var(--hover) 20px, #00000000) center;background-size:110% 100%;border-image:radial-gradient(circle at ${x}px ${y}px,var(--hover) 20px, #00000000 40px) 2;`)
     });
     la.addEventListener('mouseout', () => {
-        $(la).css('cssText', `background:radial-gradient(#00000000,#00000000);`)
+        $(la).css('cssText', `background-image:radial-gradient(#00000000,#00000000),radial-gradient(#00000000,#00000000);`)
     });
 });
 // 禁止拖拽图片
@@ -259,7 +259,7 @@ let apps = {
             #win-explorer>.main>.content>.view>.class>img{width: 20px;height: 20px;margin-top: 3px;margin-right: 5px;filter:brightness(0.9);}
             #win-explorer>.main>.content>.view>.group{display: flex;flex-wrap: wrap;padding: 10px 20px;}
             #win-explorer>.main>.content>.view>.group>.item{width: 280px;margin: 5px;height:  80px;
-                background: radial-gradient(circle, var(--card),var(--card));border-radius: 10px;transition: 100ms;display: flex;}
+                background: radial-gradient(circle, var(--card),var(--card));border-radius: 10px;display: flex;}
             #win-explorer>.main>.content>.view>.group>.item:hover{background-color: var(--hover);}
             #win-explorer>.main>.content>.view>.group>.item>img{width: 55px;height: 55px;margin-top: 18px;margin-left: 10px;}
             #win-explorer>.main>.content>.view>.group>.item>div{flex-grow: 1;padding: 5px 5px 0 0;}
@@ -269,10 +269,10 @@ let apps = {
                 border-radius: 10px;}
             #win-explorer>.main>.content>.view>.group>.item>div>.info{color: #959595;font-size: 14px;}</style>
             <p class="class"><img src="apps/icons/explorer/disk.png"> 设备和驱动器</p><div class="group">
-            <a class="a item" ondblclick="apps.explorer.goto('C:')" oncontextmenu="stop(event);return showcm(event,'explorer.folder','C:')">
+            <a class="a item act" ondblclick="apps.explorer.goto('C:')" oncontextmenu="stop(event);return showcm(event,'explorer.folder','C:')">
             <img src="apps/icons/explorer/diskwin.png"><div><p class="name">本地磁盘 (C:)</p>
             <div class="bar"><div class="content" style="width: 88%;"></div>
-            </div><p class="info">32.6 GB 可用, 共 143 GB</p></div></a><a class="a item" ondblclick="apps.explorer.goto('D:')"
+            </div><p class="info">32.6 GB 可用, 共 143 GB</p></div></a><a class="a item act" ondblclick="apps.explorer.goto('D:')"
             oncontextmenu="stop(event);return showcm(event,'explorer.folder','D:')">
             <img src="apps/icons/explorer/disk.png"><div><p class="name">本地磁盘 (D:)</p><div class="bar"><div class="content" style="width: 15%;"></div>
             </div><p class="info">185.3 GB 可用, 共 216 GB</p></div></a></div>`;

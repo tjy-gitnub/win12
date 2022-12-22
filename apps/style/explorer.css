@@ -171,9 +171,14 @@
 #win-explorer>.main>.content>.view>.item{
     width: 100%;
     padding: 2px 5px;
-    transition: 50ms;
     border-radius: 5px;
     display: flex;
+    transition: transform 300ms cubic-bezier(0.14, 1.02, 0.17, 0.03) !important;
+}
+
+#win-explorer>.main>.content>.view>.item:active{
+    transform: scale(0.98);
+    filter: blur(0.5px);
 }
 
 #win-explorer>.main>.content>.view>.item>img{
