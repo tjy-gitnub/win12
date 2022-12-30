@@ -251,7 +251,7 @@
 			</div>
 			<div class="content">
 				<div class="card" style="grid-column: 1/6;grid-row: 1/3;color: #fff;background: var(--bgul);background-position:-50px -370px;background-size: 150%;">
-					<p class="tit" style="font-size: 22px;margin: 110px 0 0 30px;">Windows12 网页版 v3.2.0 发布</p>
+					<p class="tit" style="font-size: 22px;margin: 110px 0 0 30px;">Windows12 网页版 v3.4.1 发布</p>
 					<a class="a" style="margin: 5px 0 0 250px;font-size: 17px;color: #9dd0fb;" onclick="hide_widgets();
 					openapp('about');if($('.window.about').hasClass('min'))minwin('about');
 					$('#win-about>.update').show(200);$('#win-about>.about').hide();
@@ -445,15 +445,15 @@
 		</div>
 	</div>
 	<div id="desktop" oncontextmenu="return showcm(event,'desktop',null)">
-		<div ondblclick="openapp('explorer');">
+		<div ondblclick="openapp('explorer');" ontouchstart="openapp('explorer');">
 			<img src="apps/icons/explorer/thispc.png" title="显示连接到此计算机的驱动器和硬件。">
 			<p>此电脑</p>
 		</div>
-		<div class="b" ondblclick="openapp('setting');">
+		<div class="b" ondblclick="openapp('setting');" ontouchstart="openapp('setting');">
 			<img src="icon/setting.png">
 			<p>设置</p>
 		</div>
-		<div class="b" ondblclick="openapp('about');">
+		<div class="b" ondblclick="openapp('about');" ontouchstart="openapp('about');">
 			<img src="icon/about.png">
 			<p>关于 Win12 网页版</p>
 		</div>
@@ -683,6 +683,15 @@
 			<div class="cnt update" style="display: none;">
 				<h1 class="tit"><span></span>更新记录</h1>
 				<div style="margin-left: 20px;">
+					<details><summary><span>v3.4.1</span> 移动端适配</summary>
+						<p>&emsp;&emsp;-适配了移动端的双(改成单击)<br>
+						&emsp;&emsp;-适配了移动端的拖动窗口<br>
+						&emsp;&emsp;-优化任务栏按钮点击效果<br>
+						&emsp;&emsp;-更改右键菜单样式<br>
+						&emsp;&emsp;-下拉菜单悬停展开<br>
+						&emsp;&emsp;-细节优化和修复</p>
+						<i>感谢 @User782Tec</i>
+					</details>
 					<details><summary><span>v3.4.0</span> 动画优化</summary>
 						<p>&emsp;&emsp;-别问我为什么动画占一个新版<br>
 						&emsp;&emsp;-基本上所有动画都进行了更新优化<br>
@@ -845,8 +854,8 @@
 		</div>
 		<div class="content" id="win-notepad">
 			<div class="tool">
-				<a class="a act" onclick="showdp(this,'notepad.file',null)">文件</a>
-				<a class="a act" onclick="showdp(this,'notepad.edit',null)">编辑</a>
+				<a class="a" onmouseover="showdp(this,'notepad.file',null)" onmouseleave="hidedp(this,'notepad.file',null)">文件</a>
+				<a class="a" onmouseover="showdp(this,'notepad.edit',null)" onmouseleave="hidedp(this,'notepad.edit',null)">编辑</a>
 			</div>
 			<textarea class="text-box"></textarea>
 			<a href="" download="未命名.txt" style="opacity: 0;" class="save">另存为</a>

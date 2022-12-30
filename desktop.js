@@ -74,7 +74,7 @@ let cms = {
             return ['<i class="bi bi-window"></i> 打开', `openapp('${arg[0]}');hide_startmenu();`];
         },
         function (arg) {
-            return ['<i class="bi bi-link-45deg"></i> 在桌面创建链接', "$('#desktop').append(`<div class='b' ondblclick=openapp('" + arg[0] + "')><img src='icon/" + arg[0] + ".png'><p>" + arg[1] + "</p></div>`)"];
+            return ['<i class="bi bi-link-45deg"></i> 在桌面创建链接', "$('#desktop').append(`<div class='b' ondblclick=openapp('" + arg[0] + "')  ontouchstart=openapp('" + arg[0] + "')><img src='icon/" + arg[0] + ".png'><p>" + arg[1] + "</p></div>`)"];
         }
     ],
     'dockabout': [
@@ -192,13 +192,14 @@ dps = {
         ['<i class="bi bi-arrow-clockwise"></i> 重做 <info>Ctrl+Y</info>', ''],
     ]
 }
-dpt = null;
+let dpt = null,isOnDp=false;
+$('#dp')[0].onmouseover = ()=>{ isOnDp = true };
+$('#dp')[0].onmouseleave = ()=>{ isOnDp = false;hidedp() };
 function showdp(e, cl, arg) {
     if ($('#dp').hasClass('show-begin')) {
         $('#dp').removeClass('show');
         setTimeout(() => {
             $('#dp').removeClass('show-begin');
-            $(dpt).removeClass('showdp');
         }, 200);
         if (e != dpt) {
             setTimeout(() => {
@@ -207,8 +208,7 @@ function showdp(e, cl, arg) {
         }
         return;
     }
-    dpt = e;
-    $(e).addClass('showdp');
+    // dpt = e;
     let off = $(e).offset();
     $('#dp').css('left', off.left);
     $('#dp').css('top', off.top + e.offsetHeight);
@@ -239,11 +239,13 @@ function showdp(e, cl, arg) {
     }, 200);
 }
 function hidedp() {
-    $('#dp').removeClass('show');
     setTimeout(() => {
-        $('#dp').removeClass('show-begin');
-    }, 200);
-    $(dpt).css('background-color', 'unset');
+        if(isOnDp)return;
+        $('#dp').removeClass('show');
+        setTimeout(() => {
+            $('#dp').removeClass('show-begin');
+        }, 200);
+    }, 100);
 }
 // 应用
 let apps = {
@@ -269,10 +271,10 @@ let apps = {
                 border-radius: 10px;}
             #win-explorer>.main>.content>.view>.group>.item>div>.info{color: #959595;font-size: 14px;}</style>
             <p class="class"><img src="apps/icons/explorer/disk.png"> 设备和驱动器</p><div class="group">
-            <a class="a item act" ondblclick="apps.explorer.goto('C:')" oncontextmenu="stop(event);return showcm(event,'explorer.folder','C:')">
+            <a class="a item act" ondblclick="apps.explorer.goto('C:')" ontouchend="apps.explorer.goto('C:')" oncontextmenu="stop(event);return showcm(event,'explorer.folder','C:')">
             <img src="apps/icons/explorer/diskwin.png"><div><p class="name">本地磁盘 (C:)</p>
             <div class="bar"><div class="content" style="width: 88%;"></div>
-            </div><p class="info">32.6 GB 可用, 共 143 GB</p></div></a><a class="a item act" ondblclick="apps.explorer.goto('D:')"
+            </div><p class="info">32.6 GB 可用, 共 143 GB</p></div></a><a class="a item act" ondblclick="apps.explorer.goto('D:')" ontouchend="apps.explorer.goto('D:')"
             oncontextmenu="stop(event);return showcm(event,'explorer.folder','D:')">
             <img src="apps/icons/explorer/disk.png"><div><p class="name">本地磁盘 (D:)</p><div class="bar"><div class="content" style="width: 15%;"></div>
             </div><p class="info">185.3 GB 可用, 共 216 GB</p></div></a></div>`;
@@ -290,7 +292,7 @@ let apps = {
             } else {
                 let ht = '';
                 for (folder in tmp) {
-                    ht += `<a class="a item" ondblclick="apps.explorer.goto('${path}/${folder}')" oncontextmenu="stop(event);return showcm(event,'explorer.folder','${path}/${folder}')">
+                    ht += `<a class="a item" ondblclick="apps.explorer.goto('${path}/${folder}')" ontouchend="apps.explorer.goto('${path}/${folder}')" oncontextmenu="stop(event);return showcm(event,'explorer.folder','${path}/${folder}')">
                         <img src="apps/icons/explorer/folder.png">${folder}</a>`;
                 }
                 $('#win-explorer>.main>.content>.view')[0].innerHTML = ht;
@@ -397,6 +399,7 @@ for (let i = 1; i <= daysum; i++) {
 }
 function openapp(name) {
     if ($('#taskbar>.' + name).length != 0) return;
+    wo.push(name);
     $('.window.' + name).addClass('load');
     showwin(name);
     $('#taskbar').attr('count', Number($('#taskbar').attr('count')) + 1)
@@ -465,6 +468,10 @@ function minwin(name) {
         setTimeout(() => { $('.window.' + name).removeClass('show-begin'); }, 200);
     }
 }
+let wo=[];
+function orderwindow() {
+    
+}
 // 菜单隐藏
 function hide_startmenu() {
     $('#start-menu').removeClass('show');
@@ -490,8 +497,15 @@ for (let i = 0; i < wins.length; i++) {
     const win = wins[i];
     const titbar = titbars[i];
     function win_move(e) {
-        if (e.clientY - deltaTop < 0) {
-            win.setAttribute('style', `left:${e.clientX - deltaLeft}px;top:0px`);
+        let cx,cy;
+        if(e.type=='touchmove'){
+            cx=e.targetTouches[0].clientX,cy=e.targetTouches[0].clientY;
+        }else{
+            cx=e.clientX,cy=e.clientY;
+        }
+        
+        if (cy - deltaTop < 0) {
+            win.setAttribute('style', `left:${cx - deltaLeft}px;top:0px`);
             if (win.classList[1] != 'calc') {
                 $('#window-fill').addClass('top');
                 setTimeout(() => {
@@ -506,7 +520,7 @@ for (let i = 0; i < wins.length; i++) {
             }, 200);
             fil = false;
         } else {
-            win.setAttribute('style', `left:${e.clientX - deltaLeft}px;top:${e.clientY - deltaTop}px`);
+            win.setAttribute('style', `left:${cx - deltaLeft}px;top:${cy - deltaTop}px`);
         }
     }
     titbar.addEventListener('mousedown', (e) => {
@@ -514,9 +528,25 @@ for (let i = 0; i < wins.length; i++) {
         deltaTop = e.clientY - win.offsetTop;
         page.onmousemove=win_move;
     })
+    titbar.addEventListener('touchstart', (e) => {
+        deltaLeft = e.targetTouches[0].clientX - win.offsetLeft;
+        deltaTop = e.targetTouches[0].clientY - win.offsetTop;
+        page.ontouchmove=win_move;
+    })
 }
 page.addEventListener('mouseup', () => {
-    page.onmousemove=null
+    page.onmousemove=null;
+    if (fil) {
+        maxwin(fil.classList[1]);
+        fil = false;
+        setTimeout(() => {
+            $('#window-fill').removeClass('fill');
+            $('#window-fill').removeClass('top');
+        }, 200);
+    }
+})
+page.addEventListener('touchend', () => {
+    page.ontouchmove=null;
     if (fil) {
         maxwin(fil.classList[1]);
         fil = false;
@@ -539,7 +569,7 @@ document.getElementsByTagName('body')[0].onload = function nupd() {
 };
 
 // PWA 应用
-navigator.serviceWorker.register('sw.js', { scope: './' });
+navigator.serviceWorker.register('sw.js', { updateViaCache: 'none', scope: './' });
 
 navigator.serviceWorker.controller.postMessage('update?');
 
