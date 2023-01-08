@@ -181,7 +181,7 @@ dps = {
         ['<i class="bi bi-box-arrow-right"></i> 另存为', `hidedp();$('#win-notepad>.save').attr('href','data:text/txt;,'+encodeURIComponent($('#win-notepad>.text-box').val()));
         $('#win-notepad>.save')[0].click();`],
         '<hr>',
-        ['<i class="bi bi-x"></i> 退出', `hidedp();hidewin('notepad')`],
+        ['<i class="bi bi-x"></i> 退出', `isOnDp=false;hidedp();hidewin('notepad')`],
     ],
     'notepad.edit': [
         ['<i class="bi bi-files"></i> 复制 <info>Ctrl+C</info>', ''],
@@ -399,7 +399,6 @@ for (let i = 1; i <= daysum; i++) {
 }
 function openapp(name) {
     if ($('#taskbar>.' + name).length != 0) return;
-    wo.push(name);
     $('.window.' + name).addClass('load');
     showwin(name);
     $('#taskbar').attr('count', Number($('#taskbar').attr('count')) + 1)
@@ -420,6 +419,10 @@ function showwin(name) {
     setTimeout(() => { $('.window.' + name).addClass('show'); }, 0);
     setTimeout(() => { $('.window.' + name).addClass('notrans'); }, 200);
     $('.window.' + name).attr('style', `top: 10%;left: 15%;`);
+    $('.window.'+wo[0]).removeClass('foc');
+    wo.splice(0,0,name);
+    orderwindow();
+    $('.window.'+name).addClass('foc');
 }
 function hidewin(name) {
     $('.window.' + name).removeClass('notrans');
@@ -429,7 +432,6 @@ function hidewin(name) {
     $('#taskbar>.' + name).remove();
     $('#taskbar').css('width', 10 + $('#taskbar').attr('count') * 34);
     setTimeout(() => {
-
         if ($('#taskbar').attr('count') == '0') $('#taskbar').css('display', 'none');
     }, 80);
     setTimeout(() => { $('.window.' + name).removeClass('show-begin'); }, 200);
@@ -450,6 +452,7 @@ function maxwin(name) {
 function minwin(name) {
     if ($('.window.' + name).hasClass('min')) {
         $('.window.' + name).addClass('show-begin');
+        focwin(name);
         setTimeout(() => {
             $('#taskbar>.' + name).removeClass('min');
             $('.window.' + name).removeClass('min');
@@ -470,7 +473,18 @@ function minwin(name) {
 }
 let wo=[];
 function orderwindow() {
-    
+    for (let i = 0; i < wo.length; i++) {
+        const win = $('.window.'+wo[wo.length-i-1]);
+        win.css('z-index',10+i);
+    }
+}
+function focwin(name) {
+    // if(wo[0]==name)return;
+    $('.window.'+wo[0]).removeClass('foc');
+    wo.splice(wo.indexOf(name),1);
+    wo.splice(0,0,name);
+    orderwindow();
+    $('.window.'+name).addClass('foc');
 }
 // 菜单隐藏
 function hide_startmenu() {

@@ -18,6 +18,7 @@
     --cm: #fafafabb;
     --bar: #efefef37;
     --hr:#00000013;
+    --unfoc:#e6e6e6;
 }
 
 :root.dark {
@@ -37,6 +38,7 @@
     --cm: #252525bb;
     --bar: #7272722a;
     --hr:#00000050;
+    --unfoc:#333;
 }
 
 body,
@@ -1046,7 +1048,7 @@ input-before {
     margin: 3px 3px 0 0;
     text-align: center;
     overflow: hidden;
-    /* z-index: 1; */
+    z-index: 1;
 }
 .wg>.titbar>.more>.bi{
     display: block;
@@ -1696,9 +1698,7 @@ list>.text:hover {
     height: 80%;
     width: 70%;
     transform: scale(0.7);
-    background-color: var(--bg70);
-    backdrop-filter: blur(80px) saturate(130%);
-    -webkit-backdrop-filter: blur(80px) saturate(130%);
+    background-color: var(--unfoc);
     border-radius: 10px;
     border: 2px solid #8f8f8f30;
     display: none;
@@ -1707,6 +1707,12 @@ list>.text:hover {
     overflow: hidden;
     box-shadow: 3px 3px 15px 1px var(--sd);
     z-index: 98;
+}
+
+.window.foc{
+    background-color: var(--bg70);
+    backdrop-filter: blur(80px) saturate(130%);
+    -webkit-backdrop-filter: blur(80px) saturate(130%);
 }
 
 .window.min {

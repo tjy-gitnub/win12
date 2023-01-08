@@ -1,4 +1,4 @@
-let version = 'v3.4.1';
+let version = 'v3.5.0';
 this.addEventListener('fetch', function (event) {
   event.respondWith(
     caches.match(event.request).then(res => {
