@@ -58,6 +58,7 @@ body {
     background: var(--bgul) center;
     background-size: cover;
     height: 100%;
+    font-family:"Microsoft YaHei";
 }
 
 .a {
@@ -1766,7 +1767,7 @@ list>.text:hover {
     width: 66px;
 }
 
-.window.notrans {
+.window.foc.notrans {
     transition: unset !important;
 }
 
@@ -1780,6 +1781,7 @@ list>.text:hover {
 .window>.titbar>p {
     font-size: 16px;
     margin-top: 3px;
+    color: var(--text);
 }
 
 .window>.titbar>.icon {

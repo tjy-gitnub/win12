@@ -1,4 +1,3 @@
-let version = 'v3.5.0';
 this.addEventListener('fetch', function (event) {
   event.respondWith(
     caches.match(event.request).then(res => {
@@ -6,7 +5,8 @@ this.addEventListener('fetch', function (event) {
         fetch(event.request)
           .then(responese => {
             const responeseClone = responese.clone();
-            caches.open(version).then(cache => {
+            caches.open('def').then(cache => {
+              console.log('下载数据',responeseClone.url);
               cache.put(event.request, responeseClone);
             })
             return responese;
@@ -17,25 +17,50 @@ this.addEventListener('fetch', function (event) {
     })
   )
 });
-const cacheNames = [version];
+const cacheNames = ['def'];
+let changes=[
+  
+]
 let flag = false;
 this.addEventListener('activate', function (event) {
+  flag = true;
+  console.log('开始更新');
   event.waitUntil(
     caches.keys().then(keys => {
       return Promise.all[keys.map(key => {
         if (!cacheNames.includes(key)) {
-          flag = true;
+          console.log('清除原始版本数据');
           return caches.delete(key);
         }
       })]
     })
   );
   event.waitUntil(
-    caches.open(version).then(function (cache) {
+    caches.keys().then(keys => {
+      if(keys.includes('def')){
+        caches.open('def').then(cc=>{
+          cc.keys().then(key=>{
+            key.forEach(k => {
+              changes.forEach(fi => {
+                if(RegExp(fi+'$').test(k.url)){
+                  console.log('删除数据',k.url);
+                  return cc.delete(k);
+                }
+              });
+            });
+          })
+        })
+      }
+    })
+  );
+  event.waitUntil(
+    caches.open('def').then(function (cache) {
 			return cache.addAll([
 				'apps/icons/explorer/disk.png',
 				'apps/icons/explorer/diskwin.png',
-				'apps/icons/explorer/folder.png'
+				'apps/icons/explorer/folder.png',
+        'bg-dark.svg',
+        'apps/icons/setting/icons.woff2'
 			]);
 		})
   );

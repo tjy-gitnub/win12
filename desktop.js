@@ -1,4 +1,3 @@
-let updated = false, aftload = false;
 // 列表点击 + 边框发光
 let lists = document.querySelectorAll(`#s-m-l>list>a,#win-setting>.menu>list>a`);
 lists.forEach(la => {
@@ -192,9 +191,9 @@ dps = {
         ['<i class="bi bi-arrow-clockwise"></i> 重做 <info>Ctrl+Y</info>', ''],
     ]
 }
-let dpt = null,isOnDp=false;
-$('#dp')[0].onmouseover = ()=>{ isOnDp = true };
-$('#dp')[0].onmouseleave = ()=>{ isOnDp = false;hidedp() };
+let dpt = null, isOnDp = false;
+$('#dp')[0].onmouseover = () => { isOnDp = true };
+$('#dp')[0].onmouseleave = () => { isOnDp = false; hidedp() };
 function showdp(e, cl, arg) {
     if ($('#dp').hasClass('show-begin')) {
         $('#dp').removeClass('show');
@@ -240,7 +239,7 @@ function showdp(e, cl, arg) {
 }
 function hidedp() {
     setTimeout(() => {
-        if(isOnDp)return;
+        if (isOnDp) return;
         $('#dp').removeClass('show');
         setTimeout(() => {
             $('#dp').removeClass('show-begin');
@@ -346,22 +345,25 @@ let apps = {
                 $('#win-notepad>.text-box').removeClass('down')
             }, 200);
         }
+    },
+    terminal: {
+        init: () => { }
     }
 }
 
 
 // 小组件
-let widgets={
+let widgets = {
     widgets: {
-        add: (arg)=>{
-            if($('#widgets>.widgets>.content>.grid>.wg.'+arg).length!=0)return;
-            $('#widgets>.widgets>.content>.grid')[0].innerHTML+=$('#widgets>.widgets>.content>.template>.'+arg).html();
+        add: (arg) => {
+            if ($('#widgets>.widgets>.content>.grid>.wg.' + arg).length != 0) return;
+            $('#widgets>.widgets>.content>.grid')[0].innerHTML += $('#widgets>.widgets>.content>.template>.' + arg).html();
         },
-        remove: (arg)=>{
-            $('#widgets>.widgets>.content>.grid>.wg.'+arg).remove();
+        remove: (arg) => {
+            $('#widgets>.widgets>.content>.grid>.wg.' + arg).remove();
         }
     },
-    calc:{
+    calc: {
         add: (arg) => {
             $('*:not(.template)>*>.wg.calc>.content>input')[0].value += arg;
         }
@@ -419,10 +421,10 @@ function showwin(name) {
     setTimeout(() => { $('.window.' + name).addClass('show'); }, 0);
     setTimeout(() => { $('.window.' + name).addClass('notrans'); }, 200);
     $('.window.' + name).attr('style', `top: 10%;left: 15%;`);
-    $('.window.'+wo[0]).removeClass('foc');
-    wo.splice(0,0,name);
+    $('.window.' + wo[0]).removeClass('foc');
+    wo.splice(0, 0, name);
     orderwindow();
-    $('.window.'+name).addClass('foc');
+    $('.window.' + name).addClass('foc');
 }
 function hidewin(name) {
     $('.window.' + name).removeClass('notrans');
@@ -471,20 +473,20 @@ function minwin(name) {
         setTimeout(() => { $('.window.' + name).removeClass('show-begin'); }, 200);
     }
 }
-let wo=[];
+let wo = [];
 function orderwindow() {
     for (let i = 0; i < wo.length; i++) {
-        const win = $('.window.'+wo[wo.length-i-1]);
-        win.css('z-index',10+i);
+        const win = $('.window.' + wo[wo.length - i - 1]);
+        win.css('z-index', 10 + i);
     }
 }
 function focwin(name) {
     // if(wo[0]==name)return;
-    $('.window.'+wo[0]).removeClass('foc');
-    wo.splice(wo.indexOf(name),1);
-    wo.splice(0,0,name);
+    $('.window.' + wo[0]).removeClass('foc');
+    wo.splice(wo.indexOf(name), 1);
+    wo.splice(0, 0, name);
     orderwindow();
-    $('.window.'+name).addClass('foc');
+    $('.window.' + name).addClass('foc');
 }
 // 菜单隐藏
 function hide_startmenu() {
@@ -511,13 +513,14 @@ for (let i = 0; i < wins.length; i++) {
     const win = wins[i];
     const titbar = titbars[i];
     function win_move(e) {
-        let cx,cy;
-        if(e.type=='touchmove'){
-            cx=e.targetTouches[0].clientX,cy=e.targetTouches[0].clientY;
-        }else{
-            cx=e.clientX,cy=e.clientY;
+        console.log('st');
+        let cx, cy;
+        if (e.type == 'touchmove') {
+            cx = e.targetTouches[0].clientX, cy = e.targetTouches[0].clientY;
+        } else {
+            cx = e.clientX, cy = e.clientY;
         }
-        
+
         if (cy - deltaTop < 0) {
             win.setAttribute('style', `left:${cx - deltaLeft}px;top:0px`);
             if (win.classList[1] != 'calc') {
@@ -540,16 +543,16 @@ for (let i = 0; i < wins.length; i++) {
     titbar.addEventListener('mousedown', (e) => {
         deltaLeft = e.clientX - win.offsetLeft;
         deltaTop = e.clientY - win.offsetTop;
-        page.onmousemove=win_move;
+        page.onmousemove = win_move;
     })
     titbar.addEventListener('touchstart', (e) => {
         deltaLeft = e.targetTouches[0].clientX - win.offsetLeft;
         deltaTop = e.targetTouches[0].clientY - win.offsetTop;
-        page.ontouchmove=win_move;
+        page.ontouchmove = win_move;
     })
 }
 page.addEventListener('mouseup', () => {
-    page.onmousemove=null;
+    page.onmousemove = null;
     if (fil) {
         maxwin(fil.classList[1]);
         fil = false;
@@ -560,7 +563,7 @@ page.addEventListener('mouseup', () => {
     }
 })
 page.addEventListener('touchend', () => {
-    page.ontouchmove=null;
+    page.ontouchmove = null;
     if (fil) {
         maxwin(fil.classList[1]);
         fil = false;
@@ -579,7 +582,6 @@ document.getElementsByTagName('body')[0].onload = function nupd() {
             $('.msg.update').addClass('show');
         }, 1000);
     }
-    aftload = true;
 };
 
 // PWA 应用
@@ -593,9 +595,6 @@ navigator.serviceWorker.addEventListener('message', function (e) {
         $('.msg.update>.main>.tit').html('<i class="bi bi-stars" style="background-image: linear-gradient(100deg, #ad6eca, #3b91d8);-webkit-background-clip: text;-webkit-text-fill-color: transparent;text-shadow:3px 3px 5px var(--sd);filter:saturate(200%) brightness(0.9);"></i> ' + $('#win-about>.cnt.update>div>details:first-child>summary').text());
         $('.msg.update>.main>.cont').html($('#win-about>.cnt.update>div>details:first-child>p').html());
         $('#loadbackupdate').css('display', 'block');
-        if (aftload) {
-            console.log('aftload');
-        }
     }
 });
 
