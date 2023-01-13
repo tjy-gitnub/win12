@@ -437,7 +437,7 @@ function hidewin(name) {
     setTimeout(() => { $('.window.' + name).removeClass('show-begin'); }, 200);
     $('.window.' + name + '>.titbar>div>.wbtg.max').html('<i class="bi bi-app"></i>');
 }
-function maxwin(name, pos) {
+function maxwin(name) {
     let element = $('.window.' + name);
     if (element.hasClass('max')) {
         element.removeClass('max');
@@ -541,7 +541,7 @@ for (let i = 0; i < wins.length; i++) {
             }, 200);
             fil = false;
         } else if (max) {
-            maxwin(this.classList[1], true);
+            maxwin(this.classList[1]);
             max = false;
             this.setAttribute('style', `left:${cx - 0.35 * window.innerWidth}px;top:${cy - deltaTop}px`);
             deltaLeft = 0.35 * window.innerWidth;
@@ -563,7 +563,7 @@ for (let i = 0; i < wins.length; i++) {
 page.addEventListener('mouseup', () => {
     page.onmousemove = null;
     if (fil) {
-        maxwin(fil.classList[1], null);
+        maxwin(fil.classList[1]);
         fil = false;
         setTimeout(() => {
             $('#window-fill').removeClass('fill');
@@ -574,7 +574,7 @@ page.addEventListener('mouseup', () => {
 page.addEventListener('touchend', () => {
     page.ontouchmove = null;
     if (fil) {
-        maxwin(fil.classList[1], null);
+        maxwin(fil.classList[1]);
         fil = false;
         setTimeout(() => {
             $('#window-fill').removeClass('fill');
