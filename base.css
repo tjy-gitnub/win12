@@ -14,10 +14,15 @@ body {
 }
 
 html {
+    touch-action: none;
     font-family: sans-serif;
     line-height: 1.15;
     -webkit-text-size-adjust: 100%;
     -webkit-tap-highlight-color: transparent;
+}
+
+html * {
+    touch-action: auto;
 }
 
 hr {
