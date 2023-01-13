@@ -1,3 +1,4 @@
+let updated = false, aftload = false;
 // 列表点击 + 边框发光
 let lists = document.querySelectorAll(`#s-m-l>list>a,#win-setting>.menu>list>a`);
 lists.forEach(la => {
@@ -345,9 +346,6 @@ let apps = {
                 $('#win-notepad>.text-box').removeClass('down')
             }, 200);
         }
-    },
-    terminal: {
-        init: () => { }
     }
 }
 
@@ -440,14 +438,15 @@ function hidewin(name) {
     $('.window.' + name + '>.titbar>div>.wbtg.max').html('<i class="bi bi-app"></i>');
 }
 function maxwin(name) {
-    if ($('.window.' + name).hasClass('max')) {
-        $('.window.' + name).removeClass('max');
+    let element = $('.window.' + name);
+    if (element.hasClass('max')) {
+        element.removeClass('max');
         $('.window.' + name + '>.titbar>div>.wbtg.max').html('<i class="bi bi-app"></i>');
-        setTimeout(() => { $('.window.' + name).addClass('notrans'); }, 200);
-        $('.window.' + name).attr('style', `top: 10%;left: 15%;`);
+        setTimeout(() => { element.addClass('notrans'); }, 200);
+        // element.attr('style', pos ? null : `top: 10%;left: 15%;`);
     } else {
-        $('.window.' + name).removeClass('notrans');
-        $('.window.' + name).addClass('max');
+        element.removeClass('notrans');
+        element.addClass('max');
         $('.window.' + name + '>.titbar>div>.wbtg.max').html('<svg version="1.1" width="12" height="12" viewBox="0,0,37.65105,35.84556" style="margin-top:4px;"><g transform="translate(-221.17804,-161.33903)"><g style="stroke:var(--text);" data-paper-data="{&quot;isPaintingLayer&quot;:true}" fill="none" fill-rule="nonzero" stroke-width="2" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="10" stroke-dasharray="" stroke-dashoffset="0" style="mix-blend-mode: normal"><path d="M224.68734,195.6846c-2.07955,-2.10903 -2.00902,-6.3576 -2.00902,-6.3576l0,-13.72831c0,0 -0.23986,-1.64534 2.00902,-4.69202c1.97975,-2.68208 4.91067,-2.00902 4.91067,-2.00902h14.06315c0,0 3.77086,-0.23314 5.80411,1.67418c2.03325,1.90732 1.33935,5.02685 1.33935,5.02685v13.39347c0,0 0.74377,4.01543 -1.33935,6.3576c-2.08312,2.34217 -5.80411,1.67418 -5.80411,1.67418h-13.39347c0,0 -3.50079,0.76968 -5.58035,-1.33935z"/><path d="M229.7952,162.85325h16.06111c0,0 5.96092,-0.36854 9.17505,2.64653c3.21412,3.01506 2.11723,7.94638 2.11723,7.94638v18.55642"/></g></g></svg>')
     }
 }
@@ -513,22 +512,27 @@ for (let i = 0; i < wins.length; i++) {
     const win = wins[i];
     const titbar = titbars[i];
     function win_move(e) {
-        console.log('st');
-        let cx, cy;
+        let cx, cy, max = false;
         if (e.type == 'touchmove') {
             cx = e.targetTouches[0].clientX, cy = e.targetTouches[0].clientY;
         } else {
             cx = e.clientX, cy = e.clientY;
         }
 
+        for (const elt of this.classList) {
+            if (elt == 'max') {
+                max = true;
+            }
+        }
+
         if (cy - deltaTop < 0) {
-            win.setAttribute('style', `left:${cx - deltaLeft}px;top:0px`);
-            if (win.classList[1] != 'calc') {
+            this.setAttribute('style', `left:${cx - deltaLeft}px;top:0px`);
+            if (this.classList[1] != 'calc') {
                 $('#window-fill').addClass('top');
                 setTimeout(() => {
                     $('#window-fill').addClass('fill');
                 }, 0);
-                fil = win;
+                fil = this;
             }
         } else if (fil) {
             $('#window-fill').removeClass('fill');
@@ -536,19 +540,24 @@ for (let i = 0; i < wins.length; i++) {
                 $('#window-fill').removeClass('top');
             }, 200);
             fil = false;
+        } else if (max) {
+            maxwin(this.classList[1]);
+            max = false;
+            this.setAttribute('style', `left:${cx - 0.35 * window.innerWidth}px;top:${cy - deltaTop}px`);
+            deltaLeft = 0.35 * window.innerWidth;
         } else {
-            win.setAttribute('style', `left:${cx - deltaLeft}px;top:${cy - deltaTop}px`);
+            this.setAttribute('style', `left:${cx - deltaLeft}px;top:${cy - deltaTop}px`);
         }
     }
     titbar.addEventListener('mousedown', (e) => {
-        deltaLeft = e.clientX - win.offsetLeft;
-        deltaTop = e.clientY - win.offsetTop;
-        page.onmousemove = win_move;
+        deltaLeft = e.clientX - window.getComputedStyle(win, null).getPropertyValue('left').split("px")[0];
+        deltaTop = e.clientY - window.getComputedStyle(win, null).getPropertyValue('top').split("px")[0];
+        page.onmousemove = win_move.bind(win);
     })
     titbar.addEventListener('touchstart', (e) => {
-        deltaLeft = e.targetTouches[0].clientX - win.offsetLeft;
-        deltaTop = e.targetTouches[0].clientY - win.offsetTop;
-        page.ontouchmove = win_move;
+        deltaLeft = e.targetTouches[0].clientX - window.getComputedStyle(win, null).getPropertyValue('left').split("px")[0];
+        deltaTop = e.targetTouches[0].clientY - window.getComputedStyle(win, null).getPropertyValue('top').split("px")[0];
+        page.ontouchmove = win_move.bind(win);
     })
 }
 page.addEventListener('mouseup', () => {
@@ -582,6 +591,7 @@ document.getElementsByTagName('body')[0].onload = function nupd() {
             $('.msg.update').addClass('show');
         }, 1000);
     }
+    aftload = true;
 };
 
 // PWA 应用
@@ -595,6 +605,9 @@ navigator.serviceWorker.addEventListener('message', function (e) {
         $('.msg.update>.main>.tit').html('<i class="bi bi-stars" style="background-image: linear-gradient(100deg, #ad6eca, #3b91d8);-webkit-background-clip: text;-webkit-text-fill-color: transparent;text-shadow:3px 3px 5px var(--sd);filter:saturate(200%) brightness(0.9);"></i> ' + $('#win-about>.cnt.update>div>details:first-child>summary').text());
         $('.msg.update>.main>.cont').html($('#win-about>.cnt.update>div>details:first-child>p').html());
         $('#loadbackupdate').css('display', 'block');
+        if (aftload) {
+            console.log('aftload');
+        }
     }
 });
 

@@ -58,7 +58,6 @@ body {
     background: var(--bgul) center;
     background-size: cover;
     height: 100%;
-    font-family:"Microsoft YaHei";
 }
 
 .a {
@@ -1704,7 +1703,7 @@ list>.text:hover {
     border: 2px solid #8f8f8f30;
     display: none;
     opacity: 0;
-    transition: cubic-bezier(0.9, 0, 0.1, 1) 200ms;
+    transition: all cubic-bezier(0.9, 0, 0.1, 1) 200ms, left 0s, top 0s, width 200ms, height 200ms;
     overflow: hidden;
     box-shadow: 3px 3px 15px 1px var(--sd);
     z-index: 98;
@@ -1767,7 +1766,7 @@ list>.text:hover {
     width: 66px;
 }
 
-.window.foc.notrans {
+.window.notrans {
     transition: unset !important;
 }
 
@@ -1781,7 +1780,6 @@ list>.text:hover {
 .window>.titbar>p {
     font-size: 16px;
     margin-top: 3px;
-    color: var(--text);
 }
 
 .window>.titbar>.icon {
@@ -1842,7 +1840,7 @@ list>.text:hover {
     backdrop-filter: blur(60px);
     display: none;
     position: fixed;
-    transition: cubic-bezier(0.9, 0, 0.1, 1) 200ms;
+    transition: all 200ms;
     margin: 10px;
     border-radius: 20px;
     border: 4px solid var(--bg30);
