@@ -43,8 +43,8 @@ let cms = {
     'desktop': [
         ['<i class="bi bi-arrow-clockwise"></i> 刷新', `$('#desktop').css('opacity','0');setTimeout(()=>{$('#desktop').css('opacity','1');},100);`],
         ['<i class="bi bi-circle-square"></i> 切换主题', 'toggletheme()'],
-        `<a onclick="window.open('https://github.com/tjy-gitnub/win12','_blank');" title="https://github.com/tjy-gitnub/win12"><i class="bi bi-github"></i> 在 Github 中查看此项目</a>`,
-        `<a onclick="window.open('https://github.com/tjy-gitnub/win12/issues','_blank');" title="https://github.com/tjy-gitnub/win12/issues"><i class="bi bi-chat-left-text"></i> 发送反馈</a>`,
+        `<a onmousedown="window.open('https://github.com/tjy-gitnub/win12','_blank');" title="https://github.com/tjy-gitnub/win12"><i class="bi bi-github"></i> 在 Github 中查看此项目</a>`,
+        `<a onmousedown="window.open('https://github.com/tjy-gitnub/win12/issues','_blank');" title="https://github.com/tjy-gitnub/win12/issues"><i class="bi bi-chat-left-text"></i> 发送反馈</a>`,
         ['<i class="bi bi-info-circle"></i> 关于 Win12 网页版', `$('#win-about>.about').show(200);$('#win-about>.update').hide();openapp('about');if($('.window.about').hasClass('min'))minwin('about');`],
     ],
     'winx': [
@@ -266,7 +266,7 @@ let apps = {
             #win-explorer>.main>.content>.view>.group>.item>div{flex-grow: 1;padding: 5px 5px 0 0;}
             #win-explorer>.main>.content>.view>.group>.item>div>.bar{width: calc(100% - 10px);height: 8px;border-radius: 10px;
                 background-color: var(--hover-b);margin: 5px 5px;}
-            #win-explorer>.main>.content>.view>.group>.item>div>.bar>.content{height: 100%;background-image: linear-gradient(90deg, #ad6eca, #4998d9);
+            #win-explorer>.main>.content>.view>.group>.item>div>.bar>.content{height: 100%;background-image: linear-gradient(90deg, var(--theme-1), var(--theme-2));
                 border-radius: 10px;}
             #win-explorer>.main>.content>.view>.group>.item>div>.info{color: #959595;font-size: 14px;}</style>
             <p class="class"><img src="apps/icons/explorer/disk.png"> 设备和驱动器</p><div class="group">
@@ -575,6 +575,7 @@ page.addEventListener('touchend', () => {
 })
 
 // 启动
+let updated=false;
 document.getElementsByTagName('body')[0].onload = function nupd() {
     $('#loadback').addClass('hide'); setTimeout(() => { $('#loadback').css('display', 'none') }, 200);
     if (updated) {
@@ -592,7 +593,7 @@ navigator.serviceWorker.controller.postMessage('update?');
 navigator.serviceWorker.addEventListener('message', function (e) {
     if (e.data == 'update') {
         updated = true;
-        $('.msg.update>.main>.tit').html('<i class="bi bi-stars" style="background-image: linear-gradient(100deg, #ad6eca, #3b91d8);-webkit-background-clip: text;-webkit-text-fill-color: transparent;text-shadow:3px 3px 5px var(--sd);filter:saturate(200%) brightness(0.9);"></i> ' + $('#win-about>.cnt.update>div>details:first-child>summary').text());
+        $('.msg.update>.main>.tit').html('<i class="bi bi-stars" style="background-image: linear-gradient(100deg, var(--theme-1), var(--theme-2));-webkit-background-clip: text;-webkit-text-fill-color: transparent;text-shadow:3px 3px 5px var(--sd);filter:saturate(200%) brightness(0.9);"></i> ' + $('#win-about>.cnt.update>div>details:first-child>summary').text());
         $('.msg.update>.main>.cont').html($('#win-about>.cnt.update>div>details:first-child>p').html());
         $('#loadbackupdate').css('display', 'block');
     }
@@ -601,7 +602,7 @@ navigator.serviceWorker.addEventListener('message', function (e) {
 // 清除cookie
 if (document.cookie != '') {
     document.cookie = 'version=0.0.0;expires=Thu, 01 Jan 1970 00:00:00 UTC;';
-    $('.msg.update>.main>.tit').html('<i class="bi bi-stars" style="background-image: linear-gradient(100deg, #ad6eca, #3b91d8);-webkit-background-clip: text;-webkit-text-fill-color: transparent;text-shadow:3px 3px 5px var(--sd);filter:saturate(200%) brightness(0.9);"></i> ' + $('#win-about>.cnt.update>div>details:first-child>summary').text());
+    $('.msg.update>.main>.tit').html('<i class="bi bi-stars" style="background-image: linear-gradient(100deg, var(--theme-1), var(--theme-2));-webkit-background-clip: text;-webkit-text-fill-color: transparent;text-shadow:3px 3px 5px var(--sd);filter:saturate(200%) brightness(0.9);"></i> ' + $('#win-about>.cnt.update>div>details:first-child>summary').text());
     $('.msg.update>.main>.cont').html($('#win-about>.cnt.update>div>details:first-child>p').html());
     $('#loadbackupdate').css('display', 'block');
     updated = true;

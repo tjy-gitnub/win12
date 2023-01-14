@@ -38,10 +38,10 @@
     padding-top: 3px;
 }
 #win-calc>.keyb>.b.ans{
-    background-image: linear-gradient(120deg, #ad6eca88, #3b91d888);
+    background-image: linear-gradient(120deg, var(--theme-1), var(--theme-2));
 }
 #win-calc>.keyb>.b.ans:hover{
-    background-image: linear-gradient(120deg, #ad6ecacc, #3b91d8cc);
+    backdrop-filter: brightness(0.8);
 }
 #win-calc>.keyb>span{
     width: 71px;

@@ -30,7 +30,7 @@
 }
 
 #win-about>.cnt .tit>span{
-    background: linear-gradient(180deg, #ad6eca, #3b91d8);
+    background: linear-gradient(180deg, var(--theme-1), var(--theme-2));
     border-radius: 10px;
     width: 6px;
     margin: 5px 5px;

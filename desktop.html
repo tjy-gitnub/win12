@@ -197,7 +197,7 @@
 		<div class="widgets">
 			<div class="bar">
 				<p class="tit">小组件</p>
-				<button onclick="widgets.widgets.add('calc')" class="a act btn btn-icon big" style="background: linear-gradient(100deg, #ad6ecaee, #3b91d8ee);color:#fff;"><i class="bi bi-plus-lg"></i></button>
+				<button onclick="widgets.widgets.add('calc')" class="a act btn btn-icon big" style="background: linear-gradient(100deg, var(--theme-1), var(--theme-2));color:#fff;"><i class="bi bi-plus-lg"></i></button>
 			</div>
 			<div class="content">
 				<div class="template">
@@ -252,16 +252,16 @@
 				<p style="color: #7f7f7f;margin-right: 5px;margin-top: 2px;">注意: 新闻内容均不属实 </p>
 			</div>
 			<div class="content">
-				<div class="card" style="grid-column: 1/6;grid-row: 1/3;color: #fff;background: var(--bgul);background-position:-50px -370px;background-size: 150%;">
-					<p class="tit" style="font-size: 22px;margin: 110px 0 0 30px;">Windows12 网页版 v3.5.0 发布</p>
-					<a class="a" style="margin: 5px 0 0 250px;font-size: 17px;color: #9dd0fb;" onclick="hide_widgets();
+				<div class="card" style="grid-column: 1/6;grid-row: 1/3;color: #fff;background: var(--bgul);background-position:0px -70px;background-size: 170%;">
+					<p class="tit" style="font-size: 22px;margin: 110px 0 0 30px;text-shadow: 0 0 8px #000;">Windows12 网页版春节特别版 发布</p>
+					<a class="a" style="margin: 5px 0 0 250px;font-size: 17px;color: rgb(255, 156, 156);text-shadow: 0 0 3px #000;" onclick="hide_widgets();
 					openapp('about');if($('.window.about').hasClass('min'))minwin('about');
 					$('#win-about>.update').show(200);$('#win-about>.about').hide();
 					$('#win-about>.update>div>details:first-child').attr('open','open')">详细信息 ></a>
 				</div>
 				<div class="card" style="grid-column: 1/4;grid-row: 3/5;background:url(img/win13.jpg) center;background-size: cover;">
 					<p class="tit" style="font-size: 19px;margin: 50px 0 0 10px;color: #fff;">Windows13 即将发布，官方透露: 将自带 Macos 子系统</p>
-					<a class="a" style="margin: 5px 0 0 130px;font-size: 17px;color: #9dd0fb;">详细信息 ></a>
+					<a class="a" style="margin: 5px 0 0 130px;font-size: 17px;color: rgb(238, 108, 108);text-shadow: 0 0 3px #000;">详细信息 ></a>
 				</div>
 				<div class="card" style="grid-column: 4/6;grid-row: 3/5;background:linear-gradient(#00000000,var(--bg) 70%),url(img/win11.jpg) center;background-size: cover;">
 					<p class="tit" style="font-size: 19px;margin: 100px 0 0 10px;">Windows11 将于下周停止支持</p>
@@ -269,7 +269,7 @@
 				</div>
 				<div class="card" style="grid-column: 1/3;grid-row: 5/7;background:linear-gradient(#00000000,#111 70%),url(img/corsiri.svg) bottom;background-size: 130%;">
 					<p class="tit" style="font-size: 19px;margin: 75px 0 0px 10px;color: #fff;">2029年,微软终重拾Cortana 微软员工透露:将与Siri整合</p>
-					<a class="a" style="margin: 0 0 0 80px;font-size: 17px;color: #9dd0fb;">详细信息 ></a>
+					<a class="a" style="margin: 0 0 0 80px;font-size: 17px;color: rgb(255, 97, 97);">详细信息 ></a>
 				</div>
 				<div class="card" style="grid-column: 3/6;grid-row: 5/8;background:linear-gradient(#00000000 0 30%,var(--bg) 95%),url(img/yq.jpg) bottom;background-size: cover;">
 					<p class="tit" style="font-size: 19px;margin: 210px 0 -20px 10px;">中国宇航员谭景元昨天下午成功登月</p>
@@ -277,7 +277,7 @@
 				</div>
 				<div class="card" style="grid-column: 1/3;grid-row: 7/9;background:#171b22;">
 					<p class="tit" style="font-size: 19px;margin: 50px 0 0 10px;color: #fff;">想给新闻增加更多奇思妙想? <br>快在github上来提交吧</p>
-					<a class="a" title="https://github.com/tjy-gitnub/win12/issues" style="margin: 10px 0 0 70px;font-size: 17px;color: #9dd0fb;" onclick="
+					<a class="a" title="https://github.com/tjy-gitnub/win12/issues" style="margin: 10px 0 0 70px;font-size: 17px;color: rgb(255, 115, 115);" onclick="
 					window.open('https://github.com/tjy-gitnub/win12/issues','_blank');">提交issues ></a>
 				</div>
 			</div>
@@ -495,7 +495,7 @@
 				<input-before class="bi bi-search"></input-before>
 				<list>
 					<a class="check"><span
-						style="background-image: linear-gradient(180deg, #ad6eca, #3b91d8);border-radius: 10px;position: relative;left: -10px;top:1px;height: 20px;margin-right: -4px;">
+						style="background-image: linear-gradient(180deg, var(--theme-1), var(--theme-2));border-radius: 10px;position: relative;left: -10px;top:1px;height: 20px;margin-right: -4px;">
 						&nbsp;</span><img src="apps/icons/setting/system.png">系统</a>
 					<a><img src="apps/icons/setting/blueteeth.png">蓝牙和其他设备</a>
 					<a><img src="apps/icons/setting/network.png">网络和 Internet</a>
@@ -559,7 +559,7 @@
 						<a><img src="apps/icons/explorer/qa.png">快速访问</a>
 						<a><img src="apps/icons/explorer/od.png">OneDrive</a>
 						<a class="check" onclick="apps.explorer.reset();"><span
-							style="background:linear-gradient(180deg, #ad6eca, #3b91d8);width:4px;height: 19px;border-radius: 10px;margin-left: -12px;margin-right: 8px;margin-top: 1px;"></span>
+							style="background:linear-gradient(180deg, var(--theme-1), var(--theme-2));width:4px;height: 19px;border-radius: 10px;margin-left: -12px;margin-right: 8px;margin-top: 1px;"></span>
 							<img src="apps/icons/explorer/thispc.png">此电脑</a>
 						<a><img src="apps/icons/explorer/rb.png">回收站</a>
 					</list>
@@ -685,6 +685,12 @@
 			<div class="cnt update" style="display: none;">
 				<h1 class="tit"><span></span>更新记录</h1>
 				<div style="margin-left: 20px;">
+					<details><summary><span>v3.6.1</span> Windows12新年特别版</summary>
+						<p>&emsp;&emsp;<strong style="color: red;text-shadow: 0 0 5px #666;">祝大家新的一年万事如意,幸福快乐,心想事成!</strong><br>
+						&emsp;&emsp;-增加主题色控制功能<br>
+						&emsp;&emsp;-测试新的更新机制(成功更新的麻烦在<a class="jump">这里</a>告诉我一声,谢谢)<br>
+						&emsp;&emsp;-细节优化和修复</p>
+					</details>
 					<details><summary><span>v3.6.0</span> 更新机制改进，新增office和终端</summary>
 						<p>&emsp;&emsp;-使用新的更新机制，更新速度提升<br>
 						&emsp;&emsp;-新增终端应用<br>
@@ -756,8 +762,8 @@
 						<i>1: 正常会有安装的提示，会在链接栏右上角，安装后可离线使用，有网会自动更新。感谢 @dzc120223 的建议</i>
 					</p>
 					</details>
-					<a href="a jump" title="update.md" onclick="window.open('update.md','_blank')"></a>
 				</div>
+				<a class="jump" title="update.md" onclick="window.open('update.md','_blank')" style="text-align: center;display: block;margin-top: 5px;">更多</a>
 			</div>
 		</div>
 	</div>

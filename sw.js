@@ -19,7 +19,13 @@ this.addEventListener('fetch', function (event) {
 });
 const cacheNames = ['def'];
 let changes=[
-  
+  '/desktop.html',
+  '/desktop.js',
+  '/desktop.css',
+  '/widgets.css',
+  '/apps/styl/about.css',
+  '/apps/styl/calc.css',
+  '/apps/styl/setting.css',
 ]
 let flag = false;
 this.addEventListener('activate', function (event) {
@@ -56,11 +62,7 @@ this.addEventListener('activate', function (event) {
   event.waitUntil(
     caches.open('def').then(function (cache) {
 			return cache.addAll([
-				'apps/icons/explorer/disk.png',
-				'apps/icons/explorer/diskwin.png',
-				'apps/icons/explorer/folder.png',
-        'bg-dark.svg',
-        'apps/icons/setting/icons.woff2'
+				'newyear-dark.png'
 			]);
 		})
   );

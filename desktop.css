@@ -13,12 +13,16 @@
     --hover-half:#ffffff50;
     --hover-b: #00000017;
     --bggrey: #ddd;
-    --bgul: url('./bg.svg');
+    --bgul: url('newyear-light.png');
     --mm: #ffffffc0;
     --cm: #fafafabb;
     --bar: #efefef37;
     --hr:#00000013;
     --unfoc:#e6e6e6;
+    --theme-1:rgb(215, 51, 114);
+    --theme-2:rgb(131, 40, 128);
+    --theme-f:hue-rotate(58deg) saturate(0.8) contrast(1.2);
+    --href:red;
 }
 
 :root.dark {
@@ -33,12 +37,36 @@
     --hover-half:#ffffff20;
     --hover-b: #ffffff30;
     --bggrey: #444;
-    --bgul: url('./bg-dark.svg');
+    --bgul: url('newyear-dark.png');
     --mm: #ffffff50;
     --cm: #252525bb;
     --bar: #7272722a;
     --hr:#00000050;
     --unfoc:#333;
+}
+
+#start-btn>.ico{
+    filter: var(--theme-f);
+}
+
+#search-btn>.in{
+    filter: var(--theme-f);
+}
+
+img[src="icon/about.png"]{
+    filter: var(--theme-f) !important;
+}
+
+#loadbacksvg{
+    filter: var(--theme-f);
+}
+
+#s-m-user{
+    filter: var(--theme-f);
+}
+
+#win-setting>.menu>.user>svg{
+    filter: var(--theme-f);
 }
 
 body,
@@ -70,7 +98,7 @@ body {
 a.jump {
     cursor: alias !important;
     /* text-decoration: underline; */
-    color: #2983cc;
+    color: var(--href);
 }
 
 a.jump:hover{
@@ -319,7 +347,7 @@ list>a:active,
     content: '';
     display: block;
     width: 18px;
-    background: linear-gradient(90deg, #ad6eca, #3b91d8);
+    background: linear-gradient(90deg, var(--theme-1), var(--theme-2));
     height: 4px;
     border-radius: 2px;
     position: relative;
@@ -922,7 +950,7 @@ input-before {
     display: block;
     position: relative;
     bottom: 0;
-    background-image: linear-gradient(90deg, #ad6eca, #3b91d8);
+    background-image: linear-gradient(90deg, var(--theme-1), var(--theme-2));
     width: 100%;
     height: 3px;
     border-radius: 3px;
@@ -1145,7 +1173,7 @@ input-before {
 }
 
 #widgets>.news>.content>.card>.a{
-    color: #2983cc;
+    color: var(--href);
 }
 #widgets>.news>.content>.card>.a:hover{
     border-bottom: 2px solid;
@@ -1223,7 +1251,7 @@ input-before {
 }
 
 #datebox>.cont>.body>p.today {
-    background: linear-gradient(120deg, #ad6eca, #3b91d8);
+    background: linear-gradient(120deg, var(--theme-1), var(--theme-2));
     color: #eee;
 }
 
@@ -1458,7 +1486,7 @@ input-before {
 
 
 .more-btn {
-    background-image: linear-gradient(100deg, #ad6ecaee, #3b91d8ee);
+    background-image: linear-gradient(100deg, var(--theme-1), var(--theme-2));
     color: #fff;
     padding: 0;
     border-radius: 5px;
