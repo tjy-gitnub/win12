@@ -14,11 +14,21 @@ body {
 }
 
 html {
+    touch-action: none;
     font-family: sans-serif;
     line-height: 1.15;
     -webkit-text-size-adjust: 100%;
     -webkit-tap-highlight-color: transparent;
 }
+
+html * {
+    touch-action: auto;
+}
+
+pre {
+    font-family: monospace;
+}
+
 
 hr {
     box-sizing: content-box;
@@ -35,6 +45,7 @@ hr {
 
 [type=button], [type=reset], [type=submit], button {
     -webkit-appearance: button;
+    appearance: button;
 }
 button, select {
     text-transform: none;
