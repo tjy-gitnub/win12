@@ -442,6 +442,7 @@ function hidewin(name) {
 function maxwin(name) {
     let element = $('.window.' + name);
     if (element.hasClass('max')) {
+        $('#dock-box').removeClass('hide');
         element.removeClass('max');
         $('.window.' + name + '>.titbar>div>.wbtg.max').html('<i class="bi bi-app"></i>');
         setTimeout(() => { element.addClass('notrans'); }, 200);
@@ -449,6 +450,7 @@ function maxwin(name) {
         element.removeClass('notrans');
         element.addClass('max');
         $('.window.' + name + '>.titbar>div>.wbtg.max').html('<svg version="1.1" width="12" height="12" viewBox="0,0,37.65105,35.84556" style="margin-top:4px;"><g transform="translate(-221.17804,-161.33903)"><g style="stroke:var(--text);" data-paper-data="{&quot;isPaintingLayer&quot;:true}" fill="none" fill-rule="nonzero" stroke-width="2" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="10" stroke-dasharray="" stroke-dashoffset="0" style="mix-blend-mode: normal"><path d="M224.68734,195.6846c-2.07955,-2.10903 -2.00902,-6.3576 -2.00902,-6.3576l0,-13.72831c0,0 -0.23986,-1.64534 2.00902,-4.69202c1.97975,-2.68208 4.91067,-2.00902 4.91067,-2.00902h14.06315c0,0 3.77086,-0.23314 5.80411,1.67418c2.03325,1.90732 1.33935,5.02685 1.33935,5.02685v13.39347c0,0 0.74377,4.01543 -1.33935,6.3576c-2.08312,2.34217 -5.80411,1.67418 -5.80411,1.67418h-13.39347c0,0 -3.50079,0.76968 -5.58035,-1.33935z"/><path d="M229.7952,162.85325h16.06111c0,0 5.96092,-0.36854 9.17505,2.64653c3.21412,3.01506 2.11723,7.94638 2.11723,7.94638v18.55642"/></g></g></svg>')
+        $('#dock-box').addClass('hide');
     }
 }
 function minwin(name) {
@@ -508,24 +510,17 @@ function toggletheme() {
 const page = document.getElementsByTagName('html')[0];
 const titbars = document.querySelectorAll('.window>.titbar');
 const wins = document.querySelectorAll('.window');
-let deltaLeft = 0, deltaTop = 0, fil = false;
+let deltaLeft = 0, deltaTop = 0, fil = false, bfLeft = 0, bfTop = 0;
 for (let i = 0; i < wins.length; i++) {
     const win = wins[i];
     const titbar = titbars[i];
     function win_move(e) {
-        let cx, cy, max = false;
+        let cx, cy;
         if (e.type == 'touchmove') {
             cx = e.targetTouches[0].clientX, cy = e.targetTouches[0].clientY;
         } else {
             cx = e.clientX, cy = e.clientY;
         }
-
-        for (const elt of this.classList) {
-            if (elt == 'max') {
-                max = true;
-            }
-        }
-
         if (cy - deltaTop < 0) {
             this.setAttribute('style', `left:${cx - deltaLeft}px;top:0px`);
             if (this.classList[1] != 'calc') {
@@ -541,23 +536,33 @@ for (let i = 0; i < wins.length; i++) {
                 $('#window-fill').removeClass('top');
             }, 200);
             fil = false;
-        } else if (max) {
-            maxwin(this.classList[1], true);
-            max = false;
-            this.setAttribute('style', `left:${cx - 0.35 * window.innerWidth}px;top:${cy - deltaTop}px`);
-            deltaLeft = 0.35 * window.innerWidth;
+        } else if ($(this).hasClass('max')) {
+            setTimeout(() => {
+                if(!$(this).hasClass('max'))return;
+                deltaLeft = deltaLeft / (document.body.offsetWidth - (45 * 3)) * (0.7 * document.body.offsetWidth - 45 * 3);
+                // 窗口控制按钮宽 45px
+                this.setAttribute('style', `left:${cx - deltaLeft}px;top:${cy - deltaTop}px;`);
+                $(this).removeClass('max');
+                $('.window.' + this.classList[1] + '>.titbar>div>.wbtg.max').html('<i class="bi bi-app"></i>');
+                $('#dock-box').removeClass('hide');
+                setTimeout(() => { $(this).addClass('notrans'); }, 200);
+            }, 150); // 触控板双击可能识别为拖动
         } else {
-            this.setAttribute('style', `left:${cx - deltaLeft}px;top:${cy - deltaTop}px`);
+            this.setAttribute('style', `left:${cx - deltaLeft}px;top:${cy - deltaTop}px;`);
         }
     }
     titbar.addEventListener('mousedown', (e) => {
-        deltaLeft = e.clientX - window.getComputedStyle(win, null).getPropertyValue('left').split("px")[0];
-        deltaTop = e.clientY - window.getComputedStyle(win, null).getPropertyValue('top').split("px")[0];
+        bfLeft = window.getComputedStyle(win, null).getPropertyValue('left').split("px")[0];
+        bfTop = window.getComputedStyle(win, null).getPropertyValue('top').split("px")[0];
+        deltaLeft = e.clientX - bfLeft;
+        deltaTop = e.clientY - bfTop;
         page.onmousemove = win_move.bind(win);
     })
     titbar.addEventListener('touchstart', (e) => {
-        deltaLeft = e.targetTouches[0].clientX - window.getComputedStyle(win, null).getPropertyValue('left').split("px")[0];
-        deltaTop = e.targetTouches[0].clientY - window.getComputedStyle(win, null).getPropertyValue('top').split("px")[0];
+        bfLeft = window.getComputedStyle(win, null).getPropertyValue('left').split("px")[0];
+        bfTop = window.getComputedStyle(win, null).getPropertyValue('top').split("px")[0];
+        deltaLeft = e.targetTouches[0].clientX - bfLeft;
+        deltaTop = e.targetTouches[0].clientY - bfTop;
         page.ontouchmove = win_move.bind(win);
     })
 }
@@ -565,27 +570,29 @@ page.addEventListener('mouseup', () => {
     page.onmousemove = null;
     if (fil) {
         maxwin(fil.classList[1], null);
-        fil = false;
         setTimeout(() => {
             $('#window-fill').removeClass('fill');
             $('#window-fill').removeClass('top');
         }, 200);
+        fil.setAttribute('style', `left:${bfLeft}px;top:${bfTop}px`);
+        fil = false;
     }
 });
 page.addEventListener('touchend', () => {
     page.ontouchmove = null;
     if (fil) {
         maxwin(fil.classList[1], null);
-        fil = false;
         setTimeout(() => {
             $('#window-fill').removeClass('fill');
             $('#window-fill').removeClass('top');
         }, 200);
+        fil.setAttribute('style', `left:${bfLeft}px;top:${bfTop}px`);
+        fil = false;
     }
 });
 
 // 启动
-let updated=false;
+let updated = false;
 document.getElementsByTagName('body')[0].onload = function nupd() {
     $('#loadback').addClass('hide'); setTimeout(() => { $('#loadback').css('display', 'none') }, 200);
     if (updated) {

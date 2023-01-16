@@ -4,7 +4,10 @@
 <head>
 	<meta charset="UTF-8" />
 	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
-	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+	<meta name="format-detection" content="telephone=no" />
+	<meta name="theme-color" content="red">
+
 	<!-- Windows 12 网页版 谭景元原创  -->
 
 	<!-- Windows 12 网页版是一个开放源项目,
@@ -259,7 +262,7 @@
 					$('#win-about>.update').show(200);$('#win-about>.about').hide();
 					$('#win-about>.update>div>details:first-child').attr('open','open')">详细信息 ></a>
 				</div>
-				<div class="card" style="grid-column: 1/4;grid-row: 3/5;background:url(img/win13.jpg) center;background-size: cover;">
+				<div class="card" style="grid-column: 3/6;grid-row: 7/9;background:url(img/win13.jpg) center;background-size: cover;">
 					<p class="tit" style="font-size: 19px;margin: 50px 0 0 10px;color: #fff;">Windows13 即将发布，官方透露: 将自带 Macos 子系统</p>
 					<a class="a" style="margin: 5px 0 0 130px;font-size: 17px;color: rgb(238, 108, 108);text-shadow: 0 0 3px #000;">详细信息 ></a>
 				</div>
@@ -267,15 +270,19 @@
 					<p class="tit" style="font-size: 19px;margin: 100px 0 0 10px;">Windows11 将于下周停止支持</p>
 					<a class="a" style="margin: 5px 0 0 80px;font-size: 17px;">详细信息 ></a>
 				</div>
-				<div class="card" style="grid-column: 1/3;grid-row: 5/7;background:linear-gradient(#00000000,#111 70%),url(img/corsiri.svg) bottom;background-size: 130%;">
-					<p class="tit" style="font-size: 19px;margin: 75px 0 0px 10px;color: #fff;">2029年,微软终重拾Cortana 微软员工透露:将与Siri整合</p>
+				<div class="card" style="grid-column: 1/3;grid-row: 5/8;background:linear-gradient(#00000000,#111 80%),url(img/corsiri.svg) bottom;background-size: 200%;">
+					<p class="tit" style="font-size: 19px;margin: 170px 0 0px 10px;color: #fff;">2029年,微软终重拾Cortana 微软员工透露:将与Siri整合</p>
 					<a class="a" style="margin: 0 0 0 80px;font-size: 17px;color: rgb(255, 97, 97);">详细信息 ></a>
 				</div>
-				<div class="card" style="grid-column: 3/6;grid-row: 5/8;background:linear-gradient(#00000000 0 30%,var(--bg) 95%),url(img/yq.jpg) bottom;background-size: cover;">
-					<p class="tit" style="font-size: 19px;margin: 210px 0 -20px 10px;">中国宇航员谭景元昨天下午成功登月</p>
+				<div class="card" style="grid-column: 3/6;grid-row: 5/7;background:linear-gradient(#00000000 0 30%,var(--bg) 70%),url(img/mc.jpg) bottom;background-size: cover;">
+					<p class="tit" style="font-size: 19px;margin: 100px 0 -20px 10px;">今日凌晨,Minecraft把代理权交给中国航天员谭景元,网易败下阵来了?</p>
 					<a class="a" style="margin: 0 0 0 170px;font-size: 17px;">详细信息 ></a>
 				</div>
-				<div class="card" style="grid-column: 1/3;grid-row: 7/9;background:#171b22;">
+				<div class="card" style="grid-column: 1/4;grid-row: 3/5;background:linear-gradient(#00000000 0 30%,var(--bg) 80%),url(img/yq.jpg) center;background-size: cover;">
+					<p class="tit" style="font-size: 19px;margin: 120px 0 -20px 10px;">中国宇航员谭景元昨天下午成功登月</p>
+					<a class="a" style="margin: 0 0 0 150px;font-size: 17px;">详细信息 ></a>
+				</div>
+				<div class="card" style="grid-column: 1/3;grid-row: 8/10;background:#171b22;">
 					<p class="tit" style="font-size: 19px;margin: 50px 0 0 10px;color: #fff;">想给新闻增加更多奇思妙想? <br>快在github上来提交吧</p>
 					<a class="a" title="https://github.com/tjy-gitnub/win12/issues" style="margin: 10px 0 0 70px;font-size: 17px;color: rgb(255, 115, 115);" onclick="
 					window.open('https://github.com/tjy-gitnub/win12/issues','_blank');">提交issues ></a>
@@ -685,10 +692,21 @@
 			<div class="cnt update" style="display: none;">
 				<h1 class="tit"><span></span>更新记录</h1>
 				<div style="margin-left: 20px;">
+					<details><summary><span>v3.7.0</span> 窗口最大化完善,让颜色更"喜庆"一点</summary>
+						<p>&emsp;&emsp;<strong style="color: red;">祝大家新的一年万事如意,幸福快乐,心想事成!</strong><br>
+						&emsp;&emsp;<i>非常感谢 @User782Tec 的pr</i><br>
+						&emsp;&emsp;-增加最大化窗口下拖还原功能<br>
+						&emsp;&emsp;-最大化窗口还原后保留之前的位置<br>
+						&emsp;&emsp;-让系统的色调更"喜庆"一点<br>
+						&emsp;&emsp;-增加 @iamkezo1 提供的新闻<br>
+						&emsp;&emsp;-压缩背景图片加速<br>
+						&emsp;&emsp;-禁用缩放<br>
+						&emsp;&emsp;-细节优化和修复</p>
+					</details>
 					<details><summary><span>v3.6.1</span> Windows12新年特别版</summary>
-						<p>&emsp;&emsp;<strong style="color: red;text-shadow: 0 0 5px #666;">祝大家新的一年万事如意,幸福快乐,心想事成!</strong><br>
+						<p>&emsp;&emsp;<strong style="color: red;">祝大家新的一年万事如意,幸福快乐,心想事成!</strong><br>
 						&emsp;&emsp;-增加主题色控制功能<br>
-						&emsp;&emsp;-测试新的更新机制(成功更新的麻烦在<a class="jump">这里</a>告诉我一声,谢谢)<br>
+						&emsp;&emsp;-测试新的更新机制<br>
 						&emsp;&emsp;-细节优化和修复</p>
 					</details>
 					<details><summary><span>v3.6.0</span> 更新机制改进，新增office和终端</summary>
@@ -763,7 +781,7 @@
 					</p>
 					</details>
 				</div>
-				<a class="jump" title="update.md" onclick="window.open('update.md','_blank')" style="text-align: center;display: block;margin-top: 5px;">更多</a>
+				<a class="jump" title="https://github.com/tjy-gitnub/win12/blob/main/update.md" onclick="window.open('https://github.com/tjy-gitnub/win12/blob/main/update.md','_blank')" style="text-align: center;display: block;margin-top: 5px;">更多</a>
 			</div>
 		</div>
 	</div>
