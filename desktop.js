@@ -177,18 +177,18 @@ dps = {
     'notepad.file': [
         ['<i class="bi bi-file-earmark-plus"></i> 新建', `hidedp();$('#win-notepad>.text-box').addClass('down');
         setTimeout(()=>{$('#win-notepad>.text-box').val('');$('#win-notepad>.text-box').removeClass('down')},200);`],
-        ['<i class="bi bi-box-arrow-right"></i> 另存为', `hidedp();$('#win-notepad>.save').attr('href','data:text/txt;,'+encodeURIComponent($('#win-notepad>.text-box').val()));
+        ['<i class="bi bi-box-arrow-right"></i> 另存为', `hidedp();$('#win-notepad>.save').attr('href', window.URL.createObjectURL(new Blob([$('#win-notepad>.text-box').val()])));
         $('#win-notepad>.save')[0].click();`],
         '<hr>',
         ['<i class="bi bi-x"></i> 退出', `isOnDp=false;hidedp();hidewin('notepad')`],
     ],
     'notepad.edit': [
-        ['<i class="bi bi-files"></i> 复制 <info>Ctrl+C</info>', ''],
-        ['<i class="bi bi-clipboard"></i> 粘贴 <info>Ctrl+V</info>', ''],
-        ['<i class="bi bi-scissors"></i> 剪切 <info>Ctrl+X</info>', ''],
+        ['<i class="bi bi-files"></i> 复制 <info>Ctrl+C</info>', 'document.execCommand(\'copy\')'],
+        ['<i class="bi bi-clipboard"></i> 粘贴 <info>Ctrl+V</info>', `document.execCommand(\'paste\')`],
+        ['<i class="bi bi-scissors"></i> 剪切 <info>Ctrl+X</info>', 'document.execCommand(\'cut\')'],
         '<hr>',
-        ['<i class="bi bi-arrow-return-left"></i> 撤销 <info>Ctrl+Z</info>', ''],
-        ['<i class="bi bi-arrow-clockwise"></i> 重做 <info>Ctrl+Y</info>', ''],
+        ['<i class="bi bi-arrow-return-left"></i> 撤销 <info>Ctrl+Z</info>', 'document.execCommand(\'undo\')'],
+        ['<i class="bi bi-arrow-clockwise"></i> 重做 <info>Ctrl+Y</info>', 'document.execCommand(\'redo\')'],
     ]
 }
 let dpt = null, isOnDp = false;
@@ -216,11 +216,11 @@ function showdp(e, cl, arg) {
         if (typeof (item) == 'function') {
             ret = item(arg);
             if (ret == 'null') return true;
-            h += `<a class="a" onmousedown="${ret[1]}">${ret[0]}</a>\n`;
+            h += `<a class="a" onclick="${ret[1]}">${ret[0]}</a>\n`;
         } else if (typeof (item) == 'string') {
             h += item + '\n';
         } else {
-            h += `<a class="a" onmousedown="${item[1]}">${item[0]}</a>\n`;
+            h += `<a class="a" onclick="${item[1]}">${item[0]}</a>\n`;
         }
     })
     $('#dp>list')[0].innerHTML = h;
