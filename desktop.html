@@ -25,6 +25,7 @@
 	<link rel="stylesheet" href="apps/style/about.css">
 	<link rel="stylesheet" href="apps/style/notepad.css">
 	<link rel="stylesheet" href="apps/style/terminal.css">
+	<link rel="stylesheet" href="apps/style/fonts.css">
 	<link rel="stylesheet" href="widgets.css">
 	<link rel="manifest" href="pwa/manifest.json">
 	<base target="_blank">
@@ -790,7 +791,7 @@
 			<img src="icon/notepad.png" class="icon">
 			<p>记事本</p>
 			<div>
-				<a class="a wbtg red" onclick="hidewin('notepad')"><i class="bi bi-x-lg"></i></a>
+				<a class="a wbtg red" onclick="hidewin('notepad');hidewin('notepad-fonts', 'configs')"><i class="bi bi-x-lg"></i></a>
 				<a class="a wbtg max" onclick="maxwin('notepad')"><i class="bi bi-app"></i></a>
 				<a class="a wbtg" onclick="minwin('notepad')"><i class="bi bi-dash-lg"></i></a>
 			</div>
@@ -800,13 +801,90 @@
 		</div>
 		<div class="content" id="win-notepad">
 			<div class="tool">
-				<a class="a" onmouseover="showdp(this,'notepad.file',null)" onmouseleave="hidedp(this,'notepad.file',null)">文件</a>
-				<a class="a" onmouseover="showdp(this,'notepad.edit',null)" onmouseleave="hidedp(this,'notepad.edit',null)">编辑</a>
+				<a class="a" onmouseover="showdp(this,'notepad.file',null)" onmouseleave="hidedp()">文件</a>
+				<a class="a" onmouseover="showdp(this,'notepad.edit',null)" onmouseleave="hidedp()">编辑</a>
+				<a class="a" onmouseover="showdp(this,'notepad.view',null)" onmouseleave="hidedp()">格式</a>
 			</div>
 			<textarea class="text-box"></textarea>
 			<a href="" download="未命名.txt" style="opacity: 0;" class="save">另存为</a>
 		</div>
 	</div>
+
+	<div class="window notepad-fonts" onmousedown="focwin('notepad-fonts')" ontouchstart="focwin('notepad-fonts')">
+		<div class="titbar" oncontextmenu="return showcm(event,'titbar','notepad-fonts')">
+			<img src="icon/notepad.png" class="icon">
+			<p>字体</p>
+			<div>
+				<a class="a wbtg red" onclick="hidewin('notepad-fonts', 'configs')"><i class="bi bi-x-lg"></i></a>
+			</div>
+		</div>
+		<div class="loadback">
+			<img src="icon/notepad.png" class="icon">
+		</div>
+		<div class="content" id="win-notepad-font">
+			<div class="select-input" id="win-notepad-font-type">
+				<div class="description">字体</div>
+				<input type="text" />
+				<div class="value-box">
+					<div class="option">Arial</div>
+					<div class="option">Arial Black</div>
+					<div class="option">"Book Antiqua"</div>
+					<div class="option">Charcoal</div>
+					<div class="option">"Comic Sans MS"</div>
+					<div class="option">Consolas</div>
+					<div class="option">Courier</div>
+					<div class="option">"Courier New"</div>
+					<div class="option">cursive</div>
+					<div class="option">Geneva</div>
+					<div class="option">Georgia</div>
+					<div class="option">Helvetica</div>
+					<div class="option">"Lucida Console"</div>
+					<div class="option">"Lucida Grande"</div>
+					<div class="option">"Lucida Sans Unicode"</div>
+					<div class="option">Monaco</div>
+					<div class="option">monospace</div>
+					<div class="option">Palatino</div>
+					<div class="option">"Palatino Linotype"</div>
+					<div class="option">sans-serif</div>
+					<div class="option">serif</div>
+					<div class="option">Tahoma</div>
+					<div class="option">"Trebuchet MS"</div>
+					<div class="option">Verdana</div>
+				</div>
+			</div>
+			<div class="select-input" id="win-notepad-font-size">
+				<div class="description">大小</div>
+				<input type="text" />
+				<div class="value-box">
+					<div class="option">初号</div>
+					<div class="option">小初</div>
+					<div class="option">一号</div>
+					<div class="option">小一</div>
+					<div class="option">二号</div>
+					<div class="option">小二</div>
+					<div class="option">三号</div>
+					<div class="option">小三</div>
+					<div class="option">四号</div>
+					<div class="option">小四</div>
+					<div class="option">五号</div>
+					<div class="option">小五</div>
+				</div>
+			</div><br />
+			<div class="preview">
+				<div class="description">
+					预览
+			    </div>
+				<div class="preview-box">
+					<div><div>Hello</div></div>
+					<div><div>你好</div></div>
+					<div><div>こんにちは</div></div>
+				</div>
+			</div>
+			<div class="buttons">
+				<div class="submit" onclick="commitFont();hidewin('notepad-fonts', 'configs');">确定</div>
+				<div class="cancel" onclick="hidewin('notepad-fonts', 'configs');">取消</div>
+			</div>
+		</div>
 	
 	<div class="window terminal"  onmousedown="focwin('terminal')" ontouchstart="focwin('terminal')">
 		<div class="titbar" oncontextmenu="return showcm(event,'titbar','terminal')" ondblclick="maxwin('terminal')">

@@ -26,18 +26,31 @@ $('input,textarea').on('contextmenu', (e) => {
 let cms = {
     'titbar': [
         function (arg) {
-            if (arg == 'calc')
-                return 'null'
-            if ($('.window.' + arg).hasClass("max"))
+            if (arg == 'calc' || arg == 'notepad-fonts') {
+                return 'null';
+            }
+            if ($('.window.' + arg).hasClass("max")) {
                 return ['<i class="bi bi-window-stack"></i> 还原', `maxwin('${arg}')`];
-            else
+            }
+            else {
                 return ['<i class="bi bi-window-fullscreen"></i> 最大化', `maxwin('${arg}')`];
+            }
         },
         function (arg) {
-            return ['<i class="bi bi-window-dash"></i> 最小化', `minwin('${arg}')`];
+            if (arg == 'notepad-fonts') {
+                return 'null';
+            }
+            else {
+                return ['<i class="bi bi-window-dash"></i> 最小化', `minwin('${arg}')`];
+            }
         },
         function (arg) {
-            return ['<i class="bi bi-window-x"></i> 关闭', `hidewin('${arg}')`];
+            if (arg == 'notepad-fonts') {
+                return ['<i class="bi bi-window-x"></i> 关闭', `hidewin('${arg}', 'configs')`];
+            }
+            else {
+                return ['<i class="bi bi-window-x"></i> 关闭', `hidewin('${arg}')`];
+            }
         },
     ],
     'desktop': [
@@ -175,12 +188,12 @@ $('#cm>.foc').blur(() => {
 // 下拉菜单
 dps = {
     'notepad.file': [
-        ['<i class="bi bi-file-earmark-plus"></i> 新建', `hidedp();$('#win-notepad>.text-box').addClass('down');
+        ['<i class="bi bi-file-earmark-plus"></i> 新建', `hidedp(true);$('#win-notepad>.text-box').addClass('down');
         setTimeout(()=>{$('#win-notepad>.text-box').val('');$('#win-notepad>.text-box').removeClass('down')},200);`],
-        ['<i class="bi bi-box-arrow-right"></i> 另存为', `hidedp();$('#win-notepad>.save').attr('href', window.URL.createObjectURL(new Blob([$('#win-notepad>.text-box').val()])));
+        ['<i class="bi bi-box-arrow-right"></i> 另存为', `hidedp(true);$('#win-notepad>.save').attr('href', window.URL.createObjectURL(new Blob([$('#win-notepad>.text-box').val()])));
         $('#win-notepad>.save')[0].click();`],
         '<hr>',
-        ['<i class="bi bi-x"></i> 退出', `isOnDp=false;hidedp();hidewin('notepad')`],
+        ['<i class="bi bi-x"></i> 退出', `isOnDp=false;hidedp(true);hidewin('notepad')`],
     ],
     'notepad.edit': [
         ['<i class="bi bi-files"></i> 复制 <info>Ctrl+C</info>', 'document.execCommand(\'copy\')'],
@@ -189,6 +202,9 @@ dps = {
         '<hr>',
         ['<i class="bi bi-arrow-return-left"></i> 撤销 <info>Ctrl+Z</info>', 'document.execCommand(\'undo\')'],
         ['<i class="bi bi-arrow-clockwise"></i> 重做 <info>Ctrl+Y</info>', 'document.execCommand(\'redo\')'],
+    ],
+    'notepad.view': [
+        [' 字体 ', 'hidedp(true);showwin(\'notepad-fonts\');resetfonts();']
     ]
 }
 let dpt = null, isOnDp = false;
@@ -237,9 +253,9 @@ function showdp(e, cl, arg) {
         }
     }, 200);
 }
-function hidedp() {
+function hidedp(force = false) {
     setTimeout(() => {
-        if (isOnDp) return;
+        if (isOnDp && !force) return;
         $('#dp').removeClass('show');
         setTimeout(() => {
             $('#dp').removeClass('show-begin');
@@ -400,7 +416,10 @@ for (let i = 1; i <= daysum; i++) {
     $('#datebox>.cont>.body')[0].innerHTML += `<p>${i}</p>`;
 }
 function openapp(name) {
-    if ($('#taskbar>.' + name).length != 0) return;
+    focwin(name);
+    if ($('#taskbar>.' + name).length != 0) {
+        return;
+    }
     $('.window.' + name).addClass('load');
     showwin(name);
     $('#taskbar').attr('count', Number($('#taskbar').attr('count')) + 1)
@@ -413,7 +432,6 @@ function openapp(name) {
     setTimeout(() => {
         $('.window.' + name).removeClass('load');
     }, 1000);
-
 }
 // 窗口操作
 function showwin(name) {
@@ -426,29 +444,35 @@ function showwin(name) {
     orderwindow();
     $('.window.' + name).addClass('foc');
 }
-function hidewin(name) {
+function hidewin(name, arg = 'window') {
     $('.window.' + name).removeClass('notrans');
     $('.window.' + name).removeClass('max');
     $('.window.' + name).removeClass('show');
-    $('#taskbar').attr('count', Number($('#taskbar').attr('count')) - 1)
-    $('#taskbar>.' + name).remove();
-    $('#taskbar').css('width', 10 + $('#taskbar').attr('count') * 34);
-    setTimeout(() => {
-        if ($('#taskbar').attr('count') == '0') $('#taskbar').css('display', 'none');
-    }, 80);
+    if (arg == 'window') {
+        $('#taskbar').attr('count', Number($('#taskbar').attr('count')) - 1)
+        $('#taskbar>.' + name).remove();
+        $('#taskbar').css('width', 10 + $('#taskbar').attr('count') * 34);
+        setTimeout(() => {
+            if ($('#taskbar').attr('count') == '0') $('#taskbar').css('display', 'none');
+        }, 80);
+    }
     setTimeout(() => { $('.window.' + name).removeClass('show-begin'); }, 200);
     $('.window.' + name + '>.titbar>div>.wbtg.max').html('<i class="bi bi-app"></i>');
+    if ($('.window').hasClass('max') == false) {
+        $('#dock-box').removeClass('hide');
+    }
 }
 function maxwin(name) {
-    let element = $('.window.' + name);
-    if (element.hasClass('max')) {
-        $('#dock-box').removeClass('hide');
-        element.removeClass('max');
+    if ($('.window.' + name).hasClass('max')) {
+        $('.window.' + name).removeClass('max');
         $('.window.' + name + '>.titbar>div>.wbtg.max').html('<i class="bi bi-app"></i>');
-        setTimeout(() => { element.addClass('notrans'); }, 200);
+        setTimeout(() => { $('.window.' + name).addClass('notrans'); }, 200);
+        if ($('.window').hasClass('max') == false) {
+            $('#dock-box').removeClass('hide');
+        }
     } else {
-        element.removeClass('notrans');
-        element.addClass('max');
+        $('.window.' + name).removeClass('notrans');
+        $('.window.' + name).addClass('max');
         $('.window.' + name + '>.titbar>div>.wbtg.max').html('<svg version="1.1" width="12" height="12" viewBox="0,0,37.65105,35.84556" style="margin-top:4px;"><g transform="translate(-221.17804,-161.33903)"><g style="stroke:var(--text);" data-paper-data="{&quot;isPaintingLayer&quot;:true}" fill="none" fill-rule="nonzero" stroke-width="2" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="10" stroke-dasharray="" stroke-dashoffset="0" style="mix-blend-mode: normal"><path d="M224.68734,195.6846c-2.07955,-2.10903 -2.00902,-6.3576 -2.00902,-6.3576l0,-13.72831c0,0 -0.23986,-1.64534 2.00902,-4.69202c1.97975,-2.68208 4.91067,-2.00902 4.91067,-2.00902h14.06315c0,0 3.77086,-0.23314 5.80411,1.67418c2.03325,1.90732 1.33935,5.02685 1.33935,5.02685v13.39347c0,0 0.74377,4.01543 -1.33935,6.3576c-2.08312,2.34217 -5.80411,1.67418 -5.80411,1.67418h-13.39347c0,0 -3.50079,0.76968 -5.58035,-1.33935z"/><path d="M229.7952,162.85325h16.06111c0,0 5.96092,-0.36854 9.17505,2.64653c3.21412,3.01506 2.11723,7.94638 2.11723,7.94638v18.55642"/></g></g></svg>')
         $('#dock-box').addClass('hide');
     }
@@ -460,7 +484,9 @@ function minwin(name) {
         setTimeout(() => {
             $('#taskbar>.' + name).removeClass('min');
             $('.window.' + name).removeClass('min');
-            if ($('.window.' + name).hasClass('min-max')) $('.window.' + name).addClass('max');
+            if ($('.window.' + name).hasClass('min-max')) {
+                $('.window.' + name).addClass('max');
+            }
             $('.window.' + name).removeClass('min-max');
         }, 0);
         setTimeout(() => {
@@ -523,7 +549,7 @@ for (let i = 0; i < wins.length; i++) {
         }
         if (cy - deltaTop < 0) {
             this.setAttribute('style', `left:${cx - deltaLeft}px;top:0px`);
-            if (this.classList[1] != 'calc') {
+            if (this.classList[1] != 'calc' && this.classList[1] != 'notepad-fonts') {
                 $('#window-fill').addClass('top');
                 setTimeout(() => {
                     $('#window-fill').addClass('fill');
@@ -590,6 +616,83 @@ page.addEventListener('touchend', () => {
         fil = false;
     }
 });
+
+// 记事本选择字体
+const sizes = [
+    {'初号': '56'},
+    {'小初': '48'},
+    {'一号': '34.7'},
+    {'小一': '32'},
+    {'二号': '29.3'},
+    {'小二': '24'},
+    {'三号': '21.3'},
+    {'小三': '20'},
+    {'四号': '18.7'},
+    {'小四': '16'},
+    {'五号': '14'},
+    {'小五': '12'}
+];
+const fontvalues = document.querySelectorAll('#win-notepad-font>#win-notepad-font-type>.value-box>.option');
+const sizevalues = document.querySelectorAll('#win-notepad-font>#win-notepad-font-size>.value-box>.option');
+const typeinput = document.querySelector('#win-notepad-font-type>input[type=text]');
+const sizeinput = document.querySelector('#win-notepad-font-size>input[type=text]');
+for (const elt of fontvalues) {
+    elt.onclick = function() {
+        typeinput.value = this.innerText;
+        preview();
+    }
+}
+for (const elt of sizevalues) {
+    elt.onclick = function() {
+        sizeinput.value = this.innerText;
+        preview();
+    }
+}
+sizeinput.addEventListener("keyup", preview);
+typeinput.addEventListener("keyup", preview);
+function commitFont() {
+    var fontsize = 0;
+    if (!sizeinput.value.match(/^[0-9]*$/)) {
+        for (const name of sizes) {
+            if (Object.entries(name)[0][0] == sizeinput.value) {
+                fontsize = Object.entries(name)[0][1];
+                break;
+            }
+        }
+    } else if (sizeinput.value.match(/^[0-9]*$/)) {
+        fontsize = sizeinput.value;
+    }
+    if (fontsize == 0 || fontsize > 10000) {
+        alert('数据不合规! 请重新输入');
+        return false;
+    }
+    $('.notepad>#win-notepad>.text-box').attr('style', `font-family: ${typeinput.value} !important; font-size: ${fontsize}px !important;line-height: ${fontsize}px !important`);
+}
+function resetfonts() {
+    typeinput.value = window.getComputedStyle($('.notepad>#win-notepad>.text-box')[0], null).getPropertyValue('font-family').split(', ')[0];
+    var fontsize = window.getComputedStyle($('.notepad>#win-notepad>.text-box')[0], null).getPropertyValue('font-size').split('px')[0];
+    for (const name of sizes) {
+        if (Object.entries(name)[0][1] == fontsize) {
+            fontsize = Object.entries(name)[0][0];
+            break;
+        }
+    }
+    sizeinput.value = fontsize;
+}
+function preview() {
+    var fontsize = 0;
+    if (!sizeinput.value.match(/^[0-9]*$/)) {
+        for (const name of sizes) {
+            if (Object.entries(name)[0][0] == sizeinput.value) {
+                fontsize = Object.entries(name)[0][1];
+                break;
+            }
+        }
+    } else if (sizeinput.value.match(/^[0-9]*$/)) {
+        fontsize = sizeinput.value;
+    }
+    $('#win-notepad-font>.preview>.preview-box').attr('style', `font-family: ${typeinput.value} !important; font-size: ${fontsize}px !important;line-height: ${fontsize}px !important`);
+}
 
 // 启动
 let updated = false;
