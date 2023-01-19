@@ -27,7 +27,7 @@ html {
 }
 
 #win-setting>.page {
-    flex-grow:1
+    flex-grow: 1
 }
 
 
@@ -53,13 +53,18 @@ html {
     font-size: 25px;
     margin-bottom: -7px;
 }
-#win-setting>.menu>.user>div>p:last-child{
-    overflow: hidden;text-overflow: ellipsis;white-space: nowrap;
+
+#win-setting>.menu>.user>div>p:last-child {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 #win-setting>.menu>.user>div {
     padding: 0px 0 0 10px;
-    overflow: hidden;text-overflow: ellipsis;white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 #win-setting>.menu>.user>svg {
@@ -99,7 +104,7 @@ html {
 }
 
 #win-setting>.menu>list>a.check {
-    background-color: var(--hover)!important;
+    background-color: var(--hover) !important;
 }
 
 .setting-list {
@@ -114,7 +119,7 @@ html {
 .setting-list>* {
     width: 100%;
     color: var(--text);
-    background: radial-gradient(circle, var(--card),var(--card));
+    background: radial-gradient(circle, var(--card), var(--card));
     margin-bottom: 5px;
     border-radius: 10px;
     border: 2px solid #7f7f7f30;
@@ -141,9 +146,10 @@ html {
     font-family: SettingsIcons;
     font-size: 20px;
     margin: 10px 20px 0 5px;
-    background-image:linear-gradient(100deg, var(--theme-1), var(--theme-2)); 
-    -webkit-background-clip:text; 
-    -webkit-text-fill-color:transparent;
+    background-image: linear-gradient(100deg, var(--theme-1), var(--theme-2));
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
     filter: saturate(130%) brightness(1.1);
 }
 

@@ -16,6 +16,10 @@
     width: 80px;
 }
 
+#win-notepad-font * {
+    vertical-align: top;
+}
+
 #win-notepad-font-size {
     vertical-align: top;
 }
@@ -65,6 +69,8 @@
     width: 150px;
     height: 150px;
     margin: 5px 10px;
+    position: absolute;
+    bottom: 40px;
 }
 
 #win-notepad-font .preview>.preview-box {
@@ -97,16 +103,23 @@
     padding: 5px 10px;
     border-radius: 10px;
     margin: 0px 5px;
-    transition: transform 400ms cubic-bezier(0.14, 1.02, 0.17, 0.03) !important;
     box-shadow: 2px 2px 4px var(--sd);
+    cursor: pointer;
+    transition: transform 200ms;
+}
+
+#win-notepad-font .buttons>*:hover {
+    transform: matrix(1.05, 0, 0, 1.05, 0, 0);
 }
 
 #win-notepad-font .buttons>*:active {
+    transition: transform 400ms cubic-bezier(0.14, 1.02, 0.17, 0.03) !important;
     transform: matrix(0.9, 0, 0, 0.9, 0, 0);
 }
 
 #win-notepad-font .buttons>.submit {
     background-image: linear-gradient(120deg, var(--theme-1), var(--theme-2));
+    color: white;
 }
 
 #win-notepad-font .buttons>.cancel {

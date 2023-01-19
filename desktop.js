@@ -621,8 +621,8 @@ for (let i = 0; i < wins.length; i++) {
         let x = window.getComputedStyle(win, null).getPropertyValue('left').split("px")[0];
         let y = window.getComputedStyle(win, null).getPropertyValue('top').split("px")[0];
         if (y != 0) {
-            bfLeft = y;
-            bfTop = x;
+            bfLeft = x;
+            bfTop = y;
         }
         deltaLeft = e.clientX - x;
         deltaTop = e.clientY - y;
@@ -632,8 +632,8 @@ for (let i = 0; i < wins.length; i++) {
         let x = window.getComputedStyle(win, null).getPropertyValue('left').split("px")[0];
         let y = window.getComputedStyle(win, null).getPropertyValue('top').split("px")[0];
         if (y != 0) {
-            bfLeft = y;
-            bfTop = x;
+            bfLeft = x;
+            bfTop = y;
         }
         deltaLeft = e.targetTouches[0].clientX - x;
         deltaTop = e.targetTouches[0].clientY - y;

@@ -1,9 +1,9 @@
-#win-calc{
+#win-calc {
     display: flex;
     flex-direction: column;
 }
 
-#calc-input{
+#calc-input {
     width: 100%;
     height: 90px;
     border: none;
@@ -14,7 +14,7 @@
     color: var(--text);
 }
 
-#win-calc>.keyb{
+#win-calc>.keyb {
     flex-grow: 1;
     display: flex;
     flex-wrap: wrap;
@@ -22,7 +22,7 @@
     align-content: flex-start;
 }
 
-#win-calc>.keyb>.b{
+#win-calc>.keyb>.b {
     width: 71px;
     margin: 5px 5px;
     height: 71px;
@@ -34,21 +34,25 @@
     background: var(--card);
     padding-top: 5px;
 }
-#win-calc>.keyb>.b.u{
+
+#win-calc>.keyb>.b.u {
     padding-top: 3px;
 }
-#win-calc>.keyb>.b.ans{
+
+#win-calc>.keyb>.b.ans {
     background-image: linear-gradient(120deg, var(--theme-1), var(--theme-2));
 }
-#win-calc>.keyb>.b.ans:hover{
+
+#win-calc>.keyb>.b.ans:hover {
     backdrop-filter: brightness(0.8);
 }
-#win-calc>.keyb>span{
+
+#win-calc>.keyb>span {
     width: 71px;
     margin: 5px 5px;
     height: 71px;
 }
 
-#win-calc>.keyb>.b:hover{
+#win-calc>.keyb>.b:hover {
     background-color: var(--mm);
 }

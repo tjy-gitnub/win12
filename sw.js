@@ -21,13 +21,16 @@ const cacheNames = ['def'];
 let changes=[
   '/desktop.html',
   '/desktop.js',
-  '/desktop.css',
-  '/newyear-dark.png',
-  '/newyear-light.png',
-  '/desktop.css',
+  '/reload.html',
+  '/shutdown.html',
+  '/pwa/manifest.json',
   '/apps/style/about.css',
   '/apps/style/calc.css',
+  '/apps/style/explorer.css',
+  '/apps/style/fonts.css',
+  '/apps/style/notepad.css',
   '/apps/style/setting.css',
+  '/apps/style/terminal.css'
 ]
 let flag = false;
 this.addEventListener('activate', function (event) {

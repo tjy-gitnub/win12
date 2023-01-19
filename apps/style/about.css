@@ -1,35 +1,35 @@
-#win-about{
+#win-about {
     display: flex;
     height: calc(100% - 30px);
 }
 
-#win-about>.menu{
+#win-about>.menu {
     height: 100%;
     min-width: 200px;
     padding: 3px;
 }
 
-#win-about>.menu>list>*{
+#win-about>.menu>list>* {
     padding: 5px 10px;
     display: flex;
 }
 
-#win-about>.menu>list>*>img{
+#win-about>.menu>list>*>img {
     margin: 2px 5px 0 0;
 }
 
-#win-about>.cnt{
+#win-about>.cnt {
     height: 100%;
     flex-grow: 1;
     overflow: auto;
 }
 
-#win-about>.cnt .tit{
+#win-about>.cnt .tit {
     margin: 0;
     display: flex;
 }
 
-#win-about>.cnt .tit>span{
+#win-about>.cnt .tit>span {
     background: linear-gradient(180deg, var(--theme-1), var(--theme-2));
     border-radius: 10px;
     width: 6px;
@@ -38,11 +38,11 @@
     opacity: 0;
 }
 
-#win-about>.cnt .tit:hover>span{
+#win-about>.cnt .tit:hover>span {
     opacity: 1;
 }
 
-#win-about>.update>div>details{
+#win-about>.update>div>details {
     background-color: var(--card);
     padding: 10px;
     border-radius: 10px;
@@ -52,25 +52,25 @@
     transition: transform 50ms;
 }
 
-#win-about>.update>div>details:hover{
+#win-about>.update>div>details:hover {
     transform: none;
 }
 
-#win-about>.update>div>details:active{
+#win-about>.update>div>details:active {
     filter: blur(0.5px);
     transform: scale(0.95);
     transition: transform 400ms cubic-bezier(0.14, 1.02, 0.17, 0.03) !important;
 }
 
-#win-about>.update>div>details>summary{
+#win-about>.update>div>details>summary {
     font-size: 17px;
     transition: 200ms;
 }
 
-#win-about>.update>div>details>summary>span{
+#win-about>.update>div>details>summary>span {
     font-weight: 900;
 }
 
-#win-about>.update>div>details>p{
+#win-about>.update>div>details>p {
     margin-left: 10px;
 }
