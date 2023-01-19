@@ -12,6 +12,10 @@
     width: 70px;
 }
 
+.select-input#win-notepad-font-style {
+    width: 80px;
+}
+
 #win-notepad-font-size {
     vertical-align: top;
 }
@@ -43,6 +47,7 @@
     overflow-y: auto;
     overflow-x: hidden;
     background-color: rgba(255, 255, 255, 0.3);
+    box-shadow: inset 0px 4px 2.5px var(--sd);
 }
 
 .select-input>.value-box>.option:hover {
@@ -51,6 +56,7 @@
 
 .select-input>.value-box>.option {
     padding: 3px;
+    width: 100%;
 }
 
 #win-notepad-font .preview {
@@ -76,10 +82,7 @@
     border-style: solid;
     overflow: hidden;
     border-radius: 10px;
-}
-
-#win-notepad-font .preview>.preview-box::-webkit-scrollbar-corner {
-    display: none;
+    line-height: 1.25;
 }
 
 #win-notepad-font .buttons {

@@ -869,19 +869,29 @@
 					<div class="option">五号</div>
 					<div class="option">小五</div>
 				</div>
+			</div>
+			<div class="select-input" id="win-notepad-font-style">
+				<div class="description">字形</div>
+				<input type="text" />
+				<div class="value-box">
+					<div class="option">正常</div>
+					<div class="option">斜体</div>
+					<div class="option">粗体</div>
+					<div class="option">粗偏斜体</div>
+				</div>
 			</div><br />
 			<div class="preview">
 				<div class="description">
 					预览
 			    </div>
 				<div class="preview-box">
-					<div><div>Hello</div></div>
-					<div><div>你好</div></div>
-					<div><div>こんにちは</div></div>
+					<div>Hello</div>
+					<div>你好</div>
+					<div>こんにちは</div>
 				</div>
 			</div>
 			<div class="buttons">
-				<div class="submit" onclick="commitFont();hidewin('notepad-fonts', 'configs');">确定</div>
+				<div class="submit" onclick="commitFont();">确定</div>
 				<div class="cancel" onclick="hidewin('notepad-fonts', 'configs');">取消</div>
 			</div>
 		</div>
