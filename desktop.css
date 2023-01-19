@@ -132,6 +132,7 @@ body {
     background: var(--bgul) center;
     background-size: cover;
     height: 100%;
+    font-size: 15.5px;
 }
 
 .a {
