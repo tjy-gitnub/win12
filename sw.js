@@ -22,12 +22,7 @@ let changes=[
   '/desktop.html',
   '/desktop.js',
   '/desktop.css',
-  '/newyear-dark.png',
-  '/newyear-light.png',
-  '/desktop.css',
-  '/apps/style/about.css',
-  '/apps/style/calc.css',
-  '/apps/style/setting.css',
+  '/apps/style/notepad.css',
 ]
 let flag = false;
 this.addEventListener('activate', function (event) {

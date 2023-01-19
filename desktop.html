@@ -31,6 +31,14 @@
 	<base target="_blank">
 </head>
 
+<!-- 
+
+	你好
+	麻烦看一下 desktop.js line 635
+	apps/style/font.css
+	可以顺便写一下更新日志 :)
+ -->
+
 <body>
 	<div id="loadback" style="background-color:#000;width:100%;height:100%;z-index:105;position:absolute;transition:200ms;">
 		<style>#loadback.hide{opacity:0;}
@@ -693,6 +701,13 @@
 			<div class="cnt update" style="display: none;">
 				<h1 class="tit"><span></span>更新记录</h1>
 				<div style="margin-left: 20px;">
+					<details><summary><span>v3.8.0</span> 记事本字体，窗口焦点逻辑改善</summary>
+						<p>&emsp;&emsp;<strong style="color: red;">祝大家新的一年万事如意,幸福快乐,心想事成!</strong><br>
+						&emsp;&emsp;<i>非常感谢 @User782Tec 的pr</i><br>
+						&emsp;&emsp;-详见<a href="https://github.com/tjy-gitnub/win12/pull/50">pull</a>中的详细<br>
+						&emsp;&emsp;-窗口焦点逻辑改善<br>
+						&emsp;&emsp;-细节优化和修复</p>
+					</details>
 					<details><summary><span>v3.7.0</span> 窗口最大化完善,让颜色更"喜庆"一点</summary>
 						<p>&emsp;&emsp;<strong style="color: red;">祝大家新的一年万事如意,幸福快乐,心想事成!</strong><br>
 						&emsp;&emsp;<i>非常感谢 @User782Tec 的pr</i><br>
@@ -825,60 +840,60 @@
 			<div class="select-input" id="win-notepad-font-type">
 				<div class="description">字体</div>
 				<input type="text" />
-				<div class="value-box">
-					<div class="option">Arial</div>
-					<div class="option">Arial Black</div>
-					<div class="option">"Book Antiqua"</div>
-					<div class="option">Charcoal</div>
-					<div class="option">"Comic Sans MS"</div>
-					<div class="option">Consolas</div>
-					<div class="option">Courier</div>
-					<div class="option">"Courier New"</div>
-					<div class="option">cursive</div>
-					<div class="option">Geneva</div>
-					<div class="option">Georgia</div>
-					<div class="option">Helvetica</div>
-					<div class="option">"Lucida Console"</div>
-					<div class="option">"Lucida Grande"</div>
-					<div class="option">"Lucida Sans Unicode"</div>
-					<div class="option">Monaco</div>
-					<div class="option">monospace</div>
-					<div class="option">Palatino</div>
-					<div class="option">"Palatino Linotype"</div>
-					<div class="option">sans-serif</div>
-					<div class="option">serif</div>
-					<div class="option">Tahoma</div>
-					<div class="option">"Trebuchet MS"</div>
-					<div class="option">Verdana</div>
-				</div>
+				<list class="value-box">
+					<a class="option">Arial</a>
+					<a class="option">Arial Black</a>
+					<a class="option">"Book Antiqua"</a>
+					<a class="option">Charcoal</a>
+					<a class="option">"Comic Sans MS"</a>
+					<a class="option">Consolas</a>
+					<a class="option">Courier</a>
+					<a class="option">"Courier New"</a>
+					<a class="option">cursive</a>
+					<a class="option">Geneva</a>
+					<a class="option">Georgia</a>
+					<a class="option">Helvetica</a>
+					<a class="option">"Lucida Console"</a>
+					<a class="option">"Lucida Grande"</a>
+					<a class="option">"Lucida Sans Unicode"</a>
+					<a class="option">Monaco</a>
+					<a class="option">monospace</a>
+					<a class="option">Palatino</a>
+					<a class="option">"Palatino Linotype"</a>
+					<a class="option">sans-serif</a>
+					<a class="option">serif</a>
+					<a class="option">Tahoma</a>
+					<a class="option">"Trebuchet MS"</a>
+					<a class="option">Verdana</a>
+				</list>
 			</div>
 			<div class="select-input" id="win-notepad-font-size">
 				<div class="description">大小</div>
 				<input type="text" />
-				<div class="value-box">
-					<div class="option">初号</div>
-					<div class="option">小初</div>
-					<div class="option">一号</div>
-					<div class="option">小一</div>
-					<div class="option">二号</div>
-					<div class="option">小二</div>
-					<div class="option">三号</div>
-					<div class="option">小三</div>
-					<div class="option">四号</div>
-					<div class="option">小四</div>
-					<div class="option">五号</div>
-					<div class="option">小五</div>
-				</div>
+				<list class="value-box">
+					<a class="option">初号</a>
+					<a class="option">小初</a>
+					<a class="option">一号</a>
+					<a class="option">小一</a>
+					<a class="option">二号</a>
+					<a class="option">小二</a>
+					<a class="option">三号</a>
+					<a class="option">小三</a>
+					<a class="option">四号</a>
+					<a class="option">小四</a>
+					<a class="option">五号</a>
+					<a class="option">小五</a>
+				</list>
 			</div>
 			<div class="select-input" id="win-notepad-font-style">
 				<div class="description">字形</div>
 				<input type="text" />
-				<div class="value-box">
-					<div class="option">正常</div>
-					<div class="option">斜体</div>
-					<div class="option">粗体</div>
-					<div class="option">粗偏斜体</div>
-				</div>
+				<list class="value-box">
+					<a class="option">正常</a>
+					<a class="option">斜体</a>
+					<a class="option">粗体</a>
+					<a class="option">粗偏斜体</a>
+				</list>
 			</div><br />
 			<div class="preview">
 				<div class="description">
@@ -891,8 +906,8 @@
 				</div>
 			</div>
 			<div class="buttons">
-				<div class="submit" onclick="commitFont();">确定</div>
-				<div class="cancel" onclick="hidewin('notepad-fonts', 'configs');">取消</div>
+				<a class="a submit act" onclick="commitFont();">确定</a>
+				<a class="a cancel act" onclick="hidewin('notepad-fonts', 'configs');">取消</a>
 			</div>
 		</div>
 	
@@ -910,7 +925,7 @@
 			<img src="icon/terminal.png" class="icon">
 		</div>
 		<div class="content" id="win-terminal">
-			<pre>Micrsotft Windows [版本 12.0.39035.7324]
+			<pre>Micrsotft Windosw [版本 12.0.39035.7324]
 (c) Micrsotft Corparotoin。保所留有权利。
 一个摆设，后续会完善。
 

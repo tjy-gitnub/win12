@@ -1,5 +1,8 @@
+/* 这里我对ui做了一些调整 */
+/* 我注意到你的布局居中都是用margin做的，可以在dis:flex的块中加 align-content: space-around; 居中 */
+/* 这个flex-direction: column;的不同设备的兼容性不是很好，可能错位，可以写明确一点来布局 */
 .select-input {
-    margin: 5px 10px;
+    margin: 5px 0 5px 11px;
     display: inline-block;
     height: 200px;
 }
@@ -9,27 +12,33 @@
 }
 
 .select-input#win-notepad-font-size {
-    width: 70px;
-}
-
-.select-input#win-notepad-font-style {
     width: 80px;
 }
 
-#win-notepad-font-size {
-    vertical-align: top;
+.select-input#win-notepad-font-style {
+    width: 90px;
 }
+
+.select-input#win-notepad-font-style>.value-box{
+    padding: 5px;
+}
+
+/* #win-notepad-font-size {
+    vertical-align: top;
+} */
+
 
 .select-input>input[type=text] {
     outline: none;
     width: 100%;
     background-color: rgba(255, 255, 255, 0.3);
     border-radius: 10px 10px 0px 0px;
-    border-color: gray;
-    border-style: solid;
-    border-bottom-width: 1px;
+    border: 2px solid #7f7f7f40;
+    background: var(--card);
+    border-bottom: none;
     color: var(--text);
-    padding: 3px;
+    padding: 3px 6px;
+    /* box-shadow: 2px 2px 5px var(--sd); */
 }
 
 .select-input>.description {
@@ -39,29 +48,31 @@
 .select-input>.value-box {
     width: 100%;
     height: 100%;
-    border-color: gray;
-    border-width: 2px;
-    border-top-width: 1px;
+    border: 2px solid #7f7f7f40;
+    background: var(--card);
     border-radius: 0px 0px 10px 10px;
     border-style: solid;
     overflow-y: auto;
     overflow-x: hidden;
-    background-color: rgba(255, 255, 255, 0.3);
-    box-shadow: inset 0px 4px 2.5px var(--sd);
-}
+    /* background-color: rgba(255, 255, 255, 0.3); */
+    /* box-shadow: inset 0px 4px 2.5px var(--sd); */
+    display: block;
+    padding: 5px 0 5px 5px;
+    /* box-shadow: 2px 2px 5px var(--sd); */
 
-.select-input>.value-box>.option:hover {
-    background-color: var(--sd);
 }
 
 .select-input>.value-box>.option {
+    padding: 3px 7px;
+}
+
+/* .select-input>.value-box>.option {
     padding: 3px;
     width: 100%;
-}
+} */
 
 #win-notepad-font .preview {
     display: inline-block;
-    vertical-align: top;
     width: 150px;
     height: 150px;
     margin: 5px 10px;
@@ -76,10 +87,9 @@
     word-break: keep-all;
     height: 100%;
     text-align: center;
-    background-color: rgba(255, 255, 255, 0.3);
+    border: 2px solid #7f7f7f40;
+    background: var(--card);
     border-width: 2px;
-    border-color: gray;
-    border-style: solid;
     overflow: hidden;
     border-radius: 10px;
     line-height: 1.25;
@@ -101,14 +111,19 @@
     box-shadow: 2px 2px 4px var(--sd);
 }
 
+#win-notepad-font .buttons>*:hover{
+    filter: brightness(1.2);
+}
+
 #win-notepad-font .buttons>*:active {
-    transform: matrix(0.9, 0, 0, 0.9, 0, 0);
+    transform: scale(0.85);
 }
 
 #win-notepad-font .buttons>.submit {
     background-image: linear-gradient(120deg, var(--theme-1), var(--theme-2));
+    color: #fff;
 }
 
 #win-notepad-font .buttons>.cancel {
-    background-color: rgba(255, 255, 255, 0.3);
+    background-color: var(--bggrey);
 }
