@@ -189,6 +189,10 @@ body {
     border: 4px solid transparent;
 }
 
+::-webkit-scrollbar-corner {
+    display: none;
+}
+
 .act,
 list>a,
 #cs>list>a,
@@ -1849,6 +1853,11 @@ list>.text:hover {
 .window.calc {
     height: 250px;
     width: 66px;
+}
+
+.window.notepad-fonts {
+    height: 500px;
+    width: 430px;
 }
 
 .window.notrans {

@@ -26,18 +26,31 @@ $('input,textarea').on('contextmenu', (e) => {
 let cms = {
     'titbar': [
         function (arg) {
-            if (arg == 'calc')
-                return 'null'
-            if ($('.window.' + arg).hasClass("max"))
+            if (arg == 'calc' || arg == 'notepad-fonts') {
+                return 'null';
+            }
+            if ($('.window.' + arg).hasClass("max")) {
                 return ['<i class="bi bi-window-stack"></i> 还原', `maxwin('${arg}')`];
-            else
+            }
+            else {
                 return ['<i class="bi bi-window-fullscreen"></i> 最大化', `maxwin('${arg}')`];
+            }
         },
         function (arg) {
-            return ['<i class="bi bi-window-dash"></i> 最小化', `minwin('${arg}')`];
+            if (arg == 'notepad-fonts') {
+                return 'null';
+            }
+            else {
+                return ['<i class="bi bi-window-dash"></i> 最小化', `minwin('${arg}')`];
+            }
         },
         function (arg) {
-            return ['<i class="bi bi-window-x"></i> 关闭', `hidewin('${arg}')`];
+            if (arg == 'notepad-fonts') {
+                return ['<i class="bi bi-window-x"></i> 关闭', `hidewin('${arg}', 'configs')`];
+            }
+            else {
+                return ['<i class="bi bi-window-x"></i> 关闭', `hidewin('${arg}')`];
+            }
         },
     ],
     'desktop': [
@@ -49,14 +62,16 @@ let cms = {
     ],
     'winx': [
         function (arg) {
-            if ($('#start-menu').hasClass("show"))
+            if ($('#start-menu').hasClass("show")) {
                 return ['<i class="bi bi-box-arrow-in-down"></i> 关闭开始菜单', `hide_startmenu()`];
-            else
+            }
+            else {
                 return ['<i class="bi bi-box-arrow-in-up"></i> 打开开始菜单', `$('#start-btn').addClass('show');
                 if($('#search-win').hasClass('show')){$('#search-btn').removeClass('show');
                 $('#search-win').removeClass('show');setTimeout(() => {$('#search-win').removeClass('show-begin');
                 }, 200);}$('#start-menu').addClass('show-begin');setTimeout(() => {$('#start-menu').addClass('show');
                 }, 0);`];
+            }
         },
         '<hr>',
         ['<i class="bi bi-gear"></i> 设置', `openapp('setting')`],
@@ -78,10 +93,12 @@ let cms = {
     ],
     'dockabout': [
         function (arg) {
-            if (arg)
+            if (arg) {
                 return ['<i class="bi bi-arrow-bar-down"></i> 收起', `$('.dock.about').removeClass('show')`];
-            else
+            }
+            else {
                 return ['<i class="bi bi-arrow-bar-up"></i> 展开', `$('.dock.about').addClass('show')`];
+            }
         },
         ['<i class="bi bi-info-circle"></i> 更多信息', `$('#win-about>.about').show(200);$('#win-about>.update').hide();
         openapp('about');if($('.window.about').hasClass('min'))minwin('about');`]
@@ -141,7 +158,9 @@ function showcm(e, cl, arg) {
     cms[cl].forEach(item => {
         if (typeof (item) == 'function') {
             ret = item(arg);
-            if (ret == 'null') return true;
+            if (ret == 'null') {
+                return true;
+            }
             h += `<a class="a" onmousedown="${ret[1]}">${ret[0]}</a>\n`;
         } else if (typeof (item) == 'string') {
             h += item + '\n';
@@ -175,20 +194,23 @@ $('#cm>.foc').blur(() => {
 // 下拉菜单
 dps = {
     'notepad.file': [
-        ['<i class="bi bi-file-earmark-plus"></i> 新建', `hidedp();$('#win-notepad>.text-box').addClass('down');
+        ['<i class="bi bi-file-earmark-plus"></i> 新建', `hidedp(true);$('#win-notepad>.text-box').addClass('down');
         setTimeout(()=>{$('#win-notepad>.text-box').val('');$('#win-notepad>.text-box').removeClass('down')},200);`],
-        ['<i class="bi bi-box-arrow-right"></i> 另存为', `hidedp();$('#win-notepad>.save').attr('href','data:text/txt;,'+encodeURIComponent($('#win-notepad>.text-box').val()));
+        ['<i class="bi bi-box-arrow-right"></i> 另存为', `hidedp(true);$('#win-notepad>.save').attr('href', window.URL.createObjectURL(new Blob([$('#win-notepad>.text-box').val()])));
         $('#win-notepad>.save')[0].click();`],
         '<hr>',
-        ['<i class="bi bi-x"></i> 退出', `isOnDp=false;hidedp();hidewin('notepad')`],
+        ['<i class="bi bi-x"></i> 退出', `isOnDp=false;hidedp(true);hidewin('notepad')`],
     ],
     'notepad.edit': [
-        ['<i class="bi bi-files"></i> 复制 <info>Ctrl+C</info>', ''],
-        ['<i class="bi bi-clipboard"></i> 粘贴 <info>Ctrl+V</info>', ''],
-        ['<i class="bi bi-scissors"></i> 剪切 <info>Ctrl+X</info>', ''],
+        ['<i class="bi bi-files"></i> 复制 <info>Ctrl+C</info>', 'document.execCommand(\'copy\')'],
+        ['<i class="bi bi-clipboard"></i> 粘贴 <info>Ctrl+V</info>', `document.execCommand(\'paste\')`],
+        ['<i class="bi bi-scissors"></i> 剪切 <info>Ctrl+X</info>', 'document.execCommand(\'cut\')'],
         '<hr>',
-        ['<i class="bi bi-arrow-return-left"></i> 撤销 <info>Ctrl+Z</info>', ''],
-        ['<i class="bi bi-arrow-clockwise"></i> 重做 <info>Ctrl+Y</info>', ''],
+        ['<i class="bi bi-arrow-return-left"></i> 撤销 <info>Ctrl+Z</info>', 'document.execCommand(\'undo\')'],
+        ['<i class="bi bi-arrow-clockwise"></i> 重做 <info>Ctrl+Y</info>', 'document.execCommand(\'redo\')'],
+    ],
+    'notepad.view': [
+        [' 字体 ', 'hidedp(true);showwin(\'notepad-fonts\');resetfonts();']
     ]
 }
 let dpt = null, isOnDp = false;
@@ -215,12 +237,14 @@ function showdp(e, cl, arg) {
     dps[cl].forEach(item => {
         if (typeof (item) == 'function') {
             ret = item(arg);
-            if (ret == 'null') return true;
-            h += `<a class="a" onmousedown="${ret[1]}">${ret[0]}</a>\n`;
+            if (ret == 'null') {
+                return true;
+            }
+            h += `<a class="a" onclick="${ret[1]}">${ret[0]}</a>\n`;
         } else if (typeof (item) == 'string') {
             h += item + '\n';
         } else {
-            h += `<a class="a" onmousedown="${item[1]}">${item[0]}</a>\n`;
+            h += `<a class="a" onclick="${item[1]}">${item[0]}</a>\n`;
         }
     })
     $('#dp>list')[0].innerHTML = h;
@@ -237,9 +261,11 @@ function showdp(e, cl, arg) {
         }
     }, 200);
 }
-function hidedp() {
+function hidedp(force = false) {
     setTimeout(() => {
-        if (isOnDp) return;
+        if (isOnDp && !force) {
+            return;
+        }
         $('#dp').removeClass('show');
         setTimeout(() => {
             $('#dp').removeClass('show-begin');
@@ -356,7 +382,9 @@ let apps = {
 let widgets = {
     widgets: {
         add: (arg) => {
-            if ($('#widgets>.widgets>.content>.grid>.wg.' + arg).length != 0) return;
+            if ($('#widgets>.widgets>.content>.grid>.wg.' + arg).length != 0) {
+                return;
+            }
             $('#widgets>.widgets>.content>.grid')[0].innerHTML += $('#widgets>.widgets>.content>.template>.' + arg).html();
         },
         remove: (arg) => {
@@ -400,12 +428,17 @@ for (let i = 1; i <= daysum; i++) {
     $('#datebox>.cont>.body')[0].innerHTML += `<p>${i}</p>`;
 }
 function openapp(name) {
-    if ($('#taskbar>.' + name).length != 0) return;
+    focwin(name);
+    if ($('#taskbar>.' + name).length != 0) {
+        return;
+    }
     $('.window.' + name).addClass('load');
     showwin(name);
     $('#taskbar').attr('count', Number($('#taskbar').attr('count')) + 1)
     $('#taskbar').html(`${$('#taskbar').html()}<a class="${name}" onclick="minwin(\'${name}\')"><img src="icon/${name}.png"></a>`);
-    if ($('#taskbar').attr('count') == '1') $('#taskbar').css('display', 'flex');
+    if ($('#taskbar').attr('count') == '1') {
+        $('#taskbar').css('display', 'flex');
+    }
     setTimeout(() => {
         $('#taskbar').css('width', 10 + $('#taskbar').attr('count') * 34);
     }, 0);
@@ -413,7 +446,6 @@ function openapp(name) {
     setTimeout(() => {
         $('.window.' + name).removeClass('load');
     }, 1000);
-
 }
 // 窗口操作
 function showwin(name) {
@@ -426,29 +458,48 @@ function showwin(name) {
     orderwindow();
     $('.window.' + name).addClass('foc');
 }
-function hidewin(name) {
+function hidewin(name, arg = 'window') {
     $('.window.' + name).removeClass('notrans');
     $('.window.' + name).removeClass('max');
     $('.window.' + name).removeClass('show');
-    $('#taskbar').attr('count', Number($('#taskbar').attr('count')) - 1)
-    $('#taskbar>.' + name).remove();
-    $('#taskbar').css('width', 10 + $('#taskbar').attr('count') * 34);
-    setTimeout(() => {
-        if ($('#taskbar').attr('count') == '0') $('#taskbar').css('display', 'none');
-    }, 80);
+    if (arg == 'window') {
+        $('#taskbar').attr('count', Number($('#taskbar').attr('count')) - 1)
+        $('#taskbar>.' + name).remove();
+        $('#taskbar').css('width', 10 + $('#taskbar').attr('count') * 34);
+        setTimeout(() => {
+            if ($('#taskbar').attr('count') == '0') {
+                $('#taskbar').css('display', 'none');
+            }
+        }, 80);
+    }
     setTimeout(() => { $('.window.' + name).removeClass('show-begin'); }, 200);
     $('.window.' + name + '>.titbar>div>.wbtg.max').html('<i class="bi bi-app"></i>');
-}
-function maxwin(name) {
-    let element = $('.window.' + name);
-    if (element.hasClass('max')) {
+    if ($('.window').hasClass('max') == false) {
         $('#dock-box').removeClass('hide');
-        element.removeClass('max');
+    }
+}
+function maxwin(name, trigger = true) {
+    if ($('.window.' + name).hasClass('max')) {
+        $('.window.' + name).removeClass('max');
         $('.window.' + name + '>.titbar>div>.wbtg.max').html('<i class="bi bi-app"></i>');
-        setTimeout(() => { element.addClass('notrans'); }, 200);
+        if (trigger) {
+            setTimeout(() => { $('.window.' + name).addClass('notrans'); }, 200);
+        } else if (!trigger) {
+            $('.window.' + name).addClass('notrans');
+        }
+        if ($('.window.' + name).attr('data-pos-x') != 'null' && $('.window.' + name).attr('data-pos-y') != 'null') {
+            $('.window.' + name).attr(`style`, `left:${$('.window.' + name).attr('data-pos-x')};top:${$('.window.' + name).attr('data-pos-y')}`);
+        }
+        if ($('.window').hasClass('max') == false) {
+            $('#dock-box').removeClass('hide');
+        }
     } else {
-        element.removeClass('notrans');
-        element.addClass('max');
+        if (trigger) {
+            $('.window.' + name).attr('data-pos-x', `${window.getComputedStyle(document.querySelector('.window.' + name), null).getPropertyValue('left')}`);
+            $('.window.' + name).attr('data-pos-y', `${window.getComputedStyle(document.querySelector('.window.' + name), null).getPropertyValue('top')}`);
+        }
+        $('.window.' + name).removeClass('notrans');
+        $('.window.' + name).addClass('max');
         $('.window.' + name + '>.titbar>div>.wbtg.max').html('<svg version="1.1" width="12" height="12" viewBox="0,0,37.65105,35.84556" style="margin-top:4px;"><g transform="translate(-221.17804,-161.33903)"><g style="stroke:var(--text);" data-paper-data="{&quot;isPaintingLayer&quot;:true}" fill="none" fill-rule="nonzero" stroke-width="2" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="10" stroke-dasharray="" stroke-dashoffset="0" style="mix-blend-mode: normal"><path d="M224.68734,195.6846c-2.07955,-2.10903 -2.00902,-6.3576 -2.00902,-6.3576l0,-13.72831c0,0 -0.23986,-1.64534 2.00902,-4.69202c1.97975,-2.68208 4.91067,-2.00902 4.91067,-2.00902h14.06315c0,0 3.77086,-0.23314 5.80411,1.67418c2.03325,1.90732 1.33935,5.02685 1.33935,5.02685v13.39347c0,0 0.74377,4.01543 -1.33935,6.3576c-2.08312,2.34217 -5.80411,1.67418 -5.80411,1.67418h-13.39347c0,0 -3.50079,0.76968 -5.58035,-1.33935z"/><path d="M229.7952,162.85325h16.06111c0,0 5.96092,-0.36854 9.17505,2.64653c3.21412,3.01506 2.11723,7.94638 2.11723,7.94638v18.55642"/></g></g></svg>')
         $('#dock-box').addClass('hide');
     }
@@ -460,19 +511,31 @@ function minwin(name) {
         setTimeout(() => {
             $('#taskbar>.' + name).removeClass('min');
             $('.window.' + name).removeClass('min');
-            if ($('.window.' + name).hasClass('min-max')) $('.window.' + name).addClass('max');
+            if ($('.window.' + name).hasClass('min-max')) {
+                $('.window.' + name).addClass('max');
+            }
             $('.window.' + name).removeClass('min-max');
         }, 0);
         setTimeout(() => {
-            if (!$('.window.' + name).hasClass('max')) $('.window.' + name).addClass('notrans');
+            if (!$('.window.' + name).hasClass('max')) {
+                $('.window.' + name).addClass('notrans');
+            }
+            if ($('.window').hasClass('max')) {
+                $('#dock-box').addClass('hide');
+            }
         }, 200);
     } else {
-        if ($('.window.' + name).hasClass('max')) $('.window.' + name).addClass('min-max');
+        if ($('.window.' + name).hasClass('max')) {
+            $('.window.' + name).addClass('min-max');
+        }
         $('.window.' + name).removeClass('max');
         $('#taskbar>.' + name).addClass('min');
         $('.window.' + name).addClass('min');
         $('.window.' + name).removeClass('notrans');
         setTimeout(() => { $('.window.' + name).removeClass('show-begin'); }, 200);
+        if (!$('.window').hasClass('max')) {
+            $('#dock-box').removeClass('hide');
+        }
     }
 }
 let wo = [];
@@ -523,7 +586,7 @@ for (let i = 0; i < wins.length; i++) {
         }
         if (cy - deltaTop < 0) {
             this.setAttribute('style', `left:${cx - deltaLeft}px;top:0px`);
-            if (this.classList[1] != 'calc') {
+            if (this.classList[1] != 'calc' && this.classList[1] != 'notepad-fonts') {
                 $('#window-fill').addClass('top');
                 setTimeout(() => {
                     $('#window-fill').addClass('fill');
@@ -537,59 +600,186 @@ for (let i = 0; i < wins.length; i++) {
             }, 200);
             fil = false;
         } else if ($(this).hasClass('max')) {
-            setTimeout(() => {
-                if(!$(this).hasClass('max'))return;
-                deltaLeft = deltaLeft / (document.body.offsetWidth - (45 * 3)) * (0.7 * document.body.offsetWidth - 45 * 3);
-                // 窗口控制按钮宽 45px
-                this.setAttribute('style', `left:${cx - deltaLeft}px;top:${cy - deltaTop}px;`);
-                $(this).removeClass('max');
-                $('.window.' + this.classList[1] + '>.titbar>div>.wbtg.max').html('<i class="bi bi-app"></i>');
+            // setTimeout(() => {
+            // if(!$(this).hasClass('max'))return;
+            maxwin(this.classList[1], false);
+            deltaLeft = deltaLeft / (document.body.offsetWidth - (45 * 3)) * (0.7 * document.body.offsetWidth - 45 * 3);
+            // 窗口控制按钮宽 45px
+            this.setAttribute('style', `left:${cx - deltaLeft}px;top:${cy - deltaTop}px;`);
+            $('.window.' + this.classList[1] + '>.titbar>div>.wbtg.max').html('<i class="bi bi-app"></i>');
+            if (!$('.window').hasClass('max')) {
                 $('#dock-box').removeClass('hide');
-                setTimeout(() => { $(this).addClass('notrans'); }, 200);
-            }, 150); // 触控板双击可能识别为拖动
+            }
+            setTimeout(() => { $(this).addClass('notrans'); }, 200);
+            // }, 150);
+            // 触控板双击可能识别为拖动(我用触控板试了一下, 貌似一点问题都没有, 就删了:)  by: User782Tec)
         } else {
             this.setAttribute('style', `left:${cx - deltaLeft}px;top:${cy - deltaTop}px;`);
         }
     }
     titbar.addEventListener('mousedown', (e) => {
-        bfLeft = window.getComputedStyle(win, null).getPropertyValue('left').split("px")[0];
-        bfTop = window.getComputedStyle(win, null).getPropertyValue('top').split("px")[0];
-        deltaLeft = e.clientX - bfLeft;
-        deltaTop = e.clientY - bfTop;
+        let x = window.getComputedStyle(win, null).getPropertyValue('left').split("px")[0];
+        let y = window.getComputedStyle(win, null).getPropertyValue('top').split("px")[0];
+        if (y != 0) {
+            bfLeft = y;
+            bfTop = x;
+        }
+        deltaLeft = e.clientX - x;
+        deltaTop = e.clientY - y;
         page.onmousemove = win_move.bind(win);
     })
     titbar.addEventListener('touchstart', (e) => {
-        bfLeft = window.getComputedStyle(win, null).getPropertyValue('left').split("px")[0];
-        bfTop = window.getComputedStyle(win, null).getPropertyValue('top').split("px")[0];
-        deltaLeft = e.targetTouches[0].clientX - bfLeft;
-        deltaTop = e.targetTouches[0].clientY - bfTop;
+        let x = window.getComputedStyle(win, null).getPropertyValue('left').split("px")[0];
+        let y = window.getComputedStyle(win, null).getPropertyValue('top').split("px")[0];
+        if (y != 0) {
+            bfLeft = y;
+            bfTop = x;
+        }
+        deltaLeft = e.targetTouches[0].clientX - x;
+        deltaTop = e.targetTouches[0].clientY - y;
         page.ontouchmove = win_move.bind(win);
     })
 }
 page.addEventListener('mouseup', () => {
     page.onmousemove = null;
     if (fil) {
-        maxwin(fil.classList[1], null);
+        maxwin(fil.classList[1], false);
         setTimeout(() => {
             $('#window-fill').removeClass('fill');
             $('#window-fill').removeClass('top');
         }, 200);
-        fil.setAttribute('style', `left:${bfLeft}px;top:${bfTop}px`);
+        $('.window.' + fil.classList[1]).attr('data-pos-x', `${bfLeft}px`);
+        $('.window.' + fil.classList[1]).attr('data-pos-y', `${bfTop}px`);
         fil = false;
     }
 });
 page.addEventListener('touchend', () => {
     page.ontouchmove = null;
     if (fil) {
-        maxwin(fil.classList[1], null);
+        maxwin(fil.classList[1], false);
         setTimeout(() => {
-            $('#window-fill').removeClass('fill');
-            $('#window-fill').removeClass('top');
+            $('.window.' + fil.classList[1]).attr('data-pos-x', `${bfLeft}px`);
+            $('.window.' + fil.classList[1]).attr('data-pos-y', `${bfTop}px`);
         }, 200);
         fil.setAttribute('style', `left:${bfLeft}px;top:${bfTop}px`);
         fil = false;
     }
 });
+
+// 记事本选择字体
+const sizes = {
+    '初号': '56',
+    '小初': '48',
+    '一号': '34.7',
+    '小一': '32',
+    '二号': '29.3',
+    '小二': '24',
+    '三号': '21.3',
+    '小三': '20',
+    '四号': '18.7',
+    '小四': '16',
+    '五号': '14',
+    '小五': '12'
+};
+const styles = {
+    '正常': '',
+    '粗体': 'font-weight: bold;',
+    '斜体': 'font-style: italic;',
+    '粗偏斜体': 'font-weight: bold; font-style: italic;'
+}
+const fontvalues = document.querySelectorAll('#win-notepad-font>#win-notepad-font-type>.value-box>.option');
+const sizevalues = document.querySelectorAll('#win-notepad-font>#win-notepad-font-size>.value-box>.option');
+const stylevalues = document.querySelectorAll('#win-notepad-font>#win-notepad-font-style>.value-box>.option');
+const typeinput = document.querySelector('#win-notepad-font>#win-notepad-font-type>input[type=text]');
+const sizeinput = document.querySelector('#win-notepad-font>#win-notepad-font-size>input[type=text]');
+const styleinput = document.querySelector('#win-notepad-font>#win-notepad-font-style>input[type=text]');
+for (const elt of fontvalues) {
+    elt.onclick = function () {
+        typeinput.value = this.innerText;
+        preview();
+    }
+    elt.setAttribute('style', `font-family: ${elt.innerText};`)
+}
+for (const elt of sizevalues) {
+    elt.onclick = function () {
+        sizeinput.value = this.innerText;
+        preview();
+    }
+}
+for (const elt of stylevalues) {
+    elt.onclick = function () {
+        styleinput.value = this.innerText;
+        preview();
+    }
+    elt.setAttribute('style', styles[elt.innerText]);
+}
+sizeinput.addEventListener("keyup", preview);
+typeinput.addEventListener("keyup", preview);
+function commitFont() {
+    var fontsize = 0;
+    var fontstyle;
+    if (!sizeinput.value.match(/^[0-9]*$/)) {
+        if (sizes[sizeinput.value] != undefined) {
+            fontsize = sizes[sizeinput.value];
+        }
+    } else if (sizeinput.value.match(/^[0-9]*$/)) {
+        fontsize = sizeinput.value;
+    }
+    if (fontsize <= 0) {
+        fontsize = 15;
+    }
+    if (styles[styleinput.value] != undefined) {
+        fontstyle = styles[styleinput.value];
+    } else if (styles[styleinput.value] == undefined) {
+        fontstyle = styles['正常'];
+    }
+    if (styles[styleinput.value] != undefined) {
+        fontstyle = styles[styleinput.value];
+    } else if (styles[styleinput.value] == undefined) {
+        fontstyle = styles['正常'];
+    }
+    $('.notepad>#win-notepad>.text-box').attr('style', `font-family: ${typeinput.value} !important; font-size: ${fontsize}px !important; ${fontstyle}`);
+    hidewin('notepad-fonts', 'configs');
+}
+function resetfonts() {
+    typeinput.value = window.getComputedStyle($('.notepad>#win-notepad>.text-box')[0], null).getPropertyValue('font-family').split(', ')[0];
+    var fontsize = window.getComputedStyle($('.notepad>#win-notepad>.text-box')[0], null).getPropertyValue('font-size').split('px')[0];
+    var fontweight = window.getComputedStyle($('.notepad>#win-notepad>.text-box')[0], null).getPropertyValue('font-weight');
+    var fontstyle = window.getComputedStyle($('.notepad>#win-notepad>.text-box')[0], null).getPropertyValue('font-style');
+    if (fontweight == '700' && fontstyle == 'normal') {
+        styleinput.value = '粗体';
+    } else if (fontweight == '400' && fontstyle == 'italic') {
+        styleinput.value = '斜体';
+    } else if (fontweight == '700' && fontstyle == 'italic') {
+        styleinput.value = '粗偏斜体';
+    } else if (fontweight == '400' && fontstyle == 'normal') {
+        styleinput.value = '正常';
+    }
+    for (const [key, value] of Object.entries(sizes)) {
+        if (value == fontsize) {
+            fontsize = key;
+            break;
+        }
+    }
+    sizeinput.value = fontsize;
+}
+function preview() {
+    var fontsize = 0;
+    var fontstyle;
+    if (!sizeinput.value.match(/^[0-9]*$/)) {
+        if (sizes[sizeinput.value] != undefined) {
+            fontsize = sizes[sizeinput.value];
+        }
+    } else if (sizeinput.value.match(/^[0-9]*$/)) {
+        fontsize = sizeinput.value;
+    }
+    if (styles[styleinput.value] != undefined) {
+        fontstyle = styles[styleinput.value];
+    } else if (styles[styleinput.value] == undefined) {
+        fontstyle = styles['正常'];
+    }
+    $('#win-notepad-font>.preview>.preview-box').attr('style', `font-family: ${typeinput.value} !important; font-size: ${fontsize}px !important;${fontstyle}`);
+}
 
 // 启动
 let updated = false;

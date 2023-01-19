@@ -9,7 +9,7 @@
 }
 
 #win-notepad>.text-box{
-    border-radius: 20px 20px 0 0;
+    border-radius: 5px 5px 0px 0px;
     width: 100%;
     border: none;
     background-color: var(--card);
@@ -18,7 +18,7 @@
     padding: 10px;
     resize: none;
     font-size: 15px;
-    line-height: 19px;
+    line-height: 1.25;
     color: var(--text);
     height: calc(100% - 67px);
     transition: 200ms;
