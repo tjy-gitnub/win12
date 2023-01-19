@@ -24,8 +24,13 @@
     transition: 200ms;
 }
 
+#win-notepad>.text-box::selection {
+    background: #2983cc;
+    color: #ddd;
+}
+
 #win-notepad>.text-box.down {
-    transform: translate(0, 100%);
+    transform: translate(0,100%);
 }
 
 #win-notepad>.tool>a {
