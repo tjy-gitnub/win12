@@ -411,7 +411,7 @@ list>a:active,
     transition: 150ms;
 }
 
-#taskbar>a.min::after {
+#taskbar>a:not(.foc)::after {
     background: linear-gradient(90deg, #7f7f7f, #7f7f7f);
     width: 12px;
     left: 6.2px;

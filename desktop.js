@@ -210,7 +210,7 @@ dps = {
         ['<i class="bi bi-arrow-clockwise"></i> 重做 <info>Ctrl+Y</info>', 'document.execCommand(\'redo\')'],
     ],
     'notepad.view': [
-        [' 字体 ', 'hidedp(true);showwin(\'notepad-fonts\');resetfonts();']
+        ['<i class="bi bi-fonts"></i> 字体 ', 'hidedp(true);showwin(\'notepad-fonts\');resetfonts();']
     ]
 }
 let dpt = null, isOnDp = false;
@@ -428,17 +428,18 @@ for (let i = 1; i <= daysum; i++) {
     $('#datebox>.cont>.body')[0].innerHTML += `<p>${i}</p>`;
 }
 function openapp(name) {
-    focwin(name);
+    // focwin(name); 这里会添加2个窗口，因为我在 line 457 加了foc的内容
     if ($('#taskbar>.' + name).length != 0) {
         return;
     }
     $('.window.' + name).addClass('load');
     showwin(name);
     $('#taskbar').attr('count', Number($('#taskbar').attr('count')) + 1)
-    $('#taskbar').html(`${$('#taskbar').html()}<a class="${name}" onclick="minwin(\'${name}\')"><img src="icon/${name}.png"></a>`);
+    $('#taskbar').html(`${$('#taskbar').html()}<a class="${name}" onclick="taskbarclick(\'${name}\')"><img src="icon/${name}.png"></a>`);
     if ($('#taskbar').attr('count') == '1') {
         $('#taskbar').css('display', 'flex');
     }
+    $('#taskbar>.'+name).addClass('foc');
     setTimeout(() => {
         $('#taskbar').css('width', 10 + $('#taskbar').attr('count') * 34);
     }, 0);
@@ -453,6 +454,7 @@ function showwin(name) {
     setTimeout(() => { $('.window.' + name).addClass('show'); }, 0);
     setTimeout(() => { $('.window.' + name).addClass('notrans'); }, 200);
     $('.window.' + name).attr('style', `top: 10%;left: 15%;`);
+    $('#taskbar>.'+wo[0]).removeClass('foc');
     $('.window.' + wo[0]).removeClass('foc');
     wo.splice(0, 0, name);
     orderwindow();
@@ -477,6 +479,8 @@ function hidewin(name, arg = 'window') {
     if ($('.window').hasClass('max') == false) {
         $('#dock-box').removeClass('hide');
     }
+    wo.splice(wo.indexOf('name'),1);
+    orderwindow();
 }
 function maxwin(name, trigger = true) {
     if ($('.window.' + name).hasClass('max')) {
@@ -525,6 +529,7 @@ function minwin(name) {
             }
         }, 200);
     } else {
+        focwin(null);
         if ($('.window.' + name).hasClass('max')) {
             $('.window.' + name).addClass('min-max');
         }
@@ -545,13 +550,29 @@ function orderwindow() {
         win.css('z-index', 10 + i);
     }
 }
-function focwin(name) {
+// 以下函数基于bug运行，切勿改动！
+function focwin(name,arg='window') {
     // if(wo[0]==name)return;
+    if(arg=='window'){
+        $('#taskbar>.'+wo[0]).removeClass('foc');
+        $('#taskbar>.'+name).addClass('foc');
+    }
     $('.window.' + wo[0]).removeClass('foc');
     wo.splice(wo.indexOf(name), 1);
     wo.splice(0, 0, name);
     orderwindow();
     $('.window.' + name).addClass('foc');
+}
+function taskbarclick(name){
+    if($('.window.'+name).hasClass('foc')){
+        minwin(name);
+        focwin(null); // 禁改
+        return;
+    }
+    if($('.window.'+name).hasClass('min')){
+        minwin(name);
+    }
+    focwin(name);
 }
 // 菜单隐藏
 function hide_startmenu() {
@@ -610,9 +631,8 @@ for (let i = 0; i < wins.length; i++) {
             if (!$('.window').hasClass('max')) {
                 $('#dock-box').removeClass('hide');
             }
-            setTimeout(() => { $(this).addClass('notrans'); }, 200);
-            // }, 150);
-            // 触控板双击可能识别为拖动(我用触控板试了一下, 貌似一点问题都没有, 就删了:)  by: User782Tec)
+            $(this).addClass('notrans');
+            // 窗口拖至顶部最大化后按还原按钮位置出现问题，这个位置记录似乎有些看不懂，还麻烦调整 -- @tjy
         } else {
             this.setAttribute('style', `left:${cx - deltaLeft}px;top:${cy - deltaTop}px;`);
         }
@@ -780,6 +800,7 @@ function preview() {
     }
     $('#win-notepad-font>.preview>.preview-box').attr('style', `font-family: ${typeinput.value} !important; font-size: ${fontsize}px !important;${fontstyle}`);
 }
+
 
 // 启动
 let updated = false;

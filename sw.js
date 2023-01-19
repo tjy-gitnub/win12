@@ -31,7 +31,9 @@ let changes=[
   '/apps/style/notepad.css',
   '/apps/style/setting.css',
   '/apps/style/terminal.css'
+  '/desktop.css',
 ]
+// a
 let flag = false;
 this.addEventListener('activate', function (event) {
   flag = true;
