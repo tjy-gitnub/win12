@@ -1,8 +1,13 @@
 /* 这里我对ui做了一些调整 */
 /* 我注意到你的布局居中都是用margin做的，可以在dis:flex的块中加 align-content: space-around; 居中 */
 /* 这个flex-direction: column;的不同设备的兼容性不是很好，可能错位，可以写明确一点来布局 */
+#win-notepad-font>.row {
+    display: flex;
+    justify-content: space-around;
+    height: 266px;
+}
+
 .select-input {
-    margin: 5px 0 5px 11px;
     display: inline-block;
     height: 200px;
 }
@@ -75,7 +80,7 @@
     display: inline-block;
     width: 150px;
     height: 150px;
-    margin: 5px 10px;
+    margin: 5px 10px;;
 }
 
 #win-notepad-font .preview>.preview-box {
@@ -85,7 +90,7 @@
     justify-content: center;
     align-items: center;
     word-break: keep-all;
-    height: 100%;
+    height: 150px;
     text-align: center;
     border: 2px solid #7f7f7f40;
     background: var(--card);

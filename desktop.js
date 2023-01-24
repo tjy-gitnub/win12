@@ -708,12 +708,12 @@ const styles = {
     '斜体': 'font-style: italic;',
     '粗偏斜体': 'font-weight: bold; font-style: italic;'
 }
-const fontvalues = document.querySelectorAll('#win-notepad-font>#win-notepad-font-type>.value-box>.option');
-const sizevalues = document.querySelectorAll('#win-notepad-font>#win-notepad-font-size>.value-box>.option');
-const stylevalues = document.querySelectorAll('#win-notepad-font>#win-notepad-font-style>.value-box>.option');
-const typeinput = document.querySelector('#win-notepad-font>#win-notepad-font-type>input[type=text]');
-const sizeinput = document.querySelector('#win-notepad-font>#win-notepad-font-size>input[type=text]');
-const styleinput = document.querySelector('#win-notepad-font>#win-notepad-font-style>input[type=text]');
+const fontvalues = document.querySelectorAll('#win-notepad-font>.row>#win-notepad-font-type>.value-box>.option');
+const sizevalues = document.querySelectorAll('#win-notepad-font>.row>#win-notepad-font-size>.value-box>.option');
+const stylevalues = document.querySelectorAll('#win-notepad-font>.row>#win-notepad-font-style>.value-box>.option');
+const typeinput = document.querySelector('#win-notepad-font>.row>#win-notepad-font-type>input[type=text]');
+const sizeinput = document.querySelector('#win-notepad-font>.row>#win-notepad-font-size>input[type=text]');
+const styleinput = document.querySelector('#win-notepad-font>.row>#win-notepad-font-style>input[type=text]');
 for (const elt of fontvalues) {
     elt.onclick = function () {
         typeinput.value = this.innerText;
