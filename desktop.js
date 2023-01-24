@@ -633,6 +633,7 @@ for (let i = 0; i < wins.length; i++) {
             }
             $(this).addClass('notrans');
             // 窗口拖至顶部最大化后按还原按钮位置出现问题，这个位置记录似乎有些看不懂，还麻烦调整 -- @tjy
+            // 抱歉, 不小心把x和y坐标写反了(by: User782Tec)
         } else {
             this.setAttribute('style', `left:${cx - deltaLeft}px;top:${cy - deltaTop}px;`);
         }
@@ -641,8 +642,8 @@ for (let i = 0; i < wins.length; i++) {
         let x = window.getComputedStyle(win, null).getPropertyValue('left').split("px")[0];
         let y = window.getComputedStyle(win, null).getPropertyValue('top').split("px")[0];
         if (y != 0) {
-            bfLeft = y;
-            bfTop = x;
+            bfLeft = x;
+            bfTop = y;
         }
         deltaLeft = e.clientX - x;
         deltaTop = e.clientY - y;
@@ -652,8 +653,8 @@ for (let i = 0; i < wins.length; i++) {
         let x = window.getComputedStyle(win, null).getPropertyValue('left').split("px")[0];
         let y = window.getComputedStyle(win, null).getPropertyValue('top').split("px")[0];
         if (y != 0) {
-            bfLeft = y;
-            bfTop = x;
+            bfLeft = x;
+            bfTop = y;
         }
         deltaLeft = e.targetTouches[0].clientX - x;
         deltaTop = e.targetTouches[0].clientY - y;
