@@ -22,7 +22,11 @@ let changes=[
   '/desktop.html',
   '/desktop.js',
   '/desktop.css',
-  '/apps/style/notepad.css',
+  '/apps/style/about.css',
+  '/apps/style/fonts.css',
+  '/apps/style/setting.css',
+  '/newyear-dark.png',
+  '/newyear-light.png',
 ]
 // a
 let flag = false;

@@ -34,12 +34,14 @@
     border-radius: 10px;
     width: 6px;
     margin: 5px 5px;
-    transition: 100ms;
-    opacity: 0;
+    transition: 200ms;
+    /* opacity: 0; */
+    transform: scaleY(0);
+    transform-origin: top;
 }
 
 #win-about>.cnt .tit:hover>span{
-    opacity: 1;
+    transform: none;
 }
 
 #win-about>.update>div>details{

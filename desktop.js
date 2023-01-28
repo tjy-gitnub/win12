@@ -275,7 +275,15 @@ function hidedp(force = false) {
 // 应用
 let apps = {
     setting: {
-        init: () => { }
+        init: () => { },
+        page:(name)=>{
+            $('#win-setting>.page>.cnt.'+name).scrollTop(0);
+            $('#win-setting>.page>.cnt.show').removeClass('show');
+            $('#win-setting>.page>.cnt.'+name).addClass('show');
+            $('#win-setting>.menu>list>a.check').removeClass('check');
+            $('#win-setting>.menu>list>a.'+name).addClass('check');
+            
+        }
     },
     explorer: {
         init: () => {

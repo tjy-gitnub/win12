@@ -1,6 +1,3 @@
-/* 这里我对ui做了一些调整 */
-/* 我注意到你的布局居中都是用margin做的，可以在dis:flex的块中加 align-content: space-around; 居中 */
-/* 这个flex-direction: column;的不同设备的兼容性不是很好，可能错位，可以写明确一点来布局 */
 #win-notepad-font>.row {
     display: flex;
     justify-content: space-around;

@@ -1,7 +1,7 @@
 @import "./bootstrap-icons.css";
 @import "./base.css";
 
-/* :root {
+:root {
     --text: #000;
     --bg: #ffffff;
     --bg30: #ffffff30;
@@ -13,7 +13,8 @@
     --hover-half: #ffffff50;
     --hover-b: #00000017;
     --bggrey: #ddd;
-    --bgul: url('newyear-light.png');
+    --fill:#d3d3d370;
+    --bgul: url('bg.svg');
     --mm: #ffffffc0;
     --cm: #fafafabb;
     --bar: #efefef37;
@@ -22,8 +23,8 @@
     --theme-1:#ad6eca;
     --theme-2:#3b91d8;
     --href:#2983cc;
-} */
-/* 
+}
+
 :root.dark {
     --text: #ddd;
     --bg: #000000;
@@ -32,20 +33,19 @@
     --bg70: #00000070;
     --sd: #00000070;
     --card: #72727240;
-    --hover: #ffffff40;
+    --hover: #aaaaaa40;
     --hover-half: #ffffff20;
     --hover-b: #ffffff30;
     --bggrey: #444;
-    --bgul: url('newyear-dark.png');
+    --fill:#54545470;
+    --bgul: url('bg-dark.svg');
     --mm: #ffffff50;
     --cm: #252525bb;
     --bar: #7272722a;
     --hr:#00000050;
     --unfoc:#333;
-} */
-
-/* 新年特别版 */
-
+} 
+/*
 :root {
     --text: #000;
     --bg: #ffffff;
@@ -58,6 +58,7 @@
     --hover-half: #ff808050;
     --hover-b: #74000030;
     --bggrey: #ddd;
+    --fill:#d3d3d370;
     --bgul: url('newyear-light.png');
     --mm: #ff6464c0;
     --cm: #fafafabb;
@@ -81,15 +82,16 @@
     --hover-half: #ff616120;
     --hover-b: #ff616130;
     --bggrey: #444;
+    --fill:#54545470;
     --bgul: url('newyear-dark.png');
     --mm: #ff5b5b50;
     --cm: #252525bb;
     --bar: #7272722a;
     --hr:#00000050;
     --unfoc:#3a1a1a;
-}
+} */
 
-#start-btn>.ico{
+/* #start-btn>.ico{
     filter: var(--theme-f);
 }
 
@@ -111,9 +113,8 @@ img[src="icon/about.png"]{
 
 #win-setting>.menu>.user>svg{
     filter: var(--theme-f);
-}
+} */
 
-/* end */
 
 body,
 p {
@@ -199,7 +200,8 @@ list>a,
 #win-calc>.keyb>.b,
 #datebox>.cont>.body>p,
 .wg>.titbar>.more,
-.wg.calc>.content>.b {
+.wg.calc>.content>.b,
+.button {
     transition: transform 400ms cubic-bezier(0.14, 1.02, 0.17, 0.03) !important;
 }
 
@@ -209,7 +211,8 @@ list>a:active,
 #win-calc>.keyb>.b:active,
 #datebox>.cont>.body>p:active,
 .wg>.titbar>.more:active,
-.wg.calc>.content>.b:active {
+.wg.calc>.content>.b:active,
+.button:active {
     transform: scale(0.93);
     filter: blur(0.5px);
     /* transition: transform 500ms cubic-bezier(0.24, 0.86, 0.36, 0.44) !important; */
@@ -1394,7 +1397,7 @@ input-before {
     background-color: var(--bg);
     background-clip: padding-box, border-box;
     background-origin: padding-box, border-box;
-    background-image: linear-gradient(var(--bg), var(--bg)), linear-gradient(100deg, #ad6ecaee, #3b91d8ee);
+    background-image: linear-gradient(var(--bg), var(--bg)), linear-gradient(90deg, var(--theme-1), var(--theme-2));
     border-bottom-color: transparent;
 }
 
@@ -1435,6 +1438,21 @@ input-before {
     padding: 6px 10px;
 }
 
+.button{
+    background-color: #9f9f9f40;
+    border-radius: 10px;
+    padding: 5px 10px;
+    cursor: pointer;
+}
+
+.button:hover{
+    filter: brightness(1.2);
+}
+
+.button:active{
+    filter: brightness(1.2) blur(0.5px);
+}
+
 #cm {
     display: none;
     position: absolute;
@@ -1446,8 +1464,9 @@ input-before {
     backdrop-filter: blur(25px) saturate(2);
     min-width: 200px;
     overflow: hidden;
-    padding: 0 4px 0 0;
+    padding: 0 4px;
     max-height: 0;
+    width: max-content;
     transition: max-height 200ms ease-in-out, top 100ms, left 100ms, padding 200ms ease-in-out;
 }
 
@@ -1931,14 +1950,15 @@ list>.text:hover {
 }
 
 #window-fill {
-    background-color: var(--bg50);
-    backdrop-filter: blur(60px);
+    background-color: var(--fill);
+    backdrop-filter: blur(25px);
     display: none;
     position: fixed;
     transition: all 200ms;
     margin: 10px;
-    border-radius: 20px;
-    border: 4px solid var(--bg30);
+    border-radius: 10px;
+    box-shadow: 0 0 5px 5px var(--sd);
+    /* border: 4px solid var(--bg30); */
 }
 
 #window-fill.top {
