@@ -6,7 +6,6 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 	<meta name="format-detection" content="telephone=no" />
-	<meta name="theme-color" content="red">
 
 	<!-- Windows 12 网页版 谭景元原创  -->
 
@@ -264,11 +263,11 @@
 				<p style="color: #7f7f7f;margin-right: 5px;margin-top: 2px;">注意: 新闻内容均不属实 </p>
 			</div>
 			<div class="content">
-				<div class="card" style="grid-column: 1/6;grid-row: 1/3;color: #fff;background: var(--bgul);background-position:-50px -370px;background-size: 150%;">
-					<p class="tit" style="font-size: 22px;margin: 110px 0 0 30px;text-shadow: 0 0 8px #000;">Windows12 v3.9.0 发布</p>
+				<div class="card" style="grid-column: 1/6;grid-row: 1/3;color: #fff;background: var(--bgul);background-position:-20px -280px;background-size: 170%;">
+					<p class="tit" style="font-size: 22px;margin: 100px 0 0 180px;text-shadow: 0 0 8px #000;">Windows12 v4.0.0 发布</p>
 					<a class="a" style="margin: 5px 0 0 250px;font-size: 17px;color: #9dd0fb;text-shadow: 0 0 3px #000;" onclick="hide_widgets();
 					openapp('about');if($('.window.about').hasClass('min'))minwin('about');
-					$('#win-about>.update').show(200);$('#win-about>.about').hide();
+					$('#win-about>.about').removeClass('show');$('#win-about>.update').addClass('show');
 					$('#win-about>.update>div>details:first-child').attr('open','open')">详细信息 ></a>
 				</div>
 				<div class="card" style="grid-column: 3/6;grid-row: 7/9;background:url(img/win13.jpg) center;background-size: cover;">
@@ -428,7 +427,7 @@
 		<div class="dock" id="taskbar" style="display: none;" count="0">
 		</div>
 		<div class="dock about" oncontextmenu="return showcm(event,'dockabout',$(this).hasClass('show'))"
-			onclick="if($(this).hasClass('show')){$(this).removeClass('show')}else{$(this).addClass('show')}">
+			onclick="if($(this).hasClass('show')){$(this).removeClass('show')}else{$(this).addClass('show')};navigator.serviceWorker.controller.postMessage('set?');">
 			Windows 12 网页版 谭景元原创
 			<p>Windows 12 网页版是一个开放源项目,<br>
 				希望让用户在网络上预先体验 Windows 12,<br>
@@ -567,7 +566,8 @@
 								<div class="a act color theme2" style="background: #1168ae" onclick="$('div.app-color>div>input.theme2inp')[0].click();"></div>
 								<input type="color" class="theme2inp" onchange="$('div.app-color>div>.color.theme2').css('background-color',this.value);" value="#1168ae">
 								<a class="a button" style="margin-left: 20px;" onclick="$(':root').css('--theme-1',$('div.app-color>div>input.theme1inp').val());
-									$(':root').css('--theme-2',$('div.app-color>div>input.theme2inp').val())">应用</a>
+									$(':root').css('--theme-2',$('div.app-color>div>input.theme2inp').val());setData('color1',$('div.app-color>div>input.theme1inp').val());
+									setData('color2',$('div.app-color>div>input.theme2inp').val())">应用</a>
 							</div>
 						</div>
 					</div>
@@ -698,8 +698,8 @@
 		<div class="content" id="win-about">
 			<div class="menu">
 				<list>
-					<a onclick="$('#win-about>.about').show(200);$('#win-about>.update').hide();"><img src="apps/icons/about/info.svg" height="17px" width="19px">简介</a>
-					<a onclick="$('#win-about>.update').show(200);$('#win-about>.about').hide();"><img src="apps/icons/about/update.svg" height="20px" width="18px">更新记录</a>
+					<a onclick="$('#win-about>.about').addClass('show');$('#win-about>.update').removeClass('show');"><img src="apps/icons/about/info.svg" height="17px" width="19px">简介</a>
+					<a onclick="$('#win-about>.update').addClass('show');$('#win-about>.about').removeClass('show');"><img src="apps/icons/about/update.svg" height="20px" width="18px">更新记录</a>
 				</list>
 			</div>
 			<div class="cnt about">
@@ -720,23 +720,31 @@
 					<p>&emsp;&emsp;本项目中微软、Windows和其他示范产品是微软公司的商标</p>
 				</div>
 			</div>
-			<div class="cnt update" style="display: none;">
+			<div class="cnt update">
 				<h1 class="tit"><span></span>更新记录</h1>
 				<div style="margin-left: 20px;">
-					<details><summary><span>v3.9.0</span> 新增主题色设置功能，布局优化</summary>
+					<details><summary><span>v4.0.0</span> 记录用户偏好,动画更新,新壁纸,分屏</summary><p>
+						&emsp;&emsp;-记录用户偏好设置(更新后不保留) @xqwcom<br>
+						&emsp;&emsp;-没错又是动画更新<br>
+						&emsp;&emsp;-开始/任务栏/右键菜单/列表/切换等全面动画升级<br>
+						&emsp;&emsp;-新壁纸(好看吗?)<br>
+						&emsp;&emsp;-拖动窗口至左右边缘分屏<br>
+						&emsp;&emsp;-细节优化和修复</p>
+					</details>
+					<details><summary><span>v3.9.0</span> 新增主题色设置功能，布局优化</summary><p>
 						&emsp;&emsp;<i>更新部分来源 @User782Tec 的pr</i><br>
 						&emsp;&emsp;-新增系统主题色设置功能<br>
 						&emsp;&emsp;-记事本字体选择布局优化<br>
 						&emsp;&emsp;-"关于"应用的改进<br>
 						&emsp;&emsp;-细节优化和修复</p>
 					</details>
-					<details><summary><span>v3.8.0</span> 记事本字体，窗口焦点逻辑改善</summary>
+					<details><summary><span>v3.8.0</span> 记事本字体，窗口焦点逻辑改善</summary><p>
 						&emsp;&emsp;<i>更新主要来源 @User782Tec 的pr</i><br>
 						&emsp;&emsp;-详见<a href="https://github.com/tjy-gitnub/win12/pull/50">pull</a>中的详细<br>
 						&emsp;&emsp;-窗口焦点逻辑改善<br>
 						&emsp;&emsp;-细节优化和修复</p>
 					</details>
-					<details><summary><span>v3.7.0</span> 窗口最大化完善,让颜色更"喜庆"一点</summary>
+					<details><summary><span>v3.7.0</span> 窗口最大化完善,让颜色更"喜庆"一点</summary><p>
 						&emsp;&emsp;<i>更新部分来源 @User782Tec 的pr</i><br>
 						&emsp;&emsp;-增加最大化窗口下拖还原功能<br>
 						&emsp;&emsp;-最大化窗口还原后保留之前的位置<br>
@@ -746,7 +754,7 @@
 						&emsp;&emsp;-禁用缩放<br>
 						&emsp;&emsp;-细节优化和修复</p>
 					</details>
-					<details><summary><span>v3.6.1</span> Windows12新年特别版</summary>
+					<details><summary><span>v3.6.1</span> Windows12新年特别版</summary><p>
 						&emsp;&emsp;-增加主题色控制功能<br>
 						&emsp;&emsp;-测试新的更新机制<br>
 						&emsp;&emsp;-细节优化和修复</p>
@@ -922,7 +930,7 @@
 					<a class="option">粗偏斜体</a>
 				</list>
 			</div>
-			</div><br />
+			</div>
 			<div class="preview">
 				<div class="description">
 					预览
@@ -962,7 +970,7 @@ C:\Windows\System32> <input type="text" oninput="setTimeout(() => {$('#win-termi
 	</div>
 	<div class="msg update" oncontextmenu="return showcm(event,'msgupdate',null)">
 		<div class="main" onclick="openapp('about');if($('.window.about').hasClass('min'))minwin('about');
-			$('#win-about>.update').show(200);$('#win-about>.about').hide();
+			$('#win-about>.about').removeClass('show');$('#win-about>.update').addClass('show');
 			$('#win-about>.update>div>details:first-child').attr('open','open')">
 			<p class="tit"></p>
 			<p class="cont"></p>

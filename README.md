@@ -1,12 +1,13 @@
 # Windows 12 网页版
 
-> 版本3每一次更新都是功能更新，所以约每2周更新一次，感谢支持
+> 版本4全新发布，基于动画的系统
 
 ## 前言
 最近看到 Windows 12 概念版(Power by PowerPoint)后深受启发，决定做一个Windows12网页版，就像 [Windows 11 网页版](https://win11.blueedge.me/)一样。
 话不多说，来看一下截图
 
 ## 效果展示
+> 新的版本有一些变化，仅供参考,请以实物为准
 ![image](https://user-images.githubusercontent.com/71509955/194317185-b64e87c7-4035-4f48-b726-e6cda5f9d81a.png)
 *开始*
 ![image](https://user-images.githubusercontent.com/71509955/194317323-772154ec-b463-403e-9213-78087282263b.png)

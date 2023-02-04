@@ -1,3 +1,8 @@
+let userdata={
+  'theme':'light',
+  'color1':'#ad6eca',
+  'color2':'#3b91d8'
+};
 this.addEventListener('fetch', function (event) {
   event.respondWith(
     caches.match(event.request).then(res => {
@@ -18,15 +23,12 @@ this.addEventListener('fetch', function (event) {
   )
 });
 const cacheNames = ['def'];
-let changes=[
-  '/desktop.html',
-  '/desktop.js',
-  '/desktop.css',
-  '/apps/style/about.css',
-  '/apps/style/fonts.css',
-  '/apps/style/setting.css',
-  '/newyear-dark.png',
-  '/newyear-light.png',
+let nochanges=[
+  '/win12/fonts/',
+  '/win12/icon/',
+  '/win12/img/',
+  '/win12/apps/icons/',
+  '/win12/jq.min.js'
 ]
 // a
 let flag = false;
@@ -49,12 +51,17 @@ this.addEventListener('activate', function (event) {
         caches.open('def').then(cc=>{
           cc.keys().then(key=>{
             key.forEach(k => {
-              changes.forEach(fi => {
-                if(RegExp(fi+'$').test(k.url)){
-                  console.log('删除数据',k.url);
-                  return cc.delete(k);
+              let fl=true;
+              nochanges.forEach(fi => {
+                if(RegExp(fi+'\\S+').test(k.url)){
+                  fl=false;
+                  return;
                 }
               });
+              if(fl){
+                console.log('删除数据',k.url);
+                return cc.delete(k);
+              }
             });
           })
         })
@@ -69,12 +76,22 @@ this.addEventListener('activate', function (event) {
 		})
   );
 });
-
 this.addEventListener('message', function (e) {
-  if (e.data == 'update?') {
+  if (e.data.head == 'is_update') {
     if (flag) {
-      e.source.postMessage('update');
+      e.source.postMessage({
+        head:'update'
+      });
       flag = false;
     }
+  }else if (e.data.head=='set_userdata'){
+    userdata[e.data.key]=e.data.value;
+    console.log(userdata)
+  }else if (e.data.head=='get_userdata'){
+    console.log(userdata);
+    e.source.postMessage({
+      head:'userdata',
+      data:userdata
+    });
   }
 });

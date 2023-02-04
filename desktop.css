@@ -214,7 +214,8 @@ list>a:active,
 .wg.calc>.content>.b:active,
 .button:active {
     transform: scale(0.93);
-    filter: blur(0.5px);
+    /* filter: blur(0.5px); */
+    filter: opacity(0.75);
     /* transition: transform 500ms cubic-bezier(0.24, 0.86, 0.36, 0.44) !important; */
 }
 
@@ -251,7 +252,7 @@ list>a:active,
     padding: 7px 6px;
     margin: 0 3px;
     display: flex;
-    transition: 200ms, transform 300ms cubic-bezier(0.14, 1.02, 0.17, 0.03);
+    transition: 200ms, transform 300ms cubic-bezier(0.14, 1.02, 0.17, 0.03),opacity 0ms;
     bottom: 0;
 }
 
@@ -294,6 +295,7 @@ list>a:active,
 
 .dock.about:active {
     transform: scale(0.92);
+    opacity: 0.75;
 }
 
 .dock.about.show {
@@ -333,6 +335,10 @@ list>a:active,
     background-color: var(--hover);
 }
 
+#taskbar>a:active>img{
+    transform: scale(0.8);
+}
+
 #taskbar>a>img {
     width: 24px;
     height: 24px;
@@ -340,7 +346,7 @@ list>a:active,
 }
 
 #taskbar>a:not(.min)>img {
-    animation: task-show 1s;
+    animation: task-show 800ms;
 }
 
 @keyframes task-show {
@@ -349,24 +355,14 @@ list>a:active,
         margin-bottom: 0;
     }
 
-    20% {
-        margin-top: 3px;
-        margin-bottom: -3px;
+    40% {
+        margin-top: -5px;
+        margin-bottom: 5px;
     }
 
-    35% {
-        margin-top: -7px;
-        margin-bottom: 7px;
-    }
-
-    55% {
-        margin-top: 1px;
-        margin-bottom: -1px;
-    }
-
-    75% {
-        margin-top: -4px;
-        margin-bottom: 4px;
+    60% {
+        margin-top: 2px;
+        margin-bottom: -2px;
     }
 
     100% {
@@ -376,7 +372,7 @@ list>a:active,
 }
 
 #taskbar>a.min>img {
-    animation: task-hide 1s;
+    animation: task-hide 800ms;
 }
 
 @keyframes task-hide {
@@ -385,14 +381,14 @@ list>a:active,
         margin-bottom: 0;
     }
 
-    20% {
-        margin-top: -3px;
-        margin-bottom: 3px;
+    40% {
+        margin-top: 4px;
+        margin-bottom: -4px;
     }
 
-    60% {
-        margin-top: 10px;
-        margin-bottom: -10px;
+    70%{
+        margin-top: -2px;
+        margin-bottom: 2px;
     }
 
     100% {
@@ -440,6 +436,7 @@ list>a:active,
 
 .dock.date:active {
     transform: scale(0.9);
+    opacity: 0.75;
 }
 
 .dock.date:hover {
@@ -482,6 +479,7 @@ list>a:active,
 
 .dock.theme:active {
     transform: scale(0.84);
+    opacity: 0.75;
 }
 
 .dock.theme:hover {
@@ -619,16 +617,16 @@ list>a:active,
 #start-menu {
     display: none;
     position: fixed;
-    bottom: -500px;
-    height: 500px;
-    max-height: calc(90% - 120px);
+    bottom: -600px;
+    height: 594px;
+    max-height: calc(100% - 120px);
     width: 860px;
     left: calc(50% - 430px);
     border-radius: 20px;
     background-color: var(--bg50);
     backdrop-filter: blur(80px) saturate(130%);
     -webkit-backdrop-filter: blur(80px) saturate(130%);
-    opacity: 0.8;
+    opacity: 0.5;
     transition: 200ms;
     box-shadow: 3px 3px 15px 1px var(--sd);
     border: 2px solid #7f7f7f40;
@@ -641,8 +639,6 @@ list>a:active,
 
 #start-menu.show {
     display: flex;
-    height: 594px;
-    max-height: calc(100% - 120px);
     bottom: 60px;
     opacity: 1;
 }
@@ -735,16 +731,14 @@ input-before {
 
 #s-m-r>.row1 {
     display: flex;
-    margin-top: 40px;
-    margin-bottom: -40px;
+    transform: translate(0,50px) scale(0.9);
     transition: 300ms cubic-bezier(0.4, 0.4, 0.4, 1);
     transition-delay: 200ms;
     opacity: 0;
 }
 
 #start-menu.show>#s-m-r>.row1 {
-    margin-top: 0;
-    margin-bottom: 0;
+    transform: none;
     opacity: 1;
 }
 
@@ -848,16 +842,14 @@ input-before {
     border-radius: 10px;
     background-color: var(--card);
     box-shadow: 3px 3px 6px var(--sd);
-    margin-top: 60px;
-    margin-bottom: -60px;
+    transform: translate(0,50px) scale(0.9);
     transition: 300ms cubic-bezier(0.6, 0.6, 0.4, 1);
     transition-delay: 300ms;
     opacity: 0;
 }
 
 #start-menu.show>#s-m-r>.pinned {
-    margin-top: 0;
-    margin-bottom: 0;
+    transform: none;
     opacity: 1;
 }
 
@@ -886,16 +878,15 @@ input-before {
     border-radius: 10px;
     background-color: var(--card);
     box-shadow: 3px 3px 6px var(--sd);
-    margin-top: 80px;
-    margin-bottom: -80px;
+    margin-top: 15px;
+    transform: translate(0,50px) scale(0.9);
     transition: 300ms cubic-bezier(0.6, 0.6, 0.4, 1);
-    transition-delay: 500ms;
+    transition-delay: 450ms;
     opacity: 0;
 }
 
 #start-menu.show>#s-m-r>.tuijian {
-    margin-top: 15px;
-    margin-bottom: 0;
+    transform: none;
     opacity: 1;
 }
 
@@ -1386,6 +1377,7 @@ input-before {
     outline: medium;
     width: 100%;
     color: var(--text);
+    transition: 200ms,background 0s;
 }
 
 
@@ -1399,6 +1391,8 @@ input-before {
     background-origin: padding-box, border-box;
     background-image: linear-gradient(var(--bg), var(--bg)), linear-gradient(90deg, var(--theme-1), var(--theme-2));
     border-bottom-color: transparent;
+    box-shadow: 1px 1px 4px 2px var(--sd);
+    opacity: 1;
 }
 
 .btn {
@@ -1456,7 +1450,6 @@ input-before {
 #cm {
     display: none;
     position: absolute;
-    box-shadow: 3px 3px 6px 1px var(--sd);
     z-index: 101;
     border-radius: 10px;
     border: 2px solid #7f7f7f40;
@@ -1464,10 +1457,21 @@ input-before {
     backdrop-filter: blur(25px) saturate(2);
     min-width: 200px;
     overflow: hidden;
-    padding: 0 4px;
+    padding: 2px 4px 0 4px;
     max-height: 0;
     width: max-content;
-    transition: max-height 200ms ease-in-out, top 100ms, left 100ms, padding 200ms ease-in-out;
+    transition: max-height 200ms ease-in-out, top 100ms, left 100ms, padding 200ms ease-in-out,box-shadow 800ms;
+}
+
+#cm>list{
+    transform: translate(0,-50%);
+    opacity: 0;
+    transition: transform 200ms ease-in-out,opacity 150ms 50ms;
+}
+
+#cm.show>list{
+    opacity: 1;
+    transform: none;
 }
 
 #cm.show-begin {
@@ -1477,6 +1481,7 @@ input-before {
 #cm.show {
     max-height: 100%;
     padding: 4px;
+    box-shadow: 3px 3px 6px 1px var(--sd);
 }
 
 #cm>list>a {
@@ -1813,14 +1818,19 @@ list>.text:hover {
     opacity: 0;
     transition: cubic-bezier(0.9, 0, 0.1, 1) 200ms;
     overflow: hidden;
-    box-shadow: 3px 3px 15px 1px var(--sd);
+    box-shadow: 2px 2px 5px var(--sd);
     z-index: 98;
+}
+
+.window.foc>.titbar{
+    opacity: 1;
 }
 
 .window.foc {
     background-color: var(--bg70);
     backdrop-filter: blur(80px) saturate(130%);
     -webkit-backdrop-filter: blur(80px) saturate(130%);
+    box-shadow: 3px 3px 15px 2px var(--sd);
 }
 
 .window.min {
@@ -1888,12 +1898,13 @@ list>.text:hover {
     padding: 0 0 0 5px;
     display: flex;
     position: initial;
+    color: var(--text);
+    opacity: 0.5;
 }
 
 .window>.titbar>p {
     font-size: 16px;
     margin-top: 3px;
-    color: var(--text);
 }
 
 .window>.titbar>.icon {
@@ -1918,7 +1929,21 @@ list>.text:hover {
     top: 0 !important;
     border-radius: 0;
     border: none;
-    transition: cubic-bezier(0.9, 0, 0.1, 1) 200ms, top 200ms 100ms;
+    transition: cubic-bezier(0.9, 0, 0.1, 1) 200ms, top 200ms 100ms,backdrop-filter,background 0ms;
+}
+
+.window.left{
+    left: 0 !important;
+    top: 0 !important;
+    width: 50%;
+    height: 100%;
+}
+
+.window.right{
+    left: 50% !important;
+    top: 0 !important;
+    width: 50%;
+    height: 100%;
 }
 
 .wbtg {
@@ -1938,6 +1963,10 @@ list>.text:hover {
 
 .wbtg:hover {
     background-color: var(--hover-b);
+}
+
+.wbtg:active{
+    opacity: 0.6;
 }
 
 .wbtg.red:hover {
@@ -1974,4 +2003,34 @@ list>.text:hover {
     height: calc(100% - 20px);
     top: 0;
     left: 0;
+}
+
+#window-fill.left {
+    width: 0;
+    height: 0;
+    top: 50%;
+    left: 0;
+    display: block;
+}
+
+#window-fill.left.fill {
+    width: calc(50% - 20px);
+    height: calc(100% - 20px);
+    top: 0;
+    left: 0;
+}
+
+#window-fill.right {
+    width: 0;
+    height: 0;
+    top: 50%;
+    left: 100%;
+    display: block;
+}
+
+#window-fill.right.fill {
+    width: calc(50% - 20px);
+    height: calc(100% - 20px);
+    top: 0;
+    left: 50%;
 }

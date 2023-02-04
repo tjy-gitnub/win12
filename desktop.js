@@ -58,7 +58,7 @@ let cms = {
         ['<i class="bi bi-circle-square"></i> 切换主题', 'toggletheme()'],
         `<a onmousedown="window.open('https://github.com/tjy-gitnub/win12','_blank');" title="https://github.com/tjy-gitnub/win12"><i class="bi bi-github"></i> 在 Github 中查看此项目</a>`,
         `<a onmousedown="window.open('https://github.com/tjy-gitnub/win12/issues','_blank');" title="https://github.com/tjy-gitnub/win12/issues"><i class="bi bi-chat-left-text"></i> 发送反馈</a>`,
-        ['<i class="bi bi-info-circle"></i> 关于 Win12 网页版', `$('#win-about>.about').show(200);$('#win-about>.update').hide();openapp('about');if($('.window.about').hasClass('min'))minwin('about');`],
+        ['<i class="bi bi-info-circle"></i> 关于 Win12 网页版', `$('#win-about>.about').addClass('show');$('#win-about>.update').removeClass('show');openapp('about');if($('.window.about').hasClass('min'))minwin('about');`],
     ],
     'winx': [
         function (arg) {
@@ -100,12 +100,12 @@ let cms = {
                 return ['<i class="bi bi-arrow-bar-up"></i> 展开', `$('.dock.about').addClass('show')`];
             }
         },
-        ['<i class="bi bi-info-circle"></i> 更多信息', `$('#win-about>.about').show(200);$('#win-about>.update').hide();
+        ['<i class="bi bi-info-circle"></i> 更多信息', `$('#win-about>.about').addClass('show');$('#win-about>.update').removeClass('show');
         openapp('about');if($('.window.about').hasClass('min'))minwin('about');`]
     ],
     'msgupdate': [
         ['<i class="bi bi-layout-text-window-reverse"></i> 查看详细', `openapp('about');if($('.window.about').hasClass('min'))
-        minwin('about');$('#win-about>.update').show(200);$('#win-about>.about').hide();
+        minwin('about');$('#win-about>.about').removeClass('show');$('#win-about>.update').addClass('show');
         $('#win-about>.update>div>details:first-child').attr('open','open')`],
         ['<i class="bi bi-box-arrow-right"></i> 关闭', `$('.msg.update').removeClass('show')`]
     ],
@@ -325,7 +325,7 @@ let apps = {
             } else {
                 let ht = '';
                 for (folder in tmp) {
-                    ht += `<a class="a item" ondblclick="apps.explorer.goto('${path}/${folder}')" ontouchend="apps.explorer.goto('${path}/${folder}')" oncontextmenu="stop(event);return showcm(event,'explorer.folder','${path}/${folder}')">
+                    ht += `<a class="a item act" ondblclick="apps.explorer.goto('${path}/${folder}')" ontouchend="apps.explorer.goto('${path}/${folder}')" oncontextmenu="stop(event);return showcm(event,'explorer.folder','${path}/${folder}')">
                         <img src="apps/icons/explorer/folder.png">${folder}</a>`;
                 }
                 $('#win-explorer>.main>.content>.view')[0].innerHTML = ht;
@@ -367,8 +367,8 @@ let apps = {
     },
     about: {
         init: () => {
-            $('#win-about>.about').show();
-            $('#win-about>.update').hide();
+            $('#win-about>.about').addClass('show');
+            $('#win-about>.update').removeClass('show');
         }
     },
     notepad: {
@@ -381,7 +381,13 @@ let apps = {
         }
     },
     terminal: {
-        init: () => { }
+        init: () => { 
+            $('#win-terminal>pre').html(`Micrsotft Windosw [版本 12.0.39035.7324]
+(c) Micrsotft Corparotoin。保所留有权利。
+一个摆设，后续会完善。
+
+C:\Windows\System32> <input type="text" oninput="setTimeout(() => {$('#win-terminal>pre')[0].innerHTML+=this.outerHTML;$('#win-terminal>pre>input').focus()}, 0);$('#win-terminal>pre')[0].innerText+=$(this).val();">`)
+        }
     }
 }
 
@@ -442,8 +448,8 @@ function openapp(name) {
     }
     $('.window.' + name).addClass('load');
     showwin(name);
-    $('#taskbar').attr('count', Number($('#taskbar').attr('count')) + 1)
-    $('#taskbar').html(`${$('#taskbar').html()}<a class="${name}" onclick="taskbarclick(\'${name}\')"><img src="icon/${name}.png"></a>`);
+    $('#taskbar').attr('count', Number($('#taskbar').attr('count')) + 1);
+    $('#taskbar').append(`<a class="${name}" onclick="taskbarclick(\'${name}\')"><img src="icon/${name}.png"></a>`);
     if ($('#taskbar').attr('count') == '1') {
         $('#taskbar').css('display', 'flex');
     }
@@ -484,14 +490,16 @@ function hidewin(name, arg = 'window') {
     }
     setTimeout(() => { $('.window.' + name).removeClass('show-begin'); }, 200);
     $('.window.' + name + '>.titbar>div>.wbtg.max').html('<i class="bi bi-app"></i>');
-    if ($('.window').hasClass('max') == false) {
-        $('#dock-box').removeClass('hide');
-    }
+    // if ($('.window').hasClass('max') == false) {
+    //     $('#dock-box').removeClass('hide');
+    // }
     wo.splice(wo.indexOf('name'),1);
     orderwindow();
 }
 function maxwin(name, trigger = true) {
     if ($('.window.' + name).hasClass('max')) {
+        $('.window.' + name).removeClass('left');
+        $('.window.' + name).removeClass('right');
         $('.window.' + name).removeClass('max');
         $('.window.' + name + '>.titbar>div>.wbtg.max').html('<i class="bi bi-app"></i>');
         if (trigger) {
@@ -502,18 +510,18 @@ function maxwin(name, trigger = true) {
         if ($('.window.' + name).attr('data-pos-x') != 'null' && $('.window.' + name).attr('data-pos-y') != 'null') {
             $('.window.' + name).attr(`style`, `left:${$('.window.' + name).attr('data-pos-x')};top:${$('.window.' + name).attr('data-pos-y')}`);
         }
-        if ($('.window').hasClass('max') == false) {
-            $('#dock-box').removeClass('hide');
-        }
+        // if ($('.window').hasClass('max') == false) {
+        //     $('#dock-box').removeClass('hide');
+        // }
     } else {
         if (trigger) {
-            $('.window.' + name).attr('data-pos-x', `${window.getComputedStyle(document.querySelector('.window.' + name), null).getPropertyValue('left')}`);
-            $('.window.' + name).attr('data-pos-y', `${window.getComputedStyle(document.querySelector('.window.' + name), null).getPropertyValue('top')}`);
+            $('.window.' + name).attr('data-pos-x', `${$('.window.'+name).css('left')}`);
+            $('.window.' + name).attr('data-pos-y', `${$('.window.'+name).css('top')}`);
         }
         $('.window.' + name).removeClass('notrans');
         $('.window.' + name).addClass('max');
         $('.window.' + name + '>.titbar>div>.wbtg.max').html('<svg version="1.1" width="12" height="12" viewBox="0,0,37.65105,35.84556" style="margin-top:4px;"><g transform="translate(-221.17804,-161.33903)"><g style="stroke:var(--text);" data-paper-data="{&quot;isPaintingLayer&quot;:true}" fill="none" fill-rule="nonzero" stroke-width="2" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="10" stroke-dasharray="" stroke-dashoffset="0" style="mix-blend-mode: normal"><path d="M224.68734,195.6846c-2.07955,-2.10903 -2.00902,-6.3576 -2.00902,-6.3576l0,-13.72831c0,0 -0.23986,-1.64534 2.00902,-4.69202c1.97975,-2.68208 4.91067,-2.00902 4.91067,-2.00902h14.06315c0,0 3.77086,-0.23314 5.80411,1.67418c2.03325,1.90732 1.33935,5.02685 1.33935,5.02685v13.39347c0,0 0.74377,4.01543 -1.33935,6.3576c-2.08312,2.34217 -5.80411,1.67418 -5.80411,1.67418h-13.39347c0,0 -3.50079,0.76968 -5.58035,-1.33935z"/><path d="M229.7952,162.85325h16.06111c0,0 5.96092,-0.36854 9.17505,2.64653c3.21412,3.01506 2.11723,7.94638 2.11723,7.94638v18.55642"/></g></g></svg>')
-        $('#dock-box').addClass('hide');
+        // $('#dock-box').addClass('hide');
     }
 }
 function minwin(name) {
@@ -597,12 +605,17 @@ function hide_widgets() {
 function toggletheme() {
     $('.dock.theme').toggleClass('dk');
     $(':root').toggleClass('dark');
+    if ($(':root').hasClass('dark')) {
+        setData('theme','dark');
+    }else{
+        setData('theme','light');
+    }
 }
 // 拖拽窗口
 const page = document.getElementsByTagName('html')[0];
 const titbars = document.querySelectorAll('.window>.titbar');
 const wins = document.querySelectorAll('.window');
-let deltaLeft = 0, deltaTop = 0, fil = false, bfLeft = 0, bfTop = 0;
+let deltaLeft = 0, deltaTop = 0, fil = false, filty='none', bfLeft = 0, bfTop = 0;
 for (let i = 0; i < wins.length; i++) {
     const win = wins[i];
     const titbar = titbars[i];
@@ -613,26 +626,49 @@ for (let i = 0; i < wins.length; i++) {
         } else {
             cx = e.clientX, cy = e.clientY;
         }
-        if (cy - deltaTop < 0) {
-            this.setAttribute('style', `left:${cx - deltaLeft}px;top:0px`);
+        this.setAttribute('style', `left:${cx - deltaLeft}px;top:${cy - deltaTop}px;`);
+        if (cy <= 0) {
+            this.setAttribute('style', `left:${cx - deltaLeft}px;top:${-deltaTop}px`);
             if (this.classList[1] != 'calc' && this.classList[1] != 'notepad-fonts') {
                 $('#window-fill').addClass('top');
                 setTimeout(() => {
                     $('#window-fill').addClass('fill');
                 }, 0);
                 fil = this;
+                filty='top';
+            }
+        }else if(cx<=0){
+            this.setAttribute('style', `left:${-deltaLeft}px;top:${cy - deltaTop}px`);
+            if (this.classList[1] != 'calc' && this.classList[1] != 'notepad-fonts') {
+                $('#window-fill').addClass('left');
+                setTimeout(() => {
+                    $('#window-fill').addClass('fill');
+                }, 0);
+                fil = this;
+                filty='left';
+            }
+        }else if(cx>=document.body.offsetWidth-2){
+            this.setAttribute('style', `left:calc(100% - ${deltaLeft}px);top:${cy - deltaTop}px`);
+            if (this.classList[1] != 'calc' && this.classList[1] != 'notepad-fonts') {
+                $('#window-fill').addClass('right');
+                setTimeout(() => {
+                    $('#window-fill').addClass('fill');
+                }, 0);
+                fil = this;
+                filty='right';
             }
         } else if (fil) {
             $('#window-fill').removeClass('fill');
             setTimeout(() => {
                 $('#window-fill').removeClass('top');
+                $('#window-fill').removeClass('left');
+                $('#window-fill').removeClass('right');
             }, 200);
             fil = false;
+            filty='none';
         } else if ($(this).hasClass('max')) {
-            // setTimeout(() => {
-            // if(!$(this).hasClass('max'))return;
+            deltaLeft = deltaLeft / (this.offsetWidth - (45 * 3)) * ((0.7 * document.body.offsetWidth) - (45 * 3));
             maxwin(this.classList[1], false);
-            deltaLeft = deltaLeft / (document.body.offsetWidth - (45 * 3)) * (0.7 * document.body.offsetWidth - 45 * 3);
             // 窗口控制按钮宽 45px
             this.setAttribute('style', `left:${cx - deltaLeft}px;top:${cy - deltaTop}px;`);
             $('.window.' + this.classList[1] + '>.titbar>div>.wbtg.max').html('<i class="bi bi-app"></i>');
@@ -640,10 +676,6 @@ for (let i = 0; i < wins.length; i++) {
                 $('#dock-box').removeClass('hide');
             }
             $(this).addClass('notrans');
-            // 窗口拖至顶部最大化后按还原按钮位置出现问题，这个位置记录似乎有些看不懂，还麻烦调整 -- @tjy
-            // 抱歉, 不小心把x和y坐标写反了(by: User782Tec)
-        } else {
-            this.setAttribute('style', `left:${cx - deltaLeft}px;top:${cy - deltaTop}px;`);
         }
     }
     titbar.addEventListener('mousedown', (e) => {
@@ -672,10 +704,20 @@ for (let i = 0; i < wins.length; i++) {
 page.addEventListener('mouseup', () => {
     page.onmousemove = null;
     if (fil) {
+        if(filty=='top')
         maxwin(fil.classList[1], false);
+        else if(filty=='left'){
+            maxwin(fil.classList[1], false);
+            $(fil).addClass('left');
+        }else if(filty=='right'){
+            maxwin(fil.classList[1], false);
+            $(fil).addClass('right');
+        }
         setTimeout(() => {
             $('#window-fill').removeClass('fill');
             $('#window-fill').removeClass('top');
+            $('#window-fill').removeClass('left');
+            $('#window-fill').removeClass('right');
         }, 200);
         $('.window.' + fil.classList[1]).attr('data-pos-x', `${bfLeft}px`);
         $('.window.' + fil.classList[1]).attr('data-pos-y', `${bfTop}px`);
@@ -685,7 +727,21 @@ page.addEventListener('mouseup', () => {
 page.addEventListener('touchend', () => {
     page.ontouchmove = null;
     if (fil) {
+        if(filty=='top')
         maxwin(fil.classList[1], false);
+        else if(filty=='left'){
+            maxwin(fil.classList[1], false);
+            $(fil).addClass('left');
+        }else if(filty=='right'){
+            maxwin(fil.classList[1], false);
+            $(fil).addClass('right');
+        }
+        setTimeout(() => {
+            $('#window-fill').removeClass('fill');
+            $('#window-fill').removeClass('top');
+            $('#window-fill').removeClass('left');
+            $('#window-fill').removeClass('right');
+        }, 200);
         setTimeout(() => {
             $('.window.' + fil.classList[1]).attr('data-pos-x', `${bfLeft}px`);
             $('.window.' + fil.classList[1]).attr('data-pos-y', `${bfTop}px`);
@@ -822,19 +878,39 @@ document.getElementsByTagName('body')[0].onload = function nupd() {
     }
 };
 
+
 // PWA 应用
 navigator.serviceWorker.register('sw.js', { updateViaCache: 'none', scope: './' });
 
-navigator.serviceWorker.controller.postMessage('update?');
+navigator.serviceWorker.controller.postMessage({
+    head:'is_update'
+});
+
+navigator.serviceWorker.controller.postMessage({
+    head:'get_userdata'
+});
 
 navigator.serviceWorker.addEventListener('message', function (e) {
-    if (e.data == 'update') {
+    if (e.data.head == 'update') {
         updated = true;
         $('.msg.update>.main>.tit').html('<i class="bi bi-stars" style="background-image: linear-gradient(100deg, var(--theme-1), var(--theme-2));-webkit-background-clip: text;-webkit-text-fill-color: transparent;text-shadow:3px 3px 5px var(--sd);filter:saturate(200%) brightness(0.9);"></i> ' + $('#win-about>.cnt.update>div>details:first-child>summary').text());
         $('.msg.update>.main>.cont').html($('#win-about>.cnt.update>div>details:first-child>p').html());
         $('#loadbackupdate').css('display', 'block');
+    }else if(e.data.head=='userdata'){
+        const d=e.data.data;
+        console.log(d);
+        if(d.theme=='dark')$(':root').addClass('dark');
+        $(':root').css('--theme-1',d.color1);
+        $(':root').css('--theme-2',d.color2);
     }
 });
+function setData(k,v) {
+    navigator.serviceWorker.controller.postMessage({
+        head:'set_userdata',
+        key:k,
+        value:v
+    });
+}
 
 // 清除cookie
 if (document.cookie != '') {

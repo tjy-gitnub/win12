@@ -119,14 +119,13 @@ html {
 #win-setting>.page>.cnt {
     overflow: auto;
     /* height: 100%; */
-    transform: translate(0, 50%);
+    transform: translate(0, 50%) scale(0.8);
     opacity: 0;
     height: 0;
-    transition: transform 300ms cubic-bezier(0,0,0,1), opacity 500ms 100ms;
+    transition: transform 300ms cubic-bezier(0,0,0,1), opacity 300ms 50ms;
 }
 
 #win-setting>.page>.cnt.show {
-    overflow: auto;
     height: 100%;
     transform: none;
     opacity: 1;
@@ -164,7 +163,7 @@ html {
 
 .setting-list>a:active {
     transform: scale(0.98);
-    /* filter: blur(0.5px); */
+    filter: opacity(0.75);
 }
 
 .setting-list>a.dp.show {

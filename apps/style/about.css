@@ -19,9 +19,21 @@
 }
 
 #win-about>.cnt{
-    height: 100%;
-    flex-grow: 1;
     overflow: auto;
+    height: 100%;
+    transform: translate(0, 50%) scale(0.8);
+    opacity: 0;
+    width: 0;
+    transition: transform 300ms cubic-bezier(0,0,0,1), opacity 300ms 50ms;
+    /* display: none; */
+}
+
+#win-about>.cnt.show {
+    flex-grow: 1;
+    width: autos;
+    transform: none;
+    opacity: 1;
+    display: block;
 }
 
 #win-about>.cnt .tit{
