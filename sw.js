@@ -71,7 +71,7 @@ this.addEventListener('activate', function (event) {
   event.waitUntil(
     caches.open('def').then(function (cache) {
 			return cache.addAll([
-				'newyear-dark.png'
+				'bg-dark.svg'
 			]);
 		})
   );

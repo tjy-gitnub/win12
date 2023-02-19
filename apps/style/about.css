@@ -73,7 +73,7 @@
 #win-about>.update>div>details:active{
     filter: blur(0.5px);
     transform: scale(0.95);
-    transition: transform 400ms cubic-bezier(0.14, 1.02, 0.17, 0.03) !important;
+    transition: transform 400ms cubic-bezier(0.14, 1.02, 0.17, 0.03);
 }
 
 #win-about>.update>div>details>summary{

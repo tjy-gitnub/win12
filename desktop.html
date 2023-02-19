@@ -570,6 +570,26 @@
 									setData('color2',$('div.app-color>div>input.theme2inp').val())">应用</a>
 							</div>
 						</div>
+						<div class="border-radius"><icon></icon><div><p>圆角</p><p>设置系统界面中是否启用圆角</p></div>
+							<div class="alr">
+								<a class="a checkbox checked" onclick="$(this).toggleClass('checked');$(':root').toggleClass('nobr')" id="#nobr"></a>
+							</div>
+						</div>
+						<div class="border-radius"><icon></icon><div><p>动画</p><p>系统界面元素过渡动画</p></div>
+							<div class="alr">
+								<a class="a checkbox checked" onclick="$(this).toggleClass('checked');$(':root').toggleClass('notrans')" id="#notrans"></a>
+							</div>
+						</div>
+						<div class="border-radius"><icon></icon><div><p>阴影</p><p>为系统界面元素添加阴影效果</p></div>
+							<div class="alr">
+								<a class="a checkbox checked" onclick="$(this).toggleClass('checked');$(':root').toggleClass('nosd')" id="#nosd"></a>
+							</div>
+						</div>
+						<div class="border-radius"><icon></icon><div><p>透明效果</p><p>某些界面启用亚克力背景透明效果</p></div>
+							<div class="alr">
+								<a class="a checkbox checked" onclick="$(this).toggleClass('checked');$(':root').toggleClass('noblur')" id="#noblur"></a>
+							</div>
+						</div>
 					</div>
 				</div>
 			</div>
@@ -723,6 +743,13 @@
 			<div class="cnt update">
 				<h1 class="tit"><span></span>更新记录</h1>
 				<div style="margin-left: 20px;">
+					<details><summary><span>v4.1.0</span> 新的设置项，新背景</summary><p>
+						&emsp;&emsp;-在设置中添加开关特效的选项<br>
+						&emsp;&emsp;-背景添加阴影效果<br>
+						&emsp;&emsp;-设置的一些动画效果<br>
+						&emsp;&emsp;-一些外观优化<br>
+						&emsp;&emsp;-细节优化和修复</p>
+					</details>
 					<details><summary><span>v4.0.0</span> 记录用户偏好,动画更新,新壁纸,分屏</summary><p>
 						&emsp;&emsp;-记录用户偏好设置(更新后不保留) @xqwcom<br>
 						&emsp;&emsp;-没错又是动画更新<br>
@@ -963,7 +990,7 @@
 		<div class="content" id="win-terminal">
 			<pre>Micrsotft Windosw [版本 12.0.39035.7324]
 (c) Micrsotft Corparotoin。保所留有权利。
-一个摆设，后续会完善。
+一个摆设，后续会完善。 
 
 C:\Windows\System32> <input type="text" oninput="setTimeout(() => {$('#win-terminal>pre')[0].innerHTML+=this.outerHTML;$('#win-terminal>pre>input').focus()}, 0);$('#win-terminal>pre')[0].innerText+=$(this).val();"></pre>
 		</div>

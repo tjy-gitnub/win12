@@ -490,9 +490,6 @@ function hidewin(name, arg = 'window') {
     }
     setTimeout(() => { $('.window.' + name).removeClass('show-begin'); }, 200);
     $('.window.' + name + '>.titbar>div>.wbtg.max').html('<i class="bi bi-app"></i>');
-    // if ($('.window').hasClass('max') == false) {
-    //     $('#dock-box').removeClass('hide');
-    // }
     wo.splice(wo.indexOf('name'),1);
     orderwindow();
 }
@@ -510,8 +507,6 @@ function maxwin(name, trigger = true) {
         if ($('.window.' + name).attr('data-pos-x') != 'null' && $('.window.' + name).attr('data-pos-y') != 'null') {
             $('.window.' + name).attr(`style`, `left:${$('.window.' + name).attr('data-pos-x')};top:${$('.window.' + name).attr('data-pos-y')}`);
         }
-        // if ($('.window').hasClass('max') == false) {
-        //     $('#dock-box').removeClass('hide');
         // }
     } else {
         if (trigger) {
@@ -521,7 +516,6 @@ function maxwin(name, trigger = true) {
         $('.window.' + name).removeClass('notrans');
         $('.window.' + name).addClass('max');
         $('.window.' + name + '>.titbar>div>.wbtg.max').html('<svg version="1.1" width="12" height="12" viewBox="0,0,37.65105,35.84556" style="margin-top:4px;"><g transform="translate(-221.17804,-161.33903)"><g style="stroke:var(--text);" data-paper-data="{&quot;isPaintingLayer&quot;:true}" fill="none" fill-rule="nonzero" stroke-width="2" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="10" stroke-dasharray="" stroke-dashoffset="0" style="mix-blend-mode: normal"><path d="M224.68734,195.6846c-2.07955,-2.10903 -2.00902,-6.3576 -2.00902,-6.3576l0,-13.72831c0,0 -0.23986,-1.64534 2.00902,-4.69202c1.97975,-2.68208 4.91067,-2.00902 4.91067,-2.00902h14.06315c0,0 3.77086,-0.23314 5.80411,1.67418c2.03325,1.90732 1.33935,5.02685 1.33935,5.02685v13.39347c0,0 0.74377,4.01543 -1.33935,6.3576c-2.08312,2.34217 -5.80411,1.67418 -5.80411,1.67418h-13.39347c0,0 -3.50079,0.76968 -5.58035,-1.33935z"/><path d="M229.7952,162.85325h16.06111c0,0 5.96092,-0.36854 9.17505,2.64653c3.21412,3.01506 2.11723,7.94638 2.11723,7.94638v18.55642"/></g></g></svg>')
-        // $('#dock-box').addClass('hide');
     }
 }
 function minwin(name) {
@@ -540,23 +534,18 @@ function minwin(name) {
             if (!$('.window.' + name).hasClass('max')) {
                 $('.window.' + name).addClass('notrans');
             }
-            if ($('.window').hasClass('max')) {
-                $('#dock-box').addClass('hide');
-            }
         }, 200);
     } else {
         focwin(null);
         if ($('.window.' + name).hasClass('max')) {
             $('.window.' + name).addClass('min-max');
         }
+        $('.window.' + name).removeClass('foc');
         $('.window.' + name).removeClass('max');
         $('#taskbar>.' + name).addClass('min');
         $('.window.' + name).addClass('min');
         $('.window.' + name).removeClass('notrans');
         setTimeout(() => { $('.window.' + name).removeClass('show-begin'); }, 200);
-        if (!$('.window').hasClass('max')) {
-            $('#dock-box').removeClass('hide');
-        }
     }
 }
 let wo = [];
@@ -672,9 +661,7 @@ for (let i = 0; i < wins.length; i++) {
             // 窗口控制按钮宽 45px
             this.setAttribute('style', `left:${cx - deltaLeft}px;top:${cy - deltaTop}px;`);
             $('.window.' + this.classList[1] + '>.titbar>div>.wbtg.max').html('<i class="bi bi-app"></i>');
-            if (!$('.window').hasClass('max')) {
-                $('#dock-box').removeClass('hide');
-            }
+            
             $(this).addClass('notrans');
         }
     }

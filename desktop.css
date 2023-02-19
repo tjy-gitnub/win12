@@ -5,9 +5,9 @@
     --text: #000;
     --bg: #ffffff;
     --bg30: #ffffff30;
-    --bg50: #ffffff50;
-    --bg70: #ffffff70;
-    --sd: #7f7f7f7f;
+    --bg50: #ffffff60;
+    --bg70: #ffffff80;
+    --sd: #33333370;
     --card: #efefef60;
     --hover: #ffffff70;
     --hover-half: #ffffff50;
@@ -29,9 +29,9 @@
     --text: #ddd;
     --bg: #000000;
     --bg30: #00000030;
-    --bg50: #00000050;
-    --bg70: #00000070;
-    --sd: #00000070;
+    --bg50: #00000060;
+    --bg70: #00000080;
+    --sd: #000000a0;
     --card: #72727240;
     --hover: #aaaaaa40;
     --hover-half: #ffffff20;
@@ -44,7 +44,44 @@
     --bar: #7272722a;
     --hr:#00000050;
     --unfoc:#333;
-} 
+}
+
+:root.nobr *,
+:root.nobr *::before,
+:root.nobr *::after,
+:root.nobr *::-webkit-scrollbar,
+:root.nobr *::-webkit-scrollbar-thumb{
+    border-radius: 0 !important;
+}
+
+:root.notrans *,
+:root.notrans *::before,
+:root.notrans *::after{
+    transition: none !important;
+    animation: none !important;
+}
+
+:root.nosd{
+    --sd:none;
+}
+
+:root.noblur *{
+    backdrop-filter: none !important;
+}
+
+:root.noblur{
+    --bg30:var(--bg);
+    --bg50:var(--bg);
+    --bg70:var(--bg);
+    --cm:var(--bggrey);
+}
+
+/* :root.noblur .window.foc,
+:root.noblur .dock,
+:root.noblur .menu{
+    background: var(--bg) !important;
+} */
+
 /*
 :root {
     --text: #000;
@@ -238,10 +275,6 @@ list>a:active,
     transition: 200ms;
 }
 
-#dock-box.hide{
-    margin-bottom: -50px;
-}
-
 .dock {
     border-radius: 7px;
     height: 100%;
@@ -254,6 +287,7 @@ list>a:active,
     display: flex;
     transition: 200ms, transform 300ms cubic-bezier(0.14, 1.02, 0.17, 0.03),opacity 0ms;
     bottom: 0;
+    transform: scale(1);
 }
 
 .dock>* {
@@ -623,7 +657,7 @@ list>a:active,
     width: 860px;
     left: calc(50% - 430px);
     border-radius: 20px;
-    background-color: var(--bg50);
+    background: var(--bg50);
     backdrop-filter: blur(80px) saturate(130%);
     -webkit-backdrop-filter: blur(80px) saturate(130%);
     opacity: 0.5;
@@ -1334,18 +1368,22 @@ input-before {
     height: 84px;
     text-overflow: ellipsis;
     border-radius: 5px;
-    transition: 50ms;
+    transition: 20ms;
     text-align: center;
     margin: 8px 10px 2px 10px;
     padding: 0 3px 3px 3px;
+    border: 2px solid transparent;
 }
 
 #desktop>div:hover {
-    background-color: var(--hover);
+    background-color: var(--hover-m);
+    backdrop-filter: blur(15px) saturate(0.9) brightness(1.4);
 }
 
-#desktop>div:visited {
-    background-color: var(--mm);
+#desktop>div:active{
+    background-color: var(--hover-m);
+    backdrop-filter: blur(3px) brightness(1.5);
+    border: 2px solid var(--href);
 }
 
 #desktop>div>img {
@@ -1457,10 +1495,18 @@ input-before {
     backdrop-filter: blur(25px) saturate(2);
     min-width: 200px;
     overflow: hidden;
-    padding: 2px 4px 0 4px;
+    padding: 0px 4px 0 4px;
     max-height: 0;
     width: max-content;
-    transition: max-height 200ms ease-in-out, top 100ms, left 100ms, padding 200ms ease-in-out,box-shadow 800ms;
+    transition: 110ms,max-height 200ms ease-in-out, top 100ms, left 100ms, padding 200ms ease-in-out,box-shadow 1s;
+    opacity: 0;
+}
+
+#cm.show {
+    max-height: 100%;
+    padding: 4px;
+    box-shadow: 3px 3px 25px 0px var(--sd);
+    opacity: 1;
 }
 
 #cm>list{
@@ -1478,11 +1524,6 @@ input-before {
     display: block;
 }
 
-#cm.show {
-    max-height: 100%;
-    padding: 4px;
-    box-shadow: 3px 3px 6px 1px var(--sd);
-}
 
 #cm>list>a {
     padding: 5px 12px;
@@ -1754,9 +1795,10 @@ list>.text:hover {
     padding: 10px 20px;
     font-size: 15px;
     display: flex;
-    transition: 400ms cubic-bezier(0.9, 0, 0.1, 1);
+    transition: 400ms 200ms cubic-bezier(0.9, 0, 0.1, 1),transform 200ms;
     cursor: pointer;
     border: 2px solid #8f8f8f30;
+    transform: scale(0.9);
 }
 
 .msg:hover {
@@ -1766,6 +1808,7 @@ list>.text:hover {
 
 .msg.show {
     right: 20px;
+    transform: none;
 }
 
 .msg>.main {
@@ -1789,6 +1832,7 @@ list>.text:hover {
 
 .msg>.hide:active {
     padding-left: 25px;
+    transform: scale(0.9);
 }
 
 .msg:not(.show)>.hide {
@@ -1828,9 +1872,9 @@ list>.text:hover {
 
 .window.foc {
     background-color: var(--bg70);
-    backdrop-filter: blur(80px) saturate(130%);
-    -webkit-backdrop-filter: blur(80px) saturate(130%);
-    box-shadow: 3px 3px 15px 2px var(--sd);
+    backdrop-filter: blur(80px) saturate(1.5);
+    -webkit-backdrop-filter: blur(80px) saturate(1.5);
+    box-shadow: 3px 3px 20px 3px var(--sd);
 }
 
 .window.min {
