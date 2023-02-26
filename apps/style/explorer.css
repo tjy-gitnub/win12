@@ -13,6 +13,7 @@
     background-color: var(--card);
     padding: 3px;
     box-shadow: 2px 2px 5px var(--sd);
+    border: 1.5px solid #6f6f6f30;
 }
 
 #win-explorer>.menu>.card>.title{
@@ -106,6 +107,7 @@
     padding: 8px;
     box-shadow: 3px 3px 8px var(--sd);
     overflow-y: auto;
+    border: 1.5px solid #6f6f6f30;
 }
 
 #win-explorer>.main>.content>.tool{
@@ -188,6 +190,7 @@
     padding: 2px 5px;
     border-radius: 5px;
     display: flex;
+    border: 1.5px solid transparent;
 }
 
 #win-explorer>.main>.content>.view>.item:active{
@@ -201,4 +204,5 @@
 
 #win-explorer>.main>.content>.view>.item:hover{
     background-color: var(--hover);
+    border: 1.5px solid #6f6f6f30;
 }

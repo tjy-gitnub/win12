@@ -11,7 +11,7 @@
     --card: #efefef60;
     --hover: #ffffff70;
     --hover-half: #ffffff50;
-    --hover-b: #00000017;
+    --hover-b: #00000016;
     --bggrey: #ddd;
     --fill:#d3d3d370;
     --bgul: url('bg.svg');
@@ -33,9 +33,9 @@
     --bg70: #00000080;
     --sd: #000000a0;
     --card: #72727240;
-    --hover: #aaaaaa40;
+    --hover: #aaaaaa20;
     --hover-half: #ffffff20;
-    --hover-b: #ffffff30;
+    --hover-b: #ffffff16;
     --bggrey: #444;
     --fill:#54545470;
     --bgul: url('bg-dark.svg');
@@ -234,7 +234,6 @@ body {
 .act,
 list>a,
 #cs>list>a,
-#win-calc>.keyb>.b,
 #datebox>.cont>.body>p,
 .wg>.titbar>.more,
 .wg.calc>.content>.b,
@@ -245,7 +244,6 @@ list>a,
 .act:active,
 list>a:active,
 #cs>list>a:active,
-#win-calc>.keyb>.b:active,
 #datebox>.cont>.body>p:active,
 .wg>.titbar>.more:active,
 .wg.calc>.content>.b:active,
@@ -279,15 +277,16 @@ list>a:active,
     border-radius: 7px;
     height: 100%;
     background-color: var(--bg70);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    box-shadow: 3px 3px 6px 1px var(--sd);
+    backdrop-filter: blur(20px) saturate(1.3);
+    -webkit-backdrop-filter: blur(20px) saturate(1.3);
+    box-shadow: 3px 3px 10px 1px var(--sd);
     padding: 7px 6px;
     margin: 0 3px;
     display: flex;
     transition: 200ms, transform 300ms cubic-bezier(0.14, 1.02, 0.17, 0.03),opacity 0ms;
     bottom: 0;
     transform: scale(1);
+    border: 1.5px solid #6f6f6f30;
 }
 
 .dock>* {
@@ -320,7 +319,7 @@ list>a:active,
 }
 
 .dock.about:hover {
-    background-color: var(--mm);
+    filter: opacity(0.8) brightness(1.2);
 }
 
 .dock.about:active>p {
@@ -328,8 +327,8 @@ list>a:active,
 }
 
 .dock.about:active {
-    transform: scale(0.92);
-    opacity: 0.75;
+    transform: scale(0.9);
+    filter: opacity(0.6)!important;
 }
 
 .dock.about.show {
@@ -346,7 +345,7 @@ list>a:active,
 }
 
 .dock.about.show:hover {
-    background-color: var(--bg70);
+    filter: opacity(0.9) brightness(1);
 }
 
 #taskbar {
@@ -470,11 +469,11 @@ list>a:active,
 
 .dock.date:active {
     transform: scale(0.9);
-    opacity: 0.75;
+    filter: opacity(0.6)!important;
 }
 
 .dock.date:hover {
-    background-color: var(--mm);
+    filter: opacity(0.8) brightness(1.2);
 }
 
 .dock.date>.date {
@@ -512,12 +511,12 @@ list>a:active,
 }
 
 .dock.theme:active {
-    transform: scale(0.84);
-    opacity: 0.75;
+    transform: scale(0.9);
+    filter: opacity(0.6)!important;
 }
 
 .dock.theme:hover {
-    background-color: var(--mm);
+    filter: opacity(0.8) brightness(1.2);
 }
 
 .dock.theme>.dark {
@@ -658,12 +657,12 @@ list>a:active,
     left: calc(50% - 430px);
     border-radius: 20px;
     background: var(--bg50);
-    backdrop-filter: blur(80px) saturate(130%);
-    -webkit-backdrop-filter: blur(80px) saturate(130%);
+    backdrop-filter: blur(80px) saturate(1.3);
+    -webkit-backdrop-filter: blur(80px) saturate(1.3);
     opacity: 0.5;
     transition: 200ms;
     box-shadow: 3px 3px 15px 1px var(--sd);
-    border: 2px solid #7f7f7f40;
+    border: 1.5px solid #6f6f6f30;
     z-index: 99;
 }
 
@@ -862,6 +861,7 @@ input-before {
     border-radius: 10px;
     background-color: var(--card);
     flex-grow: 1;
+    border: 1.5px solid #6f6f6f30;
     box-shadow: 3px 3px 6px var(--sd);
 }
 
@@ -880,6 +880,7 @@ input-before {
     transition: 300ms cubic-bezier(0.6, 0.6, 0.4, 1);
     transition-delay: 300ms;
     opacity: 0;
+    border: 1.5px solid #6f6f6f30;
 }
 
 #start-menu.show>#s-m-r>.pinned {
@@ -917,6 +918,7 @@ input-before {
     transition: 300ms cubic-bezier(0.6, 0.6, 0.4, 1);
     transition-delay: 450ms;
     opacity: 0;
+    border: 1.5px solid #6f6f6f30;
 }
 
 #start-menu.show>#s-m-r>.tuijian {
@@ -977,12 +979,12 @@ input-before {
     left: calc(50% - 300px);
     border-radius: 20px;
     background-color: var(--bg50);
-    backdrop-filter: blur(80px) saturate(130%);
-    -webkit-backdrop-filter: blur(80px) saturate(130%);
+    backdrop-filter: blur(80px) saturate(1.3);
+    -webkit-backdrop-filter: blur(80px) saturate(1.3);
     opacity: 0.8;
     transition: 200ms;
     box-shadow: 3px 3px 15px 1px var(--sd);
-    border: 2px solid #7f7f7f40;
+    border: 1.5px solid #6f6f6f30;
     z-index: 99;
     padding: 10px;
 }
@@ -1069,11 +1071,11 @@ input-before {
     left: calc(50% - 500px);
     border-radius: 20px;
     background-color: var(--bg50);
-    backdrop-filter: blur(80px) saturate(130%);
-    -webkit-backdrop-filter: blur(80px) saturate(130%);
+    backdrop-filter: blur(80px) saturate(1.3);
+    -webkit-backdrop-filter: blur(80px) saturate(1.3);
     transition: 200ms;
     box-shadow: 3px 3px 15px 1px var(--sd);
-    border: 2px solid #7f7f7f40;
+    border: 1.5px solid #6f6f6f30;
     z-index: 99;
     padding: 10px 0;
 }
@@ -1275,11 +1277,11 @@ input-before {
     width: 350px;
     border-radius: 20px;
     background-color: var(--bg50);
-    backdrop-filter: blur(80px) saturate(130%);
-    -webkit-backdrop-filter: blur(80px) saturate(130%);
+    backdrop-filter: blur(80px) saturate(1.3);
+    -webkit-backdrop-filter: blur(80px) saturate(1.3);
     transition: 200ms;
     box-shadow: 3px 3px 15px 1px var(--sd);
-    border: 2px solid #7f7f7f10;
+    border: 1.5px solid #6f6f6f30;
     z-index: 99;
     padding: 10px;
 }
@@ -1490,7 +1492,7 @@ input-before {
     position: absolute;
     z-index: 101;
     border-radius: 10px;
-    border: 2px solid #7f7f7f40;
+    border: 1.5px solid #6f6f6f30;
     background: var(--cm);
     backdrop-filter: blur(25px) saturate(2);
     min-width: 200px;
@@ -1563,7 +1565,7 @@ input-before {
     box-shadow: 3px 3px 6px 1px var(--sd);
     z-index: 101;
     border-radius: 10px;
-    border: 2px solid #8f8f8f30;
+    border: 1.5px solid #6f6f6f30;
     background: var(--cm);
     backdrop-filter: blur(20px) saturate(2);
     min-width: 200px;
@@ -1733,8 +1735,7 @@ input-before {
 }
 
 list {
-    display: flex;
-    flex-direction: column;
+    display: block;
     padding-left: 0;
     margin-bottom: 0;
     border-radius: 10px;
@@ -1751,6 +1752,7 @@ list>* {
     /* transition: 50ms; */
     cursor: pointer;
 }
+
 
 list>*:hover {
     color: var(--text);
@@ -1781,6 +1783,35 @@ list>.text:hover {
     background-color: unset;
 }
 
+list>span.focs{
+    display: block;
+    width: 4px;
+    height: 20px;
+    background: linear-gradient(0deg, var(--theme-1), var(--theme-2));
+    padding: 0;
+    border-radius: 2px;
+    position: relative;
+    margin: 7.5px 7px;
+    z-index: 1;
+    transition: 350ms cubic-bezier(0.8, 0, 0.2, 1);
+}
+
+list>span.focs.cl{
+    animation: fcl 150ms cubic-bezier(0.7,0,0.3,1) 100ms;
+}
+
+@keyframes fcl {
+    0%{
+        transform: none;
+    }
+    50%{
+        transform: scaleY(2.5);
+    }
+    100%{
+        transform: none;
+    }
+}
+
 .msg {
     background-color: var(--bg50);
     backdrop-filter: blur(50px) saturate(130%);
@@ -1797,7 +1828,7 @@ list>.text:hover {
     display: flex;
     transition: 400ms 200ms cubic-bezier(0.9, 0, 0.1, 1),transform 200ms;
     cursor: pointer;
-    border: 2px solid #8f8f8f30;
+    border: 1.5px solid #6f6f6f30;
     transform: scale(0.9);
 }
 
@@ -1857,7 +1888,7 @@ list>.text:hover {
     transform: scale(0.7);
     background-color: var(--unfoc);
     border-radius: 10px;
-    border: 2px solid #8f8f8f30;
+    border: 1.5px solid #6f6f6f30;
     display: none;
     opacity: 0;
     transition: cubic-bezier(0.9, 0, 0.1, 1) 200ms;
@@ -1872,8 +1903,8 @@ list>.text:hover {
 
 .window.foc {
     background-color: var(--bg70);
-    backdrop-filter: blur(80px) saturate(1.5);
-    -webkit-backdrop-filter: blur(80px) saturate(1.5);
+    backdrop-filter: blur(80px) saturate(1.3);
+    -webkit-backdrop-filter: blur(80px) saturate(1.3);
     box-shadow: 3px 3px 20px 3px var(--sd);
 }
 
@@ -1915,17 +1946,13 @@ list>.text:hover {
 }
 
 .window.load>.content {
-    display: none !important;
-}
-
-.window.calc.show {
-    height: 540px;
-    width: 330px;
+    opacity: 0;
 }
 
 .window.calc {
-    height: 250px;
-    width: 66px;
+    height: 395px;
+    width: 262px;
+    
 }
 
 .window.notepad-fonts {
@@ -1938,8 +1965,8 @@ list>.text:hover {
 }
 
 .window>.titbar {
-    height: 32px;
-    padding: 0 0 0 5px;
+    height: 35px;
+    padding: 0 0 0 8px;
     display: flex;
     position: initial;
     color: var(--text);
@@ -1948,13 +1975,13 @@ list>.text:hover {
 
 .window>.titbar>p {
     font-size: 16px;
-    margin-top: 3px;
+    margin-top: 5px;
 }
 
 .window>.titbar>.icon {
     margin: 6px 5px 0 0;
-    height: 20px;
-    width: 20px;
+    height: 22px;
+    width: 22px;
 }
 
 .window>.titbar>div {
@@ -1995,7 +2022,7 @@ list>.text:hover {
     float: right;
     width: 45px;
     text-align: center;
-    padding-top: 5px;
+    padding-top: 7px;
     font-size: 13px;
     transition: 50ms;
     border-radius: 3px;
@@ -2030,8 +2057,8 @@ list>.text:hover {
     transition: all 200ms;
     margin: 10px;
     border-radius: 10px;
-    box-shadow: 0 0 5px 5px var(--sd);
-    /* border: 4px solid var(--bg30); */
+    box-shadow: 0 0 10px 1px var(--sd);
+    border: 1.5px solid #6f6f6f30;
 }
 
 #window-fill.top {

@@ -1,7 +1,6 @@
 // 列表点击 + 边框发光
-let lists = document.querySelectorAll(`#s-m-l>list>a,#win-setting>.menu>list>a`);
-lists.forEach(la => {
-    la.addEventListener('mousemove', (e) => {
+document.querySelectorAll(`#s-m-l>list>a,#win-setting>.menu>list>a`).forEach(la => {
+    la.addEventListener('mousemove', e => {
         x = e.clientX - $(la).offset()['left'];
         y = e.clientY - $(la).offset()['top'];
         $(la).css('cssText', `background:radial-gradient(circle at ${x}px ${y}px,var(--hover) 20px, #00000000) center;background-size:110% 100%;border-image:radial-gradient(circle at ${x}px ${y}px,var(--hover) 20px, #00000000 40px) 2;`)
@@ -9,6 +8,26 @@ lists.forEach(la => {
     la.addEventListener('mouseout', () => {
         $(la).css('cssText', `background-image:radial-gradient(#00000000,#00000000),radial-gradient(#00000000,#00000000);`)
     });
+});
+
+document.querySelectorAll(`list.focs`).forEach(li => {
+    // li.querySelectorAll(`a`).forEach(la => {
+    //     la.addEventListener('click',e => {
+    //         let _=li.querySelector('span.focs');
+    //         $(_).addClass('cl');
+    //         $(_).css('top',la.offsetTop-li.offsetTop);
+    //         $(_).css('left',la.offsetLeft-li.offsetLeft);
+    //     });
+    // });
+    li.addEventListener('click',e=>{
+        let _=li.querySelector('span.focs'),la=li.querySelector('a.check');
+        $(_).addClass('cl');
+        $(_).css('top',la.offsetTop-li.offsetTop-li.offsetHeight);
+        $(_).css('left',la.offsetLeft-li.offsetLeft);
+        setTimeout(() => {
+            $(_).removeClass('cl');
+        }, 200);
+    })
 });
 // 禁止拖拽图片
 $('img').on('dragstart', () => { return false; });
@@ -19,7 +38,7 @@ $('html').on('contextmenu', () => {
 function stop(e) {
     e.stopPropagation();
 }
-$('input,textarea').on('contextmenu', (e) => {
+$('input,textarea,*[contenteditable=true]').on('contextmenu', (e) => {
     stop(e);
     return true;
 });
@@ -275,14 +294,22 @@ function hidedp(force = false) {
 // 应用
 let apps = {
     setting: {
-        init: () => { },
+        init: () => { 
+            $('#win-setting>.menu>list>a.system')[0].click();
+            // let _=$('#win-setting>.menu>list>span.focs'),
+            //     la=$('#win-setting>.menu>list>a.system')[0],
+            //     li=$('#win-setting>.menu>list')[0];
+            // console.log(la.offsetTop,li.offsetTop,li.offsetHeight);
+            // _.addClass('cl');
+            // _.css('top',la.offsetTop-li.offsetTop-li.offsetHeight);
+            // _.css('left',la.offsetLeft-li.offsetLeft);
+        },
         page:(name)=>{
             $('#win-setting>.page>.cnt.'+name).scrollTop(0);
             $('#win-setting>.page>.cnt.show').removeClass('show');
             $('#win-setting>.page>.cnt.'+name).addClass('show');
             $('#win-setting>.menu>list>a.check').removeClass('check');
             $('#win-setting>.menu>list>a.'+name).addClass('check');
-            
         }
     },
     explorer: {
