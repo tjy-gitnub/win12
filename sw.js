@@ -1,3 +1,4 @@
+// v4.2.0
 let userdata={
   'theme':'light',
   'color1':'#ad6eca',
@@ -30,7 +31,6 @@ let nochanges=[
   '/win12/apps/icons/',
   '/win12/jq.min.js'
 ]
-// a
 let flag = false;
 this.addEventListener('activate', function (event) {
   flag = true;
