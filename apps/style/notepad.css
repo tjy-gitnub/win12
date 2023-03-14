@@ -27,6 +27,21 @@
     transition: 200ms;
 }
 
+#win-notepad>.text-box *:not(div):not(br){
+    border-radius: 8px;
+    outline: 2px solid transparent;
+    transition: 100ms;
+    display: block;
+}
+
+#win-notepad>.text-box *:not(div):not(br):focus{
+    background: red;
+}
+
+#win-notepad>.text-box *:not(div):not(br):hover{
+    outline-color: #2983cc;
+}
+
 #win-notepad>.text-box:focus{
     transform: none;
     opacity: 1;

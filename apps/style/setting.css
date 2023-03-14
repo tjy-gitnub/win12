@@ -12,11 +12,6 @@
     font-family: SettingsIcons;
 }
 
-html {
-    width: 100%;
-    overflow-x: hidden;
-}
-
 #win-setting {
     display: flex;
     height: calc(100% - 32px);
@@ -119,7 +114,7 @@ html {
 }
 
 #win-setting>.page>.cnt {
-    overflow: auto;
+    overflow-y: scroll;
     transform: translate(0, 50%) scale(0.8);
     opacity: 0;
     height: 0;
@@ -171,6 +166,7 @@ html {
 
 .setting-list>a.dp{
     margin-bottom: 0px;
+    z-index: 1;
 }
 
 .setting-list>a.dp.show {
@@ -190,11 +186,13 @@ html {
 }
 
 .setting-list>div.dp {
-    border: none;
+    border: 1.5px solid #6f6f6f30;
+    border-top: none;
     border-top-left-radius: 0;
     border-top-right-radius: 0;
     max-height: 0px;
-    transition: 200ms;
+    transition: max-height 300ms,padding 100ms 200ms linear,opacity 200ms 100ms,transform 200ms 200ms;
+    transform: translateY(-50px);
     overflow: hidden;
     display: block;
     padding: 0 15px;
@@ -202,14 +200,15 @@ html {
     /* transform-origin: bottom; */
     opacity: 0;
     /* display: none; */
-    margin:0 0 5px 0;
+    margin:0 0 4px 0;
 }
 
 .setting-list>div.dp.show {
-    border: 1.5px solid #6f6f6f30;
-    border-top: none;
-    max-height: 1000px;
     padding: 10px 15px;
+    transition: max-height 300ms 100ms,padding 100ms 50ms linear,opacity 200ms 100ms,transform 300ms 50ms;
+    transform: none;
+    max-height: 1000px;
+    /* padding: 10px 15px; */
     opacity: 1;
     /* display: block; */
 }

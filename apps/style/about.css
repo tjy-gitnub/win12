@@ -20,10 +20,11 @@
 
 #win-about>.cnt{
     overflow: auto;
-    transform: translate(0, 50%);
+    transform: translate(0, 30%);
     opacity: 0;
     width: 0;
     transition: transform 300ms cubic-bezier(0,0,0,1), opacity 300ms 50ms;
+    padding: 0 5px 60px 0;
     /* display: none; */
 }
 
@@ -57,22 +58,26 @@
 
 #win-about>.update>div>details{
     background-color: var(--card);
-    padding: 10px;
+    padding: 10px 10px 0 10px;
     border-radius: 10px;
     box-shadow: 3px 3px 5px var(--sd);
     margin: 10px 10px 0 0;
-    transform: scale(0.98);
-    transition: transform 50ms;
+    transition: 100ms,height 0ms,padding-bottom 100ms ease-out;
+    overflow: hidden;
+    height: 45px;
 }
 
-#win-about>.update>div>details:hover{
-    transform: none;
+#win-about>.update>div>details[open]{
+    padding-bottom: 10px;
+    height: 100%;
+}
+
+#win-about>.update>div>details:not([open]):hover{
+    filter: brightness(1.2);
 }
 
 #win-about>.update>div>details:active{
-    filter: blur(0.5px);
-    transform: scale(0.95);
-    transition: transform 400ms cubic-bezier(0.14, 1.02, 0.17, 0.03);
+    opacity: 0.6;
 }
 
 #win-about>.update>div>details>summary{

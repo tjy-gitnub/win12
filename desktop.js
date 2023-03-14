@@ -1,14 +1,14 @@
 // 列表点击 + 边框发光
-document.querySelectorAll(`#s-m-l>list>a,#win-setting>.menu>list>a`).forEach(la => {
-    la.addEventListener('mousemove', e => {
-        x = e.clientX - $(la).offset()['left'];
-        y = e.clientY - $(la).offset()['top'];
-        $(la).css('cssText', `background:radial-gradient(circle at ${x}px ${y}px,var(--hover) 20px, #00000000) center;background-size:110% 100%;border-image:radial-gradient(circle at ${x}px ${y}px,var(--hover) 20px, #00000000 40px) 2;`)
-    });
-    la.addEventListener('mouseout', () => {
-        $(la).css('cssText', `background-image:radial-gradient(#00000000,#00000000),radial-gradient(#00000000,#00000000);`)
-    });
-});
+// document.querySelectorAll(`#s-m-l>list>a,#win-setting>.menu>list>a`).forEach(la => {
+//     la.addEventListener('mousemove', e => {
+//         x = e.clientX - $(la).offset()['left'];
+//         y = e.clientY - $(la).offset()['top'];
+//         $(la).css('cssText', `background:radial-gradient(circle at ${x}px ${y}px,var(--hover) 20px, #00000000) center;background-size:110% 100%;border-image:radial-gradient(circle at ${x}px ${y}px,var(--hover) 20px, #00000000 40px) 2;`)
+//     });
+//     la.addEventListener('mouseout', () => {
+//         $(la).css('cssText', `background-image:radial-gradient(#00000000,#00000000),radial-gradient(#00000000,#00000000);`)
+//     });
+// });
 
 document.querySelectorAll(`list.focs`).forEach(li => {
     // li.querySelectorAll(`a`).forEach(la => {
@@ -19,14 +19,15 @@ document.querySelectorAll(`list.focs`).forEach(li => {
     //         $(_).css('left',la.offsetLeft-li.offsetLeft);
     //     });
     // });
-    li.addEventListener('click',e=>{
-        let _=li.querySelector('span.focs'),la=li.querySelector('a.check');
+    li.addEventListener('click', e => {
+        let _ = li.querySelector('span.focs'), la = li.querySelector('a.check'),
+            las = li.querySelectorAll('a');
         $(_).addClass('cl');
-        $(_).css('top',la.offsetTop-li.offsetTop-li.offsetHeight);
-        $(_).css('left',la.offsetLeft-li.offsetLeft);
+        $(_).css('top', la.offsetTop - las[las.length - 1].offsetTop);
+        $(_).css('left', la.offsetLeft - li.offsetLeft);
         setTimeout(() => {
             $(_).removeClass('cl');
-        }, 200);
+        }, 500);
     })
 });
 // 禁止拖拽图片
@@ -75,8 +76,8 @@ let cms = {
     'desktop': [
         ['<i class="bi bi-arrow-clockwise"></i> 刷新', `$('#desktop').css('opacity','0');setTimeout(()=>{$('#desktop').css('opacity','1');},100);`],
         ['<i class="bi bi-circle-square"></i> 切换主题', 'toggletheme()'],
-        `<a onmousedown="window.open('https://github.com/tjy-gitnub/win12','_blank');" title="https://github.com/tjy-gitnub/win12"><i class="bi bi-github"></i> 在 Github 中查看此项目</a>`,
-        `<a onmousedown="window.open('https://github.com/tjy-gitnub/win12/issues','_blank');" title="https://github.com/tjy-gitnub/win12/issues"><i class="bi bi-chat-left-text"></i> 发送反馈</a>`,
+        `<a onmousedown="window.open('https://github.com/tjy-gitnub/win12','_blank');" win12_title="https://github.com/tjy-gitnub/win12" onmouseenter="showdescp(event)" onmouseleave="hidedescp(event)"><i class="bi bi-github"></i> 在 Github 中查看此项目</a>`,
+        `<a onmousedown="window.open('https://github.com/tjy-gitnub/win12/issues','_blank');" win12_title="https://github.com/tjy-gitnub/win12/issues" onmouseenter="showdescp(event)" onmouseleave="hidedescp(event)"><i class="bi bi-chat-left-text"></i> 发送反馈</a>`,
         ['<i class="bi bi-info-circle"></i> 关于 Win12 网页版', `$('#win-about>.about').addClass('show');$('#win-about>.update').removeClass('show');openapp('about');if($('.window.about').hasClass('min'))minwin('about');`],
     ],
     'winx': [
@@ -120,7 +121,7 @@ let cms = {
             }
         },
         ['<i class="bi bi-info-circle"></i> 更多信息', `$('#win-about>.about').addClass('show');$('#win-about>.update').removeClass('show');
-        openapp('about');if($('.window.about').hasClass('min'))minwin('about');`]
+        openapp('about');if($('.window.about').hasClass('min'))minwin('about');$('.dock.about').removeClass('show')`]
     ],
     'msgupdate': [
         ['<i class="bi bi-layout-text-window-reverse"></i> 查看详细', `openapp('about');if($('.window.about').hasClass('min'))
@@ -229,7 +230,16 @@ dps = {
         ['<i class="bi bi-arrow-clockwise"></i> 重做 <info>Ctrl+Y</info>', 'document.execCommand(\'redo\')'],
     ],
     'notepad.view': [
-        ['<i class="bi bi-fonts"></i> 字体 ', 'hidedp(true);showwin(\'notepad-fonts\');resetfonts();']
+        ['<i class="bi bi-type"></i> 插入正常字块', 'hidedp(true);$(\'#win-notepad>.text-box\')[0].innerHTML+=\'<p>T</p>\''],
+        ['<i class="bi bi-type-h1"></i> 插入主标题', 'hidedp(true);$(\'#win-notepad>.text-box\')[0].innerHTML+=\'<h1>H1</h1>\''],
+        ['<i class="bi bi-type-h2"></i> 插入次标题', 'hidedp(true);$(\'#win-notepad>.text-box\')[0].innerHTML+=\'<h2>H2</h2>\''],
+        ['<i class="bi bi-type-h3"></i> 插入副标题', 'hidedp(true);$(\'#win-notepad>.text-box\')[0].innerHTML+=\'<h3>H3</h3>\''],
+        ['<i class="bi bi-type-underline"></i> 插入下划线', 'hidedp(true);$(\'#win-notepad>.text-box\')[0].innerHTML+=\'<u>U</u>\''],
+        ['<i class="bi bi-type-strikethrough"></i> 插入删除线', 'hidedp(true);$(\'#win-notepad>.text-box\')[0].innerHTML+=\'<s>S</s>\''],
+        ['<i class="bi bi-type-italic"></i> 插入斜体字', 'hidedp(true);$(\'#win-notepad>.text-box\')[0].innerHTML+=\'<i>I</i>\''],
+        ['<i class="bi bi-type-bold"></i> 插入加粗字', 'hidedp(true);$(\'#win-notepad>.text-box\')[0].innerHTML+=\'<b>B</b>\''],
+        '<hr>',
+        ['<i class="bi bi-fonts"></i> 字体', 'hidedp(true);showwin(\'notepad-fonts\');resetfonts();'],
     ]
 }
 let dpt = null, isOnDp = false;
@@ -291,10 +301,45 @@ function hidedp(force = false) {
         }, 200);
     }, 100);
 }
+
+// 悬停提示
+document.querySelectorAll('*[win12_title]:not(.notip)').forEach(a => {
+    a.addEventListener('mouseenter', showdescp);
+    a.addEventListener('mouseleave', hidedescp);
+})
+function showdescp(e) {
+    $(e.target).attr('data-descp', 'waiting');
+    setTimeout(() => {
+        if ($(e.target).attr('data-descp') == 'hide') {
+            return;
+        }
+        $(e.target).attr('data-descp', 'show');
+        $('#descp').css('left', e.clientX + 15);
+        $('#descp').css('top', e.clientY + 20);
+        $('#descp').text($(e.target).attr('win12_title'));
+        $('#descp').addClass('show-begin');
+        setTimeout(() => {
+            if (e.clientY + $('#descp')[0].offsetHeight + 20 >= $('html')[0].offsetHeight) {
+                $('#descp').css('top', e.clientY - $('#descp')[0].offsetHeight - 10);
+            }
+            if (e.clientX + $('#descp')[0].offsetWidth + 15 >= $('html')[0].offsetWidth) {
+                $('#descp').css('left', e.clientX - $('#descp')[0].offsetWidth - 10);
+            }
+            $('#descp').addClass('show');
+        }, 100);
+    }, 500);
+}
+function hidedescp(e) {
+    $('#descp').removeClass('show');
+    $(e.target).attr('data-descp', 'hide');
+    setTimeout(() => {
+        $('#descp').removeClass('show-begin');
+    }, 100);
+}
 // 应用
 let apps = {
     setting: {
-        init: () => { 
+        init: () => {
             $('#win-setting>.menu>list>a.system')[0].click();
             // let _=$('#win-setting>.menu>list>span.focs'),
             //     la=$('#win-setting>.menu>list>a.system')[0],
@@ -304,12 +349,12 @@ let apps = {
             // _.css('top',la.offsetTop-li.offsetTop-li.offsetHeight);
             // _.css('left',la.offsetLeft-li.offsetLeft);
         },
-        page:(name)=>{
-            $('#win-setting>.page>.cnt.'+name).scrollTop(0);
+        page: (name) => {
+            $('#win-setting>.page>.cnt.' + name).scrollTop(0);
             $('#win-setting>.page>.cnt.show').removeClass('show');
-            $('#win-setting>.page>.cnt.'+name).addClass('show');
+            $('#win-setting>.page>.cnt.' + name).addClass('show');
             $('#win-setting>.menu>list>a.check').removeClass('check');
-            $('#win-setting>.menu>list>a.'+name).addClass('check');
+            $('#win-setting>.menu>list>a.' + name).addClass('check');
         }
     },
     explorer: {
@@ -320,9 +365,10 @@ let apps = {
             $('#win-explorer>.main>.content>.view')[0].innerHTML = `<style>#win-explorer>.main>.content>.view>.class{margin-left: 20px;display: flex;}
             #win-explorer>.main>.content>.view>.class>img{width: 20px;height: 20px;margin-top: 3px;margin-right: 5px;filter:brightness(0.9);}
             #win-explorer>.main>.content>.view>.group{display: flex;flex-wrap: wrap;padding: 10px 20px;}
-            #win-explorer>.main>.content>.view>.group>.item{width: 280px;margin: 5px;height:  80px;
+            #win-explorer>.main>.content>.view>.group>.item{width: 280px;margin: 5px;height:80px;border: 1px solid #6f6f6f30;
                 background: radial-gradient(circle, var(--card),var(--card));border-radius: 10px;display: flex;}
             #win-explorer>.main>.content>.view>.group>.item:hover{background-color: var(--hover);}
+            #win-explorer>.main>.content>.view>.group>.item:active{transform: scale(0.97);}
             #win-explorer>.main>.content>.view>.group>.item>img{width: 55px;height: 55px;margin-top: 18px;margin-left: 10px;}
             #win-explorer>.main>.content>.view>.group>.item>div{flex-grow: 1;padding: 5px 5px 0 0;}
             #win-explorer>.main>.content>.view>.group>.item>div>.bar{width: calc(100% - 10px);height: 8px;border-radius: 10px;
@@ -408,12 +454,55 @@ let apps = {
         }
     },
     terminal: {
-        init: () => { 
+        init: () => {
             $('#win-terminal>pre').html(`Micrsotft Windosw [版本 12.0.39035.7324]
 (c) Micrsotft Corparotoin。保所留有权利。
 一个摆设，后续会完善。
 
 C:\Windows\System32> <input type="text" oninput="setTimeout(() => {$('#win-terminal>pre')[0].innerHTML+=this.outerHTML;$('#win-terminal>pre>input').focus()}, 0);$('#win-terminal>pre')[0].innerText+=$(this).val();">`)
+        }
+    },
+    search: {
+        rand: [{ name: '农夫山泉瓶盖简介.txt', bi: 'text', ty: '文本文档' },
+        { name: '瓶盖构造图.png', bi: 'image', ty: 'PNG 文件' },
+        { name: '瓶盖结构说明.docx', bi: 'richtext', ty: 'Microsoft Word 文档' },
+        { name: '可口可乐瓶盖.jpg', bi: 'image', ty: 'JPG 文件' },
+        { name: '可口可乐瓶盖历史.pptx', bi: 'slides', ty: 'Microsoft Powerpoint 演示文稿' },
+        { name: '瓶盖质量统计分析.xlsx', bi: 'ruled', ty: 'Microsoft Excel 工作表' },
+        { name: '农夫山泉瓶盖.svg', bi: 'image', ty: 'SVG 文件' },
+        { name: '瓶盖介绍.doc', bi: 'richtext', ty: 'Microsoft Word 文档' }],
+        search: le => {
+            if (le > 0) {
+                $('#search-win>.ans>.list>list').html(
+                    `<a class="a" onclick="apps.search.showdetail(${le % 8})"><i class="bi bi-file-earmark-${
+                    apps.search.rand[le % 8].bi}"></i> ${apps.search.rand[le % 8].name
+                    }</a><a class="a" onclick="apps.search.showdetail(${(le + 3) % 8})"><i class="bi bi-file-earmark-${
+                    apps.search.rand[(le + 3) % 8].bi}"></i> ${apps.search.rand[(le + 3) % 8].name}</a>`);
+                apps.search.showdetail(le % 8);
+            } else {
+                $('#search-win>.ans>.list>list').html(
+                    `<p class="text">推荐</p>
+					<a onclick="openapp('setting');$('#search-btn').removeClass('show');
+					$('#search-win').removeClass('show');
+					setTimeout(() => {
+						$('#search-win').removeClass('show-begin');
+					}, 200);">
+						<img src="icon/setting.png"><p>设置</p></a>
+					<a onclick="openapp('about');$('#search-btn').removeClass('show');
+					$('#search-win').removeClass('show');
+					setTimeout(() => {
+						$('#search-win').removeClass('show-begin');
+					}, 200);">
+						<img src="icon/about.png"><p>关于Win12网页版</p></a>`);
+                $('#search-win>.ans>.view').removeClass('show');
+            }
+        },
+        showdetail: i => {
+            $('#search-win>.ans>.view').addClass('show');
+            let inf = apps.search.rand[i];
+            $('#search-win>.ans>.view>.fname>.bi').attr('class', 'bi bi-file-earmark-' + inf.bi);
+            $('#search-win>.ans>.view>.fname>.name').text(inf.name);
+            $('#search-win>.ans>.view>.fname>.type').text(inf.ty);
         }
     }
 }
@@ -469,20 +558,19 @@ for (let i = 1; i <= daysum; i++) {
     $('#datebox>.cont>.body')[0].innerHTML += `<p>${i}</p>`;
 }
 function openapp(name) {
-    // focwin(name); 这里会添加2个窗口，因为我在 line 457 加了foc的内容
     if ($('#taskbar>.' + name).length != 0) {
         return;
     }
     $('.window.' + name).addClass('load');
     showwin(name);
     $('#taskbar').attr('count', Number($('#taskbar').attr('count')) + 1);
-    $('#taskbar').append(`<a class="${name}" onclick="taskbarclick(\'${name}\')"><img src="icon/${name}.png"></a>`);
+    $('#taskbar').append(`<a class="${name}" onclick="taskbarclick(\'${name}\')" win12_title="${$(`.window.${name}>.titbar>p`).text()}" onmouseenter="showdescp(event)" onmouseleave="hidedescp(event)"><img src="icon/${name}.png"></a>`);
     if ($('#taskbar').attr('count') == '1') {
         $('#taskbar').css('display', 'flex');
     }
-    $('#taskbar>.'+name).addClass('foc');
+    $('#taskbar>.' + name).addClass('foc');
     setTimeout(() => {
-        $('#taskbar').css('width', 10 + $('#taskbar').attr('count') * 34);
+        $('#taskbar').css('width', 4 + $('#taskbar').attr('count') * (34 + 4));
     }, 0);
     apps[name].init();
     setTimeout(() => {
@@ -495,7 +583,7 @@ function showwin(name) {
     setTimeout(() => { $('.window.' + name).addClass('show'); }, 0);
     setTimeout(() => { $('.window.' + name).addClass('notrans'); }, 200);
     $('.window.' + name).attr('style', `top: 10%;left: 15%;`);
-    $('#taskbar>.'+wo[0]).removeClass('foc');
+    $('#taskbar>.' + wo[0]).removeClass('foc');
     $('.window.' + wo[0]).removeClass('foc');
     wo.splice(0, 0, name);
     orderwindow();
@@ -508,7 +596,7 @@ function hidewin(name, arg = 'window') {
     if (arg == 'window') {
         $('#taskbar').attr('count', Number($('#taskbar').attr('count')) - 1)
         $('#taskbar>.' + name).remove();
-        $('#taskbar').css('width', 10 + $('#taskbar').attr('count') * 34);
+        $('#taskbar').css('width', 4 + $('#taskbar').attr('count') * (34 + 4));
         setTimeout(() => {
             if ($('#taskbar').attr('count') == '0') {
                 $('#taskbar').css('display', 'none');
@@ -517,7 +605,7 @@ function hidewin(name, arg = 'window') {
     }
     setTimeout(() => { $('.window.' + name).removeClass('show-begin'); }, 200);
     $('.window.' + name + '>.titbar>div>.wbtg.max').html('<i class="bi bi-app"></i>');
-    wo.splice(wo.indexOf('name'),1);
+    wo.splice(wo.indexOf('name'), 1);
     orderwindow();
 }
 function maxwin(name, trigger = true) {
@@ -537,8 +625,8 @@ function maxwin(name, trigger = true) {
         // }
     } else {
         if (trigger) {
-            $('.window.' + name).attr('data-pos-x', `${$('.window.'+name).css('left')}`);
-            $('.window.' + name).attr('data-pos-y', `${$('.window.'+name).css('top')}`);
+            $('.window.' + name).attr('data-pos-x', `${$('.window.' + name).css('left')}`);
+            $('.window.' + name).attr('data-pos-y', `${$('.window.' + name).css('top')}`);
         }
         $('.window.' + name).removeClass('notrans');
         $('.window.' + name).addClass('max');
@@ -583,11 +671,11 @@ function orderwindow() {
     }
 }
 // 以下函数基于bug运行，切勿改动！
-function focwin(name,arg='window') {
+function focwin(name, arg = 'window') {
     // if(wo[0]==name)return;
-    if(arg=='window'){
-        $('#taskbar>.'+wo[0]).removeClass('foc');
-        $('#taskbar>.'+name).addClass('foc');
+    if (arg == 'window') {
+        $('#taskbar>.' + wo[0]).removeClass('foc');
+        $('#taskbar>.' + name).addClass('foc');
     }
     $('.window.' + wo[0]).removeClass('foc');
     wo.splice(wo.indexOf(name), 1);
@@ -595,13 +683,13 @@ function focwin(name,arg='window') {
     orderwindow();
     $('.window.' + name).addClass('foc');
 }
-function taskbarclick(name){
-    if($('.window.'+name).hasClass('foc')){
+function taskbarclick(name) {
+    if ($('.window.' + name).hasClass('foc')) {
         minwin(name);
         focwin(null); // 禁改
         return;
     }
-    if($('.window.'+name).hasClass('min')){
+    if ($('.window.' + name).hasClass('min')) {
         minwin(name);
     }
     focwin(name);
@@ -622,16 +710,16 @@ function toggletheme() {
     $('.dock.theme').toggleClass('dk');
     $(':root').toggleClass('dark');
     if ($(':root').hasClass('dark')) {
-        setData('theme','dark');
-    }else{
-        setData('theme','light');
+        setData('theme', 'dark');
+    } else {
+        setData('theme', 'light');
     }
 }
 // 拖拽窗口
 const page = document.getElementsByTagName('html')[0];
 const titbars = document.querySelectorAll('.window>.titbar');
 const wins = document.querySelectorAll('.window');
-let deltaLeft = 0, deltaTop = 0, fil = false, filty='none', bfLeft = 0, bfTop = 0;
+let deltaLeft = 0, deltaTop = 0, fil = false, filty = 'none', bfLeft = 0, bfTop = 0;
 for (let i = 0; i < wins.length; i++) {
     const win = wins[i];
     const titbar = titbars[i];
@@ -651,9 +739,9 @@ for (let i = 0; i < wins.length; i++) {
                     $('#window-fill').addClass('fill');
                 }, 0);
                 fil = this;
-                filty='top';
+                filty = 'top';
             }
-        }else if(cx<=0){
+        } else if (cx <= 0) {
             this.setAttribute('style', `left:${-deltaLeft}px;top:${cy - deltaTop}px`);
             if (this.classList[1] != 'calc' && this.classList[1] != 'notepad-fonts') {
                 $('#window-fill').addClass('left');
@@ -661,9 +749,9 @@ for (let i = 0; i < wins.length; i++) {
                     $('#window-fill').addClass('fill');
                 }, 0);
                 fil = this;
-                filty='left';
+                filty = 'left';
             }
-        }else if(cx>=document.body.offsetWidth-2){
+        } else if (cx >= document.body.offsetWidth - 2) {
             this.setAttribute('style', `left:calc(100% - ${deltaLeft}px);top:${cy - deltaTop}px`);
             if (this.classList[1] != 'calc' && this.classList[1] != 'notepad-fonts') {
                 $('#window-fill').addClass('right');
@@ -671,7 +759,7 @@ for (let i = 0; i < wins.length; i++) {
                     $('#window-fill').addClass('fill');
                 }, 0);
                 fil = this;
-                filty='right';
+                filty = 'right';
             }
         } else if (fil) {
             $('#window-fill').removeClass('fill');
@@ -681,14 +769,14 @@ for (let i = 0; i < wins.length; i++) {
                 $('#window-fill').removeClass('right');
             }, 200);
             fil = false;
-            filty='none';
+            filty = 'none';
         } else if ($(this).hasClass('max')) {
             deltaLeft = deltaLeft / (this.offsetWidth - (45 * 3)) * ((0.7 * document.body.offsetWidth) - (45 * 3));
             maxwin(this.classList[1], false);
             // 窗口控制按钮宽 45px
             this.setAttribute('style', `left:${cx - deltaLeft}px;top:${cy - deltaTop}px;`);
             $('.window.' + this.classList[1] + '>.titbar>div>.wbtg.max').html('<i class="bi bi-app"></i>');
-            
+
             $(this).addClass('notrans');
         }
     }
@@ -718,12 +806,12 @@ for (let i = 0; i < wins.length; i++) {
 page.addEventListener('mouseup', () => {
     page.onmousemove = null;
     if (fil) {
-        if(filty=='top')
-        maxwin(fil.classList[1], false);
-        else if(filty=='left'){
+        if (filty == 'top')
+            maxwin(fil.classList[1], false);
+        else if (filty == 'left') {
             maxwin(fil.classList[1], false);
             $(fil).addClass('left');
-        }else if(filty=='right'){
+        } else if (filty == 'right') {
             maxwin(fil.classList[1], false);
             $(fil).addClass('right');
         }
@@ -741,12 +829,12 @@ page.addEventListener('mouseup', () => {
 page.addEventListener('touchend', () => {
     page.ontouchmove = null;
     if (fil) {
-        if(filty=='top')
-        maxwin(fil.classList[1], false);
-        else if(filty=='left'){
+        if (filty == 'top')
+            maxwin(fil.classList[1], false);
+        else if (filty == 'left') {
             maxwin(fil.classList[1], false);
             $(fil).addClass('left');
-        }else if(filty=='right'){
+        } else if (filty == 'right') {
             maxwin(fil.classList[1], false);
             $(fil).addClass('right');
         }
@@ -897,11 +985,11 @@ document.getElementsByTagName('body')[0].onload = function nupd() {
 navigator.serviceWorker.register('sw.js', { updateViaCache: 'none', scope: './' });
 
 navigator.serviceWorker.controller.postMessage({
-    head:'is_update'
+    head: 'is_update'
 });
 
 navigator.serviceWorker.controller.postMessage({
-    head:'get_userdata'
+    head: 'get_userdata'
 });
 
 navigator.serviceWorker.addEventListener('message', function (e) {
@@ -910,19 +998,19 @@ navigator.serviceWorker.addEventListener('message', function (e) {
         $('.msg.update>.main>.tit').html('<i class="bi bi-stars" style="background-image: linear-gradient(100deg, var(--theme-1), var(--theme-2));-webkit-background-clip: text;-webkit-text-fill-color: transparent;text-shadow:3px 3px 5px var(--sd);filter:saturate(200%) brightness(0.9);"></i> ' + $('#win-about>.cnt.update>div>details:first-child>summary').text());
         $('.msg.update>.main>.cont').html($('#win-about>.cnt.update>div>details:first-child>p').html());
         $('#loadbackupdate').css('display', 'block');
-    }else if(e.data.head=='userdata'){
-        const d=e.data.data;
+    } else if (e.data.head == 'userdata') {
+        const d = e.data.data;
         console.log(d);
-        if(d.theme=='dark')$(':root').addClass('dark');
-        $(':root').css('--theme-1',d.color1);
-        $(':root').css('--theme-2',d.color2);
+        if (d.theme == 'dark') $(':root').addClass('dark');
+        $(':root').css('--theme-1', d.color1);
+        $(':root').css('--theme-2', d.color2);
     }
 });
-function setData(k,v) {
+function setData(k, v) {
     navigator.serviceWorker.controller.postMessage({
-        head:'set_userdata',
-        key:k,
-        value:v
+        head: 'set_userdata',
+        key: k,
+        value: v
     });
 }
 

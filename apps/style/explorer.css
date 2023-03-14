@@ -134,9 +134,24 @@
 }
 
 #win-explorer>.main>.content>.tool>.tit{
-    display: flex;
+    /* display: flex; */
     margin-top: 3px;
     margin-left: 5px;
+    overflow: hidden;
+    border: 1.5px solid transparent;
+    display: block;
+}
+
+#win-explorer>.main>.content>.tool>.tit:hover{
+    height: min-content;
+    min-width: 100px;
+    background: var(--unfoc);
+    border-radius: 5px;
+    border: 1.5px solid #6f6f6f30;
+    padding: 3px 5px;
+    margin: 0 5px 3px 0;
+    box-shadow: 2px 2px 5px var(--sd);
+    z-index: 1;
 }
 
 #win-explorer>.main>.content>.tool>.search{
@@ -171,7 +186,7 @@
 
 @keyframes exp-show {
     0%{
-        transform: scale(0.9) translate(0,50%);
+        transform: translateX(-10px);
         opacity: 0;
     }
     100%{
@@ -194,7 +209,8 @@
 }
 
 #win-explorer>.main>.content>.view>.item:active{
-    transform: scale(0.98);
+    transform: scale(0.99);
+    transform-origin: bottom;
 }
 
 #win-explorer>.main>.content>.view>.item>img{

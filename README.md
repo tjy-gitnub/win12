@@ -1,6 +1,6 @@
 # Windows 12 网页版
 
-> 又开学了。。。
+> 大家的建议我都收到了，非常感谢宝贵建议。这里对 [前景规划](#前景规划) 做了一些更改
 
 - [Windows 12 网页版](#windows-12-网页版)
   - [前言](#前言)
@@ -40,31 +40,29 @@
 
 ## 前景规划
 关于该项目的路径规划:
-- <input type="checkbox" checked> 基本功能与应用
-- <input type="checkbox" checked> 外观整体优化
-- <input type="checkbox" checked> 加入特效
-- <input type="checkbox" checked> 窗口功能
-- <input type="checkbox" checked> 应用完善
-- <input type="checkbox"> 添加更多个性化方面的设置
-- <input type="checkbox"> 动态壁纸
-- <input type="checkbox"> 完善小组件，添加到桌面等功能
-- <input type="checkbox"> 更多任务栏的自定义
-- <input type="checkbox"> 添加Edge应用
-- <input type="checkbox"> 丰富应用生态
+- [x] 基本功能与应用
+- [x] 外观整体优化
+- [x] 加入特效
+- [x] 窗口功能
+- [x] 应用完善
+- [ ] 添加更多个性化方面的设置
+- [ ] 添加Edge应用
+- [ ] 完善小组件，添加到桌面等功能
+- [ ] 动态壁纸
+- [ ] 更多任务栏的自定义
+- [ ] 丰富应用生态
 
 下面是一些...呃......畅..想 `~o~)/`
-<s>
-- <input type="checkbox"> 建立文件系统
-- <input type="checkbox"> 建立自己的可执行文件机制
-- <input type="checkbox"> 将exe文件转化并执行
-- <input type="checkbox"> 提供更多api供应用调用
-- <input type="checkbox"> 内置浏览器内核，成为应用
-- <input type="checkbox"> 将项目更名为 "Windows 12"
-- <input type="checkbox"> 封装到Windows中系统中
-- <input type="checkbox"> 将启动程序设为此应用
-- <input type="checkbox"> 去除多余系统功能，封装成独立的操作系统
-- <input type="checkbox"> 将项目更名为 "Doswin 1.0"
-- <input type="checkbox"> 适配量子计算机
-- <input type="checkbox"> 接入chatgpt
-- <input type="checkbox"> 将项目更名为 "550W"
-</s>
+- [ ] 建立文件系统
+- [ ] 建立自己的可执行文件机制
+- [ ] 将exe文件转化并执行
+- [ ] 提供更多api供应用调用
+- [ ] 内置浏览器内核，成为应用
+- [ ] 将项目更名为 "Windows 12"
+- [ ] 封装到Windows中系统中
+- [ ] 将启动程序设为此应用
+- [ ] 去除多余系统功能，封装成独立的操作系统
+- [ ] 将项目更名为 "Doswin 1.0"
+- [ ] 适配量子计算机
+- [ ] 接入chatgpt
+- [ ] 将项目更名为 "550W"
