@@ -20,7 +20,7 @@
 
 #win-about>.cnt{
     overflow: auto;
-    transform: translate(0, 30%);
+    transform: translate(0, 50%);
     opacity: 0;
     width: 0;
     transition: transform 300ms cubic-bezier(0,0,0,1), opacity 300ms 50ms;
@@ -30,7 +30,7 @@
 
 #win-about>.cnt.show {
     flex-grow: 1;
-    width: autos;
+    width: auto;
     transform: none;
     opacity: 1;
     display: block;

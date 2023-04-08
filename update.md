@@ -1,5 +1,68 @@
 # 更新记录
-## v1.0.0~v2.3.1
+## v1.0.0~v3.5.0
+<details><summary><span>v3.5.0</span> 窗口层级和焦点控制</summary>
+	<p>&emsp;&emsp;-增加了窗口层级的控制<br>
+	&emsp;&emsp;-非焦点窗口关闭模糊效果以提速<br>
+	&emsp;&emsp;-新增 @Planet-xu 提供的新闻<br>
+	&emsp;&emsp;-修复了下拉菜单停留的问题 @Samtjs<br>
+	&emsp;&emsp;-细节优化和修复</p>
+</details>
+<details><summary><span>v3.4.1</span> 移动端适配</summary>
+	<p>&emsp;&emsp;-适配了移动端的双(改成单击)<br>
+	&emsp;&emsp;-适配了移动端的拖动窗口<br>
+	&emsp;&emsp;-优化任务栏按钮点击效果<br>
+	&emsp;&emsp;-更改右键菜单样式<br>
+	&emsp;&emsp;-下拉菜单悬停展开<br>
+	&emsp;&emsp;-细节优化和修复</p>
+	<i>感谢 @User782Tec</i>
+</details>
+<details><summary><span>v3.4.0</span> 动画优化</summary>
+	<p>&emsp;&emsp;-别问我为什么动画占一个新版<br>
+	&emsp;&emsp;-基本上所有动画都进行了更新优化<br>
+	&emsp;&emsp;-修复了上个版本没删完的标题栏问题<br>
+	&emsp;&emsp;-修改了开始菜单的图标<br>
+	&emsp;&emsp;-细节优化和修复</p>
+</details>
+<details><summary><span>v3.3.0</span> 增加计算器小组件</summary>
+	<p>&emsp;&emsp;-增加了计算器小组件<br>
+	&emsp;&emsp;-修复了小组件新闻图片无法加载的问题<br>
+	&emsp;&emsp;-移除了上一个版本的新窗口标题栏<br>
+	&emsp;&emsp;-在一些图标按钮上悬停鼠标显示提示<br>
+	&emsp;&emsp;-去除了所有链接的左下角链接提示<br>
+	&emsp;&emsp;-细节优化和修复</p>
+</details>
+<details><summary><span>v3.2.0</span> 增加小组件菜单</summary>
+	<p>&emsp;&emsp;-增加了小组件(资讯和兴趣)菜单<br>
+	&emsp;&emsp;-小组件菜单中的新闻内容<br>
+	&emsp;&emsp;-小组件按钮动画效果<br>
+	&emsp;&emsp;-应用窗口标题栏样式新增<br>
+	&emsp;&emsp;-对计算器的计算代码的精简<br>
+	&emsp;&emsp;-细节优化和修复</p>
+</details>
+<details><summary><span>v3.1.0</span> 增加文件浏览功能，一些新功能</summary>
+	<p>&emsp;&emsp;-文件资源管理器浏览功能<br>
+	&emsp;&emsp;-对PWA更新的优化<br>
+	&emsp;&emsp;-文件资源管理器右键菜单<br>
+	&emsp;&emsp;-增加应用启动的加载动画<br>
+	&emsp;&emsp;-增加应用启动初始化<br>
+	&emsp;&emsp;-记事本新增"编辑"菜单<br>
+	&emsp;&emsp;-下拉菜单整体优化<br>
+	&emsp;&emsp;-右键菜单优化<br>
+	&emsp;&emsp;-在输入框中允许浏览器的右键菜单<br>
+	&emsp;&emsp;-双击窗口标题栏最大化<br>
+	&emsp;&emsp;-细节优化和修复</p>
+</details>
+<details><summary><span>v3.0.0</span> 桌面图标、记事本、可安装到电脑</summary>
+	<p>&emsp;&emsp;-可以在Edge、Chrome等主流浏览器中将Win12安装为pwa应用¹<br>
+	&emsp;&emsp;-新增桌面图标，并增加桌面右键菜单"刷新"功能<br>
+	&emsp;&emsp;-可以将开始菜单应用右键添加到桌面<br>
+	&emsp;&emsp;-新增"记事本"应用<br>
+	&emsp;&emsp;-新的深色模式切换按钮<br>
+	&emsp;&emsp;-改进了窗口的外观<br>
+	&emsp;&emsp;-细节优化和修复<br>
+	<i>1: 正常会有安装的提示，会在链接栏右上角，安装后可离线使用，有网会自动更新。感谢 @dzc120223 的建议</i>
+</p>
+</details>
 <details><summary><span>v2.3.1</span> bug修复、外观优化</summary>
 	<p>&emsp;&emsp;-修复了拖动窗口图标触发拖拽事件的错误<br>
 	&emsp;&emsp;-修复了其它拖拽图片的错误<br>

@@ -115,7 +115,6 @@
 
 #win-setting>.page>.cnt {
     overflow-y: scroll;
-    transform: translate(0, 50%) scale(0.8);
     opacity: 0;
     height: 0;
     transition: transform 300ms cubic-bezier(0,0,0,1), opacity 300ms 50ms,height 0ms;
@@ -148,19 +147,17 @@
     text-decoration: none;
     display: flex;
     padding: 10px 15px;
-    /* transition: 100ms; */
-    box-shadow: 2px 2px 3px var(--sd);
+    box-shadow: 2px 2px 5px var(--sd);
     transition: transform 300ms cubic-bezier(0.14, 1.02, 0.17, 0.03);
     justify-content: space-around;
 }
 
 .setting-list>a:hover {
     text-decoration: none;
-    background-color: var(--hover);
+    background-color: var(--hover-half);
 }
 
 .setting-list>a:active {
-    transform: scale(0.98);
     filter: opacity(0.75);
 }
 
@@ -178,7 +175,15 @@
 }
 
 .setting-list>a.dp>.bi::before {
-    transition: 200ms;
+    transition: 150ms;
+}
+
+.setting-list>a.dp:active>.bi::before{
+    transform: scale(0.7);
+}
+
+.setting-list>a.dp.show:active>.bi::before{
+    transform: scale(0.7) rotate(-180deg);
 }
 
 .setting-list>a.dp.show>.bi::before {

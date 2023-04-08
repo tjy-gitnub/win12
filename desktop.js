@@ -38,6 +38,7 @@ $('html').on('contextmenu', () => {
 });
 function stop(e) {
     e.stopPropagation();
+    return false;
 }
 $('input,textarea,*[contenteditable=true]').on('contextmenu', (e) => {
     stop(e);
@@ -136,6 +137,14 @@ let cms = {
         (arg) => {
             return ['<i class="bi bi-folder2-open"></i> 打开', `apps.explorer.goto('${arg}')`];
         }
+    ],
+    'edge.tab': [
+        arg => {
+            return ['<i class="bi bi-pencil-square"></i> 命名标签页', `apps.edge.c_rename(${arg})`];
+        },
+        arg => {
+            return ['<i class="bi bi-x"></i> 关闭标签页', `apps.edge.close(${arg})`];
+        }
     ]
 }
 function showcm(e, cl, arg) {
@@ -202,7 +211,6 @@ function showcm(e, cl, arg) {
             $('#cm').css('left', $('html')[0].offsetWidth - $('#cm')[0].offsetWidth - 5);
         }
     }, 200);
-    return false;
 }
 $('#cm>.foc').blur(() => {
     let x = event.target.parentNode;
@@ -216,7 +224,7 @@ dps = {
     'notepad.file': [
         ['<i class="bi bi-file-earmark-plus"></i> 新建', `hidedp(true);$('#win-notepad>.text-box').addClass('down');
         setTimeout(()=>{$('#win-notepad>.text-box').val('');$('#win-notepad>.text-box').removeClass('down')},200);`],
-        ['<i class="bi bi-box-arrow-right"></i> 另存为', `hidedp(true);$('#win-notepad>.save').attr('href', window.URL.createObjectURL(new Blob([$('#win-notepad>.text-box').val()])));
+        ['<i class="bi bi-box-arrow-right"></i> 另存为', `hidedp(true);$('#win-notepad>.save').attr('href', window.URL.createObjectURL(new Blob([$('#win-notepad>.text-box').html()])));
         $('#win-notepad>.save')[0].click();`],
         '<hr>',
         ['<i class="bi bi-x"></i> 退出', `isOnDp=false;hidedp(true);hidewin('notepad')`],
@@ -301,7 +309,6 @@ function hidedp(force = false) {
         }, 200);
     }, 100);
 }
-
 // 悬停提示
 document.querySelectorAll('*[win12_title]:not(.notip)').forEach(a => {
     a.addEventListener('mouseenter', showdescp);
@@ -377,11 +384,11 @@ let apps = {
                 border-radius: 10px;}
             #win-explorer>.main>.content>.view>.group>.item>div>.info{color: #959595;font-size: 14px;}</style>
             <p class="class"><img src="apps/icons/explorer/disk.png"> 设备和驱动器</p><div class="group">
-            <a class="a item act" ondblclick="apps.explorer.goto('C:')" ontouchend="apps.explorer.goto('C:')" oncontextmenu="stop(event);return showcm(event,'explorer.folder','C:')">
+            <a class="a item act" ondblclick="apps.explorer.goto('C:')" ontouchend="apps.explorer.goto('C:')" oncontextmenu="showcm(event,'explorer.folder','C:');return stop(event);">
             <img src="apps/icons/explorer/diskwin.png"><div><p class="name">本地磁盘 (C:)</p>
             <div class="bar"><div class="content" style="width: 88%;"></div>
             </div><p class="info">32.6 GB 可用, 共 143 GB</p></div></a><a class="a item act" ondblclick="apps.explorer.goto('D:')" ontouchend="apps.explorer.goto('D:')"
-            oncontextmenu="stop(event);return showcm(event,'explorer.folder','D:')">
+            oncontextmenu="showcm(event,'explorer.folder','D:');return stop(event);">
             <img src="apps/icons/explorer/disk.png"><div><p class="name">本地磁盘 (D:)</p><div class="bar"><div class="content" style="width: 15%;"></div>
             </div><p class="info">185.3 GB 可用, 共 216 GB</p></div></a></div>`;
             $('#win-explorer>.main>.content>.tool>.tit')[0].innerHTML = '此电脑';
@@ -391,15 +398,21 @@ let apps = {
             pathl = path.split('/');
             let tmp = apps.explorer.path;
             pathl.forEach(name => {
-                tmp = tmp[name];
+                tmp = tmp['folder'][name];
             });
             if (tmp == null) {
                 $('#win-explorer>.main>.content>.view')[0].innerHTML = '<p class="info">此文件夹为空。</p>';
             } else {
                 let ht = '';
-                for (folder in tmp) {
-                    ht += `<a class="a item act" ondblclick="apps.explorer.goto('${path}/${folder}')" ontouchend="apps.explorer.goto('${path}/${folder}')" oncontextmenu="stop(event);return showcm(event,'explorer.folder','${path}/${folder}')">
+                for (folder in tmp['folder']) {
+                    ht += `<a class="a item act" ondblclick="apps.explorer.goto('${path}/${folder}')" ontouchend="apps.explorer.goto('${path}/${folder}')" oncontextmenu="showcm(event,'explorer.folder','${path}/${folder}');return stop(event);">
                         <img src="apps/icons/explorer/folder.png">${folder}</a>`;
+                }
+                if(tmp['file']){
+                    tmp['file'].forEach(file=>{
+                        ht += `<a class="a item act file" ondblclick="${file['command']}" ontouchend="${file['command']}" oncontextmenu="return stop(event);">
+                            <img src="${file['ico']}">${file['name']}</a>`;
+                    });
                 }
                 $('#win-explorer>.main>.content>.view')[0].innerHTML = ht;
             }
@@ -411,22 +424,53 @@ let apps = {
             $('#win-explorer>.main>.content>.tool>.tit')[0].innerHTML = path;
         },
         path: {
-            'C:': {
-                'Program Files': {
-                    'WindowsApps': null, 'Microsoft': null,
-                },
-                'Windows': {
-                    'Boot': null, 'System': null, 'System32': null
-                },
-                '用户': {
-                    'Administrator': {
-                        '文档': { 'IISExpress': null, 'PowerToys': null }, '图片': { '本机照片': null, '屏幕截图': null },
-                        'AppData': null, '音乐': { '录音机': null }
+            folder: {
+                'C:': {
+                    folder: {
+                        'Program Files': {
+                            folder: { 'WindowsApps': null, 'Microsoft': null },
+                            file: [
+                                { name: 'about.exe', ico: 'icon/about.png', command: "openapp('about')" },
+                                { name: 'setting.exe', ico: 'icon/setting.png', command: "openapp('setting')" },
+                            ]
+                        },
+                        'Windows': {
+                            folder: { 'Boot': null, 'System': null, 'System32': null },
+                            file: [
+                                { name: 'notepad.exe', ico: 'icon/notepad.png', command: "openapp('notepad')" },
+                            ]
+                        },
+                        '用户': {
+                            folder: {
+                                'Administrator': {
+                                    folder: {
+                                        '文档': {
+                                            folder: { 'IISExpress': null, 'PowerToys': null },
+                                            file: [
+                                                { name: '瓶盖介绍.doc', ico: 'icon/files/word.png', command: '' },
+                                                { name: '瓶盖质量统计分析.xlsx', ico: 'icon/files/excel.png', command: '' },
+                                            ]
+                                        }, '图片': {
+                                            folder: { '本机照片': null, '屏幕截图': null },
+                                            file: [
+                                                { name: '瓶盖构造图.png', ico: 'icon/files/img.png', command: '' },
+                                                { name: '可口可乐瓶盖.jpg', ico: 'icon/files/img.png', command: '' },
+                                            ]
+                                        },
+                                        'AppData': null, '音乐': { folder: { '录音机': null } }
+                                    }
+                                }
+                            }
+                        }
                     }
+                },
+                'D:': {
+                    folder:{'Microsoft': null},
+                    file:[
+                        { name: '瓶盖结构说明.docx', ico: 'icon/files/word.png', command: '' },
+                        { name: '可口可乐瓶盖历史.pptx', ico: 'icon/files/ppt.png', command: '' },
+                    ]
                 }
-            },
-            'D:': {
-                'Microsoft': null,
             }
         }
     },
@@ -457,7 +501,7 @@ let apps = {
         init: () => {
             $('#win-terminal>pre').html(`Micrsotft Windosw [版本 12.0.39035.7324]
 (c) Micrsotft Corparotoin。保所留有权利。
-一个摆设，后续会完善。
+一个摆设，后续不会完善。
 
 C:\Windows\System32> <input type="text" oninput="setTimeout(() => {$('#win-terminal>pre')[0].innerHTML+=this.outerHTML;$('#win-terminal>pre>input').focus()}, 0);$('#win-terminal>pre')[0].innerText+=$(this).val();">`)
         }
@@ -474,10 +518,8 @@ C:\Windows\System32> <input type="text" oninput="setTimeout(() => {$('#win-termi
         search: le => {
             if (le > 0) {
                 $('#search-win>.ans>.list>list').html(
-                    `<a class="a" onclick="apps.search.showdetail(${le % 8})"><i class="bi bi-file-earmark-${
-                    apps.search.rand[le % 8].bi}"></i> ${apps.search.rand[le % 8].name
-                    }</a><a class="a" onclick="apps.search.showdetail(${(le + 3) % 8})"><i class="bi bi-file-earmark-${
-                    apps.search.rand[(le + 3) % 8].bi}"></i> ${apps.search.rand[(le + 3) % 8].name}</a>`);
+                    `<a class="a" onclick="apps.search.showdetail(${le % 8})"><i class="bi bi-file-earmark-${apps.search.rand[le % 8].bi}"></i> ${apps.search.rand[le % 8].name
+                    }</a><a class="a" onclick="apps.search.showdetail(${(le + 3) % 8})"><i class="bi bi-file-earmark-${apps.search.rand[(le + 3) % 8].bi}"></i> ${apps.search.rand[(le + 3) % 8].name}</a>`);
                 apps.search.showdetail(le % 8);
             } else {
                 $('#search-win>.ans>.list>list').html(
@@ -504,10 +546,72 @@ C:\Windows\System32> <input type="text" oninput="setTimeout(() => {$('#win-termi
             $('#search-win>.ans>.view>.fname>.name').text(inf.name);
             $('#search-win>.ans>.view>.fname>.type').text(inf.ty);
         }
-    }
+    },
+    edge: {
+        init: () => {
+            $('#win-edge>iframe').remove();
+            apps.edge.tabs = [];
+            apps.edge.len = 0;
+            apps.edge.newtab();
+        },
+        tabs: [],
+        now: null,
+        len: 0,
+        newtab: () => {
+            apps.edge.tabs.push([apps.edge.len++, '新建标签页']);
+            $('#win-edge').append(`<iframe src="" frameborder="0" class="${apps.edge.tabs[apps.edge.tabs.length - 1][0]}">`)
+            apps.edge.settabs();
+            apps.edge.tab(apps.edge.tabs.length - 1);
+            $('#win-edge>.tool>input.url').focus()
+        },
+        settabs: () => {
+            $('.window.edge>.titbar>.tabs')[0].innerHTML = '';
+            for (let i = 0; i < apps.edge.tabs.length; i++) {
+                const t = apps.edge.tabs[i];
+                $('.window.edge>.titbar>.tabs')[0].innerHTML += `<div class="tab ${t[0]}" onclick="apps.edge.tab(${i})" oncontextmenu="showcm(event,'edge.tab',${i});stop(event);return false"><p>${t[1]}</p><span class="clbtn bi bi-x" onclick="apps.edge.close(${i})"></span></div>`;
+            }
+            $('.window.edge>.titbar>.tabs')[0].innerHTML += '<a class="new bi bi-plus" onclick="apps.edge.newtab();"></a>';
+            // $('.window.edge>.titbar>.tabs>.tab.'+apps.edge.tabs[apps.edge.now][0]).addClass('show');
+
+        },
+        close: c => {
+            $('#win-edge>iframe.' + apps.edge.tabs[c][0]).remove();
+            apps.edge.tabs.splice(c, 1);
+            apps.edge.settabs();
+            apps.edge.tab(apps.edge.tabs.length - 1);
+        },
+        tab: c => {
+            console.log(c, apps.edge.tabs[c][0])
+            $('#win-edge>iframe.show').removeClass('show');
+            $('#win-edge>iframe.' + apps.edge.tabs[c][0]).addClass('show');
+            $('#win-edge>.tool>input.url').val($('#win-edge>iframe.' + apps.edge.tabs[c][0]).attr('src'));
+            $('#win-edge>.tool>input.rename').removeClass('show');
+            apps.edge.now = c;
+            $('.window.edge>.titbar>.tabs>.tab.show').removeClass('show');
+            $('.window.edge>.titbar>.tabs>.tab.' + apps.edge.tabs[c][0]).addClass('show');
+        },
+        c_rename: c => {
+            apps.edge.tab(c);
+            $('#win-edge>.tool>input.rename').val(apps.edge.tabs[apps.edge.now][1]);
+            $('#win-edge>.tool>input.rename').addClass('show');
+            setTimeout(() => {
+                $('#win-edge>.tool>input.rename').focus();
+            }, 300);
+        },
+        rename: n => {
+            apps.edge.tabs[apps.edge.now][1] = n;
+            apps.edge.settabs();
+            apps.edge.tab(apps.edge.now);
+        },
+        goto: u => {
+            if (!/^https?:\/\//.test(u)) {
+                u = 'http://' + u;
+            }
+            $('#win-edge>iframe.show').attr('src', u);
+            apps.edge.rename(u);
+        }
+    },
 }
-
-
 // 小组件
 let widgets = {
     widgets: {
@@ -527,8 +631,6 @@ let widgets = {
         }
     }
 }
-
-
 // 日期、时间
 let da = new Date();
 let date = `星期${['日', '一', '二', '三', '四', '五', '六'][da.getDay()]}, ${da.getFullYear()}年${(da.getMonth() + 1).toString().padStart(2, '0')}月${da.getDate().toString().padStart(2, '0')}日`
@@ -559,6 +661,10 @@ for (let i = 1; i <= daysum; i++) {
 }
 function openapp(name) {
     if ($('#taskbar>.' + name).length != 0) {
+        if ($('.window.' + name).hasClass('min')) {
+            minwin(name);
+        }
+        focwin(name);
         return;
     }
     $('.window.' + name).addClass('load');
@@ -705,6 +811,26 @@ function hide_widgets() {
     $('#widgets-btn').removeClass('show');
     setTimeout(() => { $('#widgets').removeClass('show-begin'); }, 200);
 }
+// 选择框
+let chstX, chstY;
+function ch(e) {
+    $('#desktop>.choose').css('left', Math.min(chstX, e.clientX));
+    $('#desktop>.choose').css('width', Math.abs(e.clientX - chstX));
+    $('#desktop>.choose').css('top', Math.min(chstY, e.clientY));
+    $('#desktop>.choose').css('height', Math.abs(e.clientY - chstY));
+}
+$('#desktop')[0].addEventListener('mousedown', e => {
+    chstX = e.clientX;
+    chstY = e.clientY;
+    this.onmousemove = ch;
+})
+$('#desktop')[0].addEventListener('mouseup', e => {
+    this.onmousemove = null;
+    $('#desktop>.choose').css('left', 0);
+    $('#desktop>.choose').css('top', 0);
+    $('#desktop>.choose').css('width', 0);
+    $('#desktop>.choose').css('height', 0);
+})
 // 主题
 function toggletheme() {
     $('.dock.theme').toggleClass('dk');
@@ -852,7 +978,6 @@ page.addEventListener('touchend', () => {
         fil = false;
     }
 });
-
 // 记事本选择字体
 const sizes = {
     '初号': '56',
@@ -968,7 +1093,6 @@ function preview() {
     $('#win-notepad-font>.preview>.preview-box').attr('style', `font-family: ${typeinput.value} !important; font-size: ${fontsize}px !important;${fontstyle}`);
 }
 
-
 // 启动
 let updated = false;
 document.getElementsByTagName('body')[0].onload = function nupd() {
@@ -980,18 +1104,14 @@ document.getElementsByTagName('body')[0].onload = function nupd() {
     }
 };
 
-
 // PWA 应用
 navigator.serviceWorker.register('sw.js', { updateViaCache: 'none', scope: './' });
-
 navigator.serviceWorker.controller.postMessage({
     head: 'is_update'
 });
-
 navigator.serviceWorker.controller.postMessage({
     head: 'get_userdata'
 });
-
 navigator.serviceWorker.addEventListener('message', function (e) {
     if (e.data.head == 'update') {
         updated = true;
@@ -1012,13 +1132,4 @@ function setData(k, v) {
         key: k,
         value: v
     });
-}
-
-// 清除cookie
-if (document.cookie != '') {
-    document.cookie = 'version=0.0.0;expires=Thu, 01 Jan 1970 00:00:00 UTC;';
-    $('.msg.update>.main>.tit').html('<i class="bi bi-stars" style="background-image: linear-gradient(100deg, var(--theme-1), var(--theme-2));-webkit-background-clip: text;-webkit-text-fill-color: transparent;text-shadow:3px 3px 5px var(--sd);filter:saturate(200%) brightness(0.9);"></i> ' + $('#win-about>.cnt.update>div>details:first-child>summary').text());
-    $('.msg.update>.main>.cont').html($('#win-about>.cnt.update>div>details:first-child>p').html());
-    $('#loadbackupdate').css('display', 'block');
-    updated = true;
 }
