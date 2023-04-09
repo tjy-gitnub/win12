@@ -1027,8 +1027,8 @@ C:\Windows\System32> <input type="text" oninput="setTimeout(() => {$('#win-termi
 				<a class="a" onclick="$('#win-edge>iframe.show').attr('src',$('#win-edge>iframe.show').attr('src'))">
 					<i class="bi bi-arrow-clockwise"></i>
 				</a>
-				<input type="text" onkeyup="if(event.keyCode==13){apps.edge.goto($(this).val())}" placeholder="在必应中搜索，或输入一个网址" class="url" spellcheck="false">
-				<input type="text" onkeyup="if(event.keyCode==13){apps.edge.rename($(this).val())}" placeholder="为标签页命名" class="rename" spellcheck="false">
+				<input type="text" onkeyup="if(event.keyCode==13&&$(this).val()!=''){apps.edge.goto($(this).val())}" placeholder="在必应中搜索，或输入一个网址" class="url" spellcheck="false">
+				<input type="text" onkeyup="if(event.keyCode==13&&$(this).val()!=''){apps.edge.rename($(this).val())}" placeholder="为标签页命名" class="rename" spellcheck="false">
 				<a class="a">
 					<i class="bi bi-info-circle" win12_title="浏览器只能访问允许嵌套的网站。由于规则限制无法获取网页标题，请右键标签页手动命名"></i>
 				</a>
@@ -1039,7 +1039,7 @@ C:\Windows\System32> <input type="text" oninput="setTimeout(() => {$('#win-termi
 					<i class="bi bi-code-slash"></i>
 				</a>
 			</div>
-			<iframe src="" frameborder="0" class="0 show">
+			<iframe src="mainpage.html" frameborder="0" class="0 show">
 			</iframe>
 		</div>
 	</div>

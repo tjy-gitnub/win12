@@ -559,10 +559,17 @@ C:\Windows\System32> <input type="text" oninput="setTimeout(() => {$('#win-termi
         len: 0,
         newtab: () => {
             apps.edge.tabs.push([apps.edge.len++, '新建标签页']);
-            $('#win-edge').append(`<iframe src="" frameborder="0" class="${apps.edge.tabs[apps.edge.tabs.length - 1][0]}">`)
+            $('#win-edge').append(`<iframe src="mainpage.html" frameborder="0" class="${apps.edge.tabs[apps.edge.tabs.length - 1][0]}">`)
             apps.edge.settabs();
             apps.edge.tab(apps.edge.tabs.length - 1);
             $('#win-edge>.tool>input.url').focus();
+            document.querySelectorAll("#win-edge > iframe")[apps.edge.tabs.length - 1].onload = function () {
+                this.contentDocument.querySelector('input').onkeyup = function (e) {
+                    if(e.keyCode == 13 && $(this).val() != ''){
+                        apps.edge.goto($(this).val())
+                    }
+                }
+            }
         },
         settabs: () => {
             $('.window.edge>.titbar>.tabs')[0].innerHTML = '';
@@ -587,7 +594,7 @@ C:\Windows\System32> <input type="text" oninput="setTimeout(() => {$('#win-termi
             console.log(c, apps.edge.tabs[c][0])
             $('#win-edge>iframe.show').removeClass('show');
             $('#win-edge>iframe.' + apps.edge.tabs[c][0]).addClass('show');
-            $('#win-edge>.tool>input.url').val($('#win-edge>iframe.' + apps.edge.tabs[c][0]).attr('src'));
+            $('#win-edge>.tool>input.url').val($('#win-edge>iframe.' + apps.edge.tabs[c][0]).attr('src') == 'mainpage.html' ? '' : $('#win-edge>iframe.' + apps.edge.tabs[c][0]).attr('src'));
             $('#win-edge>.tool>input.rename').removeClass('show');
             apps.edge.now = c;
             $('.window.edge>.titbar>.tabs>.tab.show').removeClass('show');
@@ -625,6 +632,7 @@ C:\Windows\System32> <input type="text" oninput="setTimeout(() => {$('#win-termi
         }
     },
 }
+
 // 小组件
 let widgets = {
     widgets: {
