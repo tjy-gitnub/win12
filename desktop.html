@@ -12,7 +12,7 @@
 	<!-- Windows 12 网页版是一个开放源项目,
 	希望让用户在网络上预先体验 Windows 12,
 	内容可能与 Windows 12 正式版本不一致。
-	使用标准网络技术,例妙如 Html、CSS 和 Javascript
+	使用标准网络技术,例如 HTML、CSS 和 Javascript
 	此项目绝不附属于微软,且不应与微软操作系统或产品混淆,
 	这也不是 Windows365 cloud PC
 	本项目中微软、Windows和其他示范产品是微软公司的商标 -->
@@ -37,7 +37,7 @@
 	麻烦看一下 desktop.js line 635
 	apps/style/font.css
 	可以顺便写一下更新日志 :)
- -->
+-->
 
 <body>
 	<div id="loadback" style="background-color:#000;width:100%;height:100%;z-index:105;position:absolute;transition:200ms;">
@@ -452,7 +452,7 @@
 			<p>Windows 12 网页版是一个开放源项目,<br>
 				希望让用户在网络上预先体验 Windows 12,<br>
 				内容可能与 Windows 12 正式版本不一致。<br>
-				使用标准网络技术,例如 Html,CSS 和 JS<br>
+				使用标准网络技术,例如 HTML, CSS 和 JS<br>
 				此项目绝不附属于微软,且不应与微软操作系统或产品混淆,<br>
 				这也不是 Windows365 cloud PC<br>
 				本项目中微软、Windows和其他示范产品是微软公司的商标</p>
@@ -962,7 +962,7 @@
 			<div class="preview">
 				<div class="description">
 					预览
-			    </div>
+				</div>
 				<div class="preview-box">
 					<div>Hello</div>
 					<div>你好</div>
@@ -996,7 +996,7 @@
 C:\Windows\System32> <input type="text" oninput="setTimeout(() => {$('#win-terminal>pre')[0].innerHTML+=this.outerHTML;$('#win-terminal>pre>input').focus()}, 0);$('#win-terminal>pre')[0].innerText+=$(this).val();"></pre>
 		</div>
 	</div>
-	<div class="window edge"  onmousedown="focwin('edge')" ontouchstart="focwin('edge')">
+	<div class="window edge" onmousedown="focwin('edge')" ontouchstart="focwin('edge')">
 		<div class="titbar" oncontextmenu="return showcm(event,'titbar','edge')" ondblclick="maxwin('edge')">
 			<img src="icon/edge.png" class="icon"><p style="display: none;">Microsoft Edge</p>
 			<div class="tabs">
@@ -1027,8 +1027,8 @@ C:\Windows\System32> <input type="text" oninput="setTimeout(() => {$('#win-termi
 				<a class="a" onclick="$('#win-edge>iframe.show').attr('src',$('#win-edge>iframe.show').attr('src'))">
 					<i class="bi bi-arrow-clockwise"></i>
 				</a>
-				<input type="text" onkeyup="if(event.keyCode==13){apps.edge.goto($(this).val())}" placeholder="输入网址" class="url">
-				<input type="text" onkeyup="if(event.keyCode==13){apps.edge.rename($(this).val())}" placeholder="重命名" class="rename">
+				<input type="text" onkeyup="if(event.keyCode==13){apps.edge.goto($(this).val())}" placeholder="在必应中搜索，或输入一个网址" class="url" spellcheck="false">
+				<input type="text" onkeyup="if(event.keyCode==13){apps.edge.rename($(this).val())}" placeholder="为标签页命名" class="rename" spellcheck="false">
 				<a class="a">
 					<i class="bi bi-info-circle" win12_title="浏览器只能访问允许嵌套的网站。由于规则限制无法获取网页标题，请右键标签页手动命名"></i>
 				</a>

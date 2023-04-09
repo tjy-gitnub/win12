@@ -562,7 +562,7 @@ C:\Windows\System32> <input type="text" oninput="setTimeout(() => {$('#win-termi
             $('#win-edge').append(`<iframe src="" frameborder="0" class="${apps.edge.tabs[apps.edge.tabs.length - 1][0]}">`)
             apps.edge.settabs();
             apps.edge.tab(apps.edge.tabs.length - 1);
-            $('#win-edge>.tool>input.url').focus()
+            $('#win-edge>.tool>input.url').focus();
         },
         settabs: () => {
             $('.window.edge>.titbar>.tabs')[0].innerHTML = '';
@@ -578,6 +578,9 @@ C:\Windows\System32> <input type="text" oninput="setTimeout(() => {$('#win-termi
             $('#win-edge>iframe.' + apps.edge.tabs[c][0]).remove();
             apps.edge.tabs.splice(c, 1);
             apps.edge.settabs();
+            if (apps.edge.tabs.length == 0) {
+                hidewin('edge');
+            }
             apps.edge.tab(apps.edge.tabs.length - 1);
         },
         tab: c => {
@@ -604,11 +607,21 @@ C:\Windows\System32> <input type="text" oninput="setTimeout(() => {$('#win-termi
             apps.edge.tab(apps.edge.now);
         },
         goto: u => {
-            if (!/^https?:\/\//.test(u)) {
-                u = 'http://' + u;
+            // 检测是否是一个网址
+            if (!/^(((ht|f)tps?):\/\/)?([^!@#$%^&*?.\s-]([^!@#$%^&*?.\s]{0,63}[^!@#$%^&*?.\s])?\.)+[a-z]{2,6}\/?/.test(u)) {
+                // 启用必应搜索
+                $('#win-edge>iframe.show').attr('src', 'https://bing.com/search?q=' + u);
+                apps.edge.rename(u);
             }
-            $('#win-edge>iframe.show').attr('src', u);
-            apps.edge.rename(u);
+            // 检测网址是否带有http头
+            else if (!/^https?:\/\//.test(u)) {
+                $('#win-edge>iframe.show').attr('src', 'http://' + u);
+                apps.edge.rename('http://' + u);
+            }
+            else {
+                $('#win-edge>iframe.show').attr('src', u);
+                apps.edge.rename(u);
+            }
         }
     },
 }
