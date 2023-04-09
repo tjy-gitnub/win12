@@ -408,8 +408,8 @@ let apps = {
                     ht += `<a class="a item act" ondblclick="apps.explorer.goto('${path}/${folder}')" ontouchend="apps.explorer.goto('${path}/${folder}')" oncontextmenu="showcm(event,'explorer.folder','${path}/${folder}');return stop(event);">
                         <img src="apps/icons/explorer/folder.png">${folder}</a>`;
                 }
-                if(tmp['file']){
-                    tmp['file'].forEach(file=>{
+                if (tmp['file']) {
+                    tmp['file'].forEach(file => {
                         ht += `<a class="a item act file" ondblclick="${file['command']}" ontouchend="${file['command']}" oncontextmenu="return stop(event);">
                             <img src="${file['ico']}">${file['name']}</a>`;
                     });
@@ -465,8 +465,8 @@ let apps = {
                     }
                 },
                 'D:': {
-                    folder:{'Microsoft': null},
-                    file:[
+                    folder: { 'Microsoft': null },
+                    file: [
                         { name: '瓶盖结构说明.docx', ico: 'icon/files/word.png', command: '' },
                         { name: '可口可乐瓶盖历史.pptx', ico: 'icon/files/ppt.png', command: '' },
                     ]
@@ -565,7 +565,7 @@ C:\Windows\System32> <input type="text" oninput="setTimeout(() => {$('#win-termi
             $('#win-edge>.tool>input.url').focus();
             document.querySelectorAll("#win-edge > iframe")[apps.edge.tabs.length - 1].onload = function () {
                 this.contentDocument.querySelector('input').onkeyup = function (e) {
-                    if(e.keyCode == 13 && $(this).val() != ''){
+                    if (e.keyCode == 13 && $(this).val() != '') {
                         apps.edge.goto($(this).val())
                     }
                 }
