@@ -122,7 +122,7 @@
     background-color: var(--hover-half);
     border-radius: 50px;
     border: 1.5px solid transparent;
-    padding: 3px 5px 4px 8px;
+    padding: 3px 14px 4px 10px;
     outline: medium;
     color: var(--text);
     transition: 100ms,border 0s;

@@ -408,8 +408,8 @@ let apps = {
                     ht += `<a class="a item act" ondblclick="apps.explorer.goto('${path}/${folder}')" ontouchend="apps.explorer.goto('${path}/${folder}')" oncontextmenu="showcm(event,'explorer.folder','${path}/${folder}');return stop(event);">
                         <img src="apps/icons/explorer/folder.png">${folder}</a>`;
                 }
-                if(tmp['file']){
-                    tmp['file'].forEach(file=>{
+                if (tmp['file']) {
+                    tmp['file'].forEach(file => {
                         ht += `<a class="a item act file" ondblclick="${file['command']}" ontouchend="${file['command']}" oncontextmenu="return stop(event);">
                             <img src="${file['ico']}">${file['name']}</a>`;
                     });
@@ -465,8 +465,8 @@ let apps = {
                     }
                 },
                 'D:': {
-                    folder:{'Microsoft': null},
-                    file:[
+                    folder: { 'Microsoft': null },
+                    file: [
                         { name: '瓶盖结构说明.docx', ico: 'icon/files/word.png', command: '' },
                         { name: '可口可乐瓶盖历史.pptx', ico: 'icon/files/ppt.png', command: '' },
                     ]
@@ -559,10 +559,17 @@ C:\Windows\System32> <input type="text" oninput="setTimeout(() => {$('#win-termi
         len: 0,
         newtab: () => {
             apps.edge.tabs.push([apps.edge.len++, '新建标签页']);
-            $('#win-edge').append(`<iframe src="" frameborder="0" class="${apps.edge.tabs[apps.edge.tabs.length - 1][0]}">`)
+            $('#win-edge').append(`<iframe src="mainpage.html" frameborder="0" class="${apps.edge.tabs[apps.edge.tabs.length - 1][0]}">`)
             apps.edge.settabs();
             apps.edge.tab(apps.edge.tabs.length - 1);
-            $('#win-edge>.tool>input.url').focus()
+            $('#win-edge>.tool>input.url').focus();
+            document.querySelectorAll("#win-edge > iframe")[apps.edge.tabs.length - 1].onload = function () {
+                this.contentDocument.querySelector('input').onkeyup = function (e) {
+                    if (e.keyCode == 13 && $(this).val() != '') {
+                        apps.edge.goto($(this).val())
+                    }
+                }
+            }
         },
         settabs: () => {
             $('.window.edge>.titbar>.tabs')[0].innerHTML = '';
@@ -578,13 +585,16 @@ C:\Windows\System32> <input type="text" oninput="setTimeout(() => {$('#win-termi
             $('#win-edge>iframe.' + apps.edge.tabs[c][0]).remove();
             apps.edge.tabs.splice(c, 1);
             apps.edge.settabs();
+            if (apps.edge.tabs.length == 0) {
+                hidewin('edge');
+            }
             apps.edge.tab(apps.edge.tabs.length - 1);
         },
         tab: c => {
             console.log(c, apps.edge.tabs[c][0])
             $('#win-edge>iframe.show').removeClass('show');
             $('#win-edge>iframe.' + apps.edge.tabs[c][0]).addClass('show');
-            $('#win-edge>.tool>input.url').val($('#win-edge>iframe.' + apps.edge.tabs[c][0]).attr('src'));
+            $('#win-edge>.tool>input.url').val($('#win-edge>iframe.' + apps.edge.tabs[c][0]).attr('src') == 'mainpage.html' ? '' : $('#win-edge>iframe.' + apps.edge.tabs[c][0]).attr('src'));
             $('#win-edge>.tool>input.rename').removeClass('show');
             apps.edge.now = c;
             $('.window.edge>.titbar>.tabs>.tab.show').removeClass('show');
@@ -604,14 +614,25 @@ C:\Windows\System32> <input type="text" oninput="setTimeout(() => {$('#win-termi
             apps.edge.tab(apps.edge.now);
         },
         goto: u => {
-            if (!/^https?:\/\//.test(u)) {
-                u = 'http://' + u;
+            // 检测是否是一个网址
+            if (!/^(((ht|f)tps?):\/\/)?([^!@#$%^&*?.\s-]([^!@#$%^&*?.\s]{0,63}[^!@#$%^&*?.\s])?\.)+[a-z]{2,6}\/?/.test(u)) {
+                // 启用必应搜索
+                $('#win-edge>iframe.show').attr('src', 'https://bing.com/search?q=' + u);
+                apps.edge.rename(u);
             }
-            $('#win-edge>iframe.show').attr('src', u);
-            apps.edge.rename(u);
+            // 检测网址是否带有http头
+            else if (!/^https?:\/\//.test(u)) {
+                $('#win-edge>iframe.show').attr('src', 'http://' + u);
+                apps.edge.rename('http://' + u);
+            }
+            else {
+                $('#win-edge>iframe.show').attr('src', u);
+                apps.edge.rename(u);
+            }
         }
     },
 }
+
 // 小组件
 let widgets = {
     widgets: {
