@@ -486,6 +486,23 @@ let apps = {
         init: () => {
             $('#win-about>.about').addClass('show');
             $('#win-about>.update').removeClass('show');
+            if($('#contri').length>1)return;
+            apps.about.get();
+        },
+        get:()=>{
+            $('#contri').html(`<loading><svg width="30px" height="30px" viewBox="0 0 16 16">
+            <circle cx="8px" cy="8px" r="7px" style="stroke:#7f7f7f50;fill:none;stroke-width:3px;"></circle>
+            <circle cx="8px" cy="8px" r="7px" style="stroke:#2983cc;stroke-width:3px;"></circle></svg></loading>`)
+            // 实时获取项目贡献者
+            $.get('https://api.github.com/repos/tjy-gitnub/win12/contributors').then(cs=>{
+                setTimeout(() => {
+                    $('#contri').html('');
+                    cs.forEach(c => {
+                        $('#contri').append(`<a class="a" onclick="window.open('${c['html_url']}','_blank');"><p class="name">${c['login']}</p><p class="cbs">贡献:<span class="num">${c['contributions']}</span></p></a>`)
+                    });
+                    $('#contri').append(`<a class="button" onclick="apps.about.get()"><i class="bi bi-arrow-clockwise"></i> 刷新</a>`)
+                }, 200);
+            });
         }
     },
     notepad: {
@@ -582,13 +599,20 @@ C:\Windows\System32> <input type="text" oninput="setTimeout(() => {$('#win-termi
 
         },
         close: c => {
-            $('#win-edge>iframe.' + apps.edge.tabs[c][0]).remove();
-            apps.edge.tabs.splice(c, 1);
-            apps.edge.settabs();
-            if (apps.edge.tabs.length == 0) {
-                hidewin('edge');
+            $('.window.edge>.titbar>.tabs>.tab.'+apps.edge.tabs[c][0]).addClass('close');
+            for (let i = c+1; i < apps.edge.tabs.length; i++) {
+                const _id = apps.edge.tabs[i][0];
+                $('.window.edge>.titbar>.tabs>.tab.'+_id).addClass('left');
             }
-            apps.edge.tab(apps.edge.tabs.length - 1);
+            setTimeout(() => {
+                $('#win-edge>iframe.' + apps.edge.tabs[c][0]).remove();
+                apps.edge.tabs.splice(c, 1);
+                apps.edge.settabs();
+                if (apps.edge.tabs.length == 0) {
+                    hidewin('edge');
+                }
+                apps.edge.tab(apps.edge.tabs.length - 1);
+            }, 200);
         },
         tab: c => {
             console.log(c, apps.edge.tabs[c][0])
@@ -614,7 +638,7 @@ C:\Windows\System32> <input type="text" oninput="setTimeout(() => {$('#win-termi
             apps.edge.tab(apps.edge.now);
         },
         goto: u => {
-            // 检测是否是一个网址
+            // 6
             if (!/^(((ht|f)tps?):\/\/)?([^!@#$%^&*?.\s-]([^!@#$%^&*?.\s]{0,63}[^!@#$%^&*?.\s])?\.)+[a-z]{2,6}\/?/.test(u)) {
                 // 启用必应搜索
                 $('#win-edge>iframe.show').attr('src', 'https://bing.com/search?q=' + u);
@@ -702,7 +726,7 @@ function openapp(name) {
     apps[name].init();
     setTimeout(() => {
         $('.window.' + name).removeClass('load');
-    }, 1000);
+    }, 500);
 }
 // 窗口操作
 function showwin(name) {

@@ -1,3 +1,7 @@
+.window.edge.max>#win-edge{
+    padding-bottom: 55px;
+}
+
 .window.edge>.titbar>.tabs{
     display: flex;
     flex-grow: 1!important;
@@ -35,6 +39,15 @@
 .window.edge>.titbar>.tabs>.tab.show{
     background: var(--card) !important;
     box-shadow: 0 1px 2px var(--sd);
+}
+.window.edge>.titbar>.tabs>.tab.close{
+    transform: translateY(calc(100% + 5px));
+    opacity: 0.6;
+    transition: 150ms;
+}
+.window.edge>.titbar>.tabs>.tab.left{
+    transform: translateX(-100%);
+    transition: 150ms;
 }
 
 .window.edge>.titbar>.tabs>.tab:hover{
@@ -95,6 +108,7 @@
     display: flex;
     flex-direction: column;
     height: calc(100% - 35px);
+    transition: 50ms;
 }
 
 #win-edge>.tool{

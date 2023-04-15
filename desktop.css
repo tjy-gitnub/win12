@@ -937,6 +937,7 @@ input-before {
     background-color: var(--bggrey);
     font-size: 80px;
     box-shadow: 3px 3px 6px var(--sd);
+    transition: 200ms 100ms;
 }
 
 #s-m-user>svg {

@@ -41,19 +41,18 @@
 
 <body>
 	<div id="loadback" style="background-color:#000;width:100%;height:100%;z-index:105;position:absolute;transition:200ms;">
-		<style>#loadback.hide{opacity:0;}
-			loading>svg>circle:first-child{stroke:#fff;fill:none;stroke-width:2px;stroke-linecap:round;
-				animation:spin-infinite 2s linear 0s infinite normal none running;transform-origin:50% 50%;
-				transition: all .2s ease-in-out 0s;}loading>svg>circle:last-child{fill:#00000000;}
+		<style>#loadback.hide{opacity:0;}loading>svg>circle:last-child{stroke:#fff;fill:none;stroke-width:2px;
+			stroke-linecap:round;animation:spin-infinite 2s linear 0s infinite normal none running;
+			transform-origin:50% 50%;transition: all .2s ease-in-out 0s;}
 			loading>svg{background-color: #00000000;border-radius: 50%;}
 			@keyframes spin-infinite {0%{stroke-dasharray:.01px,43.97px;transform:rotate(0deg)}
 				50%{stroke-dasharray:21.99px,21.99px;transform:rotate(450deg)}
 				to{stroke-dasharray:.01px,43.97px;transform:rotate(3turn)}}</style>
 		<svg id="loadbacksvg" viewbox="0,0,306,305" style="transition: 1s;opacity: 0;position: absolute;left: calc(50% - 125px);top:20%;"
 			width="250" height="250" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><defs><clipPath id="clip0"><rect x="897" y="208" width="306" height="305"/></clipPath><linearGradient x1="885.371" y1="221.859" x2="1214.63" y2="498.141" gradientUnits="userSpaceOnUse" spreadMethod="reflect" id="fill1"><stop offset="0" stop-color="#A964C8"/><stop offset="0.18" stop-color="#A964C8"/><stop offset="0.36" stop-color="#A266E4"/><stop offset="0.73" stop-color="#346ED8"/><stop offset="0.91" stop-color="#2D8AD5"/><stop offset="1" stop-color="#2D8AD5"/></linearGradient><linearGradient x1="317.629" y1="13.8595" x2="-11.6295" y2="290.141" gradientUnits="userSpaceOnUse" spreadMethod="reflect" id="fill2"><stop offset="0" stop-color="#A964C8"/><stop offset="0.18" stop-color="#A964C8"/><stop offset="0.36" stop-color="#A266E4"/><stop offset="0.73" stop-color="#346ED8"/><stop offset="0.91" stop-color="#2D8AD5"/><stop offset="1" stop-color="#2D8AD5"/></linearGradient><linearGradient x1="885.371" y1="221.859" x2="1214.63" y2="498.141" gradientUnits="userSpaceOnUse" spreadMethod="reflect" id="fill3"><stop offset="0" stop-color="#A964C8"/><stop offset="0.18" stop-color="#A964C8"/><stop offset="0.36" stop-color="#A266E4"/><stop offset="0.73" stop-color="#346ED8"/><stop offset="0.91" stop-color="#2D8AD5"/><stop offset="1" stop-color="#2D8AD5"/></linearGradient><linearGradient x1="-11.6295" y1="290.141" x2="317.629" y2="13.8595" gradientUnits="userSpaceOnUse" spreadMethod="reflect" id="fill4"><stop offset="0" stop-color="#A964C8"/><stop offset="0.18" stop-color="#A964C8"/><stop offset="0.36" stop-color="#A266E4"/><stop offset="0.73" stop-color="#346ED8"/><stop offset="0.91" stop-color="#2D8AD5"/><stop offset="1" stop-color="#2D8AD5"/></linearGradient></defs><g clip-path="url(#clip0)" transform="translate(-897 -208)"><path d="M936.813 208 1035.2 208 1035.2 208 1036 340.407C1011.65 331.352 986.507 325.493 963.762 325.226 941.508 325.759 919.254 339.075 897 346L897 247.755C897 225.799 914.825 208 936.813 208Z" fill="url(#fill1)" fill-rule="evenodd"/><path d="M40.0431 0 139 0 139 0 139 140.549C115.82 150.681 92.6407 159.212 69.4611 158.946 45.5026 160.012 23.1537 145.082 0 138.15L0 39.7981C0 17.8182 17.9278 0 40.0431 0Z" fill="url(#fill2)" fill-rule="evenodd" transform="matrix(-1 0 0 1 1203 208)"/><path d="M1163.19 512 1064.8 512 1064.8 512 1064 379.593C1088.35 388.648 1113.49 394.507 1136.24 394.774 1158.49 394.241 1180.75 380.925 1203 374L1203 472.245C1203 494.201 1185.18 512 1163.19 512Z" fill="url(#fill3)" fill-rule="evenodd"/><path d="M39.755 0 138 0 138 0 138 140.549C114.987 150.681 91.9742 159.212 68.9614 158.946 45.1752 160.012 22.9872 145.082 0 138.15L0 39.7981C0 17.8182 17.7989 0 39.755 0Z" fill="url(#fill4)" fill-rule="evenodd" transform="matrix(1 -1.22465e-16 -1.22465e-16 -1 897 512)"/></g></svg>
-		<loading id="loadbackloading" style="transition:1s;opacity: 0;">
-			<svg style="position: absolute;left: calc(50% - 25px);top:72%;" width="50px" height="50px" viewBox="0 0 16 16">
-				<circle cx="8px" cy="8px" r="7px"></circle><circle cx="8px" cy="8px" r="6px"></circle></svg>
+		<loading id="loadbackloading" style="transition:1s;opacity:0;">
+			<svg style="position:absolute;left:calc(50% - 25px);top:72%;" width="50px" height="50px" viewBox="0 0 16 16">
+				<circle cx="8px" cy="8px" r="7px"></circle></svg>
 		<p id="loadbackupdate" style="position:absolute;top:calc(72% + 55px);left:0;width:100%;text-align:center;color:#fff;font-size: 25px;display:none;">正在更新</p>
 		</loading><script>setTimeout(() => {document.getElementById('loadbacksvg').style.opacity=1;
 		document.getElementById('loadbackloading').style.opacity=1;}, 100);</script>
@@ -300,7 +299,7 @@
 					<a class="a" style="margin: 0 0 0 80px;font-size: 17px;color: #9dd0fb;">详细信息 ></a>
 				</div>
 				<div class="card" style="grid-column: 1/4;grid-row: 7/9;background:linear-gradient(#00000000,#111 90%),url(img/wsm.png) left;background-size: 120%;">
-					<p class="tit" style="margin: 100px 0 0px 10px;color: #fff;">微软发布 Windows Subsystem for MocOS</p>
+					<p class="tit" style="margin: 100px 0 0px 10px;color: #fff;">微软发布 Windows Subsystem for MacOS</p>
 					<a class="a" style="margin: 0 0 0 170px;font-size: 17px;color: #9dd0fb;">详细信息 ></a>
 				</div>
 				<div class="card" style="grid-column: 3/6;grid-row: 5/7;background:linear-gradient(#00000000 0 30%,var(--bg) 70%),url(img/mc.jpg) bottom;background-size: cover;">
@@ -764,6 +763,16 @@
 					<p>&emsp;&emsp;由于这是一个开源项目，你可以在任何媒介以任何形式复制、发行本作品。</p>
 					<p>&emsp;&emsp;你还可以对该项目进行修改、转换或以本作品为基础进行创作。</p>
 					<p>&emsp;&emsp;但您必须给出适当的署名，<strong>您必须提供创作者姓名、作品链接</strong>，同时标明是否对此作了修改。您可以用任何合理的方式来署名，但是不得以<strong>任何方式</strong>暗示许可方认可您或您的使用。</p>
+					<h2 class="tit"><span></span>贡献者</h2>
+					<p>感谢所有项目的贡献者 (实时数据(我也不知道这个贡献值是怎么算的))</p>
+					<div id="contri">
+						<loading>
+							<svg width="30px" height="30px" viewBox="0 0 16 16">
+								<circle cx="8px" cy="8px" r="7px" style="stroke:#7f7f7f50;fill:none;stroke-width:3px;"></circle>
+								<circle cx="8px" cy="8px" r="7px" style="stroke:#2983cc;stroke-width:3px;"></circle>
+							</svg>
+						</loading>
+					</div>
 					<h2 class="tit"><span></span>其它</h2>
 					<p>&emsp;&emsp;此项目基于目前 Windows 版本创造，与微软的 Windows 12 正式版本不一致。</p>
 					<p>&emsp;&emsp;此项目绝不附属于微软,且不应与微软操作系统或产品混淆, 这也不是 Windows365 cloud PC</p>
@@ -773,6 +782,22 @@
 			<div class="cnt update">
 				<h1 class="tit"><span></span>更新记录</h1>
 				<div style="margin-left: 20px;">
+					<details><summary><span>v5.0.2</span> 贡献与Edge标签页</summary><p>
+						&emsp;&emsp;-贡献:关于应用新增贡献者数据<br>
+						&emsp;&emsp;-新标签页:对深色模式的适配，较高安全限制浏览器的适配<br>
+						&emsp;&emsp;-标签页:新增标签页关闭动画<br>
+						&emsp;&emsp;-兼容性:系统控件的防误触<br>
+						&emsp;&emsp;-其它:细节优化和修复</p>
+					</details>
+					<details><summary><span>v5.0.1</span> 漏洞修复</summary><p>
+						<strong>更新由 @User782Tec 提供</strong><br>
+						&emsp;&emsp;-修复了 issues #67中的问题<br>
+						&emsp;&emsp;-修复了关闭所有Edge浏览器中的标签页后仍保留Edge浏览器的问题<br>
+						&emsp;&emsp;-完善Edge浏览器内输入内容的正则表达式匹配<br>
+						&emsp;&emsp;-略微修改Edge浏览器中输入框<br>
+						&emsp;&emsp;-新标签页<br>
+						&emsp;&emsp;-细节优化和修复</p>
+					</details>
 					<details><summary><span>v5.0.0</span> 新增Edge</summary><p>
 						<strong>🎉🎉项目在Github上突破✨100✨stars✨啦！🎊🎈</strong><br>
 						&emsp;&emsp;-新增:Microsoft Edge应用(可以在Edge应用中提出反馈与建议，谢谢)<br>
@@ -785,7 +810,6 @@
 						&emsp;&emsp;-其它:细节优化和修复</p>
 					</details>
 					<details><summary><span>v4.3.0</span> 其实我想发布成5.0版的</summary><p>
-						<span>欢迎(尽量在issues中,当然也可以在下面版本中链接里)提出问题和建议</span><br>
 						&emsp;&emsp;-搜索菜单重新设计<br>
 						&emsp;&emsp;-列表悬停立体效果(全局,深色模式可能会明显一点,灵感源于win11,大家可以帮忙找一个浅色模式的边框颜色)<br>
 						&emsp;&emsp;-新增鼠标悬停提示框(全局)<br>
@@ -1039,7 +1063,7 @@ C:\Windows\System32> <input type="text" oninput="setTimeout(() => {$('#win-termi
 					<i class="bi bi-code-slash"></i>
 				</a>
 			</div>
-			<iframe src="mainpage.html" frameborder="0" class="0 show">
+			<iframe frameborder="0" class="0 show">
 			</iframe>
 		</div>
 	</div>
