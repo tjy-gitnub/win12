@@ -592,11 +592,53 @@ C:\Windows\System32> <input type="text" oninput="setTimeout(() => {$('#win-termi
             $('.window.edge>.titbar>.tabs')[0].innerHTML = '';
             for (let i = 0; i < apps.edge.tabs.length; i++) {
                 const t = apps.edge.tabs[i];
-                $('.window.edge>.titbar>.tabs')[0].innerHTML += `<div class="tab ${t[0]}" onclick="apps.edge.tab(${i})" oncontextmenu="showcm(event,'edge.tab',${i});stop(event);return false"><p>${t[1]}</p><span class="clbtn bi bi-x" onclick="apps.edge.close(${i})"></span></div>`;
+                $('.window.edge>.titbar>.tabs')[0].innerHTML += `<div class="tab ${t[0]}" onclick="apps.edge.tab(${i})" oncontextmenu="showcm(event,'edge.tab',${i});stop(event);return false" onmousedown="apps.edge.moving(this,event,${i});stop(event);"><p>${t[1]}</p><span class="clbtn bi bi-x" onclick="apps.edge.close(${i})"></span></div>`;
             }
             $('.window.edge>.titbar>.tabs')[0].innerHTML += '<a class="new bi bi-plus" onclick="apps.edge.newtab();"></a>';
             // $('.window.edge>.titbar>.tabs>.tab.'+apps.edge.tabs[apps.edge.now][0]).addClass('show');
 
+        },
+        moving: (t,ev,np)=>{
+            let deltaLeft=ev.clientX;
+            function move_f(e){
+                $(this).css('transform',`translateX(${e.clientX-deltaLeft}px)`);
+                let pos=Math.floor((this.offsetLeft+e.clientX-deltaLeft-36+(this.offsetWidth/2))/this.offsetWidth);
+                $('.window.edge>.titbar>.tabs>.tab.left').removeClass('left');
+                $('.window.edge>.titbar>.tabs>.tab.right').removeClass('right');
+                if(np<pos){
+                    for (let i = np+1; i <= pos; i++) {
+                        const ta = apps.edge.tabs[i];
+                        $('.window.edge>.titbar>.tabs>.tab.'+ta[0]).addClass('left');
+                    }
+                }else if(np>pos){
+                    for (let i = pos; i < np; i++) {
+                        const ta = apps.edge.tabs[i];
+                        $('.window.edge>.titbar>.tabs>.tab.'+ta[0]).addClass('right');
+                    }
+                }
+            };
+            page.onmousemove=move_f.bind(t);
+            function up_f(e){
+                page.onmousemove=null;
+                page.onmouseup=null;
+                console.log(this,this.offsetWidth);
+                let pos=Math.floor((this.offsetLeft+e.clientX-deltaLeft-36+(this.offsetWidth/2))/this.offsetWidth);
+                console.log(pos,np);
+                if(pos==np || pos>apps.edge.tabs.length || pos<0){
+                    $(this).css('transform','none');
+                    $(this).removeClass('moving');
+                    $('.window.edge>.titbar>.tabs>.tab.left').removeClass('left');
+                    $('.window.edge>.titbar>.tabs>.tab.right').removeClass('right');
+                    return;
+                }else{
+                    apps.edge.tabs.splice(np<pos?pos+1:pos,0,apps.edge.tabs[np]);
+                    apps.edge.tabs.splice(np<pos?np:(np+1),1);
+                    apps.edge.settabs();
+                    apps.edge.tab(pos);
+                }
+            }
+            page.onmouseup=up_f.bind(t);
+            $(t).addClass('moving');
         },
         close: c => {
             $('.window.edge>.titbar>.tabs>.tab.'+apps.edge.tabs[c][0]).addClass('close');
@@ -886,8 +928,18 @@ function toggletheme() {
         setData('theme', 'light');
     }
 }
+// 云母效果
+let mica_difx=0,mica_dify=0;
+window.addEventListener('resize',e=>{
+    let b=$('body')[0];
+    console.log(b.offsetHeight,b.offsetWidth);
+    $(':root').css('--mica-size',`${Math.max(b.offsetHeight,b.offsetWidth)}px`);
+    mica_difx=(b.offsetHeight<b.offsetWidth)?0:(b.offsetWidth-b.offsetHeight)/2;
+    mica_dify=(b.offsetHeight<b.offsetWidth)?(b.offsetHeight-b.offsetWidth)/2:0;
+})
+
 // 拖拽窗口
-const page = document.getElementsByTagName('html')[0];
+const page = document.getElementsByTagName('body')[0];
 const titbars = document.querySelectorAll('.window>.titbar');
 const wins = document.querySelectorAll('.window');
 let deltaLeft = 0, deltaTop = 0, fil = false, filty = 'none', bfLeft = 0, bfTop = 0;
@@ -901,9 +953,9 @@ for (let i = 0; i < wins.length; i++) {
         } else {
             cx = e.clientX, cy = e.clientY;
         }
-        this.setAttribute('style', `left:${cx - deltaLeft}px;top:${cy - deltaTop}px;`);
+        $(this).css('cssText', `left:${cx - deltaLeft}px;top:${cy - deltaTop}px;`);
         if (cy <= 0) {
-            this.setAttribute('style', `left:${cx - deltaLeft}px;top:${-deltaTop}px`);
+            $(this).css('cssText', `left:${cx - deltaLeft}px;top:${-deltaTop}px`);
             if (this.classList[1] != 'calc' && this.classList[1] != 'notepad-fonts') {
                 $('#window-fill').addClass('top');
                 setTimeout(() => {
@@ -913,7 +965,7 @@ for (let i = 0; i < wins.length; i++) {
                 filty = 'top';
             }
         } else if (cx <= 0) {
-            this.setAttribute('style', `left:${-deltaLeft}px;top:${cy - deltaTop}px`);
+            $(this).css('cssText', `left:${-deltaLeft}px;top:${cy - deltaTop}px`);
             if (this.classList[1] != 'calc' && this.classList[1] != 'notepad-fonts') {
                 $('#window-fill').addClass('left');
                 setTimeout(() => {
@@ -923,7 +975,7 @@ for (let i = 0; i < wins.length; i++) {
                 filty = 'left';
             }
         } else if (cx >= document.body.offsetWidth - 2) {
-            this.setAttribute('style', `left:calc(100% - ${deltaLeft}px);top:${cy - deltaTop}px`);
+            $(this).css('cssText', `left:calc(100% - ${deltaLeft}px);top:${cy - deltaTop}px`);
             if (this.classList[1] != 'calc' && this.classList[1] != 'notepad-fonts') {
                 $('#window-fill').addClass('right');
                 setTimeout(() => {
@@ -945,10 +997,13 @@ for (let i = 0; i < wins.length; i++) {
             deltaLeft = deltaLeft / (this.offsetWidth - (45 * 3)) * ((0.7 * document.body.offsetWidth) - (45 * 3));
             maxwin(this.classList[1], false);
             // 窗口控制按钮宽 45px
-            this.setAttribute('style', `left:${cx - deltaLeft}px;top:${cy - deltaTop}px;`);
+            $(this).css('cssText', `left:${cx - deltaLeft}px;top:${cy - deltaTop}px;`);
             $('.window.' + this.classList[1] + '>.titbar>div>.wbtg.max').html('<i class="bi bi-app"></i>');
 
             $(this).addClass('notrans');
+        }
+        if($(this).hasClass('mica')){
+            $(this).css('--mica-pos', `${mica_difx-cx + deltaLeft}px ${mica_dify-cy + deltaTop}px`);
         }
     }
     titbar.addEventListener('mousedown', (e) => {

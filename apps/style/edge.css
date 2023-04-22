@@ -41,13 +41,21 @@
     box-shadow: 0 1px 2px var(--sd);
 }
 .window.edge>.titbar>.tabs>.tab.close{
-    transform: translateY(calc(100% + 5px));
+    transform: translateY(calc(100% + 5px)) !important;
     opacity: 0.6;
     transition: 150ms;
 }
 .window.edge>.titbar>.tabs>.tab.left{
-    transform: translateX(-100%);
+    transform: translateX(-100%) !important;
     transition: 150ms;
+}
+.window.edge>.titbar>.tabs>.tab.right{
+    transform: translateX(100%) !important;
+    transition: 150ms;
+}
+.window.edge>.titbar>.tabs>.tab.moving{
+    background: var(--unfoc)!important;
+    z-index: 1;
 }
 
 .window.edge>.titbar>.tabs>.tab:hover{

@@ -1972,6 +1972,40 @@ list>span.focs.cl{
     box-shadow: 3px 3px 20px 3px var(--sd);
 }
 
+.window.foc.mica{
+    /* backdrop-filter: blur(100px) saturate(2); */
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    filter: none;
+    background: var(--unfoc);
+}
+
+/* .window.mica.foc .micaalt, */
+.window.mica.foc{
+    background-image: linear-gradient(var(--bg70),var(--bg70)),url(bg-dark-mica.svg);
+    background-size: cover,var(--mica-size);
+    background-position: 0 0,var(--mica-pos);
+    background-clip: padding-box,padding-box;
+    background-origin: padding-box,padding-box;
+    background-repeat: no-repeat;
+}
+
+/* .window.foc.mica::before {
+    display: block;
+    content: '';
+    width: 100%;
+    height: 150px;
+    position: absolute;
+    z-index: -1;
+    background-image: linear-gradient(#00000000 0,var(--bg70) 60px,var(--unfoc) 150px),url(bg-dark-mica.svg);
+    background-size: cover,var(--mica-size);
+    background-position: 0 0,var(--mica-pos);
+    background-clip: padding-box,padding-box;
+    background-origin: padding-box,padding-box;
+    background-repeat: no-repeat;
+    filter: blur(10px);
+} */
+
 .window.min {
     top: calc(95%) !important;
     left: 15% !important;

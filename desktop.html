@@ -614,9 +614,14 @@
 								<a class="a checkbox checked" onclick="$(this).toggleClass('checked');$(':root').toggleClass('nosd')"></a>
 							</div>
 						</div>
-						<div class="border-radius"><icon></icon><div><p>多窗口透明</p><p>为所有窗口开启透明效果，而不是仅用于焦点窗口(开启后窗口的拖拽操作可能卡顿)</p></div>
+						<div class="border-radius"><icon></icon><div><p>多窗口透明</p><p>为所有窗口开启透明效果，而不是仅用于焦点窗口 <span class="a jump" win12_title="开启后将占用大量GPU,可能造成卡顿">详细</span></p></div>
 							<div class="alr">
 								<a class="a checkbox" onclick="$(this).toggleClass('checked');$(':root').toggleClass('moreblur')"></a>
+							</div>
+						</div>
+						<div class="border-radius"><icon></icon><div><p>云母</p><p>云母效果(试验，仅深色) <span class="a jump" win12_title="试验阶段,云母效果使用更多CPU,亚克力效果使用更多GPU,请依硬件配置自行选择">详细</span> <span class="a jump" win12_title="调整浏览器大小触发resize事件，拖动窗口标题栏触发mousemove事件即可使用">用法</span></p></div>
+							<div class="alr">
+								<a class="a checkbox" onclick="$(this).toggleClass('checked');$('.window').toggleClass('mica')"></a>
 							</div>
 						</div>
 					</div>
@@ -665,7 +670,7 @@
 				</div>
 			</div>
 			<div class="main">
-				<div class="tool">
+				<div class="tool micaalt">
 					<a class="a b t act"><img src="apps/icons/explorer/tool-new.png">新建</a><div class="hr"></div>
 					<a class="a b act"><img src="apps/icons/explorer/tool-cut.png"></a>
 					<a class="a b act"><img src="apps/icons/explorer/tool-copy.png"></a>
@@ -782,6 +787,12 @@
 			<div class="cnt update">
 				<h1 class="tit"><span></span>更新记录</h1>
 				<div style="margin-left: 20px;">
+					<details><summary><span>v5.1.0</span> 标签页拖动排序与云母效果</summary><p>
+						&emsp;&emsp;-标签页:可拖动标签页排序(仅桌面端)<br>
+						&emsp;&emsp;-云母效果(试验):在设置中启用并按"用法"操作<br>
+						&emsp;&emsp;-其它:细节优化和修复</p>
+						&emsp;&emsp;-提示:在github项目页的一些<a onclick="window.open('https://github.com/tjy-gitnub/win12','_blank');" win12_title="https://github.com/tjy-gitnub/win12" class="jump">公告</a></p>
+					</details>
 					<details><summary><span>v5.0.2</span> 贡献与Edge标签页</summary><p>
 						&emsp;&emsp;-贡献:关于应用新增贡献者数据<br>
 						&emsp;&emsp;-新标签页:对深色模式的适配，较高安全限制浏览器的适配<br>
