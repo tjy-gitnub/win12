@@ -92,3 +92,43 @@
 #win-about>.update>div>details>p{
     margin-left: 10px;
 }
+
+#contri{
+    display: flex;
+    flex-wrap: wrap;
+}
+
+#contri>.a{
+    margin: 3px;
+    background: var(--card);
+    box-shadow: 0 1px 1px 1px var(--hr);
+    border-radius: 10px;
+    width: 110px;
+    height: 70px;
+    text-align: center;
+    padding-top: 10px;
+    font-size: 13px;
+    transition: 50ms;
+}
+
+#contri>.a:hover{
+    background: var(--hover);
+}
+
+#contri>.a:active{
+    opacity: 0.6;
+}
+
+#contri>.a>.name{
+    font-size: 17px;
+}
+
+#contri>.a>.cbs>.num{
+    font-size: 15px;
+    font-weight: 550;
+}
+
+#contri>.button{
+    height: max-content;
+    margin: 10px 0 0 10px;
+}
