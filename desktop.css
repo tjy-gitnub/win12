@@ -642,6 +642,36 @@ list>a:active,
     margin-top: -9px;
 }
 
+#loadback.hide {
+    opacity: 0;
+}
+
+.reloading {
+    display: flex;
+    align-items: center;
+    width: 27px;
+    justify-content: flex-end;
+}
+
+.reloading>svg>circle:first-child {
+    stroke: blue;
+    fill: none;
+    stroke-width: 2px;
+    stroke-linecap: round;
+    animation: spin-infinite 2s linear 0s infinite normal none running;
+    transform-origin: 50% 50%;
+    transition: all .2s ease-in-out 0s;
+}
+
+.reloading>svg>circle:last-child {
+    fill: #00000000;
+}
+
+.reloading>svg {
+    background-color: #00000000;
+    border-radius: 50%;
+}
+
 #start-menu {
     display: none;
     position: fixed;
@@ -1572,7 +1602,7 @@ input-before {
     /* border-image: linear-gradient(120deg, var(--theme-1), var(--theme-2)) 4; */
     border-radius: 5px;
     background-color: var(--hover-half);
-    display: block;
+    display: none;
 }
 
 .input {

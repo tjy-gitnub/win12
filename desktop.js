@@ -364,6 +364,30 @@ let apps = {
             $('#win-setting>.menu>list>a.' + name).addClass('check');
         }
     },
+    webapps: {
+        apps: ['vscode', 'bilibili'],
+        init: () => {
+            for (const app of apps.webapps.apps) {
+                apps[app].load();
+            }
+        }
+    },
+    vscode: {
+        init: () => {
+            return null;
+        },
+        load: () => {
+            document.querySelector('#win-vscode').insertAdjacentHTML('afterbegin', '<iframe src="https://github1s.com/" frameborder="0" style="width: 100%; height: 100%;" loading="lazy"></iframe>')
+        }
+    },
+    bilibili: {
+        init: () => {
+            return null;
+        },
+        load: () => {
+            document.querySelector('#win-bilibili').insertAdjacentHTML('afterbegin', '<iframe src="https://bilibili.com/" frameborder="0" style="width: 100%; height: 100%;" loading="lazy"></iframe>')
+        }
+    },
     explorer: {
         init: () => {
             apps.explorer.reset();
@@ -574,6 +598,7 @@ C:\Windows\System32> <input type="text" oninput="setTimeout(() => {$('#win-termi
         tabs: [],
         now: null,
         len: 0,
+        reloadElt: '<div class="reloading"><svg width="20px" height="20px" viewBox="0 0 16 16"><circle cx="8px" cy="8px" r="7px"></circle><circle cx="8px" cy="8px" r="6px"></circle></svg></div>',
         newtab: () => {
             apps.edge.tabs.push([apps.edge.len++, '新建标签页']);
             $('#win-edge').append(`<iframe src="mainpage.html" frameborder="0" class="${apps.edge.tabs[apps.edge.tabs.length - 1][0]}">`)
@@ -583,7 +608,13 @@ C:\Windows\System32> <input type="text" oninput="setTimeout(() => {$('#win-termi
             document.querySelectorAll("#win-edge > iframe")[apps.edge.tabs.length - 1].onload = function () {
                 this.contentDocument.querySelector('input').onkeyup = function (e) {
                     if (e.keyCode == 13 && $(this).val() != '') {
-                        apps.edge.goto($(this).val())
+                        console.log(apps);
+                        apps.edge.goto($(this).val());
+                    }
+                }
+                this.contentDocument.querySelector('svg').onclick = () => {
+                    if ($(this.contentDocument.querySelector('input')).val() != '') {
+                        apps.edge.goto($(this.contentDocument.querySelector('input')).val())
                     }
                 }
             }
@@ -596,7 +627,6 @@ C:\Windows\System32> <input type="text" oninput="setTimeout(() => {$('#win-termi
             }
             $('.window.edge>.titbar>.tabs')[0].innerHTML += '<a class="new bi bi-plus" onclick="apps.edge.newtab();"></a>';
             // $('.window.edge>.titbar>.tabs>.tab.'+apps.edge.tabs[apps.edge.now][0]).addClass('show');
-
         },
         moving: (t,ev,np)=>{
             let deltaLeft=ev.clientX;
@@ -679,6 +709,15 @@ C:\Windows\System32> <input type="text" oninput="setTimeout(() => {$('#win-termi
             apps.edge.settabs();
             apps.edge.tab(apps.edge.now);
         },
+        reload: () => {
+            $('#win-edge>iframe.show').attr('src',$('#win-edge>iframe.show').attr('src'));
+            if (!document.querySelector('.window.edge>.titbar>.tabs>.tab.\\3' + apps.edge.now + '>.reloading')) {
+                document.querySelector('.window.edge>.titbar>.tabs>.tab.\\3' + apps.edge.now).insertAdjacentHTML('afterbegin', apps.edge.reloadElt);
+                document.querySelector('#win-edge>iframe.\\3' + apps.edge.now).onload = function () {
+                    document.querySelector('.window.edge>.titbar>.tabs>.tab.\\3' + this.classList[0]).removeChild(document.querySelector('.window.edge>.titbar>.tabs>.tab.\\3' + this.classList[0] + '>.reloading'));
+                }
+            }
+        },
         goto: u => {
             // 6
             if (!/^(((ht|f)tps?):\/\/)?([^!@#$%^&*?.\s-]([^!@#$%^&*?.\s]{0,63}[^!@#$%^&*?.\s])?\.)+[a-z]{2,6}\/?/.test(u)) {
@@ -694,6 +733,12 @@ C:\Windows\System32> <input type="text" oninput="setTimeout(() => {$('#win-termi
             else {
                 $('#win-edge>iframe.show').attr('src', u);
                 apps.edge.rename(u);
+            }
+            if (!document.querySelector('.window.edge>.titbar>.tabs>.tab.\\3' + apps.edge.now + '>reloading')) {
+                document.querySelector('.window.edge>.titbar>.tabs>.tab.\\3' + apps.edge.now).insertAdjacentHTML('afterbegin', apps.edge.reloadElt);
+            }
+            document.querySelector('#win-edge>iframe.\\3' + apps.edge.tabs[apps.edge.now][0]).onload = function () {
+                document.querySelector('.window.edge>.titbar>.tabs>.tab.\\3' + this.classList[0]).removeChild(document.querySelector('.window.edge>.titbar>.tabs>.tab.\\3' + this.classList[0] + '>.reloading'));
             }
         }
     },
@@ -903,6 +948,7 @@ let chstX, chstY;
 function ch(e) {
     $('#desktop>.choose').css('left', Math.min(chstX, e.clientX));
     $('#desktop>.choose').css('width', Math.abs(e.clientX - chstX));
+    $('#desktop>.choose').css('display', 'block');
     $('#desktop>.choose').css('top', Math.min(chstY, e.clientY));
     $('#desktop>.choose').css('height', Math.abs(e.clientY - chstY));
 }
@@ -911,10 +957,11 @@ $('#desktop')[0].addEventListener('mousedown', e => {
     chstY = e.clientY;
     this.onmousemove = ch;
 })
-$('#desktop')[0].addEventListener('mouseup', e => {
+window.addEventListener('mouseup', e => {
     this.onmousemove = null;
     $('#desktop>.choose').css('left', 0);
     $('#desktop>.choose').css('top', 0);
+    $('#desktop>.choose').css('display', 'none');
     $('#desktop>.choose').css('width', 0);
     $('#desktop>.choose').css('height', 0);
 })
@@ -1202,6 +1249,7 @@ document.getElementsByTagName('body')[0].onload = function nupd() {
             $('.msg.update').addClass('show');
         }, 1000);
     }
+    apps.webapps.init();
 };
 
 // PWA 应用
