@@ -598,7 +598,7 @@ C:\Windows\System32> <input type="text" oninput="setTimeout(() => {$('#win-termi
         tabs: [],
         now: null,
         len: 0,
-        reloadElt: '<div class="reloading"><svg width="20px" height="20px" viewBox="0 0 16 16"><circle cx="8px" cy="8px" r="7px"></circle><circle cx="8px" cy="8px" r="6px"></circle></svg></div>',
+        reloadElt: '<loading class="reloading"><svg viewBox="0 0 16 16"><circle cx="8px" cy="8px" r="5px"></circle><circle cx="8px" cy="8px" r="5px"></circle></svg></loading>',
         newtab: () => {
             apps.edge.tabs.push([apps.edge.len++, '新建标签页']);
             $('#win-edge').append(`<iframe src="mainpage.html" frameborder="0" class="${apps.edge.tabs[apps.edge.tabs.length - 1][0]}">`)
@@ -986,73 +986,73 @@ window.addEventListener('resize',e=>{
 })
 
 // 拖拽窗口
-const page = document.getElementsByTagName('body')[0];
+const page = document.getElementsByTagName('html')[0];
 const titbars = document.querySelectorAll('.window>.titbar');
 const wins = document.querySelectorAll('.window');
 let deltaLeft = 0, deltaTop = 0, fil = false, filty = 'none', bfLeft = 0, bfTop = 0;
+function win_move(e) {
+    let cx, cy;
+    if (e.type == 'touchmove') {
+        cx = e.targetTouches[0].clientX, cy = e.targetTouches[0].clientY;
+    } else {
+        cx = e.clientX, cy = e.clientY;
+    }
+    $(this).css('cssText', `left:${cx - deltaLeft}px;top:${cy - deltaTop}px;`);
+    if (cy <= 0) {
+        $(this).css('cssText', `left:${cx - deltaLeft}px;top:${-deltaTop}px`);
+        if (this.classList[1] != 'calc' && this.classList[1] != 'notepad-fonts') {
+            $('#window-fill').addClass('top');
+            setTimeout(() => {
+                $('#window-fill').addClass('fill');
+            }, 0);
+            fil = this;
+            filty = 'top';
+        }
+    } else if (cx <= 0) {
+        $(this).css('cssText', `left:${-deltaLeft}px;top:${cy - deltaTop}px`);
+        if (this.classList[1] != 'calc' && this.classList[1] != 'notepad-fonts') {
+            $('#window-fill').addClass('left');
+            setTimeout(() => {
+                $('#window-fill').addClass('fill');
+            }, 0);
+            fil = this;
+            filty = 'left';
+        }
+    } else if (cx >= document.body.offsetWidth - 2) {
+        $(this).css('cssText', `left:calc(100% - ${deltaLeft}px);top:${cy - deltaTop}px`);
+        if (this.classList[1] != 'calc' && this.classList[1] != 'notepad-fonts') {
+            $('#window-fill').addClass('right');
+            setTimeout(() => {
+                $('#window-fill').addClass('fill');
+            }, 0);
+            fil = this;
+            filty = 'right';
+        }
+    } else if (fil) {
+        $('#window-fill').removeClass('fill');
+        setTimeout(() => {
+            $('#window-fill').removeClass('top');
+            $('#window-fill').removeClass('left');
+            $('#window-fill').removeClass('right');
+        }, 200);
+        fil = false;
+        filty = 'none';
+    } else if ($(this).hasClass('max')) {
+        deltaLeft = deltaLeft / (this.offsetWidth - (45 * 3)) * ((0.7 * document.body.offsetWidth) - (45 * 3));
+        maxwin(this.classList[1], false);
+        // 窗口控制按钮宽 45px
+        $(this).css('cssText', `left:${cx - deltaLeft}px;top:${cy - deltaTop}px;`);
+        $('.window.' + this.classList[1] + '>.titbar>div>.wbtg.max').html('<i class="bi bi-app"></i>');
+
+        $(this).addClass('notrans');
+    }
+    if($(this).hasClass('mica')){
+        $(this).css('--mica-pos', `${mica_difx-cx + deltaLeft}px ${mica_dify-cy + deltaTop}px`);
+    }
+}
 for (let i = 0; i < wins.length; i++) {
     const win = wins[i];
     const titbar = titbars[i];
-    function win_move(e) {
-        let cx, cy;
-        if (e.type == 'touchmove') {
-            cx = e.targetTouches[0].clientX, cy = e.targetTouches[0].clientY;
-        } else {
-            cx = e.clientX, cy = e.clientY;
-        }
-        $(this).css('cssText', `left:${cx - deltaLeft}px;top:${cy - deltaTop}px;`);
-        if (cy <= 0) {
-            $(this).css('cssText', `left:${cx - deltaLeft}px;top:${-deltaTop}px`);
-            if (this.classList[1] != 'calc' && this.classList[1] != 'notepad-fonts') {
-                $('#window-fill').addClass('top');
-                setTimeout(() => {
-                    $('#window-fill').addClass('fill');
-                }, 0);
-                fil = this;
-                filty = 'top';
-            }
-        } else if (cx <= 0) {
-            $(this).css('cssText', `left:${-deltaLeft}px;top:${cy - deltaTop}px`);
-            if (this.classList[1] != 'calc' && this.classList[1] != 'notepad-fonts') {
-                $('#window-fill').addClass('left');
-                setTimeout(() => {
-                    $('#window-fill').addClass('fill');
-                }, 0);
-                fil = this;
-                filty = 'left';
-            }
-        } else if (cx >= document.body.offsetWidth - 2) {
-            $(this).css('cssText', `left:calc(100% - ${deltaLeft}px);top:${cy - deltaTop}px`);
-            if (this.classList[1] != 'calc' && this.classList[1] != 'notepad-fonts') {
-                $('#window-fill').addClass('right');
-                setTimeout(() => {
-                    $('#window-fill').addClass('fill');
-                }, 0);
-                fil = this;
-                filty = 'right';
-            }
-        } else if (fil) {
-            $('#window-fill').removeClass('fill');
-            setTimeout(() => {
-                $('#window-fill').removeClass('top');
-                $('#window-fill').removeClass('left');
-                $('#window-fill').removeClass('right');
-            }, 200);
-            fil = false;
-            filty = 'none';
-        } else if ($(this).hasClass('max')) {
-            deltaLeft = deltaLeft / (this.offsetWidth - (45 * 3)) * ((0.7 * document.body.offsetWidth) - (45 * 3));
-            maxwin(this.classList[1], false);
-            // 窗口控制按钮宽 45px
-            $(this).css('cssText', `left:${cx - deltaLeft}px;top:${cy - deltaTop}px;`);
-            $('.window.' + this.classList[1] + '>.titbar>div>.wbtg.max').html('<i class="bi bi-app"></i>');
-
-            $(this).addClass('notrans');
-        }
-        if($(this).hasClass('mica')){
-            $(this).css('--mica-pos', `${mica_difx-cx + deltaLeft}px ${mica_dify-cy + deltaTop}px`);
-        }
-    }
     titbar.addEventListener('mousedown', (e) => {
         let x = window.getComputedStyle(win, null).getPropertyValue('left').split("px")[0];
         let y = window.getComputedStyle(win, null).getPropertyValue('top').split("px")[0];

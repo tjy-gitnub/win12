@@ -183,3 +183,30 @@
 #win-edge>iframe.show{
     display: block;
 }
+
+.reloading>svg{
+    width: 27px;
+}
+
+.reloading{
+    margin-right: -5px;
+    animation: reload 100ms;
+}
+
+@keyframes reload {
+    0%{
+        margin-right: -27px;
+    }
+    100%{
+        margin-right: -5px;
+    }
+}
+
+.reloading>svg>circle:first-child {
+    stroke:#7f7f7f50;
+    fill:none;stroke-width:2px;
+}
+
+.reloading>svg>circle:last-child {
+    stroke:#2983cc;stroke-width:2px;
+}
