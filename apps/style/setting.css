@@ -14,7 +14,6 @@
 
 #win-setting {
     display: flex;
-    height: calc(100% - 32px);
 }
 
 #win-setting>* {
@@ -291,6 +290,7 @@ div.app-color input[type=color] {
     margin: 10px 20px 0 5px;
     background-image: linear-gradient(100deg, var(--theme-1), var(--theme-2));
     -webkit-background-clip: text;
+    background-clip: text;
     -webkit-text-fill-color: transparent;
     filter: saturate(130%) brightness(1.1);
 }

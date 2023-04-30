@@ -1165,6 +1165,7 @@ input-before {
     margin-top: -5px;
     background-image: linear-gradient(100deg, var(--theme-1), var(--theme-2));
     -webkit-background-clip: text;
+    background-clip: text;
     -webkit-text-fill-color: transparent;
 }
 
@@ -2015,7 +2016,8 @@ list>span.focs.cl{
 }
 
 .window.show-begin {
-    display: block;
+    display: flex;
+    flex-direction: column;
 }
 
 .window.show {
@@ -2023,6 +2025,8 @@ list>span.focs.cl{
     height: 80%;
     width: 70%;
     opacity: 1;
+    display: flex;
+    flex-direction: column;
 }
 
 .window>.loadback {
@@ -2063,7 +2067,7 @@ list>span.focs.cl{
 }
 
 .window>.titbar {
-    height: 35px;
+    min-height: 35px;
     padding: 0 0 0 8px;
     display: flex;
     position: initial;

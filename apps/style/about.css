@@ -1,6 +1,5 @@
 #win-about{
     display: flex;
-    height: calc(100% - 30px);
 }
 
 #win-about>.menu{

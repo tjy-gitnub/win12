@@ -47,7 +47,7 @@ $('input,textarea,*[contenteditable=true]').on('contextmenu', (e) => {
 let cms = {
     'titbar': [
         function (arg) {
-            if (arg == 'calc' || arg == 'notepad-fonts') {
+            if (arg == 'calc' || arg == 'notepad-fonts' || arg == 'camera-notice') {
                 return 'null';
             }
             if ($('.window.' + arg).hasClass("max")) {
@@ -58,7 +58,7 @@ let cms = {
             }
         },
         function (arg) {
-            if (arg == 'notepad-fonts') {
+            if (arg == 'notepad-fonts' || arg == 'camera-notice') {
                 return 'null';
             }
             else {
@@ -66,7 +66,7 @@ let cms = {
             }
         },
         function (arg) {
-            if (arg == 'notepad-fonts') {
+            if (arg == 'notepad-fonts' || arg == 'camera-notice') {
                 return ['<i class="bi bi-window-x"></i> 关闭', `hidewin('${arg}', 'configs')`];
             }
             else {
@@ -109,7 +109,12 @@ let cms = {
             return ['<i class="bi bi-window"></i> 打开', `openapp('${arg[0]}');hide_startmenu();`];
         },
         function (arg) {
-            return ['<i class="bi bi-link-45deg"></i> 在桌面创建链接', "$('#desktop').append(`<div class='b' ondblclick=openapp('" + arg[0] + "')  ontouchstart=openapp('" + arg[0] + "')><img src='icon/" + arg[0] + ".png'><p>" + arg[1] + "</p></div>`)"];
+            if (arg[0] != 'js') {
+                return ['<i class="bi bi-link-45deg"></i> 在桌面创建链接', "$('#desktop').append(`<div class='b' ondblclick=openapp('" + arg[0] + "')  ontouchstart=openapp('" + arg[0] + "')><img src='icon/" + arg[0] + ".png'><p>" + arg[1] + "</p></div>`)"];
+            }
+            else if (arg[0] == 'js') {
+                return ['<i class="bi bi-link-45deg"></i> 在桌面创建链接', "$('#desktop').append(`<div class='b' ondblclick='" + arg[1] + "'  ontouchstart='" + arg[1] + "'><img src='icon/" + arg[2] + ".png'><p>" + arg[3] + "</p></div>`)"];
+            }
         }
     ],
     'dockabout': [
@@ -377,7 +382,7 @@ let apps = {
             return null;
         },
         load: () => {
-            document.querySelector('#win-vscode').insertAdjacentHTML('afterbegin', '<iframe src="https://github1s.com/" frameborder="0" style="width: 100%; height: 100%;" loading="lazy"></iframe>')
+            document.querySelector('#win-vscode').insertAdjacentHTML('afterbegin', '<iframe src="https://github1s.com/" frameborder="0" style="width: 100%; height: 100%;"></iframe>')
         }
     },
     bilibili: {
@@ -385,7 +390,72 @@ let apps = {
             return null;
         },
         load: () => {
-            document.querySelector('#win-bilibili').insertAdjacentHTML('afterbegin', '<iframe src="https://bilibili.com/" frameborder="0" style="width: 100%; height: 100%;" loading="lazy"></iframe>')
+            document.querySelector('#win-bilibili').insertAdjacentHTML('afterbegin', '<iframe src="https://bilibili.com/" frameborder="0" style="width: 100%; height: 100%;"></iframe>')
+        }
+    },
+    camera: {
+        init: () => {
+            if (localStorage.getItem('camera')) {
+                apps.camera.streaming = false;
+                apps.camera.video = document.querySelector('#win-camera video');
+                apps.camera.canvas = document.querySelector('#win-camera canvas');
+                apps.camera.context = apps.camera.canvas.getContext('2d');
+                apps.camera.context.fillStyle = '#aaa';
+                apps.camera.downloadLink = document.querySelector('#win-camera a');
+                apps.camera.control = document.querySelector('#win-camera>.control')
+                navigator.mediaDevices.getUserMedia({ video: true, audio: false })
+                .then((stream) => {
+                    apps.camera.video.srcObject = stream;
+                    apps.camera.video.play();
+                })
+                .catch(() => {
+                    hidewin('camera');
+                });
+                apps.camera.video.addEventListener('canplay', () => {
+                    if (!apps.camera.streaming) {
+                        apps.camera.aspectRatio = apps.camera.video.videoWidth / apps.camera.video.videoHeight;
+                        apps.camera.canvas.width = apps.camera.video.videoWidth;
+                        apps.camera.canvas.height = apps.camera.video.videoHeight;
+                        apps.camera.windowResizeObserver = new ResizeObserver(apps.camera.resize);
+                        apps.camera.windowResizeObserver.observe(document.querySelector('.window.camera'), { box: 'border-box' });
+                        apps.camera.streaming = true;
+                    }
+                });
+            }
+            else {
+                hidewin('camera');
+            }
+        },
+        clearCanvas: () => {
+            apps.camera.context.fillRect(0, 0, canvas.width, canvas.height);
+        },
+        takePhoto: () => {
+            apps.camera.context.drawImage(apps.camera.video, 0, 0, apps.camera.canvas.width, apps.camera.canvas.height);
+            apps.camera.downloadLink.href = apps.camera.canvas.toDataURL('image/png');
+            apps.camera.downloadLink.download = "photo.png";
+            apps.camera.downloadLink.click();
+        },
+        notice: () => {
+            if (!localStorage.getItem('camera')) {
+                showwin('camera-notice');
+            }
+            else {
+                openapp('camera');
+            }
+        },
+        resize: () => {
+            let w = Number(window.getComputedStyle(document.querySelector('#win-camera')).width.split('px')[0]);
+            let h = Number(window.getComputedStyle(document.querySelector('#win-camera')).height.split('px')[0]);
+            if (w / apps.camera.aspectRatio <= h) {
+                apps.camera.video.style.width = `${w}px`;
+                apps.camera.video.style.height = `${w / apps.camera.aspectRatio}px`;
+                apps.camera.control.className = "control bottom";
+            }
+            else if (w / apps.camera.aspectRatio >= h) {
+                apps.camera.video.style.width = `${h / (1 / apps.camera.aspectRatio)}px`;
+                apps.camera.video.style.height = `${h}px`;
+                apps.camera.control.className = "control right";
+            }
         }
     },
     explorer: {
@@ -500,10 +570,18 @@ let apps = {
     },
     calc: {
         init: () => {
-            $('#calc-input').val('');
+            $('#calc-input').val('0');
         },
         add: (arg) => {
-            $('#calc-input')[0].value += arg;
+            if (arg >= 1 && arg <= 9 && $('#calc-input')[0].value == '0') {
+                $('#calc-input')[0].value = arg;
+            }
+            else if (arg == '0' && $('#calc-input')[0].value == '0') {
+                $('#calc-input')[0].value = arg;
+            }
+            else {
+                $('#calc-input')[0].value += arg;
+            }
         }
     },
     about: {
@@ -640,7 +718,8 @@ C:\Windows\System32> <input type="text" oninput="setTimeout(() => {$('#win-termi
                         const ta = apps.edge.tabs[i];
                         $('.window.edge>.titbar>.tabs>.tab.'+ta[0]).addClass('left');
                     }
-                }else if(np>pos){
+                }
+                else if(np>pos){
                     for (let i = pos; i < np; i++) {
                         const ta = apps.edge.tabs[i];
                         $('.window.edge>.titbar>.tabs>.tab.'+ta[0]).addClass('right');
@@ -759,7 +838,15 @@ let widgets = {
     },
     calc: {
         add: (arg) => {
-            $('*:not(.template)>*>.wg.calc>.content>input')[0].value += arg;
+            if (arg >= 1 && arg <= 9 && $('*:not(.template)>*>.wg.calc>.content>input')[0].value == '0') {
+                $('*:not(.template)>*>.wg.calc>.content>input')[0].value = arg;
+            }
+            else if (arg == '0' && $('*:not(.template)>*>.wg.calc>.content>input')[0].value == '0') {
+                $('*:not(.template)>*>.wg.calc>.content>input')[0].value = arg;
+            }
+            else {
+                $('*:not(.template)>*>.wg.calc>.content>input')[0].value += arg;
+            }
         }
     }
 }
@@ -843,8 +930,9 @@ function hidewin(name, arg = 'window') {
     }
     setTimeout(() => { $('.window.' + name).removeClass('show-begin'); }, 200);
     $('.window.' + name + '>.titbar>div>.wbtg.max').html('<i class="bi bi-app"></i>');
-    wo.splice(wo.indexOf('name'), 1);
-    orderwindow();
+    wo.splice(wo.indexOf(name), 1);
+    focwin(wo[wo.length - 1]);
+    // orderwindow();
 }
 function maxwin(name, trigger = true) {
     if ($('.window.' + name).hasClass('max')) {
@@ -994,13 +1082,14 @@ function win_move(e) {
     let cx, cy;
     if (e.type == 'touchmove') {
         cx = e.targetTouches[0].clientX, cy = e.targetTouches[0].clientY;
-    } else {
+    }
+    else {
         cx = e.clientX, cy = e.clientY;
     }
     $(this).css('cssText', `left:${cx - deltaLeft}px;top:${cy - deltaTop}px;`);
     if (cy <= 0) {
         $(this).css('cssText', `left:${cx - deltaLeft}px;top:${-deltaTop}px`);
-        if (this.classList[1] != 'calc' && this.classList[1] != 'notepad-fonts') {
+        if (this.classList[1] != 'calc' && this.classList[1] != 'notepad-fonts' && this.classList[1] != 'camera-notice') {
             $('#window-fill').addClass('top');
             setTimeout(() => {
                 $('#window-fill').addClass('fill');
@@ -1008,9 +1097,10 @@ function win_move(e) {
             fil = this;
             filty = 'top';
         }
-    } else if (cx <= 0) {
+    }
+    else if (cx <= 0) {
         $(this).css('cssText', `left:${-deltaLeft}px;top:${cy - deltaTop}px`);
-        if (this.classList[1] != 'calc' && this.classList[1] != 'notepad-fonts') {
+        if (this.classList[1] != 'calc' && this.classList[1] != 'notepad-fonts' && this.classList[1] != 'camera-notice') {
             $('#window-fill').addClass('left');
             setTimeout(() => {
                 $('#window-fill').addClass('fill');
@@ -1018,9 +1108,10 @@ function win_move(e) {
             fil = this;
             filty = 'left';
         }
-    } else if (cx >= document.body.offsetWidth - 2) {
+    }
+    else if (cx >= document.body.offsetWidth - 2) {
         $(this).css('cssText', `left:calc(100% - ${deltaLeft}px);top:${cy - deltaTop}px`);
-        if (this.classList[1] != 'calc' && this.classList[1] != 'notepad-fonts') {
+        if (this.classList[1] != 'calc' && this.classList[1] != 'notepad-fonts' && this.classList[1] != 'camera-notice') {
             $('#window-fill').addClass('right');
             setTimeout(() => {
                 $('#window-fill').addClass('fill');
@@ -1028,7 +1119,8 @@ function win_move(e) {
             fil = this;
             filty = 'right';
         }
-    } else if (fil) {
+    }
+    else if (fil) {
         $('#window-fill').removeClass('fill');
         setTimeout(() => {
             $('#window-fill').removeClass('top');
@@ -1037,7 +1129,8 @@ function win_move(e) {
         }, 200);
         fil = false;
         filty = 'none';
-    } else if ($(this).hasClass('max')) {
+    }
+    else if ($(this).hasClass('max')) {
         deltaLeft = deltaLeft / (this.offsetWidth - (45 * 3)) * ((0.7 * document.body.offsetWidth) - (45 * 3));
         maxwin(this.classList[1], false);
         // 窗口控制按钮宽 45px
@@ -1079,12 +1172,14 @@ for (let i = 0; i < wins.length; i++) {
 page.addEventListener('mouseup', () => {
     page.onmousemove = null;
     if (fil) {
-        if (filty == 'top')
+        if (filty == 'top') {
             maxwin(fil.classList[1], false);
+        }
         else if (filty == 'left') {
             maxwin(fil.classList[1], false);
             $(fil).addClass('left');
-        } else if (filty == 'right') {
+        }
+        else if (filty == 'right') {
             maxwin(fil.classList[1], false);
             $(fil).addClass('right');
         }

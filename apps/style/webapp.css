@@ -1,8 +1,0 @@
-.webapp.show {
-    display: flex !important;
-    flex-direction: column;
-}
-
-.webapp .loadback {
-    height: 100% !important;
-}
