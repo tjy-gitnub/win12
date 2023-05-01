@@ -3,10 +3,13 @@
 
 <head>
 	<meta charset="UTF-8" />
+	<link rel="stylesheet" href="https://pyscript.net/latest/pyscript.css" />
+	<script defer src="https://pyscript.net/latest/pyscript.js"></script>
 	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 	<meta name="format-detection" content="telephone=no" />
-
+	<link rel="stylesheet" href="https://pyscript.net/latest/pyscript.css" />
+        <script defer src="https://pyscript.net/latest/pyscript.js"></script>
 	<!-- Windows 12 网页版 谭景元原创  -->
 
 	<!-- Windows 12 网页版是一个开放源项目,
@@ -29,14 +32,9 @@
 	<link rel="stylesheet" href="apps/style/camera.css">
 	<link rel="stylesheet" href="widgets.css">
 	<link rel="manifest" href="pwa/manifest.json">
-	<link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
-	<link rel="stylesheet" href="apps/style/login.css">
 	<base target="_blank">
-
-	<title>Windows 12 网页版</title>
 </head>
 <body>
-	<audio src="media/startup.mp3" id="startup-music"></audio>
 	<div id="loadback" style="background-color:#000;width:100%;height:100%;z-index:105;position:absolute;transition:200ms;">
 		<style>
 			#loadback.hide {
@@ -131,30 +129,6 @@
 			}, 100);
 		</script>
 	</div>
-	<div class="login" style="position: absolute; width: 100%; height: 100%; opacity: 0; display: none; z-index: 101;">
-        <div class="user"></div>
-        <div class="name">Administrator</div>
-        <div id="login" onclick="
-			this.id = 'login-after';
-			this.innerText = '登录中...';
-			window.setTimeout(() => {
-				this.style.transition = 'color 500ms'
-			}, 100);
-			window.setTimeout(() => {
-				document.querySelector('div.login').className = 'login login-close'
-				window.setTimeout(() => {
-					$('.login').css('opacity', '0');
-				}, 500);
-				window.setTimeout(() => {
-					$('.login').css('display', 'none');
-				}, 2000);
-				document.querySelector('audio#startup-music').play();
-			}, 1000);
-			this.onclick = null;
-		">
-            登录
-		</div>
-    </div>
 	<!-- <img src="https://bing.com/th?id=OHR.Trossachs_ZH-CN9299955040_UHD.jpg&qlt=100" alt=""> -->
 	<script src="./jq.min.js"></script>
 	<div id="start-menu">
@@ -205,12 +179,6 @@
 					<img src="icon/camera.png"><p>相机</p>
 				</a>
 				<p class="text">其它</p>
-				<a class="a">
-					<img src="icon/defender.png"><p>Windows 安全中心</p>
-				</a>
-				<a class="a">
-					<img src="icon/store.png"><p>Microsoft Store</p>
-				</a>
 			</list>
 		</div>
 		<div id="s-m-r">
@@ -926,16 +894,8 @@
 			<div class="cnt update">
 				<h1 class="tit"><span></span>更新记录</h1>
 				<div style="margin-left: 20px;">
-					<details><summary><span>v5.2.1</span> 登录界面，开机音效和细节优化</summary><p>
-						&emsp;&emsp;<strong>更新来自 @User782Tec</strong><br />
-						&emsp;&emsp;-为网站添加Favicon和标题<br />
-						&emsp;&emsp;-Edge浏览器中，超出标签页范围的文字将会被隐藏以避免文字溢出的问题<br />
-						&emsp;&emsp;-微调Edge浏览器中加载动画的位置<br />
-						&emsp;&emsp;-新增了开机音效和登录界面<br />
-						&emsp;&emsp;-格式化部分文档<br />
-					</details>
 					<details><summary><span>v5.2.0</span> 相机应用及细节修复</summary><p>
-						&emsp;&emsp;<strong>更新来自 @User782Tec</strong><br />
+						&emsp;&emsp;<strong>更新来自 @User782Tec</strong>
 						&emsp;&emsp;-新增“相机”应用，支持拍照功能<br />
 						&emsp;&emsp;-优化焦点控制，关闭焦点窗口后，焦点会转移至下面一个窗口，更加符合原生体验<br />
 						&emsp;&emsp;-计算器优化，优化符号及输入<br />
@@ -943,7 +903,7 @@
 						&emsp;&emsp;-修复部分情况下标题栏不显示的问题<br />
 						&emsp;&emsp;-优化窗口布局<br />
 						&emsp;&emsp;-修正部分非标准CSS特性<br />
-						&emsp;&emsp;-格式化部分文档<br /></p>
+						&emsp;&emsp;-格式化部分文档<br />
 					</details>
 					<details><summary><span>v5.1.2</span> 细节修复和更改</summary><p>
 						&emsp;&emsp;-修复关于加载失效的问题<br />
@@ -1186,7 +1146,7 @@
 	<div class="window terminal"  onmousedown="focwin('terminal')" ontouchstart="focwin('terminal')">
 		<div class="titbar" oncontextmenu="return showcm(event,'titbar','terminal')" ondblclick="maxwin('terminal')">
 			<img src="icon/terminal.png" class="icon" onclick="return showcm(event,'titbar','terminal')">
-			<p>终端</p>
+						<p>终端</p>
 			<div>
 				<a class="a wbtg red" onclick="hidewin('terminal')"><i class="bi bi-x-lg"></i></a>
 				<a class="a wbtg max" onclick="maxwin('terminal')"><i class="bi bi-app"></i></a>
@@ -1196,17 +1156,49 @@
 		<div class="loadback">
 			<img src="icon/terminal.png" class="icon">
 		</div>
-		<div class="content" id="win-terminal">
-			<pre>Micrsotft Windosw [版本 12.0.39035.7324]
-(c) Micrsotft Corparotoin。保所留有权利。
-一个摆设，后续会完善。 
 
-C:\Windows\System32> <input type="text" oninput="setTimeout(() => {$('#win-terminal>pre')[0].innerHTML+=this.outerHTML;$('#win-terminal>pre>input').focus()}, 0);$('#win-terminal>pre')[0].innerText+=$(this).val();"></pre>
+		<div class="content" id="win-terminal">
+            		<script>
+function keyup_submit(e){
+   var evt = window.event || e;
+   if (evt.keyCode == 13){
+      //回车事件
+      var value = document.getElementById("nb").value;
+      document.getElementById("nb").value = "";
+      var nbyyds = document.getElementById("text-cmd").innerHTML;  //推荐使用
+      value = value.replace(/"/g, "'");
+      if(value.includes("print("))
+      {
+      	value = value.replace(")", "");
+      }
+      value = value.replace("print(", "");
+      nbyyds = nbyyds.replace(/\n/g, "\\n");
+      nbyyds = nbyyds.replace(/"/g, "'");
+      nbyyds = nbyyds.replace(/&gt;&gt;&gt;/g, ">>>");
+      var nb = `Element('text-cmd').write(\"${nbyyds}>>>${value}\\n\"+str(${value})+\"\\n\")`;
+      // 创建新的p元素
+var newP = document.createElement('py-script');
+
+// 设置元素内容
+newP.textContent = nb;
+
+// 将元素添加到现有的DOM树中
+var myDiv = document.getElementById('win-terminal');
+myDiv.appendChild(newP);
+
+    }
+  }
+</script>
+            <pre>Python 3.7.0  [MSC v.1912 64 bit (AMD64)] :: Anaconda, Inc. on win32
+Type "help", "copyright", "credits" or "license" for more information.
+</pre>
+			<pre id="text-cmd"></pre>
+            <pre >>>><input id = "nb" type="text" onkeydown="keyup_submit(event);"></pre>
 		</div>
 	</div>
 	<div class="window edge" onmousedown="focwin('edge')" ontouchstart="focwin('edge')">
 		<div class="titbar" oncontextmenu="return showcm(event,'titbar','edge')" ondblclick="maxwin('edge')">
-			<img src="icon/edge.png" class="icon" onclick="return showcm(event,'titbar','edge')"><p style="display: none;">Microsoft Edge</p>
+			<img src="icon/edge.png" class="icon"><p style="display: none;">Microsoft Edge</p>
 			<div class="tabs">
 				<div class="tab">
 					<p>新建标签页</p>
