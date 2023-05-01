@@ -131,22 +131,22 @@
 			}, 100);
 		</script>
 	</div>
-	<div class="login" style="position: absolute; width: 100%; height: 100%; opacity: 0; display: none; z-index: 101;">
+	<div id="loginback">
         <div class="user"></div>
         <div class="name">Administrator</div>
         <div id="login" onclick="
 			this.id = 'login-after';
 			this.innerText = '登录中...';
 			window.setTimeout(() => {
-				this.style.transition = 'color 500ms'
+				this.style.transition = 'none';
 			}, 100);
 			window.setTimeout(() => {
-				document.querySelector('div.login').className = 'login login-close'
+				$('#loginback').addClass('close');
 				window.setTimeout(() => {
-					$('.login').css('opacity', '0');
+					$('#loginback').css('opacity', '0');
 				}, 500);
 				window.setTimeout(() => {
-					$('.login').css('display', 'none');
+					$('#loginback').css('display', 'none');
 				}, 2000);
 				document.querySelector('audio#startup-music').play();
 			}, 1000);
@@ -183,20 +183,11 @@
 				<a onclick="openapp('calc');hide_startmenu();">
 					<img src="icon/calc.png"><p>计算器</p>
 				</a>
-				<a onclick="openapp('vscode');hide_startmenu();">
-					<img src="icon/vscode.png"><p>Visual Studio Code</p>
-				</a>
-				<a onclick="openapp('bilibili');hide_startmenu();">
-					<img src="icon/bilibili.png"><p>哔哩哔哩</p>
-				</a>
 				<a onclick="openapp('about');hide_startmenu();">
 					<img src="icon/about.png"><p>关于Win12网页版</p>
 				</a>
 				<a onclick="openapp('notepad');hide_startmenu();">
 					<img src="icon/notepad.png"><p>记事本</p>
-				</a>
-				<a onclick="openapp('terminal');hide_startmenu();">
-					<img src="icon/terminal.png"><p>终端</p>
 				</a>
 				<a onclick="openapp('edge');hide_startmenu();">
 					<img src="icon/edge.png"><p>Microsoft Edge</p>
@@ -204,12 +195,16 @@
 				<a onclick="apps.camera.notice();hide_startmenu()">
 					<img src="icon/camera.png"><p>相机</p>
 				</a>
-				<p class="text">其它</p>
-				<a class="a">
-					<img src="icon/defender.png"><p>Windows 安全中心</p>
+				<p class="text">Web 应用</p>
+				<a onclick="openapp('bilibili');hide_startmenu();">
+					<img src="icon/bilibili.png"><p>哔哩哔哩</p>
 				</a>
-				<a class="a">
-					<img src="icon/store.png"><p>Microsoft Store</p>
+				<a onclick="openapp('vscode');hide_startmenu();">
+					<img src="icon/vscode.png"><p>Visual Studio Code</p>
+				</a>
+				<p class="text">半成品</p>
+				<a onclick="openapp('terminal');hide_startmenu();">
+					<img src="icon/terminal.png"><p>终端</p>
 				</a>
 			</list>
 		</div>
@@ -904,9 +899,11 @@
 					<p>&emsp;&emsp;若您对于该项目有任何意见或建议，请在 Github 上<a onclick="window.open('https://github.com/tjy-gitnub/win12/issues','_blank');" win12_title="https://github.com/tjy-gitnub/win12/issues" class="jump">提交 issues</a>, 您的问题会被尽可能快地解决</p>
 					<p>&emsp;&emsp;原创作者谭景元，点击以<a onclick="window.open('https://tjy-gitnub.github.io/','_blank');" win12_title="https://tjy-gitnub.github.io/" class="jump">了解详细</a></p>
 					<h2 class="tit"><span></span>开源说明</h2>
-					<p>&emsp;&emsp;由于这是一个开源项目，你可以在任何媒介以任何形式复制、发行本作品。</p>
-					<p>&emsp;&emsp;你还可以对该项目进行修改、转换或以本作品为基础进行创作。</p>
-					<p>&emsp;&emsp;但您必须给出适当的署名，<strong>您必须提供创作者姓名、作品链接</strong>，同时标明是否对此作了修改。您可以用任何合理的方式来署名，但是不得以<strong>任何方式</strong>暗示许可方认可您或您的使用。</p>
+					<p>&emsp;&emsp;此项目是一个开源项目。此项目使用EPL2.0开源许可。开源许可是具有法律效力的合同，请自觉遵守开源许可，尊重他人劳动。</p>
+					<p>&emsp;&emsp;根据许可，你可以对该项目进行传播、分发、修改以及二次发布，包括个人和商业用途。</p>
+					<p>&emsp;&emsp;但您必须给出源码来源，<strong>包括作者，项目链接等</strong>，必须使用相同的协议发布。</p>
+					<p>&emsp;&emsp;若此项目的源码作为项目的一部分与你私有的源码一起发布时，你可以使用其它协议，<strong>但要声明EPL部分的内容并声明此部分继续遵循EPL协议</strong>。</p>
+					<p>&emsp;&emsp;不是在项目基础上进行增加、修改的，仅参考源码的，不需要开源。</p>
 					<h2 class="tit"><span></span>贡献者</h2>
 					<p>感谢所有项目的贡献者 (实时数据(我也不知道这个贡献值是怎么算的))</p>
 					<div id="contri">
@@ -926,13 +923,20 @@
 			<div class="cnt update">
 				<h1 class="tit"><span></span>更新记录</h1>
 				<div style="margin-left: 20px;">
+					<details><summary><span>v5.2.2</span> 细节优化</summary><p>
+						&emsp;&emsp;-对相机外观和代码进行了优化<br />
+						&emsp;&emsp;-添加登录背景，一些外观优化<br />
+						&emsp;&emsp;-开源许可的完善<br />
+						&emsp;&emsp;-一些优化和修复<br />
+						&emsp;&emsp;-吊一下胃口:v6将使用全新图标(壁纸?)，支持自定义主题 >_-)o</p>
+					</details>
 					<details><summary><span>v5.2.1</span> 登录界面，开机音效和细节优化</summary><p>
 						&emsp;&emsp;<strong>更新来自 @User782Tec</strong><br />
 						&emsp;&emsp;-为网站添加Favicon和标题<br />
 						&emsp;&emsp;-Edge浏览器中，超出标签页范围的文字将会被隐藏以避免文字溢出的问题<br />
 						&emsp;&emsp;-微调Edge浏览器中加载动画的位置<br />
 						&emsp;&emsp;-新增了开机音效和登录界面<br />
-						&emsp;&emsp;-格式化部分文档<br />
+						&emsp;&emsp;-格式化部分文档<br /></p>
 					</details>
 					<details><summary><span>v5.2.0</span> 相机应用及细节修复</summary><p>
 						&emsp;&emsp;<strong>更新来自 @User782Tec</strong><br />
@@ -1260,7 +1264,7 @@ C:\Windows\System32> <input type="text" oninput="setTimeout(() => {$('#win-termi
 		</div>
 		<div class="a hide" onclick="$('.msg').removeClass('show')"><i class="bi bi-arrow-right-short"></i></div>
 	</div>
-	<div class="window vscode" onmousedown="focwin('vscode')" ontouchstart="focwin('vscode')">
+	<div class="window vscode webapp" onmousedown="focwin('vscode')" ontouchstart="focwin('vscode')">
 		<div class="titbar" oncontextmenu="return showcm(event,'titbar','vscode')" ondblclick="maxwin('vscode')">
 			<img src="icon/vscode.png" class="icon" onclick="return showcm(event,'titbar','vscode')">
 			<p>Visual Studio Code</p>
@@ -1277,7 +1281,7 @@ C:\Windows\System32> <input type="text" oninput="setTimeout(() => {$('#win-termi
 			<!-- <iframe src="https://github1s.com/" frameborder="0" style="width: 100%; height: 100%;" loading="lazy"></iframe> -->
 		</div>
 	</div>
-	<div class="window bilibili" onmousedown="focwin('bilibili')" ontouchstart="focwin('bilibili')">
+	<div class="window bilibili webapp" onmousedown="focwin('bilibili')" ontouchstart="focwin('bilibili')">
 		<div class="titbar" oncontextmenu="return showcm(event,'titbar','bilibili')" ondblclick="maxwin('bilibili')">
 			<img src="icon/bilibili.png" class="icon" onclick="return showcm(event,'titbar','bilibili')">
 			<p>哔哩哔哩</p>
@@ -1307,20 +1311,20 @@ C:\Windows\System32> <input type="text" oninput="setTimeout(() => {$('#win-termi
 		<div class="loadback">
 			<img src="icon/camera.png" class="icon">
 		</div>
-		<div class="content" id="win-camera" style="background-color: black">
+		<div class="content" id="win-camera">
 			<div class="video">
 				<video></video>
 			</div>
-			<div class="control right">
+			<div class="control">
 				<div>
-					<div class="startbutton" onclick="apps.camera.takePhoto();"></div>
+					<div class="startbutton act" onclick="apps.camera.takePhoto();"></div>
 				</div>
 			</div>
 			<canvas style="display: none;"></canvas>
 			<a style="display: none;"></a>
 		</div>
 	</div>
-	<div class="window camera-notice webapp" onmousedown="focwin('camera-notice')" ontouchstart="focwin('camera-notice')">
+	<div class="window camera-notice" onmousedown="focwin('camera-notice')" ontouchstart="focwin('camera-notice')">
 		<div class="titbar" oncontextmenu="return showcm(event,'titbar','camera-notice')" ondblclick="maxwin('camera-notice')">
 			<img src="icon/camera.png" class="icon" onclick="return showcm(event,'titbar','camera-notice')">
 			<p>提示</p>

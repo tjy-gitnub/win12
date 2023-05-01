@@ -1,18 +1,26 @@
-div.login {
+#loginback {
     width: 100%;
     height: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
     flex-direction: column;
-    background: linear-gradient(130deg, #ad6eca, #3b91d8);
+    background: url(../../img/login.jpg) center;
+    background-size: cover;
     transition: filter 500ms, background-color 500ms, opacity 1500ms ease-in-out;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    display: none;
+    z-index: 101;
 }
 
 #login {
     padding: 4px 50px 4px 50px;
     border: 2px solid #aaa;
-    background-color: #eaeaea;
+    background-color: #eeeeee80;
+    backdrop-filter: blur(10px) brightness(2);
     color: #121212;
     transition: background-color 300ms, transform cubic-bezier(0.14, 1.02, 0.17, 0.03) 300ms;
     font-size: 18px;
@@ -20,11 +28,11 @@ div.login {
 }
 
 #login:hover {
-    background-color: #fefefe;
+    background-color: #fafafa50;
 }
 
 #login:active {
-    transform: scale(0.95);
+    transform: scale(0.9);
 }
 
 #login-after {
@@ -34,7 +42,7 @@ div.login {
     margin: 6px 0px 6px 0px;
 }
 
-.login>div.user {
+#loginback>div.user {
     width: 150px;
     height: 150px;
     border-radius: 100%;
@@ -42,27 +50,30 @@ div.login {
     background-size: 65% 65%;
     background-position: 50% 50%;
     background-repeat: no-repeat;
-    margin-bottom: 20px;
+    margin-bottom: 10px;
     background-color: #ddd;
     transition: filter 500ms;
+    margin-top: -35px;
 }
 
-.login>div.name {
+#loginback>div.name {
     color: #fefefe;
     font-size: 30px;
     font-family: Arial, Helvetica, sans-serif;
-    margin-bottom: 20px;
+    margin-bottom: 15px;
     transition: color 500ms;
 }
 
-div.login-close, div.login-close>div.user {
+#loginback.close,
+#loginback.close>div.user {
     filter: brightness(0);
 }
 
-div.login-close>div.name, div.login-close #login-after {
+#loginback.close>div.name,
+#loginback.close #login-after {
     color: #000 !important;
 }
 
-div.login-close {
+#loginback.close {
     background-color: black;
 }

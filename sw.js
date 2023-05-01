@@ -1,4 +1,4 @@
-// v5.2.0
+// v5.2.2
 let userdata = {
   'theme': 'light',
   'color1': '#ad6eca',

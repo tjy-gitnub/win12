@@ -382,7 +382,7 @@ let apps = {
             return null;
         },
         load: () => {
-            document.querySelector('#win-vscode').insertAdjacentHTML('afterbegin', '<iframe src="https://github1s.com/" frameborder="0" style="width: 100%; height: 100%;"></iframe>')
+            document.querySelector('#win-vscode').insertAdjacentHTML('afterbegin', '<iframe src="https://github1s.com/" frameborder="0" style="width: 100%; height: 100%;" loading="lazy"></iframe>')
         }
     },
     bilibili: {
@@ -390,11 +390,15 @@ let apps = {
             return null;
         },
         load: () => {
-            document.querySelector('#win-bilibili').insertAdjacentHTML('afterbegin', '<iframe src="https://bilibili.com/" frameborder="0" style="width: 100%; height: 100%;"></iframe>')
+            document.querySelector('#win-bilibili').insertAdjacentHTML('afterbegin', '<iframe src="https://bilibili.com/" frameborder="0" style="width: 100%; height: 100%;" loading="lazy"></iframe>')
         }
     },
     camera: {
         init: () => {
+            if (!localStorage.getItem('camera')) {
+                showwin('camera-notice');
+                return;
+            }
             if (localStorage.getItem('camera')) {
                 apps.camera.streaming = false;
                 apps.camera.video = document.querySelector('#win-camera video');
@@ -402,15 +406,15 @@ let apps = {
                 apps.camera.context = apps.camera.canvas.getContext('2d');
                 apps.camera.context.fillStyle = '#aaa';
                 apps.camera.downloadLink = document.querySelector('#win-camera a');
-                apps.camera.control = document.querySelector('#win-camera>.control')
+                // apps.camera.control = document.querySelector('#win-camera>.control')
                 navigator.mediaDevices.getUserMedia({ video: true, audio: false })
-                    .then((stream) => {
-                        apps.camera.video.srcObject = stream;
-                        apps.camera.video.play();
-                    })
-                    .catch(() => {
-                        hidewin('camera');
-                    });
+                .then(stream => {
+                    apps.camera.video.srcObject = stream;
+                    apps.camera.video.play();
+                })
+                .catch(() => {
+                    hidewin('camera');
+                });
                 apps.camera.video.addEventListener('canplay', () => {
                     if (!apps.camera.streaming) {
                         apps.camera.aspectRatio = apps.camera.video.videoWidth / apps.camera.video.videoHeight;
@@ -444,17 +448,19 @@ let apps = {
             }
         },
         resize: () => {
-            let w = Number(window.getComputedStyle(document.querySelector('#win-camera')).width.split('px')[0]);
-            let h = Number(window.getComputedStyle(document.querySelector('#win-camera')).height.split('px')[0]);
+            let w=$('#win-camera')[0].offsetWidth,
+                h=$('#win-camera')[0].offsetHeight;
             if (w / apps.camera.aspectRatio <= h) {
-                apps.camera.video.style.width = `${w}px`;
-                apps.camera.video.style.height = `${w / apps.camera.aspectRatio}px`;
-                apps.camera.control.className = "control bottom";
+                if(!$('#win-camera').hasClass('v')){
+                    $('#win-camera').removeClass('h')
+                    $('#win-camera').addClass('v');
+                }
             }
             else if (w / apps.camera.aspectRatio >= h) {
-                apps.camera.video.style.width = `${h / (1 / apps.camera.aspectRatio)}px`;
-                apps.camera.video.style.height = `${h}px`;
-                apps.camera.control.className = "control right";
+                if(!$('#win-camera').hasClass('h')){
+                    $('#win-camera').removeClass('v')
+                    $('#win-camera').addClass('h');
+                }
             }
         }
     },
@@ -1064,13 +1070,12 @@ function toggletheme() {
     }
 }
 // 云母效果
-let mica_difx = 0, mica_dify = 0;
-window.addEventListener('resize', e => {
-    let b = $('body')[0];
-    console.log(b.offsetHeight, b.offsetWidth);
-    $(':root').css('--mica-size', `${Math.max(b.offsetHeight, b.offsetWidth)}px`);
-    mica_difx = (b.offsetHeight < b.offsetWidth) ? 0 : (b.offsetWidth - b.offsetHeight) / 2;
-    mica_dify = (b.offsetHeight < b.offsetWidth) ? (b.offsetHeight - b.offsetWidth) / 2 : 0;
+let mica_difx=0,mica_dify=0;
+window.addEventListener('resize',e=>{
+    let b=$('body')[0];
+    $(':root').css('--mica-size',`${Math.max(b.offsetHeight,b.offsetWidth)}px`);
+    mica_difx=(b.offsetHeight<b.offsetWidth)?0:(b.offsetWidth-b.offsetHeight)/2;
+    mica_dify=(b.offsetHeight<b.offsetWidth)?(b.offsetHeight-b.offsetWidth)/2:0;
 })
 
 // 拖拽窗口
@@ -1338,8 +1343,8 @@ function preview() {
 // 启动
 let updated = false;
 document.getElementsByTagName('body')[0].onload = function nupd() {
-    $('.login').css('opacity', '1');
-    $('.login').css('display', 'flex');
+    $('#loginback').css('opacity', '1');
+    $('#loginback').css('display', 'flex');
     setTimeout(() => {
         $('#loadback').addClass('hide');
     }, 500);
@@ -1359,27 +1364,29 @@ navigator.serviceWorker.register('sw.js', { updateViaCache: 'none', scope: './' 
 navigator.serviceWorker.controller.postMessage({
     head: 'is_update'
 });
-navigator.serviceWorker.controller.postMessage({
-    head: 'get_userdata'
-});
+// navigator.serviceWorker.controller.postMessage({
+//     head: 'get_userdata'
+// });
 navigator.serviceWorker.addEventListener('message', function (e) {
     if (e.data.head == 'update') {
         updated = true;
         $('.msg.update>.main>.tit').html('<i class="bi bi-stars" style="background-image: linear-gradient(100deg, var(--theme-1), var(--theme-2));-webkit-background-clip: text;-webkit-text-fill-color: transparent;text-shadow:3px 3px 5px var(--sd);filter:saturate(200%) brightness(0.9);"></i> ' + $('#win-about>.cnt.update>div>details:first-child>summary').text());
         $('.msg.update>.main>.cont').html($('#win-about>.cnt.update>div>details:first-child>p').html());
         $('#loadbackupdate').css('display', 'block');
-    } else if (e.data.head == 'userdata') {
-        const d = e.data.data;
-        console.log(d);
-        if (d.theme == 'dark') $(':root').addClass('dark');
-        $(':root').css('--theme-1', d.color1);
-        $(':root').css('--theme-2', d.color2);
     }
+    //  else if (e.data.head == 'userdata') {
+    //     const d = e.data.data;
+    //     console.log(d);
+    //     if (d.theme == 'dark') $(':root').addClass('dark');
+    //     $(':root').css('--theme-1', d.color1);
+    //     $(':root').css('--theme-2', d.color2);
+    // }
 });
 function setData(k, v) {
-    navigator.serviceWorker.controller.postMessage({
-        head: 'set_userdata',
-        key: k,
-        value: v
-    });
+    // navigator.serviceWorker.controller.postMessage({
+    //     head: 'set_userdata',
+    //     key: k,
+    //     value: v
+    // });
+    localStorage.setItem(k,v);
 }
