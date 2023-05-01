@@ -29,9 +29,14 @@
 	<link rel="stylesheet" href="apps/style/camera.css">
 	<link rel="stylesheet" href="widgets.css">
 	<link rel="manifest" href="pwa/manifest.json">
+	<link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+	<link rel="stylesheet" href="apps/style/login.css">
 	<base target="_blank">
+
+	<title>Windows 12 网页版</title>
 </head>
 <body>
+	<audio src="media/startup.mp3" id="startup-music"></audio>
 	<div id="loadback" style="background-color:#000;width:100%;height:100%;z-index:105;position:absolute;transition:200ms;">
 		<style>
 			#loadback.hide {
@@ -126,6 +131,30 @@
 			}, 100);
 		</script>
 	</div>
+	<div class="login" style="position: absolute; width: 100%; height: 100%; opacity: 0; display: none; z-index: 101;">
+        <div class="user"></div>
+        <div class="name">Administrator</div>
+        <div id="login" onclick="
+			this.id = 'login-after';
+			this.innerText = '登录中...';
+			window.setTimeout(() => {
+				this.style.transition = 'color 500ms'
+			}, 100);
+			window.setTimeout(() => {
+				document.querySelector('div.login').className = 'login login-close'
+				window.setTimeout(() => {
+					$('.login').css('opacity', '0');
+				}, 500);
+				window.setTimeout(() => {
+					$('.login').css('display', 'none');
+				}, 2000);
+				document.querySelector('audio#startup-music').play();
+			}, 1000);
+			this.onclick = null;
+		">
+            登录
+		</div>
+    </div>
 	<!-- <img src="https://bing.com/th?id=OHR.Trossachs_ZH-CN9299955040_UHD.jpg&qlt=100" alt=""> -->
 	<script src="./jq.min.js"></script>
 	<div id="start-menu">
@@ -176,6 +205,12 @@
 					<img src="icon/camera.png"><p>相机</p>
 				</a>
 				<p class="text">其它</p>
+				<a class="a">
+					<img src="icon/defender.png"><p>Windows 安全中心</p>
+				</a>
+				<a class="a">
+					<img src="icon/store.png"><p>Microsoft Store</p>
+				</a>
 			</list>
 		</div>
 		<div id="s-m-r">
@@ -891,8 +926,16 @@
 			<div class="cnt update">
 				<h1 class="tit"><span></span>更新记录</h1>
 				<div style="margin-left: 20px;">
+					<details><summary><span>v5.2.1</span> 登录界面，开机音效和细节优化</summary><p>
+						&emsp;&emsp;<strong>更新来自 @User782Tec</strong><br />
+						&emsp;&emsp;-为网站添加Favicon和标题<br />
+						&emsp;&emsp;-Edge浏览器中，超出标签页范围的文字将会被隐藏以避免文字溢出的问题<br />
+						&emsp;&emsp;-微调Edge浏览器中加载动画的位置<br />
+						&emsp;&emsp;-新增了开机音效和登录界面<br />
+						&emsp;&emsp;-格式化部分文档<br />
+					</details>
 					<details><summary><span>v5.2.0</span> 相机应用及细节修复</summary><p>
-						&emsp;&emsp;<strong>更新来自 @User782Tec</strong>
+						&emsp;&emsp;<strong>更新来自 @User782Tec</strong><br />
 						&emsp;&emsp;-新增“相机”应用，支持拍照功能<br />
 						&emsp;&emsp;-优化焦点控制，关闭焦点窗口后，焦点会转移至下面一个窗口，更加符合原生体验<br />
 						&emsp;&emsp;-计算器优化，优化符号及输入<br />
@@ -900,7 +943,7 @@
 						&emsp;&emsp;-修复部分情况下标题栏不显示的问题<br />
 						&emsp;&emsp;-优化窗口布局<br />
 						&emsp;&emsp;-修正部分非标准CSS特性<br />
-						&emsp;&emsp;-格式化部分文档<br />
+						&emsp;&emsp;-格式化部分文档<br /></p>
 					</details>
 					<details><summary><span>v5.1.2</span> 细节修复和更改</summary><p>
 						&emsp;&emsp;-修复关于加载失效的问题<br />

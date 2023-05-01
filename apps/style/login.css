@@ -1,0 +1,68 @@
+div.login {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    background: linear-gradient(130deg, #ad6eca, #3b91d8);
+    transition: filter 500ms, background-color 500ms, opacity 1500ms ease-in-out;
+}
+
+#login {
+    padding: 4px 50px 4px 50px;
+    border: 2px solid #aaa;
+    background-color: #eaeaea;
+    color: #121212;
+    transition: background-color 300ms, transform cubic-bezier(0.14, 1.02, 0.17, 0.03) 300ms;
+    font-size: 18px;
+    border-radius: 10px;
+}
+
+#login:hover {
+    background-color: #fefefe;
+}
+
+#login:active {
+    transform: scale(0.95);
+}
+
+#login-after {
+    color: #fefefe;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 18px;
+    margin: 6px 0px 6px 0px;
+}
+
+.login>div.user {
+    width: 150px;
+    height: 150px;
+    border-radius: 100%;
+    background-image: url("../../icon/user.svg");
+    background-size: 65% 65%;
+    background-position: 50% 50%;
+    background-repeat: no-repeat;
+    margin-bottom: 20px;
+    background-color: #ddd;
+    transition: filter 500ms;
+}
+
+.login>div.name {
+    color: #fefefe;
+    font-size: 30px;
+    font-family: Arial, Helvetica, sans-serif;
+    margin-bottom: 20px;
+    transition: color 500ms;
+}
+
+div.login-close, div.login-close>div.user {
+    filter: brightness(0);
+}
+
+div.login-close>div.name, div.login-close #login-after {
+    color: #000 !important;
+}
+
+div.login-close {
+    background-color: black;
+}

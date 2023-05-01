@@ -404,13 +404,13 @@ let apps = {
                 apps.camera.downloadLink = document.querySelector('#win-camera a');
                 apps.camera.control = document.querySelector('#win-camera>.control')
                 navigator.mediaDevices.getUserMedia({ video: true, audio: false })
-                .then((stream) => {
-                    apps.camera.video.srcObject = stream;
-                    apps.camera.video.play();
-                })
-                .catch(() => {
-                    hidewin('camera');
-                });
+                    .then((stream) => {
+                        apps.camera.video.srcObject = stream;
+                        apps.camera.video.play();
+                    })
+                    .catch(() => {
+                        hidewin('camera');
+                    });
                 apps.camera.video.addEventListener('canplay', () => {
                     if (!apps.camera.streaming) {
                         apps.camera.aspectRatio = apps.camera.video.videoWidth / apps.camera.video.videoHeight;
@@ -588,15 +588,15 @@ let apps = {
         init: () => {
             $('#win-about>.about').addClass('show');
             $('#win-about>.update').removeClass('show');
-            if($('#contri').length>1)return;
+            if ($('#contri').length > 1) return;
             apps.about.get();
         },
-        get:()=>{
+        get: () => {
             $('#contri').html(`<loading><svg width="30px" height="30px" viewBox="0 0 16 16">
             <circle cx="8px" cy="8px" r="7px" style="stroke:#7f7f7f50;fill:none;stroke-width:3px;"></circle>
             <circle cx="8px" cy="8px" r="7px" style="stroke:#2983cc;stroke-width:3px;"></circle></svg></loading>`)
             // 实时获取项目贡献者
-            $.get('https://api.github.com/repos/tjy-gitnub/win12/contributors').then(cs=>{
+            $.get('https://api.github.com/repos/tjy-gitnub/win12/contributors').then(cs => {
                 setTimeout(() => {
                     $('#contri').html('');
                     cs.forEach(c => {
@@ -706,54 +706,54 @@ C:\Windows\System32> <input type="text" oninput="setTimeout(() => {$('#win-termi
             $('.window.edge>.titbar>.tabs')[0].innerHTML += '<a class="new bi bi-plus" onclick="apps.edge.newtab();"></a>';
             // $('.window.edge>.titbar>.tabs>.tab.'+apps.edge.tabs[apps.edge.now][0]).addClass('show');
         },
-        moving: (t,ev,np)=>{
-            let deltaLeft=ev.clientX;
-            function move_f(e){
-                $(this).css('transform',`translateX(${e.clientX-deltaLeft}px)`);
-                let pos=Math.floor((this.offsetLeft+e.clientX-deltaLeft-36+(this.offsetWidth/2))/this.offsetWidth);
+        moving: (t, ev, np) => {
+            let deltaLeft = ev.clientX;
+            function move_f(e) {
+                $(this).css('transform', `translateX(${e.clientX - deltaLeft}px)`);
+                let pos = Math.floor((this.offsetLeft + e.clientX - deltaLeft - 36 + (this.offsetWidth / 2)) / this.offsetWidth);
                 $('.window.edge>.titbar>.tabs>.tab.left').removeClass('left');
                 $('.window.edge>.titbar>.tabs>.tab.right').removeClass('right');
-                if(np<pos){
-                    for (let i = np+1; i <= pos; i++) {
+                if (np < pos) {
+                    for (let i = np + 1; i <= pos; i++) {
                         const ta = apps.edge.tabs[i];
-                        $('.window.edge>.titbar>.tabs>.tab.'+ta[0]).addClass('left');
+                        $('.window.edge>.titbar>.tabs>.tab.' + ta[0]).addClass('left');
                     }
                 }
-                else if(np>pos){
+                else if (np > pos) {
                     for (let i = pos; i < np; i++) {
                         const ta = apps.edge.tabs[i];
-                        $('.window.edge>.titbar>.tabs>.tab.'+ta[0]).addClass('right');
+                        $('.window.edge>.titbar>.tabs>.tab.' + ta[0]).addClass('right');
                     }
                 }
             };
-            page.onmousemove=move_f.bind(t);
-            function up_f(e){
-                page.onmousemove=null;
-                page.onmouseup=null;
-                console.log(this,this.offsetWidth);
-                let pos=Math.floor((this.offsetLeft+e.clientX-deltaLeft-36+(this.offsetWidth/2))/this.offsetWidth);
-                console.log(pos,np);
-                if(pos==np || pos>apps.edge.tabs.length || pos<0){
-                    $(this).css('transform','none');
+            page.onmousemove = move_f.bind(t);
+            function up_f(e) {
+                page.onmousemove = null;
+                page.onmouseup = null;
+                console.log(this, this.offsetWidth);
+                let pos = Math.floor((this.offsetLeft + e.clientX - deltaLeft - 36 + (this.offsetWidth / 2)) / this.offsetWidth);
+                console.log(pos, np);
+                if (pos == np || pos > apps.edge.tabs.length || pos < 0) {
+                    $(this).css('transform', 'none');
                     $(this).removeClass('moving');
                     $('.window.edge>.titbar>.tabs>.tab.left').removeClass('left');
                     $('.window.edge>.titbar>.tabs>.tab.right').removeClass('right');
                     return;
-                }else{
-                    apps.edge.tabs.splice(np<pos?pos+1:pos,0,apps.edge.tabs[np]);
-                    apps.edge.tabs.splice(np<pos?np:(np+1),1);
+                } else {
+                    apps.edge.tabs.splice(np < pos ? pos + 1 : pos, 0, apps.edge.tabs[np]);
+                    apps.edge.tabs.splice(np < pos ? np : (np + 1), 1);
                     apps.edge.settabs();
                     apps.edge.tab(pos);
                 }
             }
-            page.onmouseup=up_f.bind(t);
+            page.onmouseup = up_f.bind(t);
             $(t).addClass('moving');
         },
         close: c => {
-            $('.window.edge>.titbar>.tabs>.tab.'+apps.edge.tabs[c][0]).addClass('close');
-            for (let i = c+1; i < apps.edge.tabs.length; i++) {
+            $('.window.edge>.titbar>.tabs>.tab.' + apps.edge.tabs[c][0]).addClass('close');
+            for (let i = c + 1; i < apps.edge.tabs.length; i++) {
                 const _id = apps.edge.tabs[i][0];
-                $('.window.edge>.titbar>.tabs>.tab.'+_id).addClass('left');
+                $('.window.edge>.titbar>.tabs>.tab.' + _id).addClass('left');
             }
             setTimeout(() => {
                 $('#win-edge>iframe.' + apps.edge.tabs[c][0]).remove();
@@ -789,7 +789,7 @@ C:\Windows\System32> <input type="text" oninput="setTimeout(() => {$('#win-termi
             apps.edge.tab(apps.edge.now);
         },
         reload: () => {
-            $('#win-edge>iframe.show').attr('src',$('#win-edge>iframe.show').attr('src'));
+            $('#win-edge>iframe.show').attr('src', $('#win-edge>iframe.show').attr('src'));
             if (!document.querySelector('.window.edge>.titbar>.tabs>.tab.\\3' + apps.edge.now + '>.reloading')) {
                 document.querySelector('.window.edge>.titbar>.tabs>.tab.\\3' + apps.edge.now).insertAdjacentHTML('afterbegin', apps.edge.reloadElt);
                 document.querySelector('#win-edge>iframe.\\3' + apps.edge.now).onload = function () {
@@ -1064,13 +1064,13 @@ function toggletheme() {
     }
 }
 // 云母效果
-let mica_difx=0,mica_dify=0;
-window.addEventListener('resize',e=>{
-    let b=$('body')[0];
-    console.log(b.offsetHeight,b.offsetWidth);
-    $(':root').css('--mica-size',`${Math.max(b.offsetHeight,b.offsetWidth)}px`);
-    mica_difx=(b.offsetHeight<b.offsetWidth)?0:(b.offsetWidth-b.offsetHeight)/2;
-    mica_dify=(b.offsetHeight<b.offsetWidth)?(b.offsetHeight-b.offsetWidth)/2:0;
+let mica_difx = 0, mica_dify = 0;
+window.addEventListener('resize', e => {
+    let b = $('body')[0];
+    console.log(b.offsetHeight, b.offsetWidth);
+    $(':root').css('--mica-size', `${Math.max(b.offsetHeight, b.offsetWidth)}px`);
+    mica_difx = (b.offsetHeight < b.offsetWidth) ? 0 : (b.offsetWidth - b.offsetHeight) / 2;
+    mica_dify = (b.offsetHeight < b.offsetWidth) ? (b.offsetHeight - b.offsetWidth) / 2 : 0;
 })
 
 // 拖拽窗口
@@ -1139,8 +1139,8 @@ function win_move(e) {
 
         $(this).addClass('notrans');
     }
-    if($(this).hasClass('mica')){
-        $(this).css('--mica-pos', `${mica_difx-cx + deltaLeft}px ${mica_dify-cy + deltaTop}px`);
+    if ($(this).hasClass('mica')) {
+        $(this).css('--mica-pos', `${mica_difx - cx + deltaLeft}px ${mica_dify - cy + deltaTop}px`);
     }
 }
 for (let i = 0; i < wins.length; i++) {
@@ -1338,7 +1338,14 @@ function preview() {
 // 启动
 let updated = false;
 document.getElementsByTagName('body')[0].onload = function nupd() {
-    $('#loadback').addClass('hide'); setTimeout(() => { $('#loadback').css('display', 'none') }, 200);
+    $('.login').css('opacity', '1');
+    $('.login').css('display', 'flex');
+    setTimeout(() => {
+        $('#loadback').addClass('hide');
+    }, 500);
+    setTimeout(() => {
+        $('#loadback').css('display', 'none');
+    }, 1000);
     if (updated) {
         setTimeout(() => {
             $('.msg.update').addClass('show');
