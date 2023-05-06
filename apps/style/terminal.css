@@ -1,4 +1,4 @@
-.window.terminal{
+.window.terminal-apps {
     --text: #ddd;
     --bg: #000000;
     --bg30: #00000030;
@@ -7,41 +7,57 @@
     --sd: #00000070;
     --card: #72727240;
     --hover: #ffffff40;
-    --hover-half:#ffffff20;
+    --hover-half: #ffffff20;
     --hover-b: #ffffff30;
     --bggrey: #444;
     --bgul: url('./bg-dark.svg');
     --mm: #ffffff50;
     --cm: #252525bb;
     --bar: #7272722a;
-    --hr:#00000050;
-    --unfoc:#333;
+    --hr: #00000050;
+    --unfoc: #333;
     cursor: default;
 }
 
-#win-terminal>pre{
-    color: #fff;
-    margin: 5px 10px;
-    font-family:"Microsoft YaHei";
-    user-select: text;
+.window.terminal-apps>.content {
+    padding-bottom: 55px;
 }
 
-#win-terminal>pre::selection{
+.window.terminal-apps>.content {
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+    padding-bottom: 10px;
+}
+
+.window.terminal-apps>.content>pre {
+    color: #fff;
+    margin: 0px 15px;
+    font-family: "Consolas", "Microsoft YaHei", "monospace", system-ui;
+    user-select: text;
+    font-size: 16px;
+}
+
+.window.terminal-apps>.content * {
+    white-space: break-spaces;
+}
+
+.window.terminal-apps>.content *::selection {
     background: #ddd;
     background-clip: content-box;
     color: #333;
 }
 
-#win-terminal>pre>input{
+.window.terminal-apps>.content>pre>input {
     background: none;
     border: none;
     outline: none;
     padding: 0;
     color: #fff;
     cursor: default;
+    width: 100%;
 }
 
-#win-terminal>pre>input::selection{
+.window.terminal-apps>pre>input::selection {
     background: #ddd;
     background-clip: content-box;
     color: #333;
