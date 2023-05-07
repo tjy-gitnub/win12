@@ -408,13 +408,13 @@ let apps = {
                 apps.camera.downloadLink = document.querySelector('#win-camera a');
                 // apps.camera.control = document.querySelector('#win-camera>.control')
                 navigator.mediaDevices.getUserMedia({ video: true, audio: false })
-                .then(stream => {
-                    apps.camera.video.srcObject = stream;
-                    apps.camera.video.play();
-                })
-                .catch(() => {
-                    hidewin('camera');
-                });
+                    .then(stream => {
+                        apps.camera.video.srcObject = stream;
+                        apps.camera.video.play();
+                    })
+                    .catch(() => {
+                        hidewin('camera');
+                    });
                 apps.camera.video.addEventListener('canplay', () => {
                     if (!apps.camera.streaming) {
                         apps.camera.aspectRatio = apps.camera.video.videoWidth / apps.camera.video.videoHeight;
@@ -448,16 +448,16 @@ let apps = {
             }
         },
         resize: () => {
-            let w=$('#win-camera')[0].offsetWidth,
-                h=$('#win-camera')[0].offsetHeight;
+            let w = $('#win-camera')[0].offsetWidth,
+                h = $('#win-camera')[0].offsetHeight;
             if (w / apps.camera.aspectRatio <= h) {
-                if(!$('#win-camera').hasClass('v')){
+                if (!$('#win-camera').hasClass('v')) {
                     $('#win-camera').removeClass('h')
                     $('#win-camera').addClass('v');
                 }
             }
             else if (w / apps.camera.aspectRatio >= h) {
-                if(!$('#win-camera').hasClass('h')){
+                if (!$('#win-camera').hasClass('h')) {
                     $('#win-camera').removeClass('v')
                     $('#win-camera').addClass('h');
                 }
@@ -622,13 +622,107 @@ let apps = {
             }, 200);
         }
     },
+    python: {
+        codeCache: '',
+        prompt: '>>> ',
+        indent: false,
+        init: () => {
+            $('#win-python').html(`
+        <pre>
+Python 3.10.2  [MSC v.1912 64 bit (AMD64)] :: Anaconda, Inc. on win32
+Type "help", "copyright", "credits" or "license" for more information.
+        </pre>
+        <pre class="text-cmd"></pre>
+        <pre style="display: flex;"><span class='prompt'>>>> </span><input type="text" onkeyup="if (event.keyCode == 13) { apps.python.run(); }"></pre>`);
+        },
+        run: () => {
+            if (apps.python.pyodide) {
+                const input = document.querySelector('#win-python>pre>input');
+                const _code = input.value;
+                const elt = document.querySelector('#win-python>pre.text-cmd');
+                const lastChar = _code[_code.length - 1];
+                var newD = document.createElement('div');
+                newD.innerText = `${apps.python.prompt}${_code}`;
+                elt.appendChild(newD);
+                if (lastChar != ':' && lastChar != '\\' && ((!apps.python.indent || _code == ''))) {
+                    apps.python.prompt = '>>> ';
+                    apps.python.codeCache += _code;
+                    apps.python.indent = false;
+                    const code = apps.python.codeCache;
+                    apps.python.codeCache = '';
+                    apps.python.pyodide.runPython('sys.stdout = io.StringIO()');
+                    try {
+                        const result = String(apps.python.pyodide.runPython(code));
+                        if (apps.python.pyodide.runPython('sys.stdout.getvalue()')) {
+                            var newD = document.createElement('div');
+                            newD.innerText = `${apps.python.pyodide.runPython('sys.stdout.getvalue()')}`;
+                            elt.appendChild(newD);
+                        }
+                        if (result && result != 'undefined') {
+                            var newD = document.createElement('div');
+                            if (result == 'false') {
+                                newD.innerText = 'False';
+                            }
+                            else if (result == 'true') {
+                                newD.innerText = 'True';
+                            }
+                            else {
+                                newD.innerText = result;
+                            }
+                            elt.appendChild(newD);
+                        }
+                    }
+                    catch (err) {
+                        var newD = document.createElement('div');
+                        newD.innerText = `${err.message}`;
+                        elt.appendChild(newD);
+                    }
+                }
+                else {
+                    apps.python.prompt = '... ';
+                    if (lastChar == ':') {
+                        apps.python.indent = true;
+                    }
+                    apps.python.codeCache += _code + '\n';
+                }
+                input.value = "";
+
+                // 自动聚焦
+                input.blur();
+                input.focus();
+
+                document.querySelector('#win-python .prompt').innerText = apps.python.prompt;
+            }
+        }
+    },
     terminal: {
         init: () => {
-            $('#win-terminal>pre').html(`Micrsotft Windosw [版本 12.0.39035.7324]
-(c) Micrsotft Corparotoin。保所留有权利。
-一个摆设，后续不会完善。
-
-C:\Windows\System32> <input type="text" oninput="setTimeout(() => {$('#win-terminal>pre')[0].innerHTML+=this.outerHTML;$('#win-terminal>pre>input').focus()}, 0);$('#win-terminal>pre')[0].innerText+=$(this).val();">`)
+            $('#win-terminal').html(`<pre>
+Microsoft Windows [版本 12.0.39035.7324]
+(c) Microsoft Corporation。保留所有权利。
+        </pre>
+        <pre class="text-cmd"></pre>
+        <pre style="display: flex"><span class="prompt">C:\\Windows\\System32> </span><input type="text" onkeyup="if (event.keyCode == 13) { apps.terminal.run(); }"></pre>`)
+        },
+        run: () => {
+            const elt = document.querySelector('#win-terminal>pre.text-cmd');
+            const input = document.querySelector('#win-terminal>pre>input');
+            const command = input.value;
+            var newD = document.createElement('div');
+            newD.innerText = `C:\\Windows\\System32> ${command}`;
+            elt.appendChild(newD);
+            if (document.querySelector('.window.' + command)) {
+                openapp(command);
+            }
+            else {
+                var newD = document.createElement('div');
+                newD.innerText = `"${command}"不是内部或外部命令,也不是可运行程序
+或批处理文件`;
+                elt.appendChild(newD);
+            }
+            input.value = '';
+            input.blur();
+            input.focus();
         }
     },
     search: {
@@ -1070,12 +1164,12 @@ function toggletheme() {
     }
 }
 // 云母效果
-let mica_difx=0,mica_dify=0;
-window.addEventListener('resize',e=>{
-    let b=$('body')[0];
-    $(':root').css('--mica-size',`${Math.max(b.offsetHeight,b.offsetWidth)}px`);
-    mica_difx=(b.offsetHeight<b.offsetWidth)?0:(b.offsetWidth-b.offsetHeight)/2;
-    mica_dify=(b.offsetHeight<b.offsetWidth)?(b.offsetHeight-b.offsetWidth)/2:0;
+let mica_difx = 0, mica_dify = 0;
+window.addEventListener('resize', e => {
+    let b = $('body')[0];
+    $(':root').css('--mica-size', `${Math.max(b.offsetHeight, b.offsetWidth)}px`);
+    mica_difx = (b.offsetHeight < b.offsetWidth) ? 0 : (b.offsetWidth - b.offsetHeight) / 2;
+    mica_dify = (b.offsetHeight < b.offsetWidth) ? (b.offsetHeight - b.offsetWidth) / 2 : 0;
 })
 
 // 拖拽窗口
@@ -1357,36 +1451,45 @@ document.getElementsByTagName('body')[0].onload = function nupd() {
         }, 1000);
     }
     apps.webapps.init();
+    (async function () {
+        apps.python.pyodide = await loadPyodide();
+        apps.python.pyodide.runPython(`
+import sys
+import io
+`);
+    })();
 };
 
 // PWA 应用
-navigator.serviceWorker.register('sw.js', { updateViaCache: 'none', scope: './' });
-navigator.serviceWorker.controller.postMessage({
-    head: 'is_update'
-});
-// navigator.serviceWorker.controller.postMessage({
-//     head: 'get_userdata'
-// });
-navigator.serviceWorker.addEventListener('message', function (e) {
-    if (e.data.head == 'update') {
-        updated = true;
-        $('.msg.update>.main>.tit').html('<i class="bi bi-stars" style="background-image: linear-gradient(100deg, var(--theme-1), var(--theme-2));-webkit-background-clip: text;-webkit-text-fill-color: transparent;text-shadow:3px 3px 5px var(--sd);filter:saturate(200%) brightness(0.9);"></i> ' + $('#win-about>.cnt.update>div>details:first-child>summary').text());
-        $('.msg.update>.main>.cont').html($('#win-about>.cnt.update>div>details:first-child>p').html());
-        $('#loadbackupdate').css('display', 'block');
-    }
-    //  else if (e.data.head == 'userdata') {
-    //     const d = e.data.data;
-    //     console.log(d);
-    //     if (d.theme == 'dark') $(':root').addClass('dark');
-    //     $(':root').css('--theme-1', d.color1);
-    //     $(':root').css('--theme-2', d.color2);
-    // }
-});
-function setData(k, v) {
+if (!location.href.match(/((\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.){3}(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])(?::(?:[0-9]|[1-9][0-9]{1,3}|[1-5][0-9]{4}|6[0-4][0-9]{3}|65[0-4][0-9]{2}|655[0-2][0-9]|6553[0-5]))/) && !location.href.match('localhost')) {
+    navigator.serviceWorker.register('sw.js', { updateViaCache: 'none', scope: './' });
+    navigator.serviceWorker.controller.postMessage({
+        head: 'is_update'
+    });
     // navigator.serviceWorker.controller.postMessage({
-    //     head: 'set_userdata',
-    //     key: k,
-    //     value: v
+    //     head: 'get_userdata'
     // });
-    localStorage.setItem(k,v);
+    navigator.serviceWorker.addEventListener('message', function (e) {
+        if (e.data.head == 'update') {
+            updated = true;
+            $('.msg.update>.main>.tit').html('<i class="bi bi-stars" style="background-image: linear-gradient(100deg, var(--theme-1), var(--theme-2));-webkit-background-clip: text;-webkit-text-fill-color: transparent;text-shadow:3px 3px 5px var(--sd);filter:saturate(200%) brightness(0.9);"></i> ' + $('#win-about>.cnt.update>div>details:first-child>summary').text());
+            $('.msg.update>.main>.cont').html($('#win-about>.cnt.update>div>details:first-child>p').html());
+            $('#loadbackupdate').css('display', 'block');
+        }
+        //  else if (e.data.head == 'userdata') {
+        //     const d = e.data.data;
+        //     console.log(d);
+        //     if (d.theme == 'dark') $(':root').addClass('dark');
+        //     $(':root').css('--theme-1', d.color1);
+        //     $(':root').css('--theme-2', d.color2);
+        // }
+    });
+    function setData(k, v) {
+        // navigator.serviceWorker.controller.postMessage({
+        //     head: 'set_userdata',
+        //     key: k,
+        //     value: v
+        // });
+        localStorage.setItem(k,v);
+    }
 }

@@ -26,7 +26,7 @@
     border-radius: 50%;
     background-color: #ffffffee;
     backdrop-filter: blur(10px) saturate(1.3);
-    box-shadow: 0 0 0 4px #44444470, 0 0 0 7px #ffffffa0,1px 1px 15px 7px #00000090;
+    box-shadow: 0 0 0 4px #44444470, 0 0 0 7px #ffffffa0, 1px 1px 15px 7px #00000090;
     transition: 200ms;
 }
 
@@ -56,10 +56,10 @@
     left: 0px;
 }
 
-#win-camera.h video{
+#win-camera.h video {
     height: 100%;
 }
 
-#win-camera.v video{
+#win-camera.v video {
     width: 100%;
 }
