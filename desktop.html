@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" style="height: 100%;">
+<html lang="en" style="height: 100%;" id="html">
 
 <head>
 	<meta charset="UTF-8" />
@@ -330,6 +330,64 @@
 			</div>
 		</div>
 	</div>
+	<div id="sound-win" class="show-begin">
+		<div style="  width: 200px;
+  height: 30px;
+  background-color: #f5f5f5;
+  border-radius: 15px;
+  padding: 5px;">
+    		<input type="range" min="0" max="100" value="50" id="slider">
+    		<span id="value">100</span>
+		</div>
+		<style>
+
+input[type=range] {
+  -webkit-appearance: none;
+  width: 100%;
+  height: 10px;
+  background-color: #ddd;
+  border-radius: 5px;
+  outline: none;
+  margin-top: 10px;
+}
+
+input[type=range]:hover {
+  cursor: pointer;
+}
+
+input[type=range]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 20px;
+  height: 20px;
+  background-color: #0099cc;
+  border-radius: 50%;
+  margin-top: -5px;
+}
+
+#value {
+  display: inline-block;
+  font-size: 20px;
+  margin-left: 10px;
+  color: #333;
+}
+
+
+</style>
+		<script>
+	const slider = document.getElementById("slider");
+const value = document.getElementById("value");
+
+slider.addEventListener("input", () => {
+  value.textContent = slider.value;
+  var element = document.getElementById("html");
+  var style = element.style;
+  style.filter = `brightness(${slider.value}%)`;
+
+});
+
+
+</script>
+	</div>
 	<div id="search-win">
 		<!-- 搜索框 -->
 		<input type="text" class="input" placeholder="在这里输入你要搜索的内容" id="search-input" oninput="apps.search.search(this.value.length)">
@@ -489,17 +547,18 @@
 	<div id="dock-box">
 		<!-- Dock(任务)栏 -->
 		<div class="dock dock-start">
+
 			<a class="dock-btn" id="start-btn" win12_title="开始" onclick="
 				if($('#start-menu').hasClass('show')){
 					hide_startmenu();
 				}
 				else{
 					$('#start-btn').addClass('show');
-					if($('#search-win').hasClass('show')){
-						$('#search-btn').removeClass('show');
-						$('#search-win').removeClass('show');
+					if($('#sound-win').hasClass('show')){
+						$('#sound-btn').removeClass('show');
+						$('#sound-win').removeClass('show');
 						setTimeout(() => {
-							$('#search-win').removeClass('show-begin');
+							$('#sound-win').removeClass('show-begin');
 						}, 200);
 						hide_widgets();
 					}
@@ -595,6 +654,27 @@
 				<svg viewBox="0,0,207,226" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" overflow="hidden" class="wid2"><defs><clipPath id="wid2-clip0"><rect x="316" y="202" width="207" height="226" /></clipPath><linearGradient x1="344.945" y1="185.866" x2="494.055" y2="444.134" gradientUnits="userSpaceOnUse" spreadMethod="reflect" id="wid2-fill1"><stop offset="0" stop-color="#11CCF1" /><stop offset="0.13" stop-color="#11CCF1" /><stop offset="1" stop-color="#2983CC" /></linearGradient></defs><g clip-path="url(#wid2-clip0)" transform="translate(-316 -202)"><path d="M317 260.165C317 228.041 343.041 202 375.165 202L463.835 202C495.959 202 522 228.041 522 260.165L522 369.835C522 401.959 495.959 428 463.835 428L375.165 428C343.041 428 317 401.959 317 369.835Z" fill="url(#wid2-fill1)" fill-rule="evenodd" /><path d="M349.5 249.5 393.5 249.5" stroke="#FFFFFF" stroke-width="14.6667" stroke-linecap="round" stroke-miterlimit="8" fill="none" fill-rule="evenodd" /><path d="M349.5 286.5 464.5 286.5" stroke="#FFFFFF" stroke-width="14.6667" stroke-linecap="round" stroke-miterlimit="8" fill="none" fill-rule="evenodd" /><path d="M349.5 323.5 422.5 323.5" stroke="#FFFFFF" stroke-width="14.6667" stroke-linecap="round" stroke-miterlimit="8" fill="none" fill-rule="evenodd" /></g></svg>
 				<svg viewBox="0,0,180,394" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" overflow="hidden" class="wid3"><defs><clipPath id="wid3-clip0"><rect x="111" y="202" width="180" height="394" /></clipPath><linearGradient x1="93.038" y1="212.37" x2="307.962" y2="584.63" gradientUnits="userSpaceOnUse" spreadMethod="reflect" id="wid3-fill1"><stop offset="0" stop-color="#E062D7" /><stop offset="0.13" stop-color="#E062D7" /><stop offset="1" stop-color="#A266E4" /></linearGradient></defs><g clip-path="url(#wid3-clip0)" transform="translate(-111 -202)"><path d="M111 265.803C111 230.565 139.565 202 174.803 202L226.197 202C261.435 202 290 230.565 290 265.803L290 531.197C290 566.435 261.435 595 226.197 595L174.803 595C139.565 595 111 566.435 111 531.197Z" fill="url(#wid3-fill1)" fill-rule="evenodd" /><path d="M144.5 250.5 217.5 250.5" stroke="#FFFFFF" stroke-width="14.6667" stroke-linecap="round" stroke-miterlimit="8" fill="none" fill-rule="evenodd" /><path d="M144.5 287.5 184.246 287.5" stroke="#FFFFFF" stroke-width="14.6667" stroke-linecap="round" stroke-miterlimit="8" fill="none" fill-rule="evenodd" /><path d="M144.5 324.5 230.931 324.5" stroke="#FFFFFF" stroke-width="14.6667" stroke-linecap="round" stroke-miterlimit="8" fill="none" fill-rule="evenodd" /></g></svg>
 				<svg viewBox="0,0,206,152" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" overflow="hidden" class="wid4"><defs><clipPath id="wid4-clip0"><rect x="317" y="444" width="206" height="152" /></clipPath><linearGradient x1="361.399" y1="419.366" x2="477.601" y2="620.634" gradientUnits="userSpaceOnUse" spreadMethod="reflect" id="wid4-fill1"><stop offset="0" stop-color="#D854CB" /><stop offset="0.13" stop-color="#D854CB" /><stop offset="1" stop-color="#A266E4" /></linearGradient></defs><g clip-path="url(#wid4-clip0)" transform="translate(-317 -444)"><path d="M317 498.466C317 468.938 340.938 445 370.466 445L468.534 445C498.062 445 522 468.938 522 498.466L522 541.534C522 571.062 498.062 595 468.534 595L370.466 595C340.938 595 317 571.062 317 541.534Z" fill="url(#wid4-fill1)" fill-rule="evenodd" /><path d="M356.5 548.5C370.917 521.094 385.333 493.688 400.5 492.521 415.667 491.355 434 538.837 447.5 541.503 461 544.168 479.417 520.386 481.5 508.515" stroke="#FFFFFF" stroke-width="14.6667" stroke-linecap="round" stroke-miterlimit="8" fill="none" fill-rule="evenodd" /></g></svg>
+			</a>
+			<a class="dock-btn" id="sound-btn" win12_title="搜索" onclick="
+			if($('#sound-win').hasClass('show')){
+				$('#sound-btn').removeClass('show');
+				$('#sound-win').removeClass('show');
+				setTimeout(() => {
+					$('#sound-win').removeClass('show-begin');
+				}, 200);
+			}
+			else{
+				$('#sound-btn').addClass('show');
+				if($('#start-menu').hasClass('show'))hide_startmenu();
+				if($('#widgets').hasClass('show'))hide_widgets();
+				$('#sound-win').addClass('show-begin');
+				setTimeout(() => {
+					$('#sound-win').addClass('show');
+				}, 0);
+				$('#search-input').focus();
+			}" data-descp="hide">
+				<svg class="out" width="26" height="26" viewBox="0,0,398,406" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" overflow="hidden"><defs><clipPath id="clip-search0"><rect x="77" y="29" width="398" height="406"></rect></clipPath></defs><g clip-path="url(#clip-search0)" transform="translate(-77 -29)"><path style="fill: var(--text);filter:brightness(0.9);" d="M77 195C77 103.873 151.097 30 242.5 30 333.903 30 408 103.873 408 195 408 286.127 333.903 360 242.5 360 151.097 360 77 286.127 77 195ZM122.372 195C122.372 261.069 176.155 314.629 242.5 314.629 308.845 314.629 362.628 261.069 362.628 195 362.628 128.931 308.845 75.3717 242.5 75.3717 176.155 75.3717 122.372 128.931 122.372 195Z" fill-rule="evenodd"></path><path style="fill: var(--text);filter:brightness(0.9);" d="M329.14 331.039C317.792 319.691 317.792 301.292 329.14 289.944L329.14 289.944C340.488 278.596 358.887 278.596 370.235 289.944L465.351 385.06C476.699 396.408 476.699 414.807 465.351 426.155L465.351 426.155C454.003 437.503 435.604 437.503 424.256 426.155Z" fill-rule="evenodd"></path></g></svg>
+				<svg class="in" width="20" height="20" viewBox="0,0,245,245" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" overflow="hidden"><defs><clipPath id="clip-search1"><rect x="121" y="76" width="245" height="245"></rect></clipPath><linearGradient x1="99.764" y1="115.514" x2="387.236" y2="281.486" gradientUnits="userSpaceOnUse" spreadMethod="reflect" id="fill-search1"><stop offset="0" stop-color="#A964C8"></stop><stop offset="0.26" stop-color="#A964C8"></stop><stop offset="1" stop-color="#2D8AD5"></stop></linearGradient></defs><g clip-path="url(#clip-search1)" transform="translate(-121 -76)"><path d="M122 198.5C122 131.397 176.397 77 243.5 77 310.603 77 365 131.397 365 198.5 365 265.603 310.603 320 243.5 320 176.397 320 122 265.603 122 198.5Z" fill="url(#fill-search1)" fill-rule="evenodd"></path></g></svg>
 			</a>
 		</div>
 		<div class="dock" id="taskbar" style="display: none;" count="0">
