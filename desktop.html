@@ -9,7 +9,12 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 	<meta name="format-detection" content="telephone=no" />
-	
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.62.2/codemirror.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.62.2/codemirror.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.62.2/mode/python/python.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.62.2/addon/hint/show-hint.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.62.2/addon/hint/show-hint.min.css">
+
 	<!-- Windows 12 网页版 谭景元原创  -->
 
 	<!-- Windows 12 网页版是一个开放源项目,
@@ -309,6 +314,9 @@
 					</a>
 					<a class="a sm-app enable" onclick="openapp('terminal');hide_startmenu();" oncontextmenu="return showcm(event,'smapp',['terminal','终端'])">
 						<img src="icon/terminal.png"><p>终端</p>
+					</a>
+					<a class="a sm-app enable" onclick="openapp('PythonEditor');hide_startmenu();" oncontextmenu="return showcm(event,'smapp',['Python Editor','Python Editor'])">
+						<img src="icon/PythonEditor.png"><p>Python Editor</p>
 					</a>
 				</div>
 			</div>
@@ -1262,6 +1270,7 @@
             <pre>>>> <input type="text" onkeyup="if (event.keyCode == 13) { apps.python.run(); }"></pre>
 		</div>
 	</div>
+
 	<div class="window edge" onmousedown="focwin('edge')" ontouchstart="focwin('edge')">
 		<div class="titbar" oncontextmenu="return showcm(event,'titbar','edge')" ondblclick="maxwin('edge')">
 			<img src="icon/edge.png" class="icon" onclick="return showcm(event,'titbar','edge')"><p style="display: none;">Microsoft Edge</p>
@@ -1351,6 +1360,125 @@
 		<div class="content" id="win-bilibili">
 			<!-- <iframe src="https://bilibili.com/" frameborder="0" style="width: 100%; height: 100%;" loading="lazy"></iframe> -->
 		</div>
+	</div>
+	<div class="window PythonEditor" onmousedown="focwin('PythonEditor')" ontouchstart="focwin('PythonEditor')">
+		<div class="titbar" oncontextmenu="return showcm(event,'titbar','PythonEditor')" ondblclick="maxwin('PythonEditor')">
+			<img src="icon/PythonEditor.png" class="icon" onclick="return showcm(event,'titbar','PythonEditor')">
+			<p>Python Editor</p>
+			<div>
+				<a class="a wbtg red" onclick="hidewin('PythonEditor')"><i class="bi bi-x-lg"></i></a>
+				<a class="a wbtg max" onclick="maxwin('PythonEditor')"><i class="bi bi-app"></i></a>
+				<a class="a wbtg" onclick="minwin('PythonEditor')"><i class="bi bi-dash-lg"></i></a>
+			</div>
+		</div>
+		<div class="loadback">
+			<img src="icon/PythonEditor.png" class="icon">
+		</div>
+		  <style>
+			::-webkit-scrollbar {
+				width: 0.5em;
+				height: 0.5em;
+			}
+
+			::-webkit-scrollbar-track {
+				background-color: transparent;
+			}
+
+			::-webkit-scrollbar-thumb {
+				background-color: #FFFFFF22;
+				border-radius: 0;
+			}
+
+			::-webkit-scrollbar-button {
+				display: none;
+				height: 0;
+				width: 0;
+			}
+		</style>
+		<style type="text/css" media="screen">
+		body {
+			overflow: hidden;
+		}
+
+		#editor {
+			margin: 0;
+			position: absolute;
+			top: 6%;
+			bottom: 40%;
+			left: 0;
+			right: 0;
+		}
+		.container {
+				outline: 2px solid #3c3c3c;
+				z-index: 9999;
+				position: relative;
+				top: 45%;
+				padding: 20px;
+				background-color: #1a1a1a;
+				/* border-radius: 5px; */
+				box-shadow: 0 0 40px rgba(0, 0, 0, 0.5);
+				margin: 50px auto;
+				bottom: 0;
+				width: 100%;
+				height: 100%;
+				text-align: left;
+			}
+			.output {
+				background-color: #0f0f0f;
+				color: #f8f8f2;
+				outline: 2px solid #1a1a1a;
+				border: none;
+				/* border-radius: 5px; */
+				padding: 10px;
+				width: 100%;
+				height: 35%;
+				font: 12px/normal 'Monaco', 'Menlo', 'Ubuntu Mono', 'Consolas', 'Source Code Pro', 'source-code-pro', monospace;
+				resize: none;
+				overflow-y: scroll;
+				white-space: pre-wrap;
+				word-wrap: break-word;
+			}
+			.btn {
+				padding: 0px 0px;
+				background-color: #50fa7b00;
+				color: #50fa7b;
+				border: none;
+				border-radius: 5px;
+				font-size: 36px;
+				cursor: pointer;
+				box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+				transition: all 0.2s ease-in-out;
+				float: left;
+			}
+			.btn:hover {
+				box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.3);
+			}
+  		</style>
+		<pre id="editor"></pre>
+		<div class="container">
+			<button class="btn" onclick="apps.PythonEditor.run();">▸</button>
+			<div class="output" id="output"></div>
+		</div>
+
+		<!-- load ace -->
+		<script src="ace-builds-master/src-noconflict/ace.js"></script>
+		<!-- load ace language tools -->
+		<script src="ace-builds-master/src-noconflict/ext-language_tools.js"></script>
+		<script src="ace-builds-master/src-noconflict/ext-error_marker"></script>
+		<script>
+			// trigger extension
+			ace.require("ace/ext/language_tools");
+			var editor = ace.edit("editor");
+			editor.session.setMode("ace/mode/python");
+			editor.setTheme("ace/theme/vibrant_ink");
+			// enable autocompletion and snippets
+			editor.setOptions({
+				enableBasicAutocompletion: true,
+				enableSnippets: true,
+				enableLiveAutocompletion: true
+			});
+		</script>
+		<script src="ace-builds-master/demo/show_own_source.js"></script>
 	</div>
 	<div class="window camera" onmousedown="focwin('camera')" ontouchstart="focwin('camera')">
 		<div class="titbar" oncontextmenu="return showcm(event,'titbar','camera')" ondblclick="maxwin('camera')">
