@@ -622,6 +622,28 @@ let apps = {
             }, 200);
         }
     },
+    PythonEditor: {
+        init: () => {
+
+        },
+        run:()=>{
+            var elements = document.querySelectorAll('[class*=ace_line]');
+            let code = "";
+            for (var i = 0; i < elements.length; i++)
+            {
+                if(elements[i].innerHTML.includes("ace_completion-highlight")){}
+                else
+                {
+                    code = code + elements[i].innerText + "\n";
+                }
+            }
+            apps.python.pyodide.runPython('sys.stdout = io.StringIO()');
+            apps.python.pyodide.runPython(code);
+            const result = apps.python.pyodide.runPython('sys.stdout.getvalue()');
+            let output = document.getElementById("output");
+            output.innerHTML = result;
+        }
+    },
     python: {
         codeCache: '',
         prompt: '>>> ',
