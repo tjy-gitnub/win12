@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" style="height: 100%;" id="html">
+<html lang="en" style="height: 100%;">
 
 <head>
 	<meta charset="UTF-8" />
@@ -28,7 +28,6 @@
 	<!-- Apps style -->
 	<link rel="stylesheet" href="apps/style/setting.css">
 	<link rel="stylesheet" href="apps/style/explorer.css">
-	<link rel="stylesheet" href="apps/style/Python Editor.css">
 	<link rel="stylesheet" href="apps/style/calc.css">
 	<link rel="stylesheet" href="apps/style/about.css">
 	<link rel="stylesheet" href="apps/style/notepad.css">
@@ -339,7 +338,6 @@
 			</div>
 		</div>
 	</div>
-
 	<div id="search-win">
 		<!-- 搜索框 -->
 		<input type="text" class="input" placeholder="在这里输入你要搜索的内容" id="search-input" oninput="apps.search.search(this.value.length)">
@@ -499,18 +497,17 @@
 	<div id="dock-box">
 		<!-- Dock(任务)栏 -->
 		<div class="dock dock-start">
-
 			<a class="dock-btn" id="start-btn" win12_title="开始" onclick="
 				if($('#start-menu').hasClass('show')){
 					hide_startmenu();
 				}
 				else{
 					$('#start-btn').addClass('show');
-					if($('#sound-win').hasClass('show')){
-						$('#sound-btn').removeClass('show');
-						$('#sound-win').removeClass('show');
+					if($('#search-win').hasClass('show')){
+						$('#search-btn').removeClass('show');
+						$('#search-win').removeClass('show');
 						setTimeout(() => {
-							$('#sound-win').removeClass('show-begin');
+							$('#search-win').removeClass('show-begin');
 						}, 200);
 						hide_widgets();
 					}
@@ -607,7 +604,6 @@
 				<svg viewBox="0,0,180,394" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" overflow="hidden" class="wid3"><defs><clipPath id="wid3-clip0"><rect x="111" y="202" width="180" height="394" /></clipPath><linearGradient x1="93.038" y1="212.37" x2="307.962" y2="584.63" gradientUnits="userSpaceOnUse" spreadMethod="reflect" id="wid3-fill1"><stop offset="0" stop-color="#E062D7" /><stop offset="0.13" stop-color="#E062D7" /><stop offset="1" stop-color="#A266E4" /></linearGradient></defs><g clip-path="url(#wid3-clip0)" transform="translate(-111 -202)"><path d="M111 265.803C111 230.565 139.565 202 174.803 202L226.197 202C261.435 202 290 230.565 290 265.803L290 531.197C290 566.435 261.435 595 226.197 595L174.803 595C139.565 595 111 566.435 111 531.197Z" fill="url(#wid3-fill1)" fill-rule="evenodd" /><path d="M144.5 250.5 217.5 250.5" stroke="#FFFFFF" stroke-width="14.6667" stroke-linecap="round" stroke-miterlimit="8" fill="none" fill-rule="evenodd" /><path d="M144.5 287.5 184.246 287.5" stroke="#FFFFFF" stroke-width="14.6667" stroke-linecap="round" stroke-miterlimit="8" fill="none" fill-rule="evenodd" /><path d="M144.5 324.5 230.931 324.5" stroke="#FFFFFF" stroke-width="14.6667" stroke-linecap="round" stroke-miterlimit="8" fill="none" fill-rule="evenodd" /></g></svg>
 				<svg viewBox="0,0,206,152" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" overflow="hidden" class="wid4"><defs><clipPath id="wid4-clip0"><rect x="317" y="444" width="206" height="152" /></clipPath><linearGradient x1="361.399" y1="419.366" x2="477.601" y2="620.634" gradientUnits="userSpaceOnUse" spreadMethod="reflect" id="wid4-fill1"><stop offset="0" stop-color="#D854CB" /><stop offset="0.13" stop-color="#D854CB" /><stop offset="1" stop-color="#A266E4" /></linearGradient></defs><g clip-path="url(#wid4-clip0)" transform="translate(-317 -444)"><path d="M317 498.466C317 468.938 340.938 445 370.466 445L468.534 445C498.062 445 522 468.938 522 498.466L522 541.534C522 571.062 498.062 595 468.534 595L370.466 595C340.938 595 317 571.062 317 541.534Z" fill="url(#wid4-fill1)" fill-rule="evenodd" /><path d="M356.5 548.5C370.917 521.094 385.333 493.688 400.5 492.521 415.667 491.355 434 538.837 447.5 541.503 461 544.168 479.417 520.386 481.5 508.515" stroke="#FFFFFF" stroke-width="14.6667" stroke-linecap="round" stroke-miterlimit="8" fill="none" fill-rule="evenodd" /></g></svg>
 			</a>
-
 		</div>
 		<div class="dock" id="taskbar" style="display: none;" count="0">
 		</div>
@@ -1468,6 +1464,7 @@
 		<script src="ace-builds-master/src-noconflict/ace.js"></script>
 		<!-- load ace language tools -->
 		<script src="ace-builds-master/src-noconflict/ext-language_tools.js"></script>
+		<script src="ace-builds-master/src-noconflict/ext-error_marker"></script>
 		<script>
 			// trigger extension
 			ace.require("ace/ext/language_tools");
@@ -1509,7 +1506,6 @@
 			<a style="display: none;"></a>
 		</div>
 	</div>
-
 	<div class="window camera-notice" onmousedown="focwin('camera-notice')" ontouchstart="focwin('camera-notice')">
 		<div class="titbar" oncontextmenu="return showcm(event,'titbar','camera-notice')" ondblclick="maxwin('camera-notice')">
 			<img src="icon/camera.png" class="icon" onclick="return showcm(event,'titbar','camera-notice')">
