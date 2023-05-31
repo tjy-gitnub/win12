@@ -369,6 +369,41 @@ let apps = {
             $('#win-setting>.menu>list>a.' + name).addClass('check');
         }
     },
+    windows_security:{
+                init: () => {
+//                    $('#win-windows_security>.menu>list>a.system')[0].click();
+                    1+1
+                },
+                page: (name) => {
+                    $('#win-windows_security>.main>#' + name).scrollTop(0);
+                    $('#win-windows_security>.main>.nb').removeClass('nb');
+                    $('#win-windows_security>.main>*').addClass('zaijianleninlei');
+                    $('#win-windows_security>.main>*').removeAttr('style')
+                    $('#win-windows_security>.main>#' + name).removeClass('zaijianleninlei');
+                    $('#win-windows_security>.main>#' + name).addClass('nb');
+                    const listEl = document.querySelector('#sidebar');
+
+                    listEl.childNodes.forEach((node) => {
+                      if (node.nodeType === Node.ELEMENT_NODE) {
+                        const classList = node.classList;
+                        if (classList.contains('button_nb') && classList.contains('check')) {
+                          let newClass = classList.value.replace('button_nb', '').replace('check', '');
+                          node.setAttribute('class', newClass);
+                        }
+                        else if((classList.contains('button_nb_black') && classList.contains('check')))
+                        {
+                          let newClass = classList.value.replace('button_nb_black', '').replace('check', '');
+                          node.setAttribute('class', newClass);
+                        }
+                      }
+                    });
+                    if ($(':root').hasClass('dark')) {
+                        $('#win-windows_security>list>#show' + name).addClass('check button_nb_black');
+                    } else {
+                        $('#win-windows_security>list>#show' + name).addClass('check button_nb');
+                    }
+                }
+        },
     webapps: {
         apps: ['vscode', 'bilibili'],
         init: () => {
@@ -430,6 +465,7 @@ let apps = {
                 hidewin('camera');
             }
         },
+
         clearCanvas: () => {
             apps.camera.context.fillRect(0, 0, canvas.width, canvas.height);
         },
@@ -620,6 +656,28 @@ let apps = {
                 $('#win-notepad>.text-box').val('');
                 $('#win-notepad>.text-box').removeClass('down')
             }, 200);
+        }
+    },
+    PythonEditor: {
+        init: () => {
+
+        },
+        run:()=>{
+            var elements = document.querySelectorAll('[class*=ace_line]');
+            let code = "";
+            for (var i = 0; i < elements.length; i++)
+            {
+                if(elements[i].innerHTML.includes("ace_completion-highlight")){}
+                else
+                {
+                    code = code + elements[i].innerText + "\n";
+                }
+            }
+            apps.python.pyodide.runPython('sys.stdout = io.StringIO()');
+            apps.python.pyodide.runPython(code);
+            const result = apps.python.pyodide.runPython('sys.stdout.getvalue()');
+            let output = document.getElementById("output");
+            output.innerHTML = result;
         }
     },
     python: {
@@ -1157,11 +1215,22 @@ window.addEventListener('mouseup', e => {
 function toggletheme() {
     $('.dock.theme').toggleClass('dk');
     $(':root').toggleClass('dark');
-    if ($(':root').hasClass('dark')) {
-        setData('theme', 'dark');
-    } else {
-        setData('theme', 'light');
-    }
+    const listEl = document.querySelector('#sidebar');
+
+    listEl.childNodes.forEach((node) => {
+                      if (node.nodeType === Node.ELEMENT_NODE) {
+                        const classList = node.classList;
+                        if (classList.contains('button_nb')) {
+                          let newClass = classList.value.replace('button_nb', 'button_nb_black');
+                          node.setAttribute('class', newClass);
+                        }
+                        else if(classList.contains('button_nb_black'))
+                        {
+                          let newClass = classList.value.replace('button_nb_black', 'button_nb');
+                          node.setAttribute('class', newClass);
+                        }
+                      }
+                    });
 }
 // 云母效果
 let mica_difx = 0, mica_dify = 0;

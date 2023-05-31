@@ -6,10 +6,13 @@
 	<script src="https://cdn.jsdelivr.net/pyodide/v0.20.0/full/pyodide.js" async></script>  <!-- Pyodide, 目前已采用 -->
 	<!-- <link rel="stylesheet" href="https://pyscript.net/latest/pyscript.css" />
 	<script defer src="https://pyscript.net/latest/pyscript.js"></script> -->         <!-- PyScript, 已弃用 -->
+	<script src="https://cdn.jsdelivr.net/gh/ajaxorg/ace-builds@master/src/ace.js"></script>
+	<script src="https://cdn.jsdelivr.net/gh/ajaxorg/ace-builds@master/src-noconflict/ext-language_tools.js"></script>
+	<script src="https://cdn.jsdelivr.net/gh/ajaxorg/ace-builds@master/src-noconflict/ext-error_marker.js"></script>
 	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 	<meta name="format-detection" content="telephone=no" />
-	
+
 	<!-- Windows 12 网页版 谭景元原创  -->
 
 	<!-- Windows 12 网页版是一个开放源项目,
@@ -30,6 +33,7 @@
 	<link rel="stylesheet" href="apps/style/fonts.css">
 	<link rel="stylesheet" href="apps/style/edge.css">
 	<link rel="stylesheet" href="apps/style/camera.css">
+	<link rel="stylesheet" href="apps/style/python-editor.css">
 	<link rel="stylesheet" href="widgets.css">
 	<link rel="manifest" href="pwa/manifest.json">
 	<link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
@@ -211,6 +215,9 @@
 				</a>
 				<a onclick="apps.camera.notice();hide_startmenu()">
 					<img src="icon/camera.png"><p>相机</p>
+				</a>
+				<a onclick="openapp('python-editor');hide_startmenu()">
+					<img src="icon/python-editor.png"><p>Python Editor</p>
 				</a>
 				<a onclick="openapp('python');hide_startmenu()">
 					<img src="icon/python.png"><p>Python 3.10.2</p>
@@ -1262,6 +1269,7 @@
             <pre>>>> <input type="text" onkeyup="if (event.keyCode == 13) { apps.python.run(); }"></pre>
 		</div>
 	</div>
+
 	<div class="window edge" onmousedown="focwin('edge')" ontouchstart="focwin('edge')">
 		<div class="titbar" oncontextmenu="return showcm(event,'titbar','edge')" ondblclick="maxwin('edge')">
 			<img src="icon/edge.png" class="icon" onclick="return showcm(event,'titbar','edge')"><p style="display: none;">Microsoft Edge</p>
@@ -1350,6 +1358,25 @@
 		</div>
 		<div class="content" id="win-bilibili">
 			<!-- <iframe src="https://bilibili.com/" frameborder="0" style="width: 100%; height: 100%;" loading="lazy"></iframe> -->
+		</div>
+	</div>
+	<div class="window python-editor" onmousedown="focwin('python-editor')" ontouchstart="focwin('python-editor')">
+		<div class="titbar" oncontextmenu="return showcm(event,'titbar','python-editor')" ondblclick="maxwin('python-editor')">
+			<img src="icon/python-editor.png" class="icon" onclick="return showcm(event,'titbar','python-editor')">
+			<p>Python Editor</p>
+			<div>
+				<a class="a wbtg red" onclick="hidewin('python-editor')"><i class="bi bi-x-lg"></i></a>
+				<a class="a wbtg max" onclick="maxwin('python-editor')"><i class="bi bi-app"></i></a>
+				<a class="a wbtg" onclick="minwin('python-editor')"><i class="bi bi-dash-lg"></i></a>
+				<a class="a wbtg run" onclick="apps.pythonEditor.run();"><i class="bi bi-play-fill"></i></a>
+			</div>
+		</div>
+		<div class="loadback">
+			<img src="icon/python-editor.png" class="icon">
+		</div>
+		<div class="content" id="win-python-editor">
+			<div id="win-python-ace-editor"></div>
+			<div class="output" id="output"></div>
 		</div>
 	</div>
 	<div class="window camera" onmousedown="focwin('camera')" ontouchstart="focwin('camera')">
