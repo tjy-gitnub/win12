@@ -622,6 +622,38 @@ let apps = {
             }, 200);
         }
     },
+    pythonEditor: {
+        editor: null,
+        init: () => {
+            return null;
+        },
+        run: () => {
+            let result;
+            let output = document.getElementById("output");
+            try {
+                let code = apps.pythonEditor.editor.getValue();
+                apps.python.pyodide.runPython('sys.stdout = io.StringIO()');
+                apps.python.pyodide.runPython(code);
+                result = apps.python.pyodide.runPython('sys.stdout.getvalue()');
+            }
+            catch (e) {
+                result = e.message;
+            }
+            output.innerHTML = result;
+        },
+        load: () => {
+			ace.require("ace/ext/language_tools");
+			apps.pythonEditor.editor = ace.edit("win-python-ace-editor");
+			apps.pythonEditor.editor.session.setMode("ace/mode/python");
+			apps.pythonEditor.editor.setTheme("ace/theme/vibrant_ink");
+			apps.pythonEditor.editor.setOptions({
+				enableBasicAutocompletion: true,
+				enableSnippets: true,
+                showPrintMargin: false,
+				enableLiveAutocompletion: true
+			});
+        }
+    },
     python: {
         codeCache: '',
         prompt: '>>> ',
@@ -997,7 +1029,10 @@ function openapp(name) {
     setTimeout(() => {
         $('#taskbar').css('width', 4 + $('#taskbar').attr('count') * (34 + 4));
     }, 0);
-    apps[name].init();
+    let tmp = name.replace(/\-(\w)/g, function(all, letter) {
+        return letter.toUpperCase();
+    });
+    apps[tmp].init();
     setTimeout(() => {
         $('.window.' + name).removeClass('load');
     }, 500);
@@ -1458,6 +1493,7 @@ import sys
 import io
 `);
     })();
+    apps.pythonEditor.load();
 };
 
 // PWA 应用
@@ -1490,6 +1526,6 @@ if (!location.href.match(/((\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.){3}(\d|[1-9]\d|
         //     key: k,
         //     value: v
         // });
-        localStorage.setItem(k,v);
+        localStorage.setItem(k, v);
     }
 }
