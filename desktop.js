@@ -1305,13 +1305,13 @@ Microsoft Windows [版本 12.0.39035.7324]
                 $('#win-edge>iframe.show').attr('src', u);
                 apps.edge.rename(u);
             }
-            if (!$('.window.edge>.titbar>.tabs>.tab.' + apps.edge.tabs[apps.edge.now][0] + '>reloading')[0]) {
+            if (!$('.window.edge>.titbar>.tabs>.tab.' + apps.edge.tabs[apps.edge.now][0] + '>.reloading')[0]) {
                 $('.window.edge>.titbar>.tabs>.tab.' + apps.edge.tabs[apps.edge.now][0])[0].insertAdjacentHTML('afterbegin', apps.edge.reloadElt);
             }
             $('#win-edge>iframe.' + apps.edge.tabs[apps.edge.now][0])[0].onload = function () {
                 $('.window.edge>.titbar>.tabs>.tab.' + this.classList[0])[0].removeChild($('.window.edge>.titbar>.tabs>.tab.' + this.classList[0] + '>.reloading')[0]);
             }
-            apps.edge.getTitle($('#win-edge>iframe.show').attr('src'), apps.edge.now)
+            apps.edge.getTitle($('#win-edge>iframe.show').attr('src'), apps.edge.now);
         }
     },
 }

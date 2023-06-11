@@ -485,7 +485,6 @@ list>a:active,
 
 .dock.control>icon {
     font-size: 18.5px;
-    color: #000000;
 }
 
 .dock.control:active {
@@ -775,7 +774,8 @@ input-before {
 #s-m-r {
     flex-grow: 1;
     margin-left: -15px;
-    overflow: hidden;
+    overflow: auto;
+    padding-bottom: 30px;
 }
 
 #s-m-r>*{
@@ -1474,6 +1474,11 @@ input-before {
 
 #control {
     height: 250px;
+}
+
+.dock.control * {
+    fill: var(--text);
+    color: var(--text) !important;
 }
 
 #control>.cont>.top {
