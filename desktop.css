@@ -342,6 +342,7 @@ list>a:active,
     filter: opacity(0.9) brightness(1);
 }
 
+
 #taskbar {
     padding: 3px 2px;
     transition: 80ms;
@@ -473,6 +474,23 @@ list>a:active,
 .dock.date:active {
     transform: scale(0.9);
     filter: opacity(0.6)!important;
+}
+
+.dock.control {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+}
+
+.dock.control>icon {
+    font-size: 18.5px;
+    color: #000000;
+}
+
+.dock.control:active {
+    transform: scale(0.9);
+    filter: opacity(0.6) !important;
 }
 
 .dock.date>.date {
@@ -1437,7 +1455,7 @@ input-before {
     border-bottom: 2px solid;
 }
 
-#datebox {
+#datebox, #control {
     display: none;
     position: fixed;
     bottom: -430px;
@@ -1454,12 +1472,129 @@ input-before {
     padding: 10px;
 }
 
-#datebox.show-begin {
+#control {
+    height: 250px;
+}
+
+#control>.cont>.top {
+    display: grid;
+    grid-template-rows: auto auto;
+    grid-template-columns: auto auto auto;
+    gap: 15px;
+    height: 160px;
+    margin-top: 10px;
+    padding: 0px 7.5px 0px 7.5px;
+}
+
+#control>.cont>.top>div {
+    width: 100%;
+    height: 100%;
+    display: grid;
+    grid-template-rows: 70% 30%;
+    gap: 5px;
+}
+
+#control>.cont>.top>div>.icon {
+    width: 100%;
+    height: 100%;
+    background-color: var(--bg70);
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: 70ms, transform 400ms cubic-bezier(0.14, 1.02, 0.17, 0.03);
+}
+
+#control>.cont>.top>div>.icon.active {
+    background-image: linear-gradient(120deg, var(--theme-1), var(--theme-2));
+}
+
+#control>.cont>.top>div>.icon.active>icon {
+    color: #ffffff;
+}
+
+#control icon {
+    background-image: linear-gradient(120deg, var(--theme-1), var(--theme-2));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    font-size: 18px;
+}
+
+#control>.cont>.top>div>.tit {
+    font-size: 85%;
+    text-align: center;
+}
+
+#control>.cont>.top>div>.icon:hover {
+    filter: brightness(1.1);
+}
+
+#control>.cont>.top>div>.icon:hover {
+    background-color: var(--card);
+}
+
+#control>.cont>.top>div>.icon:active {
+    transform: scale(0.93);
+}
+
+#control>.cont>.bottom>.brightness>.icon {
+    margin-right: 10px;
+    vertical-align: -0.3em;
+    display: inline-block;
+}
+
+#control>.cont>.bottom>.brightness>.icon>icon {
+    font-size: 20px !important;
+}
+
+#control>.cont>.bottom {
+    margin-top: 15px;
+}
+
+#control>.cont>.bottom>.brightness>.range-container {
+    width: calc(100% - 43px);
+    height: 4.5px;
+    background-image: linear-gradient(100deg, var(--theme-1), var(--theme-2));
+    border-radius: 7px;
+    display: inline-block;
+}
+
+#control>.cont>.bottom>.brightness>.range-container>.after {
+    border-radius: 0px 7px 7px 0px !important;
+}
+
+#control>.cont>.bottom>.brightness>.range-container>.after {
+    height: 4.5px;
+    position: relative;
+    background-color: var(--bg70);
+    bottom: 0px;
+    width: 0px;
+    border-radius: 7px;
+}
+
+#control>.cont>.bottom>.brightness>.range-container>.slider-btn {
+    height: 17px;
+    border-radius: 3.5px;
+    background-image: linear-gradient(to top, var(--theme-1), var(--theme-2));
+    position: relative;
+    width: 7px;
+    bottom: 10.5px;
+    margin-left: 100%;
+    transform: translateX(-3.5px);
+    transition: filter 100ms;
+}
+
+#control>.cont>.bottom>.brightness>.range-container>.slider-btn:hover, #control>.cont>.bottom>.brightness>.range-container.active>.slider-btn {
+    filter: brightness(0.8);
+}
+
+#datebox.show-begin, #control.show-begin {
     display: flex;
     flex-direction: column;
 }
 
-#datebox.show {
+#datebox.show, #control.show {
     display: flex;
     flex-direction: column;
     bottom: 60px;
@@ -2050,7 +2185,7 @@ list>span.focs.cl{
 }
 
 .window>.loadback {
-    height: calc(100% - 32px);
+    height: 100%;
     width: 100%;
     position: absolute;
     display: none;
@@ -2080,6 +2215,13 @@ list>span.focs.cl{
 .window.notepad-fonts {
     height: 500px;
     width: 430px;
+}
+
+.window.run {
+    width: 420px;
+    height: 220px;
+    left: 20px;
+    bottom: 60px;
 }
 
 .window.notrans {
@@ -2116,6 +2258,7 @@ list>span.focs.cl{
 .window>.content {
     width: 100%;
     height: 100%;
+    min-height: 0px !important;
 }
 
 .window.max {

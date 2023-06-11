@@ -19,8 +19,8 @@
     cursor: default;
 }
 
-.window.terminal-apps>.content {
-    padding-bottom: 55px;
+.window.terminal-apps.max>.content {
+    padding-bottom: 55px !important;
 }
 
 .window.terminal-apps>.content {
@@ -32,7 +32,7 @@
 .window.terminal-apps>.content>pre {
     color: #fff;
     margin: 0px 15px;
-    font-family: "Consolas", "Microsoft YaHei", "monospace", system-ui;
+    font-family: "Consolas", "Monaco", "monospace", system-ui;
     user-select: text;
     font-size: 16px;
 }

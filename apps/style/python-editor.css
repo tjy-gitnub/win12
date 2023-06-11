@@ -16,7 +16,6 @@
 #win-python-editor {
     display: grid;
     grid-template-rows: 60% 40%;
-    min-height: 0px;
     user-select: all;
 }
 
