@@ -1,7 +1,6 @@
 .window.terminal-apps {
     --text: #ddd;
     --bg: #000000;
-    --bg30: #00000030;
     --bg50: #00000050;
     --bg70: #00000070;
     --sd: #00000070;
@@ -30,7 +29,7 @@
 }
 
 .window.terminal-apps>.content>pre {
-    color: #fff;
+    color: #ddd;
     margin: 0px 15px;
     font-family: "Consolas", "Monaco", "monospace", system-ui;
     user-select: text;
@@ -52,7 +51,7 @@
     border: none;
     outline: none;
     padding: 0;
-    color: #fff;
+    color: #eee;
     cursor: default;
     width: 100%;
 }

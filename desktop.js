@@ -52,10 +52,12 @@ $('input,textarea,*[contenteditable=true]').on('contextmenu', (e) => {
     stop(e);
     return true;
 });
+let nomax={'calc':0,'notepad-fonts':0,'camera-notice':0,'winver':0,'run':0};
+let nomin={'notepad-fonts':0,'camera-notice':0,'run':0};
 let cms = {
     'titbar': [
         function (arg) {
-            if (arg == 'calc' || arg == 'notepad-fonts' || arg == 'camera-notice' || arg == 'run') {
+            if (arg in nomax) {
                 return 'null';
             }
             if ($('.window.' + arg).hasClass("max")) {
@@ -66,7 +68,7 @@ let cms = {
             }
         },
         function (arg) {
-            if (arg == 'notepad-fonts' || arg == 'camera-notice' || arg == 'run') {
+            if (arg in nomin) {
                 return 'null';
             }
             else {
@@ -74,7 +76,7 @@ let cms = {
             }
         },
         function (arg) {
-            if (arg == 'notepad-fonts' || arg == 'camera-notice') {
+            if (arg in nomin) {
                 return ['<i class="bi bi-window-x"></i> 关闭', `hidewin('${arg}', 'configs')`];
             }
             else {
@@ -123,38 +125,21 @@ let cms = {
             return ['<i class="bi bi-window"></i> 打开', `openapp('${arg[0]}');hide_startmenu();`];
         },
         function (arg) {
-            if (arg[0] != 'js') {
-                return ['<i class="bi bi-link-45deg"></i> 在桌面创建链接', "$('#desktop').append(`<div class='b' ondblclick=openapp('" + arg[0] + "')  ontouchstart=openapp('" + arg[0] + "')><img src='icon/" + arg[0] + ".png'><p>" + arg[1] + "</p></div>`)"];
-            }
-            else if (arg[0] == 'js') {
-                return ['<i class="bi bi-link-45deg"></i> 在桌面创建链接', "$('#desktop').append(`<div class='b' ondblclick='" + arg[1] + "'  ontouchstart='" + arg[1] + "'><img src='icon/" + arg[2] + ".png'><p>" + arg[3] + "</p></div>`)"];
-            }
+            return ['<i class="bi bi-link-45deg"></i> 在桌面创建链接', "$('#desktop').append(`<div class='b' ondblclick=openapp('" + arg[0] + "')  ontouchstart=openapp('" + arg[0] + "')><img src='icon/" + geticon(arg[0]) + "'><p>" + arg[1] + "</p></div>`)"];
+        },
+        function(arg) {
+            return ['<i class="bi bi-x"></i> 取消固定', `$('#s-m-r>.pinned>.apps>.sm-app.${arg[0]}').remove()`];
         }
     ],
     'smlapp': [
         function (arg) {
-            if (arg[0] != 'js') {
-                return ['<i class="bi bi-window"></i> 打开', `openapp('${arg[0]}');hide_startmenu();`];
-            }
-            else if (arg[0] == 'js') {
-                return ['<i class="bi bi-window"></i> 打开', `${arg[1]};hide_startmenu();`];
-            }
+            return ['<i class="bi bi-window"></i> 打开', `openapp('${arg[0]}');hide_startmenu();`];
         },
         function (arg) {
-            if (arg[0] != 'js') {
-                return ['<i class="bi bi-link-45deg"></i> 在桌面创建链接', "$('#desktop').append(`<div class='b' ondblclick=openapp('" + arg[0] + "')  ontouchstart=openapp('" + arg[0] + "')><img src='icon/" + arg[0] + ".png'><p>" + arg[1] + "</p></div>`)"];
-            }
-            else if (arg[0] == 'js') {
-                return ['<i class="bi bi-link-45deg"></i> 在桌面创建链接', "$('#desktop').append(`<div class='b' ondblclick='" + arg[1] + "'  ontouchstart='" + arg[1] + "'><img src='icon/" + arg[2] + ".png'><p>" + arg[3] + "</p></div>`)"];
-            }
+            return ['<i class="bi bi-link-45deg"></i> 在桌面创建链接', "$('#desktop').append(`<div class='b' ondblclick=openapp('" + arg[0] + "')  ontouchstart=openapp('" + arg[0] + "')><img src='icon/" + geticon(arg[0]) + "'><p>" + arg[1] + "</p></div>`)"];
         },
         function (arg) {
-            if (arg[0] != 'js') {
-                return ['<i class="bi bi-pin-angle"></i> 固定到开始菜单', "pinapp('" + arg[0] + "', '" + arg[1] + "', 'openapp(&quot;" + arg[0] + "&quot;);hide_startmenu();')"];
-            }
-            else if (arg[0] == 'js') {
-                return ['<i class="bi bi-pin-angle"></i> 固定到开始菜单', "pinapp('" + arg[2] + "', '" + arg[3] + "', '" + arg[1] + ";hide_startmenu()')"]
-            }
+            return ['<i class="bi bi-pin-angle"></i> 固定到开始菜单', "pinapp('" + arg[0] + "', '" + arg[1] + "', 'openapp(&quot;" + arg[0] + "&quot;);hide_startmenu();')"];
         }
     ],
     'dockabout': [
@@ -200,6 +185,7 @@ function showcm(e, cl, arg) {
             let h = '';
             cms[cl].forEach(item => {
                 if (typeof (item) == 'function') {
+                    arg.event=e;
                     ret = item(arg);
                     if (ret == 'null') return true;
                     h += `<a class="a" onmousedown="${ret[1]}">${ret[0]}</a>\n`;
@@ -211,7 +197,8 @@ function showcm(e, cl, arg) {
             })
             $('#cm>list')[0].innerHTML = h;
             $('#cm').addClass('show-begin');
-            // $('#cm>.foc').focus();
+            $('#cm>.foc').focus();
+            // 这个.foc是用来模拟焦点的，这句是将焦点放在右键菜单上，注释掉后果不堪设想 >u-)o
             setTimeout(() => {
                 $('#cm').addClass('show');
             }, 0);
@@ -407,7 +394,59 @@ let apps = {
             $('#win-setting>.page>.cnt.' + name).addClass('show');
             $('#win-setting>.menu>list>a.check').removeClass('check');
             $('#win-setting>.menu>list>a.' + name).addClass('check');
-        }
+        },
+        theme_get: () => {
+            $('#set-theme').html(`<loading><svg width="30px" height="30px" viewBox="0 0 16 16">
+            <circle cx="8px" cy="8px" r="7px" style="stroke:#7f7f7f50;fill:none;stroke-width:3px;"></circle>
+            <circle cx="8px" cy="8px" r="7px" style="stroke:#2983cc;stroke-width:3px;"></circle></svg></loading>`)
+            // 实时获取主题
+            $.get('https://api.github.com/repos/tjy-gitnub/win12-theme/contents').then(cs => {
+                cs.forEach(c => {
+                    if(c.type=='dir'){
+                        let ul;
+                        $.get(c.url).then(cnt=>{
+                            cnt.forEach(cn=>{
+                                if(cn.name=='theme'){
+                                    $.get('https://tjy-gitnub.github.io/win12-theme/'+cn.path).then(inf=>{
+                                        infjs=eval('('+inf+')');
+                                        cnt.forEach(fbg=>{
+                                            console.log(fbg,infjs);
+                                            if(fbg.name==infjs.bg){
+                                                if($('#set-theme>loading').length)
+                                                    $('#set-theme').html('');
+                                                $('#set-theme').append(`<a class="a act" onclick="apps.setting.theme_set('${c.name}')" style="background-image:url('https://tjy-gitnub.github.io/win12-theme/${fbg.path}')">${c.name}</a>`);
+                                            }
+                                        })
+                                    })
+                                }
+                            })
+                        })
+                    }
+                });
+            });
+        },
+        theme_set: (infp)=>{
+            $.get('https://api.github.com/repos/tjy-gitnub/win12-theme/contents/'+infp).then(cnt=>{
+                console.log('https://api.github.com/repos/tjy-gitnub/win12-theme/contents/'+infp);
+                cnt.forEach(cn=>{
+                    if(cn.name=='theme'){
+                        $.get('https://tjy-gitnub.github.io/win12-theme/'+cn.path).then(inf=>{
+                            infjs=eval('('+inf+')');
+                            cnt.forEach(fbg=>{
+                                console.log(fbg,infjs);
+                                if(fbg.name==infjs.bg){
+                                    $(':root').css('--bgul',`url('https://tjy-gitnub.github.io/win12-theme/${fbg.path}')`);
+                                    $(':root').css('--theme-1',infjs.color1);
+                                    $(':root').css('--theme-2',infjs.color2);
+                                    $(':root').css('--href',infjs.href);
+                                    // $('#set-theme').append(`<a class="a act" onclick="apps.setting.theme_set(\`(${inf})\`)" style="background-image:url('https://tjy-gitnub.github.io/win12-theme/${fbg.path}')">${c.name}</a>`);
+                                }
+                            })
+                        })
+                    }
+                })
+            })
+        },
     },
     run: {
         init: () => {
@@ -661,7 +700,8 @@ let apps = {
             $('#win-explorer>.main>.content>.view')[0].innerHTML = `<style>#win-explorer>.main>.content>.view>.class{margin-left: 20px;display: flex;}
             #win-explorer>.main>.content>.view>.class>img{width: 20px;height: 20px;margin-top: 3px;margin-right: 5px;filter:brightness(0.9);}
             #win-explorer>.main>.content>.view>.group{display: flex;flex-wrap: wrap;padding: 10px 20px;}
-            #win-explorer>.main>.content>.view>.group>.item{width: 280px;margin: 5px;height:80px;border: 1px solid #6f6f6f30;
+            #win-explorer>.main>.content>.view>.group>.item{width: 280px;margin: 5px;height:80px;
+    box-shadow: 0 1px 2px var(--s3d);
                 background: radial-gradient(circle, var(--card),var(--card));border-radius: 10px;display: flex;}
             #win-explorer>.main>.content>.view>.group>.item:hover{background-color: var(--hover);}
             #win-explorer>.main>.content>.view>.group>.item:active{transform: scale(0.97);}
@@ -672,13 +712,13 @@ let apps = {
             #win-explorer>.main>.content>.view>.group>.item>div>.bar>.content{height: 100%;background-image: linear-gradient(90deg, var(--theme-1), var(--theme-2));
                 border-radius: 10px;}
             #win-explorer>.main>.content>.view>.group>.item>div>.info{color: #959595;font-size: 14px;}</style>
-            <p class="class"><img src="apps/icons/explorer/disk.png"> 设备和驱动器</p><div class="group">
+            <p class="class"><img src="apps/icons/explorer/disk.svg"> 设备和驱动器</p><div class="group">
             <a class="a item act" ondblclick="apps.explorer.goto('C:')" ontouchend="apps.explorer.goto('C:')" oncontextmenu="showcm(event,'explorer.folder','C:');return stop(event);">
-            <img src="apps/icons/explorer/diskwin.png"><div><p class="name">本地磁盘 (C:)</p>
+            <img src="apps/icons/explorer/diskwin.svg"><div><p class="name">本地磁盘 (C:)</p>
             <div class="bar"><div class="content" style="width: 88%;"></div>
             </div><p class="info">32.6 GB 可用, 共 143 GB</p></div></a><a class="a item act" ondblclick="apps.explorer.goto('D:')" ontouchend="apps.explorer.goto('D:')"
             oncontextmenu="showcm(event,'explorer.folder','D:');return stop(event);">
-            <img src="apps/icons/explorer/disk.png"><div><p class="name">本地磁盘 (D:)</p><div class="bar"><div class="content" style="width: 15%;"></div>
+            <img src="apps/icons/explorer/disk.svg"><div><p class="name">本地磁盘 (D:)</p><div class="bar"><div class="content" style="width: 15%;"></div>
             </div><p class="info">185.3 GB 可用, 共 216 GB</p></div></a></div>`;
             $('#win-explorer>.main>.content>.tool>.tit')[0].innerHTML = '此电脑';
         },
@@ -695,8 +735,8 @@ let apps = {
             else {
                 let ht = '';
                 for (folder in tmp['folder']) {
-                    ht += `<a class="a item act" ondblclick="apps.explorer.goto('${path}/${folder}')" ontouchend="apps.explorer.goto('${path}/${folder}')" oncontextmenu="showcm(event,'explorer.folder','${path}/${folder}');return stop(event);">
-                        <img src="apps/icons/explorer/folder.png">${folder}</a>`;
+                    ht += `<a class="a item" ondblclick="apps.explorer.goto('${path}/${folder}')" ontouchend="apps.explorer.goto('${path}/${folder}')" oncontextmenu="showcm(event,'explorer.folder','${path}/${folder}');return stop(event);">
+                        <img src="apps/icons/explorer/folder.svg">${folder}</a>`;
                 }
                 if (tmp['file']) {
                     tmp['file'].forEach(file => {
@@ -720,14 +760,14 @@ let apps = {
                         'Program Files': {
                             folder: { 'WindowsApps': null, 'Microsoft': null },
                             file: [
-                                { name: 'about.exe', ico: 'icon/about.png', command: "openapp('about')" },
-                                { name: 'setting.exe', ico: 'icon/setting.png', command: "openapp('setting')" },
+                                { name: 'about.exe', ico: 'icon/about.svg', command: "openapp('about')" },
+                                { name: 'setting.exe', ico: 'icon/setting.svg', command: "openapp('setting')" },
                             ]
                         },
                         'Windows': {
                             folder: { 'Boot': null, 'System': null, 'System32': null },
                             file: [
-                                { name: 'notepad.exe', ico: 'icon/notepad.png', command: "openapp('notepad')" },
+                                { name: 'notepad.exe', ico: 'icon/notepad.svg', command: "openapp('notepad')" },
                             ]
                         },
                         '用户': {
@@ -834,6 +874,10 @@ let apps = {
             output.innerHTML = result;
         },
         load: () => {
+            if(!apps.python.loaded){
+                apps.python.loaded=true;
+                apps.python.load();
+            }
             ace.require("ace/ext/language_tools");
             apps.pythonEditor.editor = ace.edit("win-python-ace-editor");
             apps.pythonEditor.editor.session.setMode("ace/mode/python");
@@ -958,6 +1002,15 @@ let apps = {
         codeCache: '',
         prompt: '>>> ',
         indent: false,
+        load: ()=>{
+            (async function () {
+                apps.python.pyodide = await loadPyodide();
+                apps.python.pyodide.runPython(`
+import sys
+import io
+`);
+            })();
+        },
         init: () => {
             $('#win-python').html(`
         <pre>
@@ -1035,6 +1088,7 @@ Microsoft Windows [版本 12.0.39035.7324]
         </pre>
         <pre class="text-cmd"></pre>
         <pre style="display: flex"><span class="prompt">C:\\Windows\\System32> </span><input type="text" onkeyup="if (event.keyCode == 13) { apps.terminal.run(); }"></pre>`)
+            $('#win-terminal>pre>input').focus()
         },
         run: () => {
             const elt = $('#win-terminal>pre.text-cmd')[0];
@@ -1093,13 +1147,13 @@ Microsoft Windows [版本 12.0.39035.7324]
 					setTimeout(() => {
 						$('#search-win').removeClass('show-begin');
 					}, 200);">
-						<img src="icon/setting.png"><p>设置</p></a>
+						<img src="icon/setting.svg"><p>设置</p></a>
 					<a onclick="openapp('about');$('#search-btn').removeClass('show');
 					$('#search-win').removeClass('show');
 					setTimeout(() => {
 						$('#search-win').removeClass('show-begin');
 					}, 200);">
-						<img src="icon/about.png"><p>关于Win12网页版</p></a>`);
+						<img src="icon/about.svg"><p>关于Win12网页版</p></a>`);
                 $('#search-win>.ans>.view').removeClass('show');
             }
         },
@@ -1314,6 +1368,12 @@ Microsoft Windows [版本 12.0.39035.7324]
             apps.edge.getTitle($('#win-edge>iframe.show').attr('src'), apps.edge.now);
         }
     },
+    winver:{
+        init:()=>{
+            $('#win-winver>.mesg').show();
+        },
+
+    }
 }
 
 // 小组件
@@ -1372,8 +1432,24 @@ for (let i = 1; i <= daysum; i++) {
     $('#datebox>.cont>.body')[0].innerHTML += `<p>${i}</p>`;
 }
 function pinapp(id, name, command) {
-    $('#s-m-r>.pinned>.apps').append("<a class='a sm-app enable' onclick='" + command + "';hide_startmenu();' oncontextmenu='return showcm(event,\"smapp\",[\"" + id + "\",\"" + name + "\"])'><img src='icon/" + id + ".png'><p>" + name + "</p></a>")
+    if($('#s-m-r>.pinned>.apps>.a.sm-app.'+id).length)return;
+    $('#s-m-r>.pinned>.apps').append(`<a class='a sm-app enable ${id}' onclick='${command}';hide_startmenu();' oncontextmenu='return showcm(event,\"smapp\",[\"${id}\",\"${name}\"])'><img src='icon/${geticon(id)}'><p>${name}</p></a>`)
 }
+let icon={
+    bilibili:'bilibili.png',
+    vscode:'vscode.png',
+    python:'python.png',
+    winver:'about.svg',
+    pythonEditor:'pythonEditor.png',
+    run:'run.png',
+    whiteboard:'whiteboard.png'
+}
+function geticon(name) {
+    if(icon[name])return icon[name];
+    else return name+'.svg';
+}
+
+// 应用与窗口
 function openapp(name) {
     if ($('#taskbar>.' + name).length != 0) {
         if ($('.window.' + name).hasClass('min')) {
@@ -1385,7 +1461,10 @@ function openapp(name) {
     $('.window.' + name).addClass('load');
     showwin(name);
     $('#taskbar').attr('count', Number($('#taskbar').attr('count')) + 1);
-    $('#taskbar').append(`<a class="${name}" onclick="taskbarclick(\'${name}\')" win12_title="${$(`.window.${name}>.titbar>p`).text()}" onmouseenter="showdescp(event)" onmouseleave="hidedescp(event)" oncontextmenu="return showcm(event, 'taskbar', '${name}')"><img src="icon/${name}.png"></a>`);
+    if(name in icon)
+        $('#taskbar').append(`<a class="${name}" onclick="taskbarclick(\'${name}\')" win12_title="${$(`.window.${name}>.titbar>p`).text()}" onmouseenter="showdescp(event)" onmouseleave="hidedescp(event)" oncontextmenu="return showcm(event, 'taskbar', '${name}')"><img src="icon/${icon[name]}"></a>`);
+    else
+        $('#taskbar').append(`<a class="${name}" onclick="taskbarclick(\'${name}\')" win12_title="${$(`.window.${name}>.titbar>p`).text()}" onmouseenter="showdescp(event)" onmouseleave="hidedescp(event)"><img src="icon/${name}.svg"></a>`);
     if ($('#taskbar').attr('count') == '1') {
         $('#taskbar').css('display', 'flex');
     }
@@ -1396,6 +1475,13 @@ function openapp(name) {
     let tmp = name.replace(/\-(\w)/g, function (all, letter) {
         return letter.toUpperCase();
     });
+    if(apps[tmp].load && !apps[tmp].loaded){
+        apps[tmp].loaded=true;
+        apps[tmp].load();
+        apps[tmp].init();
+        $('.window.' + name).removeClass('load');
+        return;
+    }
     apps[tmp].init();
     setTimeout(() => {
         $('.window.' + name).removeClass('load');
@@ -1598,19 +1684,23 @@ function dragBrightness(e) {
 }
 
 // 控制面板 电量监测
-navigator.getBattery().then((battery) => {
-    $('.a.dock.control>svg>path')[0].outerHTML = `<path
-        d="M 4 7 C 2.3550302 7 1 8.3550302 1 10 L 1 19 C 1 20.64497 2.3550302 22 4 22 L 24 22 C 25.64497 22 27 20.64497 27 19 L 27 10 C 27 8.3550302 25.64497 7 24 7 L 4 7 z M 4 9 L 24 9 C 24.56503 9 25 9.4349698 25 10 L 25 19 C 25 19.56503 24.56503 20 24 20 L 4 20 C 3.4349698 20 3 19.56503 3 19 L 3 10 C 3 9.4349698 3.4349698 9 4 9 z M 5 11 L 5 18 L ${18 * battery.level + 5} 18 L ${18 * battery.level + 5} 11 L 5 11 z M 28 12 L 28 17 L 29 17 C 29.552 17 30 16.552 30 16 L 30 13 C 30 12.448 29.552 12 29 12 L 28 12 z"
-        id="path2" fill="#000000"
-    />`;
-
-    battery.addEventListener('levelchange', () => {
+try{
+    navigator.getBattery().then((battery) => {
         $('.a.dock.control>svg>path')[0].outerHTML = `<path
             d="M 4 7 C 2.3550302 7 1 8.3550302 1 10 L 1 19 C 1 20.64497 2.3550302 22 4 22 L 24 22 C 25.64497 22 27 20.64497 27 19 L 27 10 C 27 8.3550302 25.64497 7 24 7 L 4 7 z M 4 9 L 24 9 C 24.56503 9 25 9.4349698 25 10 L 25 19 C 25 19.56503 24.56503 20 24 20 L 4 20 C 3.4349698 20 3 19.56503 3 19 L 3 10 C 3 9.4349698 3.4349698 9 4 9 z M 5 11 L 5 18 L ${18 * battery.level + 5} 18 L ${18 * battery.level + 5} 11 L 5 11 z M 28 12 L 28 17 L 29 17 C 29.552 17 30 16.552 30 16 L 30 13 C 30 12.448 29.552 12 29 12 L 28 12 z"
             id="path2" fill="#000000"
         />`;
+
+        battery.addEventListener('levelchange', () => {
+            $('.a.dock.control>svg>path')[0].outerHTML = `<path
+                d="M 4 7 C 2.3550302 7 1 8.3550302 1 10 L 1 19 C 1 20.64497 2.3550302 22 4 22 L 24 22 C 25.64497 22 27 20.64497 27 19 L 27 10 C 27 8.3550302 25.64497 7 24 7 L 4 7 z M 4 9 L 24 9 C 24.56503 9 25 9.4349698 25 10 L 25 19 C 25 19.56503 24.56503 20 24 20 L 4 20 C 3.4349698 20 3 19.56503 3 19 L 3 10 C 3 9.4349698 3.4349698 9 4 9 z M 5 11 L 5 18 L ${18 * battery.level + 5} 18 L ${18 * battery.level + 5} 11 L 5 11 z M 28 12 L 28 17 L 29 17 C 29.552 17 30 16.552 30 16 L 30 13 C 30 12.448 29.552 12 29 12 L 28 12 z"
+                id="path2" fill="#000000"
+            />`;
+        });
     });
-});
+}catch(TypeError){
+    console.log('内部错误: 无法获取电量');
+}
 
 // 选择框
 let chstX, chstY;
@@ -1644,14 +1734,7 @@ function toggletheme() {
         setData('theme', 'light');
     }
 }
-// 云母效果
-let mica_difx = 0, mica_dify = 0;
-window.addEventListener('resize', e => {
-    let b = $('body')[0];
-    $(':root').css('--mica-size', `${Math.max(b.offsetHeight, b.offsetWidth)}px`);
-    mica_difx = (b.offsetHeight < b.offsetWidth) ? 0 : (b.offsetWidth - b.offsetHeight) / 2;
-    mica_dify = (b.offsetHeight < b.offsetWidth) ? (b.offsetHeight - b.offsetWidth) / 2 : 0;
-})
+
 
 // 拖拽窗口
 const page = document.getElementsByTagName('html')[0];
@@ -1669,7 +1752,7 @@ function win_move(e) {
     $(this).css('cssText', `left:${cx - deltaLeft}px;top:${cy - deltaTop}px;`);
     if (cy <= 0) {
         $(this).css('cssText', `left:${cx - deltaLeft}px;top:${-deltaTop}px`);
-        if (this.classList[1] != 'calc' && this.classList[1] != 'notepad-fonts' && this.classList[1] != 'camera-notice' && this.classList[1] != 'run') {
+        if (!(this.classList[1] in nomax)) {
             $('#window-fill').addClass('top');
             setTimeout(() => {
                 $('#window-fill').addClass('fill');
@@ -1677,10 +1760,11 @@ function win_move(e) {
             fil = this;
             filty = 'top';
         }
+        // console.log(this.classList[1], nomax,this.classList[1] in nomax,not this.classList[1] in nomax);
     }
     else if (cx <= 0) {
         $(this).css('cssText', `left:${-deltaLeft}px;top:${cy - deltaTop}px`);
-        if (this.classList[1] != 'calc' && this.classList[1] != 'notepad-fonts' && this.classList[1] != 'camera-notice' && this.classList[1] != 'run') {
+        if (!(this.classList[1] in nomax)) {
             $('#window-fill').addClass('left');
             setTimeout(() => {
                 $('#window-fill').addClass('fill');
@@ -1691,7 +1775,7 @@ function win_move(e) {
     }
     else if (cx >= document.body.offsetWidth - 2) {
         $(this).css('cssText', `left:calc(100% - ${deltaLeft}px);top:${cy - deltaTop}px`);
-        if (this.classList[1] != 'calc' && this.classList[1] != 'notepad-fonts' && this.classList[1] != 'camera-notice' && this.classList[1] != 'run') {
+        if (!(this.classList[1] in nomax)) {
             $('#window-fill').addClass('right');
             setTimeout(() => {
                 $('#window-fill').addClass('fill');
@@ -1718,9 +1802,6 @@ function win_move(e) {
         $('.window.' + this.classList[1] + '>.titbar>div>.wbtg.max').html('<i class="bi bi-app"></i>');
 
         $(this).addClass('notrans');
-    }
-    if ($(this).hasClass('mica')) {
-        $(this).css('--mica-pos', `${mica_difx - cx + deltaLeft}px ${mica_dify - cy + deltaTop}px`);
     }
 }
 for (let i = 0; i < wins.length; i++) {
@@ -1804,8 +1885,8 @@ page.addEventListener('touchend', () => {
 // 启动
 let updated = false;
 document.getElementsByTagName('body')[0].onload = function nupd() {
-    $('#loginback').css('opacity', '1');
-    $('#loginback').css('display', 'flex');
+    // $('#loginback').css('opacity', '1');
+    // $('#loginback').css('display', 'flex');
     setTimeout(() => {
         $('#loadback').addClass('hide');
     }, 500);
@@ -1818,16 +1899,39 @@ document.getElementsByTagName('body')[0].onload = function nupd() {
         }, 1000);
     }
     apps.webapps.init();
-    (async function () {
-        apps.python.pyodide = await loadPyodide();
-        apps.python.pyodide.runPython(`
-import sys
-import io
-`);
-    })();
-    apps.pythonEditor.load();
-    apps.notepadFonts.load();
-    apps.whiteboard.load();
+    //getdata
+    if (localStorage.getItem('theme') == 'dark') $(':root').addClass('dark');
+    if(localStorage.getItem('color1')){
+        $(':root').css('--theme-1', localStorage.getItem('color1'));
+        $(':root').css('--theme-2', localStorage.getItem('color2'));
+    }
+    // 所以这个东西为啥要在开机的时候加载？
+    // 不应该在python.init里面吗？
+//     (async function () {
+//         apps.python.pyodide = await loadPyodide();
+//         apps.python.pyodide.runPython(`
+// import sys
+// import io
+// `);
+//     })();
+    // apps.pythonEditor.load();
+    // apps.notepadFonts.load();
+    // apps.whiteboard.load();
+    document.querySelectorAll('.window').forEach(w=>{
+        let qw=$(w),wc=w.classList[1];
+        // window: onmousedown="focwin('explorer')" ontouchstart="focwin('explorer')"
+        qw.attr('onmousedown',`focwin('${wc}')`);
+        qw.attr('ontouchstart',`focwin('${wc}')`);
+        // titbar: oncontextmenu="return showcm(event,'titbar','edge')" ondblclick="maxwin('edge')"
+        qw=$(`.window.${wc}>.titbar`);
+        qw.attr('oncontextmenu',`return showcm(event,'titbar','${wc}')`);
+        if(!(wc in nomax))qw.attr('ondblclick',`maxwin('${wc}')`);
+        // icon: onclick="return showcm(event,'titbar','explorer')"
+        qw=$(`.window.${wc}>.titbar>.icon`);
+        qw.attr('onclick',`let os=$(this).offset();stop(event);return showcm({clientX:os.left-5,clientY:os.top+this.offsetHeight+3},'titbar','${wc}')`);
+        qw.mousedown(stop);
+        $(`.window.${wc}>.titbar>div>.wbtg`).mousedown(stop);
+    });
 };
 
 // PWA 应用

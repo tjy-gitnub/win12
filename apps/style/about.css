@@ -131,3 +131,55 @@
     height: max-content;
     margin: 10px 0 0 10px;
 }
+
+.window.winver{
+    width: 600px;
+    height: 550px;
+}
+
+#win-winver>.logo{
+    display: flex;
+    justify-content: center;
+}
+
+#win-winver>.logo>.img{
+    background: url(../../icon/logo.svg) center;
+    background-size: cover;
+    height: 80px;
+    width: 80px;
+    margin:10px;
+}
+
+#win-winver>.logo>p{
+    background-image: linear-gradient(100deg, var(--theme-1), var(--theme-2));
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-size: 45px;
+    font-weight: 550;
+    font-family: 'Microsoft Yahei UI';
+    margin: 15px;
+}
+
+#win-winver>hr{
+    width: calc(100% - 20px);
+    margin: 10px;
+}
+
+#win-winver p{
+    margin: 0 50px;
+}
+
+#win-winver>.mesg:hover{
+    text-decoration: underline!important;
+}
+
+#win-winver>.mesg:active{
+    opacity: 0.5;
+    transition: 30ms;
+}
+
+#win-winver>.bottom{
+    position: absolute;
+    bottom: 80px;
+}
