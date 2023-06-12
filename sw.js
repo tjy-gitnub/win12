@@ -1,4 +1,4 @@
-// v5.3.1
+// v5.4.0
 let userdata = {
   'theme': 'light',
   'color1': '#ad6eca',
@@ -26,10 +26,10 @@ this.addEventListener('fetch', function (event) {
 const cacheNames = ['def'];
 let nochanges = [
   '/win12/fonts/',
-  '/win12/icon/',
   '/win12/img/',
   '/win12/apps/icons/',
-  '/win12/jq.min.js'
+  '/win12/jq.min.js',
+  '/win12/bootstrap-icons.css',
 ]
 let flag = false;
 this.addEventListener('activate', function (event) {
