@@ -1,15 +1,29 @@
-// v5.4.0
+// v5.4.1
 let userdata = {
   'theme': 'light',
   'color1': '#ad6eca',
   'color2': '#3b91d8'
 };
+let dongtai=[
+  'api.github.com',
+  'tjy-gitnub.io/win12-theme',
+  'win12server.freehk.svipss.top'
+]
 this.addEventListener('fetch', function (event) {
   event.respondWith(
     caches.match(event.request).then(res => {
+      let fl=false;
+      dongtai.forEach(d=>{
+        if(event.request.url.indexOf(d)>0){
+          fl=true;
+          return;
+        }
+      });
+      if(fl){console.log('动态请求',event.request.url);return fetch(event.request);}
       return res ||
         fetch(event.request)
           .then(responese => {
+            console.log(event.request);
             const responeseClone = responese.clone();
             caches.open('def').then(cache => {
               console.log('下载数据', responeseClone.url);

@@ -2320,3 +2320,13 @@ list>span.focs.cl{
 .buttons>.cancel {
     background-color: var(--bggrey);
 }
+
+/* 一些奇怪的东西 */
+
+.window.whiteboard>.titbar>p{
+    color: #000 !important;;
+}
+
+:root.dark .window.whiteboard>.titbar>p{
+    text-shadow: 0 0 5px #fff,0 0 5px #fff;
+}

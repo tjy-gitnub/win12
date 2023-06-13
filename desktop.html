@@ -1061,6 +1061,14 @@
 			<div class="cnt update">
 				<h1 class="tit"><span></span>更新记录</h1>
 				<div style="margin-left: 20px;">
+					<details><summary><span>v5.4.1</span> bug修复</summary><p>
+						&emsp;&emsp;<strong>(更新来自 @tjy-gitnub)</strong><br />
+						&emsp;&emsp;-修复pwa将动态请求拦截的灾难性事故<br />
+						&emsp;&emsp;-调整大家梦寐以求的开始菜单滚动条<br />
+						&emsp;&emsp;-新增开始菜单固定项右键取消固定选项<br />
+						&emsp;&emsp;-适配主题格式的一些更改<br />
+						&emsp;&emsp;-细节优化和修复</p>
+					</details>
 					<details><summary><span>v5.4.0</span> 新版logo与图标，UI优化，自定主题与winver</summary><p>
 						&emsp;&emsp;<strong>(更新来自 @tjy-gitnub,其实我想发v6的)</strong><br />
 						&emsp;&emsp;-新Logo:新版logo<br />
@@ -1603,9 +1611,9 @@
 			</div>
 		</div>
 	</div>
-	<div class="window whiteboard" onmousedown="focwin('whiteboard')" ontouchstart="focwin('whiteboard')">
-		<div class="titbar" oncontextmenu="return showcm(event,'titbar','whiteboard')" ondblclick="maxwin('whiteboard')">
-			<img src="icon/whiteboard.png" class="icon" onclick="return showcm(event,'titbar','whiteboard')">
+	<div class="window whiteboard">
+		<div class="titbar">
+			<img src="icon/whiteboard.png" class="icon">
 			<p>Whiteboard</p>
 			<div>
 				<a class="a wbtg red" onclick="hidewin('whiteboard')"><i class="bi bi-x-lg"></i></a>

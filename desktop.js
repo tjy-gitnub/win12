@@ -403,12 +403,11 @@ let apps = {
             $.get('https://api.github.com/repos/tjy-gitnub/win12-theme/contents').then(cs => {
                 cs.forEach(c => {
                     if(c.type=='dir'){
-                        let ul;
                         $.get(c.url).then(cnt=>{
                             cnt.forEach(cn=>{
-                                if(cn.name=='theme'){
-                                    $.get('https://tjy-gitnub.github.io/win12-theme/'+cn.path).then(inf=>{
-                                        infjs=eval('('+inf+')');
+                                if(cn.name=='theme.json'){
+                                    $.getJSON('https://tjy-gitnub.github.io/win12-theme/'+cn.path).then(inf=>{
+                                        infjs=inf;
                                         cnt.forEach(fbg=>{
                                             console.log(fbg,infjs);
                                             if(fbg.name==infjs.bg){
@@ -429,9 +428,9 @@ let apps = {
             $.get('https://api.github.com/repos/tjy-gitnub/win12-theme/contents/'+infp).then(cnt=>{
                 console.log('https://api.github.com/repos/tjy-gitnub/win12-theme/contents/'+infp);
                 cnt.forEach(cn=>{
-                    if(cn.name=='theme'){
-                        $.get('https://tjy-gitnub.github.io/win12-theme/'+cn.path).then(inf=>{
-                            infjs=eval('('+inf+')');
+                    if(cn.name=='theme.json'){
+                        $.getJSON('https://tjy-gitnub.github.io/win12-theme/'+cn.path).then(inf=>{
+                            infjs=inf;
                             cnt.forEach(fbg=>{
                                 console.log(fbg,infjs);
                                 if(fbg.name==infjs.bg){
@@ -512,6 +511,11 @@ let apps = {
             apps.whiteboard.ctx.lineJoin = 'round';
             apps.whiteboard.ctx.lineCap = 'round';
             apps.whiteboard.changeColor(apps.whiteboard.color);
+            if ($(':root').hasClass('dark')) {
+                $('.window.whiteboard>.titbar>p').text('Blackboard');
+            }else{
+                $('.window.whiteboard>.titbar>p').text('Whiteboard');
+            }
         },
         changeColor: (color) => {
             apps.whiteboard.color = color;
@@ -1729,8 +1733,10 @@ function toggletheme() {
     $('.dock.theme').toggleClass('dk');
     $(':root').toggleClass('dark');
     if ($(':root').hasClass('dark')) {
+        $('.window.whiteboard>.titbar>p').text('Blackboard');
         setData('theme', 'dark');
     } else {
+        $('.window.whiteboard>.titbar>p').text('Whiteboard');
         setData('theme', 'light');
     }
 }
@@ -1900,7 +1906,7 @@ document.getElementsByTagName('body')[0].onload = function nupd() {
     }
     apps.webapps.init();
     //getdata
-    if (localStorage.getItem('theme') == 'dark') $(':root').addClass('dark');
+    if (localStorage.getItem('theme') == 'dark')$(':root').addClass('dark');
     if(localStorage.getItem('color1')){
         $(':root').css('--theme-1', localStorage.getItem('color1'));
         $(':root').css('--theme-2', localStorage.getItem('color2'));
