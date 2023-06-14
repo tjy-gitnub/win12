@@ -194,9 +194,9 @@
     border-top: none;
     border-top-left-radius: 0;
     border-top-right-radius: 0;
-    max-height: 0px;
-    transition: max-height 300ms,padding 100ms 200ms linear,opacity 200ms 100ms,transform 200ms 200ms;
-    transform: translateY(-50px);
+    max-height: 0;
+    /* transition: max-height 300ms,padding 100ms 200ms linear,opacity 200ms 100ms,transform 200ms 200ms; */
+    transition: max-height 300ms,padding 300ms 100ms,opacity 200ms;
     overflow: hidden;
     display: block;
     padding: 0 15px;
@@ -209,8 +209,9 @@
 
 .setting-list>div.dp.show {
     padding: 10px 15px;
-    transition: max-height 300ms 100ms,padding 100ms 50ms linear,opacity 200ms 100ms,transform 300ms 50ms;
-    transform: none;
+    transition: max-height 300ms,padding 200ms 50ms,opacity 200ms 100ms;
+    /* transition: max-height 300ms 100ms,padding 100ms 50ms linear,opacity 200ms 100ms,transform 300ms 50ms; */
+    /* transform: none; */
     max-height: 1000px;
     /* padding: 10px 15px; */
     opacity: 1;

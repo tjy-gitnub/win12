@@ -6,7 +6,7 @@ let userdata = {
 };
 let dongtai=[
   'api.github.com',
-  'tjy-gitnub.io/win12-theme',
+  'tjy-gitnub.github.io/win12-theme',
   'win12server.freehk.svipss.top'
 ]
 this.addEventListener('fetch', function (event) {
@@ -23,7 +23,7 @@ this.addEventListener('fetch', function (event) {
       return res ||
         fetch(event.request)
           .then(responese => {
-            console.log(event.request);
+            // console.log(event.request);
             const responeseClone = responese.clone();
             caches.open('def').then(cache => {
               console.log('下载数据', responeseClone.url);
