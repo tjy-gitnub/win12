@@ -3,12 +3,6 @@
 
 <head>
 	<meta charset="UTF-8" />
-	<script src="https://cdn.jsdelivr.net/pyodide/v0.20.0/full/pyodide.js" async></script>  <!-- Pyodide, 目前已采用 -->
-	<!-- <link rel="stylesheet" href="https://pyscript.net/latest/pyscript.css" />
-	<script defer src="https://pyscript.net/latest/pyscript.js"></script> -->         <!-- PyScript, 已弃用 -->
-	<script src="https://cdn.jsdelivr.net/gh/ajaxorg/ace-builds@master/src/ace.js"></script>
-	<script src="https://cdn.jsdelivr.net/gh/ajaxorg/ace-builds@master/src-noconflict/ext-language_tools.js"></script>
-	<script src="https://cdn.jsdelivr.net/gh/ajaxorg/ace-builds@master/src-noconflict/ext-error_marker.js"></script>
 	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 	<meta name="format-detection" content="telephone=no" />
@@ -497,54 +491,6 @@
 			</div>
 		</div>
 	</div>
-	<!-- <div id="battery">
-		<div class="tit">
-			<p>电池与亮度</p>
-			<hr>
-		</div>
-		<div class="cont">
-			<div class="brightness">
-				<div class="pic"></div>
-				<div class="range">
-					<div class="tit">
-						<div class="title">显示器亮度</div>
-						<div class="num">100%</div>
-					</div>
-					<div class="range-container" onmousedown="dragBrightness(event)" ontouchstart="dragBrightness(event)">
-						<div class="after"></div>
-						<div class="slider-btn"></div>
-					</div>
-				</div>
-			</div>
-			<div class="battery">
-				<div class="pic">
-					<svg viewBox="1 7 29 15" width="50px" height="50px" version="1.1" id="svg5">
-						<defs id="defs9">
-							<linearGradient id="linearGradient45">
-								<stop style="stop-color:#ad6eca;stop-opacity:1" offset="0" id="stop40" />
-								<stop style="stop-color:#3b91d8;stop-opacity:0.94117647" offset="1" id="stop42" />
-							</linearGradient>
-							<linearGradient xlink:href="#linearGradient45" id="linearGradient47" x1="0.89381856" y1="6.8598623"
-								x2="30.006811" y2="21.973007" gradientUnits="userSpaceOnUse" />
-						</defs>
-						<path
-							d="M 4 7 C 2.3550302 7 1 8.3550302 1 10 L 1 19 C 1 20.64497 2.3550302 22 4 22 L 24 22 C 25.64497 22 27 20.64497 27 19 L 27 10 C 27 8.3550302 25.64497 7 24 7 L 4 7 z M 4 9 L 24 9 C 24.56503 9 25 9.4349698 25 10 L 25 19 C 25 19.56503 24.56503 20 24 20 L 4 20 C 3.4349698 20 3 19.56503 3 19 L 3 10 C 3 9.4349698 3.4349698 9 4 9 z M 5 11 L 5 18 L 23 18 L 23 11 L 5 11 z M 28 12 L 28 17 L 29 17 C 29.552 17 30 16.552 30 16 L 30 13 C 30 12.448 29.552 12 29 12 L 28 12 z"
-							id="path2" style="fill-opacity:1;fill:url(#linearGradient47)"
-						/>
-					</svg>
-				</div>
-				<div class="range">
-					<div class="tit">
-						<div class="title">电池</div>
-						<div class="num">100%</div>
-					</div>
-					<div class="range-container">
-						<div class="after"></div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div> -->
 	<div id="datebox">
 		<div class="tit">
 			<p class="time">12:29:19</p>
@@ -777,6 +723,7 @@
 	</div>
 	<div id="window-fill"></div>
 	<div class="window setting">
+		<div class="resize-bar"></div>
 		<div class="titbar">
 			<img src="icon/setting.svg" class="icon"><p>设置</p>
 			<div>
@@ -899,6 +846,7 @@
 		</div>
 	</div>
 	<div class="window explorer" >
+		<div class="resize-bar"></div>
 		<div class="titbar">
 			<img src="icon/explorer.svg" class="icon">
 			<p>文件资源管理器</p>
@@ -1005,6 +953,7 @@
 		</div>
 	</div>
 	<div class="window about" >
+		<div class="resize-bar"></div>
 		<div class="titbar">
 			<img src="icon/about.svg" class="icon">
 			<p>关于 Windows12 网页版</p>
@@ -1275,6 +1224,7 @@
 		</div>
 	</div>
 	<div class="window notepad" >
+		<div class="resize-bar"></div>
 		<div class="titbar">
 			<img src="icon/notepad.svg" class="icon">
 			<p>记事本</p>
@@ -1387,6 +1337,7 @@
 		</div>
 	</div>
 	<div class="window terminal terminal-apps">
+		<div class="resize-bar"></div>
 		<div class="titbar">
 			<img src="icon/terminal.svg" class="icon">
 			<p>终端</p>
@@ -1410,6 +1361,7 @@
 		</div>
 	</div>
 	<div class="window python terminal-apps" >
+		<div class="resize-bar"></div>
 		<div class="titbar">
 			<img src="icon/python.png" class="icon">
 			<p>Python 3.10.2</p>
@@ -1433,6 +1385,7 @@
 		</div>
 	</div>
 	<div class="window edge">
+		<div class="resize-bar"></div>
 		<div class="titbar">
 			<img src="icon/edge.svg" class="icon"><p style="display: none;">Microsoft Edge</p>
 			<div class="tabs">
@@ -1485,6 +1438,7 @@
 		<div class="a hide" onclick="$('.msg').removeClass('show')"><i class="bi bi-arrow-right-short"></i></div>
 	</div>
 	<div class="window vscode webapp">
+		<div class="resize-bar"></div>
 		<div class="titbar">
 			<img src="icon/vscode.png" class="icon">
 			<p>Visual Studio Code</p>
@@ -1502,6 +1456,7 @@
 		</div>
 	</div>
 	<div class="window bilibili webapp">
+		<div class="resize-bar"></div>
 		<div class="titbar">
 			<img src="icon/bilibili.png" class="icon">
 			<p>哔哩哔哩</p>
@@ -1518,7 +1473,8 @@
 			<!-- <iframe src="https://bilibili.com/" frameborder="0" style="width: 100%; height: 100%;" loading="lazy"></iframe> -->
 		</div>
 	</div>
-	<div class="window pythonEditor webapp">
+	<div class="window pythonEditor">
+		<div class="resize-bar"></div>
 		<div class="titbar">
 			<img src="icon/pythonEditor.png" class="icon">
 			<p>Python Editor</p>
@@ -1538,6 +1494,7 @@
 		</div>
 	</div>
 	<div class="window camera">
+		<div class="resize-bar"></div>
 		<div class="titbar">
 			<img src="icon/camera.svg" class="icon">
 			<p>相机</p>
@@ -1616,6 +1573,7 @@
 		</div>
 	</div>
 	<div class="window whiteboard">
+		<div class="resize-bar"></div>
 		<div class="titbar">
 			<img src="icon/whiteboard.png" class="icon">
 			<p>Whiteboard</p>
@@ -1709,7 +1667,12 @@
 			</div>
 		</div>
 	</div>
-	<script src="desktop.js">
-	</script>
+	<script src="desktop.js"></script>
+	<script src="https://cdn.jsdelivr.net/pyodide/v0.20.0/full/pyodide.js" async></script>
+	<!-- <link rel="stylesheet" href="https://pyscript.net/latest/pyscript.css" />
+	<script defer src="https://pyscript.net/latest/pyscript.js"></script> -->         <!-- PyScript, 已弃用 -->
+	<script src="https://cdn.jsdelivr.net/gh/ajaxorg/ace-builds@master/src/ace.js"></script>
+	<script src="https://cdn.jsdelivr.net/gh/ajaxorg/ace-builds@master/src-noconflict/ext-language_tools.js"></script>
+	<script src="https://cdn.jsdelivr.net/gh/ajaxorg/ace-builds@master/src-noconflict/ext-error_marker.js"></script>
 </body>
 </html>
