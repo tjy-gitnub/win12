@@ -1,14 +1,4 @@
-// 列表点击 + 边框发光
-// document.querySelectorAll(`#s-m-l>list>a,#win-setting>.menu>list>a`).forEach(la => {
-//     la.addEventListener('mousemove', e => {
-//         x = e.clientX - $(la).offset()['left'];
-//         y = e.clientY - $(la).offset()['top'];
-//         $(la).css('cssText', `background:radial-gradient(circle at ${x}px ${y}px,var(--hover) 20px, #00000000) center;background-size:110% 100%;border-image:radial-gradient(circle at ${x}px ${y}px,var(--hover) 20px, #00000000 40px) 2;`)
-//     });
-//     la.addEventListener('mouseout', () => {
-//         $(la).css('cssText', `background-image:radial-gradient(#00000000,#00000000),radial-gradient(#00000000,#00000000);`)
-//     });
-// });
+
 class FileSystem {
 constructor() {
   if (localStorage.getItem('fileSystem')) {
@@ -278,14 +268,6 @@ const pages = {
 };
 
 document.querySelectorAll(`list.focs`).forEach(li => {
-    // li.querySelectorAll(`a`).forEach(la => {
-    //     la.addEventListener('click',e => {
-    //         let _=li.querySelector('span.focs');
-    //         $(_).addClass('cl');
-    //         $(_).css('top',la.offsetTop-li.offsetTop);
-    //         $(_).css('left',la.offsetLeft-li.offsetLeft);
-    //     });
-    // });
     li.addEventListener('click', e => {
         let _ = li.querySelector('span.focs'), la = li.querySelector('a.check'),
             las = li.querySelectorAll('a');
@@ -354,7 +336,6 @@ let cms = {
         ['<i class="bi bi-arrow-clockwise"></i> 刷新', `$('#desktop').css('opacity','0');setTimeout(()=>{$('#desktop').css('opacity','1');},100);`],
         ['<i class="bi bi-circle-square"></i> 切换主题', 'toggletheme()'],
         `<a onmousedown="window.open('https://github.com/tjy-gitnub/win12','_blank');" win12_title="https://github.com/tjy-gitnub/win12" onmouseenter="showdescp(event)" onmouseleave="hidedescp(event)"><i class="bi bi-github"></i> 在 Github 中查看此项目</a>`,
-        `<a onmousedown="window.open('https://github.com/tjy-gitnub/win12/issues','_blank');" win12_title="https://github.com/tjy-gitnub/win12/issues" onmouseenter="showdescp(event)" onmouseleave="hidedescp(event)"><i class="bi bi-chat-left-text"></i> 发送反馈</a>`,
         ['<i class="bi bi-info-circle"></i> 关于 Win12 网页版', `$('#win-about>.about').addClass('show');$('#win-about>.update').removeClass('show');openapp('about');if($('.window.about').hasClass('min'))minwin('about');`],
     ],
     'winx': [
@@ -402,18 +383,6 @@ let cms = {
         function (arg) {
             return ['<i class="bi bi-pin-angle"></i> 固定到开始菜单', "pinapp('" + arg[0] + "', '" + arg[1] + "', 'openapp(&quot;" + arg[0] + "&quot;);hide_startmenu();')"];
         }
-    ],
-    'dockabout': [
-        function (arg) {
-            if (arg) {
-                return ['<i class="bi bi-arrow-bar-down"></i> 收起', `$('.dock.about').removeClass('show')`];
-            }
-            else {
-                return ['<i class="bi bi-arrow-bar-up"></i> 展开', `$('.dock.about').addClass('show')`];
-            }
-        },
-        ['<i class="bi bi-info-circle"></i> 更多信息', `$('#win-about>.about').addClass('show');$('#win-about>.update').removeClass('show');
-        openapp('about');if($('.window.about').hasClass('min'))minwin('about');$('.dock.about').removeClass('show')`]
     ],
     'msgupdate': [
         ['<i class="bi bi-layout-text-window-reverse"></i> 查看详细', `openapp('about');if($('.window.about').hasClass('min'))
@@ -636,18 +605,69 @@ function hidedescp(e) {
         $('#descp').removeClass('show-begin');
     }, 100);
 }
+
+// 提示
+let nts={
+    'about':{
+        cnt:`<p class="tit">Windows 12 网页版</p>
+            <p>Windows 12 网页版是一个开放源项目,<br />
+            希望让用户在网络上预先体验 Windows 12,<br />
+            内容可能与 Windows 12 正式版本不一致。<br />
+            使用标准网络技术,例如 HTML, CSS 和 JS<br />
+            此项目绝不附属于微软,且不应与微软操作系统或产品混淆,<br />
+            这也不是 Windows365 cloud PC<br />
+            本项目中微软、Windows和其他示范产品是微软公司的商标</p>`,
+        btn:[
+            {type:'main',text:'关闭',js:'closenotice();'},
+            {type:'detail',text:'更多',js:"closenotice();openapp('about');if($('.window.about').hasClass('min'))minwin('about');$('.dock.about').removeClass('show')"},
+        ]
+    },
+    'feedback':{
+        cnt:`<p class="tit">反馈</p>
+            <p>我们非常注重用户的体验与反馈</p>
+            <list class="new">
+              <a class="a" onclick="window.open('https://github.com/tjy-gitnub/win12/issues','_blank');" win12_title="在浏览器新窗口打开链接" onmouseenter="showdescp(event)" onmouseleave="hidedescp(event)">在github上提交issue(需要github账户，会得到更高重视)</a>
+              <a class="a" onclick="window.open('https://forms.office.com/Pages/ResponsePage.aspx?id=DQSIkWdsW0yxEjajBLZtrQAAAAAAAAAAAAO__SDw7SZURjUzOUo0VEVXU1pMWlFTSUVGWDNYWU1EWS4u','_blank');" win12_title="在浏览器新窗口打开链接" onmouseenter="showdescp(event)" onmouseleave="hidedescp(event)">在Microsoft Forms上发送反馈(不需要账户，也会重视)</a>
+            </list>`,
+        btn:[
+            {type:'main',text:'关闭',js:'closenotice();'},
+        ]
+    },
+    'widgets':{
+        cnt:`
+            <p class="tit">添加小组件</p>
+            <list class="new">
+              <a class="a" onclick="closenotice();widgets.widgets.add('calc')">计算器</a>
+              <a class="a" onclick="closenotice();widgets.widgets.add('weather')">天气</a>
+            </list>`,
+        btn:[
+            {type:'cancel',text:'取消',js:'closenotice();'},
+        ]
+    }
+}
+function shownotice(name){
+    $('#notice>.cnt').html(nts[name].cnt);
+    let tmp='';
+    nts[name].btn.forEach(btn => {
+        tmp+=`<a class="a btn ${btn.type}" onclick="${btn.js}">${btn.text}</a>`
+    });
+    $('#notice>.btns').html(tmp);
+    $('#notice-back').addClass('show');
+    setTimeout(() => {
+        $('#notice').addClass('show');
+    }, 200);
+}
+function closenotice() {
+    $('#notice').removeClass('show');
+    setTimeout(() => {
+        $('#notice-back').removeClass('show');
+    }, 200);
+}
 // 应用
 let apps = {
     setting: {
         init: () => {
             $('#win-setting>.menu>list>a.system')[0].click();
-            // let _=$('#win-setting>.menu>list>span.focs'),
-            //     la=$('#win-setting>.menu>list>a.system')[0],
-            //     li=$('#win-setting>.menu>list')[0];
-            // console.log(la.offsetTop,li.offsetTop,li.offsetHeight);
-            // _.addClass('cl');
-            // _.css('top',la.offsetTop-li.offsetTop-li.offsetHeight);
-            // _.css('left',la.offsetLeft-li.offsetLeft);
         },
         page: (name) => {
             $('#win-setting>.page>.cnt.' + name).scrollTop(0);
@@ -669,14 +689,9 @@ let apps = {
                                 if(cn.name=='theme.json'){
                                     $.getJSON('https://tjy-gitnub.github.io/win12-theme/'+cn.path).then(inf=>{
                                         infjs=inf;
-                                        cnt.forEach(fbg=>{
-                                            console.log(fbg,infjs);
-                                            if(fbg.name==infjs.bg){
-                                                if($('#set-theme>loading').length)
-                                                    $('#set-theme').html('');
-                                                $('#set-theme').append(`<a class="a act" onclick="apps.setting.theme_set('${c.name}')" style="background-image:url('https://tjy-gitnub.github.io/win12-theme/${fbg.path}')">${c.name}</a>`);
-                                            }
-                                        })
+                                        if($('#set-theme>loading').length)
+                                            $('#set-theme').html('');
+                                        $('#set-theme').append(`<a class="a act" onclick="apps.setting.theme_set('${c.name}')" style="background-image:url('https://tjy-gitnub.github.io/win12-theme/${c.name}/view.jpg')">${c.name}</a>`);
                                     })
                                 }
                             })
@@ -1645,16 +1660,33 @@ Microsoft Windows [版本 12.0.39035.7324]
 let widgets = {
     widgets: {
         add: (arg) => {
-            if ($('#widgets>.widgets>.content>.grid>.wg.' + arg).length != 0) {
+            if ($(`.wg.${arg}.menu,.wg.${arg}.toolbar`).length != 0) {
                 return;
             }
             $('#widgets>.widgets>.content>.grid')[0].innerHTML += $('#widgets>.widgets>.content>.template>.' + arg).html();
+            $('#widgets>.widgets>.content>.grid>.wg.'+arg).addClass('menu');
+            widgets[arg].init();
+            
         },
         remove: (arg) => {
-            $('#widgets>.widgets>.content>.grid>.wg.' + arg).remove();
+            $(`.wg.${arg}.menu,.wg.${arg}.toolbar`).remove();
+            widgets[arg].remove();
+        },
+        addToToolbar:(arg)=>{
+            widgets.widgets.remove(arg);
+            if ($('.wg.toolbar.' + arg).length != 0) {
+                return;
+            }
+            $('#toolbar')[0].innerHTML += $('#widgets>.widgets>.content>.template>.' + arg).html();
+            console.log('well')
+            $('#toolbar>.wg.'+arg).addClass('toolbar');
+            widgets[arg].init();
         }
     },
     calc: {
+        init: ()=>{
+            null
+        },
         add: (arg) => {
             if (arg >= 1 && arg <= 9 && $('*:not(.template)>*>.wg.calc>.content>input')[0].value == '0') {
                 $('*:not(.template)>*>.wg.calc>.content>input')[0].value = arg;
@@ -1665,7 +1697,81 @@ let widgets = {
             else {
                 $('*:not(.template)>*>.wg.calc>.content>input')[0].value += arg;
             }
+        },
+        remove: ()=>{
+            null
         }
+    },
+    weather: {
+        init: ()=>{
+            widgets.weather.update();
+            widgets.weather.handle=setInterval(widgets.weather.update, 30000);
+        },
+        remove:()=>{
+            clearInterval(widgets.weather.handle);
+        },
+        update: ()=>{
+            let wic = {
+                23: "HeavyDrizzle",
+                40: "HeavyDrizzle",
+                26: "SnowShowersDayV2",
+                6: "BlowingHailV2",
+                5: "CloudyV3",
+                20: "LightSnowV2",
+                91: "WindyV2",
+                27: "ThunderstormsV2",
+                10: "FreezingRainV2",
+                77: "RainSnowV2",
+                12: "Haze",
+                13: "HeavyDrizzle",
+                39: "Fair",
+                24: "RainSnowV2",
+                78: "RainSnowShowersNightV2",
+                9: "FogV2",
+                3: "PartlyCloudyDayV3",
+                43: "IcePelletsV2",
+                16: "IcePellets",
+                8: "LightRainV2",
+                15: "HeavySnowV2",
+                28: "ClearNightV3",
+                30: "PartlyCloudyNightV2",
+                14: "ModerateRainV2",
+                1: "SunnyDayV3",
+                7: "BlowingSnowV2",
+                50: "RainShowersNightV2",
+                82: "LightSnowShowersNight",
+                81: "LightSnowShowersDay",
+                2: "MostlySunnyDay",
+                29: "MostlyClearNight",
+                4: "MostlyCloudyDayV2",
+                31: "MostlyCloudyNightV2",
+                19: "LightRainV3",
+                17: "LightRainShowerDay",
+                53: "N422Snow",
+                52: "Snow",
+                25: "Snow",
+                44: "LightRainShowerNight",
+                65: "HailDayV2",
+                73: "HailDayV2",
+                74: "HailNightV2",
+                79: "RainShowersDayV2",
+                89: "HazySmokeV2",
+                90: "HazeSmokeNightV2_106",
+                66: "HailNightV2",
+                59: "WindyV2",
+                56: "ThunderstormsV2",
+                58: "FogV2",
+                54: "HazySmokeV2",
+                55: "Dust1",
+                57: "Haze"
+            };
+            $.getJSON('https://assets.msn.cn/service/weatherfalcon/weather/overview?locale=zh-cn&ocid=msftweather').then(r=>{
+                let inf=r.value[0].responses[0].weather[0].current;
+                $('.wg.weather>.content>.img').attr('src',`https://assets.msn.cn/weathermapdata/1/static/weather/Icons/taskbar_v10/Condition_Card/${wic[inf.icon]}.svg`);
+                $('.wg.weather>.content>.text>.temperature').text(`${inf.temp}℃`);
+                $('.wg.weather>.content>.text>.detail').text(`${inf.cap} 体感温度${inf.feels}℃`);
+            })
+        },
     }
 }
 // 日期、时间
@@ -2199,6 +2305,7 @@ document.getElementsByTagName('body')[0].onload = function nupd() {
         qw.mousedown(stop);
         $(`.window.${wc}>.titbar>div>.wbtg`).mousedown(stop);
     });
+    shownotice('about');
 };
 
 // PWA 应用
@@ -2207,9 +2314,6 @@ if (!location.href.match(/((\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.){3}(\d|[1-9]\d|
     navigator.serviceWorker.controller.postMessage({
         head: 'is_update'
     });
-    // navigator.serviceWorker.controller.postMessage({
-    //     head: 'get_userdata'
-    // });
     navigator.serviceWorker.addEventListener('message', function (e) {
         if (e.data.head == 'update') {
             updated = true;
@@ -2217,20 +2321,8 @@ if (!location.href.match(/((\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.){3}(\d|[1-9]\d|
             $('.msg.update>.main>.cont').html($('#win-about>.cnt.update>div>details:first-child>p').html());
             $('#loadbackupdate').css('display', 'block');
         }
-        //  else if (e.data.head == 'userdata') {
-        //     const d = e.data.data;
-        //     console.log(d);
-        //     if (d.theme == 'dark') $(':root').addClass('dark');
-        //     $(':root').css('--theme-1', d.color1);
-        //     $(':root').css('--theme-2', d.color2);
-        // }
     });
     function setData(k, v) {
-        // navigator.serviceWorker.controller.postMessage({
-        //     head: 'set_userdata',
-        //     key: k,
-        //     value: v
-        // });
         localStorage.setItem(k, v);
     }
 }
