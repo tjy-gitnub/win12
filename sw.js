@@ -1,9 +1,4 @@
-// v5.4.1
-let userdata = {
-  'theme': 'light',
-  'color1': '#ad6eca',
-  'color2': '#3b91d8'
-};
+// v6.0.0
 let dongtai=[
   'api.github.com',
   'tjy-gitnub.github.io/win12-theme',
@@ -51,16 +46,6 @@ this.addEventListener('activate', function (event) {
   console.log('开始更新');
   event.waitUntil(
     caches.keys().then(keys => {
-      return Promise.all[keys.map(key => {
-        if (!cacheNames.includes(key)) {
-          console.log('清除原始版本数据');
-          return caches.delete(key);
-        }
-      })]
-    })
-  );
-  event.waitUntil(
-    caches.keys().then(keys => {
       if (keys.includes('def')) {
         caches.open('def').then(cc => {
           cc.keys().then(key => {
@@ -98,14 +83,15 @@ this.addEventListener('message', function (e) {
       });
       flag = false;
     }
-  } else if (e.data.head == 'set_userdata') {
-    userdata[e.data.key] = e.data.value;
-    console.log(userdata)
-  } else if (e.data.head == 'get_userdata') {
-    console.log(userdata);
-    e.source.postMessage({
-      head: 'userdata',
-      data: userdata
-    });
   }
+  //  else if (e.data.head == 'set_userdata') {
+  //   userdata[e.data.key] = e.data.value;
+  //   console.log(userdata)
+  // } else if (e.data.head == 'get_userdata') {
+  //   console.log(userdata);
+  //   e.source.postMessage({
+  //     head: 'userdata',
+  //     data: userdata
+  //   });
+  // }
 });

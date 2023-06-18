@@ -1,5 +1,78 @@
 # 更新记录
 ## v1.0.0~v3.5.0
+
+<details><summary><span>v4.3.0</span> 其实我想发布成5.0版的</summary><p>
+	&emsp;&emsp;-搜索菜单重新设计<br />
+	&emsp;&emsp;-列表悬停立体效果(全局,深色模式可能会明显一点,灵感源于win11,大家可以帮忙找一个浅色模式的边框颜色)<br />
+	&emsp;&emsp;-新增鼠标悬停提示框(全局)<br />
+	&emsp;&emsp;-记事本全新设计与功能(向Word努力)<br />
+	&emsp;&emsp;-计算器新样式<br />
+	&emsp;&emsp;-新增多开亚克力设置<br />
+	&emsp;&emsp;-关于应用更新记录动画<br />
+	&emsp;&emsp;-文件资源管理器的新动画<br />
+	&emsp;&emsp;-桌面图标点击效果<br />
+	&emsp;&emsp;-修复设置的小竖条位置问题<br />
+	&emsp;&emsp;-新新闻<br />
+	&emsp;&emsp;-细节优化和修复</p>
+</details>
+<details><summary><span>v4.2.0</span> 外观整改</summary><p>
+	&emsp;&emsp;-新的计算器外观<br />
+	&emsp;&emsp;-卡片外观优化<br />
+	&emsp;&emsp;-设置新增菜单前面的小竖线<br />
+	&emsp;&emsp;-右键菜单阴影特效<br />
+	&emsp;&emsp;-细节优化和修复</p>
+</details>
+<details><summary><span>v4.1.0</span> 新的设置项，新背景</summary><p>
+	&emsp;&emsp;-在设置中添加开关特效的选项<br />
+	&emsp;&emsp;-背景添加阴影效果<br />
+	&emsp;&emsp;-设置的一些动画效果<br />
+	&emsp;&emsp;-一些外观优化<br />
+	&emsp;&emsp;-细节优化和修复</p>
+</details>
+<details><summary><span>v4.0.0</span> 记录用户偏好,动画更新,新壁纸,分屏</summary><p>
+	&emsp;&emsp;-记录用户偏好设置(更新后不保留) @xqwcom<br />
+	&emsp;&emsp;-没错又是动画更新<br />
+	&emsp;&emsp;-开始/任务栏/右键菜单/列表/切换等全面动画升级<br />
+	&emsp;&emsp;-新壁纸(好看吗?)<br />
+	&emsp;&emsp;-拖动窗口至左右边缘分屏<br />
+	&emsp;&emsp;-细节优化和修复</p>
+</details>
+<details><summary><span>v3.9.0</span> 新增主题色设置功能，布局优化</summary><p>
+	&emsp;&emsp;<i>更新部分来源 @User782Tec 的pr</i><br />
+	&emsp;&emsp;-新增系统主题色设置功能<br />
+	&emsp;&emsp;-记事本字体选择布局优化<br />
+	&emsp;&emsp;-"关于"应用的改进<br />
+	&emsp;&emsp;-细节优化和修复</p>
+</details>
+<details><summary><span>v3.8.0</span> 记事本字体，窗口焦点逻辑改善</summary><p>
+	&emsp;&emsp;<i>更新主要来源 @User782Tec 的pr</i><br />
+	&emsp;&emsp;-详见<a href="https://github.com/tjy-gitnub/win12/pull/50">pull</a>中的详细<br />
+	&emsp;&emsp;-窗口焦点逻辑改善<br />
+	&emsp;&emsp;-细节优化和修复</p>
+</details>
+<details><summary><span>v3.7.0</span> 窗口最大化完善,让颜色更"喜庆"一点</summary><p>
+	&emsp;&emsp;<i>更新部分来源 @User782Tec 的pr</i><br />
+	&emsp;&emsp;-增加最大化窗口下拖还原功能<br />
+	&emsp;&emsp;-最大化窗口还原后保留之前的位置<br />
+	&emsp;&emsp;-让系统的色调更"喜庆"一点<br />
+	&emsp;&emsp;-增加 @iamkezo1 提供的新闻<br />
+	&emsp;&emsp;-压缩背景图片加速<br />
+	&emsp;&emsp;-禁用缩放<br />
+	&emsp;&emsp;-细节优化和修复</p>
+</details>
+<details><summary><span>v3.6.1</span> Windows12新年特别版</summary><p>
+	&emsp;&emsp;-增加主题色控制功能<br />
+	&emsp;&emsp;-测试新的更新机制<br />
+	&emsp;&emsp;-细节优化和修复</p>
+</details>
+<details><summary><span>v3.6.0</span> 更新机制改进，新增office和终端</summary>
+	<p>&emsp;&emsp;-使用新的更新机制，更新速度提升<br />
+	&emsp;&emsp;-新增终端应用<br />
+	&emsp;&emsp;-新增Office<br />
+	&emsp;&emsp;-修改关机后黑屏而不是白屏<br />
+	&emsp;&emsp;-更新记录仅显示最近的，优化速度<br />
+	&emsp;&emsp;-细节优化和修复</p>
+</details>
 <details><summary><span>v3.5.0</span> 窗口层级和焦点控制</summary>
 	<p>&emsp;&emsp;-增加了窗口层级的控制<br>
 	&emsp;&emsp;-非焦点窗口关闭模糊效果以提速<br>

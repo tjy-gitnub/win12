@@ -1,3 +1,114 @@
+.wg {
+    border-radius: 10px;
+    box-shadow: 1px 2px 5px var(--sd);
+    overflow: hidden;
+    transition: 200ms;
+}
+
+.wg>.titbar {
+    display: flex;
+    flex-direction: row-reverse;
+}
+
+.wg>.titbar>.more {
+    border-radius: 50%;
+    width: 25px;
+    height: 25px;
+    background-color: var(--bggrey);
+    box-shadow: 2px 2px 5px var(--sd);
+    margin: 3px 3px 0 0;
+    text-align: center;
+    overflow: hidden;
+    z-index: 1;
+}
+
+.wg>.titbar>.more>.bi {
+    display: block;
+}
+
+.wg>.titbar>.more:hover>.bi {
+    background: var(--hover);
+}
+
+.wg>.titbar>.menu {
+    transition: 200ms cubic-bezier(0.9, 0, 0.1, 1);
+    max-width: 0;
+    box-shadow: 2px 2px 5px var(--sd);
+    overflow: hidden;
+    margin: 3px 3px 0 3px;
+    background-color: var(--bggrey);
+    border-radius: 12.5px;
+    height: 25px;
+    flex-grow: 1;
+    display: flex;
+    max-width: fit-content;
+    transform: scaleX(0);
+    transform-origin: right;
+}
+
+.wg>.titbar>.menu.show {
+    transform: scaleX(1);
+}
+
+.wg>.titbar>.menu>.a {
+    width: 25px;
+    height: 100%;
+}
+
+.wg>.titbar>.menu>.a>.bi {
+    margin-left: 4px;
+}
+
+.wg>.titbar>.menu>.a:first-child>.bi{
+    margin-left: 8px;
+}
+
+.wg>.titbar>.menu>.a:first-child,
+.wg>.titbar>.menu>.a:last-child {
+    width: 28px;
+}
+
+.wg>.titbar>.menu>.a.img>img {
+    width: 18px;
+    height: 18px;
+    margin: 3.5px 0 3.5px 6px;
+}
+
+.wg>.titbar>.menu>.a:hover {
+    background-color: var(--hover);
+}
+
+.wg>.content {
+    width: 100%;
+    height: 100%;
+    margin-top: -28px;
+}
+
+.wg.toolbar{
+    border-radius: 8px;
+    height: 100%;
+    background-color: var(--bg70);
+    backdrop-filter: blur(20px) saturate(1.5);
+    -webkit-backdrop-filter: blur(20px) saturate(1.5);
+    box-shadow: 0 1px 2px #44444460, 0px 3px 25px 1px var(--sd);
+    margin: 0 3px;
+}
+
+.wg.toolbar>.titbar>.more{
+    width: 18px;
+    height: 18px;
+    font-size: 13px;
+    opacity: 0;
+}
+
+.wg.toolbar:hover>.titbar>.more{
+    opacity: 1;
+}
+
+.wg.toolbar>.titbar>.menu>.a.addtotb{
+    display: none;
+}
+
 .wg.calc{
     grid-column-start: span 2;
     grid-row-start: span 3;
@@ -51,4 +162,46 @@
 }
 .wg.calc>.content>.b:hover{
     background-color: var(--mm);
+}
+
+.wg.weather.menu{
+    grid-column-start: span 3;
+    grid-row-start: span 2;
+}
+
+.wg.weather>.content{
+    display: flex;
+}
+
+.wg.weather.menu>.content>.img{
+    width: 70px;
+    height: 100%;
+    background-size: cover;
+    margin: 0 10px;
+}
+
+.wg.weather.menu>.content>.text>.temperature{
+    font-size: 30px;
+    margin: 8px 0;
+}
+
+.wg.weather>.content>.text{
+    padding-top: 10px;
+    line-height: 1;
+}
+
+.wg.toolbar.weather>.content>.img{
+    width: 30px;
+    height: 100%;
+    margin: 0 5px 0 10px;
+}
+
+.wg.toolbar.weather>.content>.text{
+    font-size: 8px;
+    padding-top: 5px;
+    margin-right: 10px;
+}
+
+.wg.toolbar.weather>.content>.text>.temperature{
+    font-size: 18px;
 }

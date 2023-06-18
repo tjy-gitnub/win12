@@ -100,7 +100,7 @@
 #contri>.a {
     margin: 3px;
     background: var(--card);
-    box-shadow: 0 1px 1px 1px var(--hr);
+    box-shadow: 0 1px 2px var(--sd);
     border-radius: 10px;
     width: 110px;
     height: 70px;
