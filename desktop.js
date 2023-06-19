@@ -1,264 +1,263 @@
-
 class FileSystem {
-constructor() {
-  if (localStorage.getItem('fileSystem')) {
-    this.root = JSON.parse(localStorage.getItem('fileSystem'));
-    this.convertToMap(this.root);
-  } else {
-    this.root = { type: 'dir', children: new Map() };
-  }
-  this.currentDir = this.root;
-  this.directoryMap = new Map();
-  this.directoryMap.set('/', this.root);
-}
-
- convertToObj(dir) {
-  if (dir.type === 'dir') {
-    const children = Array.from(dir.children);
-    dir.children = {};
-    for (const [name, child] of children) {
-      dir.children[name] = child;
-      convertToObj(child);
+    constructor() {
+        if (localStorage.getItem('fileSystem')) {
+            this.root = JSON.parse(localStorage.getItem('fileSystem'));
+            this.convertToMap(this.root);
+        } else {
+            this.root = { type: 'dir', children: new Map() };
+        }
+        this.currentDir = this.root;
+        this.directoryMap = new Map();
+        this.directoryMap.set('/', this.root);
     }
-  }
-}
 
-
- convertToMap(dir) {
-  if (dir.type === 'dir') {
-    dir.children = new Map(Object.entries(dir.children));
-    for (let child of dir.children.values()) {
-      convertToMap(child);
+    convertToObj(dir) {
+        if (dir.type === 'dir') {
+            const children = Array.from(dir.children);
+            dir.children = {};
+            for (const [name, child] of children) {
+                dir.children[name] = child;
+                convertToObj(child);
+            }
+        }
     }
-  }
-}
 
-  mkdir(path) {
- let dirs = path.split('/').filter(Boolean);
-  let currentDir = this.currentDir;
-  let currentPath = '';
-  for (let dir of dirs) {
-    currentPath += `/${dir}`;
-    let found = currentDir.children.get(dir);
-    if (!found) {
-      found = { name: dir, type: 'dir', children: new Map() };
-      currentDir.children.set(dir, found);
-      this.directoryMap.set(currentPath, found);
-    }
-    currentDir = found;
-  }
-  }
 
-touch(path, content) {
-  let dirs = path.split('/').filter(Boolean);
-  let fileName = dirs.pop();
-  let currentDir = this.currentDir;
-  let currentPath = '';
-  for (let dir of dirs) {
-    currentPath += `/${dir}`;
-    let found = currentDir.children.get(dir);
-    if (!found) {
-      found = { name: dir, type: 'dir', children: new Map() };
-      currentDir.children.set(dir, found);
-      this.directoryMap.set(currentPath, found);
+    convertToMap(dir) {
+        if (dir.type === 'dir') {
+            dir.children = new Map(Object.entries(dir.children));
+            for (let child of dir.children.values()) {
+                convertToMap(child);
+            }
+        }
     }
-    currentDir = found;
-  }
-  let file = currentDir.children.get(fileName);
-  if (!file) {
-    file = { name: fileName, type: 'file' };
-    currentDir.children.set(fileName, file);
-  }
-  file.content = content;
-}
-cat(path) {
-  let dirs = path.split('/').filter(Boolean);
-  let fileName = dirs.pop();
-  let currentDir = this.currentDir;
-  for (let dir of dirs) {
-    let found = currentDir.children.get(dir);
-    if (!found) {
-      return null;
-    }
-    currentDir = found;
-  }
-  let file = currentDir.children.get(fileName);
-  return file && file.content;
-}
 
-rm(path) {
-  let dirs = path.split('/').filter(Boolean);
-  let fileName = dirs.pop();
-  let currentDir = this.currentDir;
-  for (let dir of dirs) {
-    let found = currentDir.children.get(dir);
-    if (!found) {
-      return null;
+    mkdir(path) {
+        let dirs = path.split('/').filter(Boolean);
+        let currentDir = this.currentDir;
+        let currentPath = '';
+        for (let dir of dirs) {
+            currentPath += `/${dir}`;
+            let found = currentDir.children.get(dir);
+            if (!found) {
+                found = { name: dir, type: 'dir', children: new Map() };
+                currentDir.children.set(dir, found);
+                this.directoryMap.set(currentPath, found);
+            }
+            currentDir = found;
+        }
     }
-    currentDir = found;
-  }
-  currentDir.children.delete(fileName);
-}
 
-ls() {
-  return Array.from(this.currentDir.children.keys());
-}
-
-cd(path) {
-  let dirs = path.split('/').filter(Boolean);
-  let currentDir = this.currentDir;
-  for (let dir of dirs) {
-    let found = currentDir.children.get(dir);
-    if (!found) {
-      return null;
+    touch(path, content) {
+        let dirs = path.split('/').filter(Boolean);
+        let fileName = dirs.pop();
+        let currentDir = this.currentDir;
+        let currentPath = '';
+        for (let dir of dirs) {
+            currentPath += `/${dir}`;
+            let found = currentDir.children.get(dir);
+            if (!found) {
+                found = { name: dir, type: 'dir', children: new Map() };
+                currentDir.children.set(dir, found);
+                this.directoryMap.set(currentPath, found);
+            }
+            currentDir = found;
+        }
+        let file = currentDir.children.get(fileName);
+        if (!file) {
+            file = { name: fileName, type: 'file' };
+            currentDir.children.set(fileName, file);
+        }
+        file.content = content;
     }
-    currentDir = found;
-  }
-  this.currentDir = currentDir;
-}
-
-mv(oldPath, newPath) {
-  let oldDirs = oldPath.split('/').filter(Boolean);
-  let oldFileName = oldDirs.pop();
-  let oldCurrentDir = this.currentDir;
-  for (let dir of oldDirs) {
-    let found = oldCurrentDir.children.get(dir);
-    if (!found) {
-      return null;
+    cat(path) {
+        let dirs = path.split('/').filter(Boolean);
+        let fileName = dirs.pop();
+        let currentDir = this.currentDir;
+        for (let dir of dirs) {
+            let found = currentDir.children.get(dir);
+            if (!found) {
+                return null;
+            }
+            currentDir = found;
+        }
+        let file = currentDir.children.get(fileName);
+        return file && file.content;
     }
-    oldCurrentDir = found;
-  }
-  let file = oldCurrentDir.children.get(oldFileName);
-  if (!file) {
-    return null;
-  }
-  this.rm(oldPath);
-  this.touch(newPath, file.content);
-}
 
-rename(oldPath, newName) {
-  let oldDirs = oldPath.split('/').filter(Boolean);
-  let oldFileName = oldDirs.pop();
-  let oldCurrentDir = this.currentDir;
-  for (let dir of oldDirs) {
-    let found = oldCurrentDir.children.get(dir);
-    if (!found) {
-      return null;
+    rm(path) {
+        let dirs = path.split('/').filter(Boolean);
+        let fileName = dirs.pop();
+        let currentDir = this.currentDir;
+        for (let dir of dirs) {
+            let found = currentDir.children.get(dir);
+            if (!found) {
+                return null;
+            }
+            currentDir = found;
+        }
+        currentDir.children.delete(fileName);
     }
-    oldCurrentDir = found;
-  }
-  let file = oldCurrentDir.children.get(oldFileName);
-  if (!file) {
-    return null;
-  }
-  file.name = newName;
-}
 
-cp(oldPath, newPath) {
-  let oldDirs = oldPath.split('/').filter(Boolean);
-  let oldFileName = oldDirs.pop();
-  let oldCurrentDir = this.currentDir;
-  for (let dir of oldDirs) {
-    let found = oldCurrentDir.children.get(dir);
-    if (!found) {
-      return null;
+    ls() {
+        return Array.from(this.currentDir.children.keys());
     }
-    oldCurrentDir = found;
-  }
-  let file = oldCurrentDir.children.get(oldFileName);
-  if (!file) {
-    return null;
-  }
-  this.touch(newPath, file.content);
-}
 
-renameDir(oldPath, newName) {
-  let oldDirs = oldPath.split('/').filter(Boolean);
-  let oldDirName = oldDirs.pop();
-  let currentPath = '';
-  for (let dir of dirs) {
-    currentPath += `/${dir}`;
-    currentDir = this.directoryMap.get(currentPath);
-    if (!currentDir) {
-      return null;
+    cd(path) {
+        let dirs = path.split('/').filter(Boolean);
+        let currentDir = this.currentDir;
+        for (let dir of dirs) {
+            let found = currentDir.children.get(dir);
+            if (!found) {
+                return null;
+            }
+            currentDir = found;
+        }
+        this.currentDir = currentDir;
     }
-  }
-}
-getDirectory(path) {
-  let dirs = path.split('/').filter(Boolean);
-  let currentDir = this.root;
-  let currentPath = '';
-  for (let dir of dirs) {
-    currentPath += `/${dir}`;
-    currentDir = this.directoryMap.get(currentPath);
-    if (!currentDir) {
-      return null;
-    }
-  }
-  return currentDir;
-}
 
-getFile(dir, fileName) {
-  return this.getDirectory(dir).children.get(fileName);
-}
-
-getParentDir(path) {
-  const dirs = path.split('/').filter(Boolean);
-  dirs.pop();
-  return `/${dirs.join('/')}`;
-}
-
-getFilesRecursively(directory = '/') {
-  let files = [];
-  const traverse = (dir, path = '') => {
-    for (const [name, item] of dir.children.entries()) {
-      const newPath = `${path}/${name}`;
-      if (item.type === 'dir') {
-        files.push(newPath);
-        traverse(item, newPath);
-      } else {
-        files.push(newPath);
-      }
+    mv(oldPath, newPath) {
+        let oldDirs = oldPath.split('/').filter(Boolean);
+        let oldFileName = oldDirs.pop();
+        let oldCurrentDir = this.currentDir;
+        for (let dir of oldDirs) {
+            let found = oldCurrentDir.children.get(dir);
+            if (!found) {
+                return null;
+            }
+            oldCurrentDir = found;
+        }
+        let file = oldCurrentDir.children.get(oldFileName);
+        if (!file) {
+            return null;
+        }
+        this.rm(oldPath);
+        this.touch(newPath, file.content);
     }
-  };
-  traverse(this.getDirectory(directory), directory);
-  return files;
-}
-mv(oldPath, newPath) {
-  let oldDirs = oldPath.split('/').filter(Boolean);
-  let oldFileName = oldDirs.pop();
-  let currentPath = '';
-  for (let dir of oldDirs) {
-    currentPath += `/${dir}`;
-    currentDir = this.directoryMap.get(currentPath);
-    if (!currentDir) {
-      return null;
-    }
-  }
-  let file = currentDir.children.get(oldFileName);
-  if (!file) {
-    return null;
-  }
-  this.rm(oldPath);
-  this.touch(newPath, file.content);
-}
 
-listAll(dir = this.root, path = '', result = {}) {
-  for (let [name, item] of dir.children.entries()) {
-    if (item.type === 'file') {
-      result[`${path}/${name}`] = 'file';
-    } else {
-      result[`${path}/${name}`] = 'dir';
-      this.listAll(item, `${path}/${name}`, result);
+    rename(oldPath, newName) {
+        let oldDirs = oldPath.split('/').filter(Boolean);
+        let oldFileName = oldDirs.pop();
+        let oldCurrentDir = this.currentDir;
+        for (let dir of oldDirs) {
+            let found = oldCurrentDir.children.get(dir);
+            if (!found) {
+                return null;
+            }
+            oldCurrentDir = found;
+        }
+        let file = oldCurrentDir.children.get(oldFileName);
+        if (!file) {
+            return null;
+        }
+        file.name = newName;
     }
-  }
-  return result;
-}
-save() {
-  let rootCopy = JSON.parse(JSON.stringify(this.root));
-  this.convertToObj(rootCopy);
-  localStorage.setItem('fileSystem', JSON.stringify(rootCopy));
-}
+
+    cp(oldPath, newPath) {
+        let oldDirs = oldPath.split('/').filter(Boolean);
+        let oldFileName = oldDirs.pop();
+        let oldCurrentDir = this.currentDir;
+        for (let dir of oldDirs) {
+            let found = oldCurrentDir.children.get(dir);
+            if (!found) {
+                return null;
+            }
+            oldCurrentDir = found;
+        }
+        let file = oldCurrentDir.children.get(oldFileName);
+        if (!file) {
+            return null;
+        }
+        this.touch(newPath, file.content);
+    }
+
+    renameDir(oldPath, newName) {
+        let oldDirs = oldPath.split('/').filter(Boolean);
+        let oldDirName = oldDirs.pop();
+        let currentPath = '';
+        for (let dir of dirs) {
+            currentPath += `/${dir}`;
+            currentDir = this.directoryMap.get(currentPath);
+            if (!currentDir) {
+                return null;
+            }
+        }
+    }
+    getDirectory(path) {
+        let dirs = path.split('/').filter(Boolean);
+        let currentDir = this.root;
+        let currentPath = '';
+        for (let dir of dirs) {
+            currentPath += `/${dir}`;
+            currentDir = this.directoryMap.get(currentPath);
+            if (!currentDir) {
+                return null;
+            }
+        }
+        return currentDir;
+    }
+
+    getFile(dir, fileName) {
+        return this.getDirectory(dir).children.get(fileName);
+    }
+
+    getParentDir(path) {
+        const dirs = path.split('/').filter(Boolean);
+        dirs.pop();
+        return `/${dirs.join('/')}`;
+    }
+
+    getFilesRecursively(directory = '/') {
+        let files = [];
+        const traverse = (dir, path = '') => {
+            for (const [name, item] of dir.children.entries()) {
+                const newPath = `${path}/${name}`;
+                if (item.type === 'dir') {
+                    files.push(newPath);
+                    traverse(item, newPath);
+                } else {
+                    files.push(newPath);
+                }
+            }
+        };
+        traverse(this.getDirectory(directory), directory);
+        return files;
+    }
+    mv(oldPath, newPath) {
+        let oldDirs = oldPath.split('/').filter(Boolean);
+        let oldFileName = oldDirs.pop();
+        let currentPath = '';
+        for (let dir of oldDirs) {
+            currentPath += `/${dir}`;
+            currentDir = this.directoryMap.get(currentPath);
+            if (!currentDir) {
+                return null;
+            }
+        }
+        let file = currentDir.children.get(oldFileName);
+        if (!file) {
+            return null;
+        }
+        this.rm(oldPath);
+        this.touch(newPath, file.content);
+    }
+
+    listAll(dir = this.root, path = '', result = {}) {
+        for (let [name, item] of dir.children.entries()) {
+            if (item.type === 'file') {
+                result[`${path}/${name}`] = 'file';
+            } else {
+                result[`${path}/${name}`] = 'dir';
+                this.listAll(item, `${path}/${name}`, result);
+            }
+        }
+        return result;
+    }
+    save() {
+        let rootCopy = JSON.parse(JSON.stringify(this.root));
+        this.convertToObj(rootCopy);
+        localStorage.setItem('fileSystem', JSON.stringify(rootCopy));
+    }
 
 }
 // 后端服务器
@@ -295,8 +294,8 @@ $('input,textarea,*[contenteditable=true]').on('contextmenu', (e) => {
     stop(e);
     return true;
 });
-let nomax={'calc':0,'notepad-fonts':0,'camera-notice':0,'winver':0,'run':0};
-let nomin={'notepad-fonts':0,'camera-notice':0,'run':0};
+let nomax = { 'calc': 0, 'notepad-fonts': 0, 'camera-notice': 0, 'winver': 0, 'run': 0 };
+let nomin = { 'notepad-fonts': 0, 'camera-notice': 0, 'run': 0 };
 let cms = {
     'titbar': [
         function (arg) {
@@ -367,9 +366,9 @@ let cms = {
             return ['<i class="bi bi-window"></i> 打开', `openapp('${arg[0]}');hide_startmenu();`];
         },
         function (arg) {
-            return ['<i class="bi bi-link-45deg"></i> 在桌面创建链接', "$('#desktop').append(`<div class='b' ondblclick=openapp('" + arg[0] + "')  ontouchstart=openapp('" + arg[0] + "')><img src='icon/" + geticon(arg[0]) + "'><p>" + arg[1] + "</p></div>`)"];
+            return ['<i class="bi bi-link-45deg"></i> 在桌面创建链接', "$('#desktop').append(`<div class='b' ondblclick=openapp('" + arg[0] + "')  ontouchstart=openapp('" + arg[0] + "')><img src='icon/" + geticon(arg[0]) + "'><p>" + arg[1] + "</p></div>`);saveDesktop();"];
         },
-        function(arg) {
+        function (arg) {
             return ['<i class="bi bi-x"></i> 取消固定', `$('#s-m-r>.pinned>.apps>.sm-app.${arg[0]}').remove()`];
         }
     ],
@@ -378,7 +377,7 @@ let cms = {
             return ['<i class="bi bi-window"></i> 打开', `openapp('${arg[0]}');hide_startmenu();`];
         },
         function (arg) {
-            return ['<i class="bi bi-link-45deg"></i> 在桌面创建链接', "$('#desktop').append(`<div class='b' ondblclick=openapp('" + arg[0] + "')  ontouchstart=openapp('" + arg[0] + "')><img src='icon/" + geticon(arg[0]) + "'><p>" + arg[1] + "</p></div>`)"];
+            return ['<i class="bi bi-link-45deg"></i> 在桌面创建链接', "$('#desktop').append(`<div class='b' ondblclick=openapp('" + arg[0] + "')  ontouchstart=openapp('" + arg[0] + "')><img src='icon/" + geticon(arg[0]) + "'><p>" + arg[1] + "</p></div>`);saveDesktop();"];
         },
         function (arg) {
             return ['<i class="bi bi-pin-angle"></i> 固定到开始菜单', "pinapp('" + arg[0] + "', '" + arg[1] + "', 'openapp(&quot;" + arg[0] + "&quot;);hide_startmenu();')"];
@@ -415,7 +414,7 @@ function showcm(e, cl, arg) {
             let h = '';
             cms[cl].forEach(item => {
                 if (typeof (item) == 'function') {
-                    arg.event=e;
+                    arg.event = e;
                     ret = item(arg);
                     if (ret == 'null') return true;
                     h += `<a class="a" onmousedown="${ret[1]}">${ret[0]}</a>\n`;
@@ -607,9 +606,9 @@ function hidedescp(e) {
 }
 
 // 提示
-let nts={
-    'about':{
-        cnt:`<p class="tit">Windows 12 网页版</p>
+let nts = {
+    'about': {
+        cnt: `<p class="tit">Windows 12 网页版</p>
             <p>Windows 12 网页版是一个开放源项目,<br />
             希望让用户在网络上预先体验 Windows 12,<br />
             内容可能与 Windows 12 正式版本不一致。<br />
@@ -617,39 +616,39 @@ let nts={
             此项目绝不附属于微软,且不应与微软操作系统或产品混淆,<br />
             这也不是 Windows365 cloud PC<br />
             本项目中微软、Windows和其他示范产品是微软公司的商标</p>`,
-        btn:[
-            {type:'main',text:'关闭',js:'closenotice();'},
-            {type:'detail',text:'更多',js:"closenotice();openapp('about');if($('.window.about').hasClass('min'))minwin('about');$('.dock.about').removeClass('show')"},
+        btn: [
+            { type: 'main', text: '关闭', js: 'closenotice();' },
+            { type: 'detail', text: '更多', js: "closenotice();openapp('about');if($('.window.about').hasClass('min'))minwin('about');$('.dock.about').removeClass('show')" },
         ]
     },
-    'feedback':{
-        cnt:`<p class="tit">反馈</p>
+    'feedback': {
+        cnt: `<p class="tit">反馈</p>
             <p>我们非常注重用户的体验与反馈</p>
             <list class="new">
               <a class="a" onclick="window.open('https://github.com/tjy-gitnub/win12/issues','_blank');" win12_title="在浏览器新窗口打开链接" onmouseenter="showdescp(event)" onmouseleave="hidedescp(event)">在github上提交issue(需要github账户，会得到更高重视)</a>
               <a class="a" onclick="window.open('https://forms.office.com/Pages/ResponsePage.aspx?id=DQSIkWdsW0yxEjajBLZtrQAAAAAAAAAAAAO__SDw7SZURjUzOUo0VEVXU1pMWlFTSUVGWDNYWU1EWS4u','_blank');" win12_title="在浏览器新窗口打开链接" onmouseenter="showdescp(event)" onmouseleave="hidedescp(event)">在Microsoft Forms上发送反馈(不需要账户，也会重视)</a>
             </list>`,
-        btn:[
-            {type:'main',text:'关闭',js:'closenotice();'},
+        btn: [
+            { type: 'main', text: '关闭', js: 'closenotice();' },
         ]
     },
-    'widgets':{
-        cnt:`
+    'widgets': {
+        cnt: `
             <p class="tit">添加小组件</p>
             <list class="new">
               <a class="a" onclick="closenotice();widgets.widgets.add('calc')">计算器</a>
               <a class="a" onclick="closenotice();widgets.widgets.add('weather')">天气</a>
             </list>`,
-        btn:[
-            {type:'cancel',text:'取消',js:'closenotice();'},
+        btn: [
+            { type: 'cancel', text: '取消', js: 'closenotice();' },
         ]
     }
 }
-function shownotice(name){
+function shownotice(name) {
     $('#notice>.cnt').html(nts[name].cnt);
-    let tmp='';
+    let tmp = '';
     nts[name].btn.forEach(btn => {
-        tmp+=`<a class="a btn ${btn.type}" onclick="${btn.js}">${btn.text}</a>`
+        tmp += `<a class="a btn ${btn.type}" onclick="${btn.js}">${btn.text}</a>`
     });
     $('#notice>.btns').html(tmp);
     $('#notice-back').addClass('show');
@@ -683,13 +682,13 @@ let apps = {
             // 实时获取主题
             $.get('https://api.github.com/repos/tjy-gitnub/win12-theme/contents').then(cs => {
                 cs.forEach(c => {
-                    if(c.type=='dir'){
-                        $.get(c.url).then(cnt=>{
-                            cnt.forEach(cn=>{
-                                if(cn.name=='theme.json'){
-                                    $.getJSON('https://tjy-gitnub.github.io/win12-theme/'+cn.path).then(inf=>{
-                                        infjs=inf;
-                                        if($('#set-theme>loading').length)
+                    if (c.type == 'dir') {
+                        $.get(c.url).then(cnt => {
+                            cnt.forEach(cn => {
+                                if (cn.name == 'theme.json') {
+                                    $.getJSON('https://tjy-gitnub.github.io/win12-theme/' + cn.path).then(inf => {
+                                        infjs = inf;
+                                        if ($('#set-theme>loading').length)
                                             $('#set-theme').html('');
                                         $('#set-theme').append(`<a class="a act" onclick="apps.setting.theme_set('${c.name}')" style="background-image:url('https://tjy-gitnub.github.io/win12-theme/${c.name}/view.jpg')">${c.name}</a>`);
                                     })
@@ -700,20 +699,20 @@ let apps = {
                 });
             });
         },
-        theme_set: (infp)=>{
-            $.get('https://api.github.com/repos/tjy-gitnub/win12-theme/contents/'+infp).then(cnt=>{
-                console.log('https://api.github.com/repos/tjy-gitnub/win12-theme/contents/'+infp);
-                cnt.forEach(cn=>{
-                    if(cn.name=='theme.json'){
-                        $.getJSON('https://tjy-gitnub.github.io/win12-theme/'+cn.path).then(inf=>{
-                            infjs=inf;
-                            cnt.forEach(fbg=>{
-                                console.log(fbg,infjs);
-                                if(fbg.name==infjs.bg){
-                                    $(':root').css('--bgul',`url('https://tjy-gitnub.github.io/win12-theme/${fbg.path}')`);
-                                    $(':root').css('--theme-1',infjs.color1);
-                                    $(':root').css('--theme-2',infjs.color2);
-                                    $(':root').css('--href',infjs.href);
+        theme_set: (infp) => {
+            $.get('https://api.github.com/repos/tjy-gitnub/win12-theme/contents/' + infp).then(cnt => {
+                console.log('https://api.github.com/repos/tjy-gitnub/win12-theme/contents/' + infp);
+                cnt.forEach(cn => {
+                    if (cn.name == 'theme.json') {
+                        $.getJSON('https://tjy-gitnub.github.io/win12-theme/' + cn.path).then(inf => {
+                            infjs = inf;
+                            cnt.forEach(fbg => {
+                                console.log(fbg, infjs);
+                                if (fbg.name == infjs.bg) {
+                                    $(':root').css('--bgul', `url('https://tjy-gitnub.github.io/win12-theme/${fbg.path}')`);
+                                    $(':root').css('--theme-1', infjs.color1);
+                                    $(':root').css('--theme-2', infjs.color2);
+                                    $(':root').css('--href', infjs.href);
                                     // $('#set-theme').append(`<a class="a act" onclick="apps.setting.theme_set(\`(${inf})\`)" style="background-image:url('https://tjy-gitnub.github.io/win12-theme/${fbg.path}')">${c.name}</a>`);
                                 }
                             })
@@ -789,7 +788,7 @@ let apps = {
             apps.whiteboard.changeColor(apps.whiteboard.color);
             if ($(':root').hasClass('dark')) {
                 $('.window.whiteboard>.titbar>p').text('Blackboard');
-            }else{
+            } else {
                 $('.window.whiteboard>.titbar>p').text('Whiteboard');
             }
         },
@@ -1154,8 +1153,8 @@ let apps = {
             output.innerHTML = result;
         },
         load: () => {
-            if(!apps.python.loaded){
-                apps.python.loaded=true;
+            if (!apps.python.loaded) {
+                apps.python.loaded = true;
                 apps.python.load();
             }
             ace.require("ace/ext/language_tools");
@@ -1282,7 +1281,7 @@ let apps = {
         codeCache: '',
         prompt: '>>> ',
         indent: false,
-        load: ()=>{
+        load: () => {
             (async function () {
                 apps.python.pyodide = await loadPyodide();
                 apps.python.pyodide.runPython(`
@@ -1648,8 +1647,8 @@ Microsoft Windows [版本 12.0.39035.7324]
             apps.edge.getTitle($('#win-edge>iframe.show').attr('src'), apps.edge.now);
         }
     },
-    winver:{
-        init:()=>{
+    winver: {
+        init: () => {
             $('#win-winver>.mesg').show();
         },
 
@@ -1664,27 +1663,27 @@ let widgets = {
                 return;
             }
             $('#widgets>.widgets>.content>.grid')[0].innerHTML += $('#widgets>.widgets>.content>.template>.' + arg).html();
-            $('#widgets>.widgets>.content>.grid>.wg.'+arg).addClass('menu');
+            $('#widgets>.widgets>.content>.grid>.wg.' + arg).addClass('menu');
             widgets[arg].init();
-            
+
         },
         remove: (arg) => {
             $(`.wg.${arg}.menu,.wg.${arg}.toolbar`).remove();
             widgets[arg].remove();
         },
-        addToToolbar:(arg)=>{
+        addToToolbar: (arg) => {
             widgets.widgets.remove(arg);
             if ($('.wg.toolbar.' + arg).length != 0) {
                 return;
             }
             $('#toolbar')[0].innerHTML += $('#widgets>.widgets>.content>.template>.' + arg).html();
             console.log('well')
-            $('#toolbar>.wg.'+arg).addClass('toolbar');
+            $('#toolbar>.wg.' + arg).addClass('toolbar');
             widgets[arg].init();
         }
     },
     calc: {
-        init: ()=>{
+        init: () => {
             null
         },
         add: (arg) => {
@@ -1698,19 +1697,19 @@ let widgets = {
                 $('*:not(.template)>*>.wg.calc>.content>input')[0].value += arg;
             }
         },
-        remove: ()=>{
+        remove: () => {
             null
         }
     },
     weather: {
-        init: ()=>{
+        init: () => {
             widgets.weather.update();
-            widgets.weather.handle=setInterval(widgets.weather.update, 30000);
+            widgets.weather.handle = setInterval(widgets.weather.update, 30000);
         },
-        remove:()=>{
+        remove: () => {
             clearInterval(widgets.weather.handle);
         },
-        update: ()=>{
+        update: () => {
             let wic = {
                 23: "HeavyDrizzle",
                 40: "HeavyDrizzle",
@@ -1765,9 +1764,9 @@ let widgets = {
                 55: "Dust1",
                 57: "Haze"
             };
-            $.getJSON('https://assets.msn.cn/service/weatherfalcon/weather/overview?locale=zh-cn&ocid=msftweather').then(r=>{
-                let inf=r.value[0].responses[0].weather[0].current;
-                $('.wg.weather>.content>.img').attr('src',`https://assets.msn.cn/weathermapdata/1/static/weather/Icons/taskbar_v10/Condition_Card/${wic[inf.icon]}.svg`);
+            $.getJSON('https://assets.msn.cn/service/weatherfalcon/weather/overview?locale=zh-cn&ocid=msftweather').then(r => {
+                let inf = r.value[0].responses[0].weather[0].current;
+                $('.wg.weather>.content>.img').attr('src', `https://assets.msn.cn/weathermapdata/1/static/weather/Icons/taskbar_v10/Condition_Card/${wic[inf.icon]}.svg`);
                 $('.wg.weather>.content>.text>.temperature').text(`${inf.temp}℃`);
                 $('.wg.weather>.content>.text>.detail').text(`${inf.cap} 体感温度${inf.feels}℃`);
             })
@@ -1803,21 +1802,21 @@ for (let i = 1; i <= daysum; i++) {
     $('#datebox>.cont>.body')[0].innerHTML += `<p>${i}</p>`;
 }
 function pinapp(id, name, command) {
-    if($('#s-m-r>.pinned>.apps>.a.sm-app.'+id).length)return;
+    if ($('#s-m-r>.pinned>.apps>.a.sm-app.' + id).length) return;
     $('#s-m-r>.pinned>.apps').append(`<a class='a sm-app enable ${id}' onclick='${command}';hide_startmenu();' oncontextmenu='return showcm(event,\"smapp\",[\"${id}\",\"${name}\"])'><img src='icon/${geticon(id)}'><p>${name}</p></a>`)
 }
-let icon={
-    bilibili:'bilibili.png',
-    vscode:'vscode.png',
-    python:'python.png',
-    winver:'about.svg',
-    pythonEditor:'pythonEditor.png',
-    run:'run.png',
-    whiteboard:'whiteboard.png'
+let icon = {
+    bilibili: 'bilibili.png',
+    vscode: 'vscode.png',
+    python: 'python.png',
+    winver: 'about.svg',
+    pythonEditor: 'pythonEditor.png',
+    run: 'run.png',
+    whiteboard: 'whiteboard.png'
 }
 function geticon(name) {
-    if(icon[name])return icon[name];
-    else return name+'.svg';
+    if (icon[name]) return icon[name];
+    else return name + '.svg';
 }
 
 // 应用与窗口
@@ -1832,7 +1831,7 @@ function openapp(name) {
     $('.window.' + name).addClass('load');
     showwin(name);
     $('#taskbar').attr('count', Number($('#taskbar').attr('count')) + 1);
-    if(name in icon)
+    if (name in icon)
         $('#taskbar').append(`<a class="${name}" onclick="taskbarclick(\'${name}\')" win12_title="${$(`.window.${name}>.titbar>p`).text()}" onmouseenter="showdescp(event)" onmouseleave="hidedescp(event)" oncontextmenu="return showcm(event, 'taskbar', '${name}')"><img src="icon/${icon[name]}"></a>`);
     else
         $('#taskbar').append(`<a class="${name}" onclick="taskbarclick(\'${name}\')" win12_title="${$(`.window.${name}>.titbar>p`).text()}" onmouseenter="showdescp(event)" onmouseleave="hidedescp(event)"><img src="icon/${name}.svg"></a>`);
@@ -1846,8 +1845,8 @@ function openapp(name) {
     let tmp = name.replace(/\-(\w)/g, function (all, letter) {
         return letter.toUpperCase();
     });
-    if(apps[tmp].load && !apps[tmp].loaded){
-        apps[tmp].loaded=true;
+    if (apps[tmp].load && !apps[tmp].loaded) {
+        apps[tmp].loaded = true;
         apps[tmp].load();
         apps[tmp].init();
         $('.window.' + name).removeClass('load');
@@ -1907,11 +1906,14 @@ function maxwin(name, trigger = true) {
         $('.window.' + name + '>.titbar>div>.wbtg.max').html('<i class="bi bi-app"></i>');
         if (trigger) {
             setTimeout(() => { $('.window.' + name).addClass('notrans'); }, 200);
-        } else if (!trigger) {
+        }
+        else if (!trigger) {
             $('.window.' + name).addClass('notrans');
         }
         if ($('.window.' + name).attr('data-pos-x') != 'null' && $('.window.' + name).attr('data-pos-y') != 'null') {
-            $('.window.' + name).attr(`style`, `left:${$('.window.' + name).attr('data-pos-x')};top:${$('.window.' + name).attr('data-pos-y')}`);
+            // $('.window.' + name).attr(`style`, `left:${$('.window.' + name).attr('data-pos-x')};top:${$('.window.' + name).attr('data-pos-y')}`);
+            $('.window.' + name).css('left', `${$('.window.' + name).attr('data-pos-x')}`);
+            $('.window.' + name).css('top', `${$('.window.' + name).attr('data-pos-y')}`);
         }
         // }
     } else {
@@ -1952,6 +1954,143 @@ function minwin(name) {
         $('.window.' + name).addClass('min');
         $('.window.' + name).removeClass('notrans');
         setTimeout(() => { $('.window.' + name).removeClass('show-begin'); }, 200);
+    }
+}
+
+function resizewin(win, arg, resizeElt) {
+    page.onmousemove = function (e) {
+        resizing(win, e, arg);
+    }
+    page.ontouchmove = function (e) {
+        resizing(win, e, arg);
+    }
+    function up_f() {
+        page.onmousedown = null;
+        page.ontouchstart = null;
+        page.onmousemove = null;
+        page.ontouchmove = null;
+        page.ontouchcancel = null;
+        page.style.cursor = 'auto';
+    }
+    page.onmouseup = up_f;
+    page.ontouchend = up_f;
+    page.ontouchcancel = up_f;
+    page.style.cursor = window.getComputedStyle(resizeElt, null).cursor;
+}
+function resizing(win, e, arg) {
+    let x, y,
+        minWidth = win.dataset.minWidth ? win.dataset.minWidth : 400,
+        minHeight = win.dataset.minHeight ? win.dataset.minHeight : 300,
+        offsetLeft = win.getBoundingClientRect().left,
+        offsetTop = win.getBoundingClientRect().top,
+        offsetRight = win.getBoundingClientRect().right,
+        offsetBottom = win.getBoundingClientRect().bottom;
+    if (e.type.match('mouse')) {
+        x = e.clientX;
+        y = e.clientY;
+    }
+    else if (e.type.match('touch')) {
+        x = e.touches[0].clientX;
+        y = e.touches[0].clientY;
+    }
+    if (arg == 'right' && x - offsetLeft >= minWidth) {
+        win.style.width = x - offsetLeft + 'px';
+    }
+    else if (arg == 'right') {
+        win.style.width = minWidth + 'px';
+    }
+
+    if (arg == 'left' && offsetRight - x >= minWidth) {
+        win.style.left = x + 'px';
+        win.style.width = offsetRight - x + 'px';
+    }
+    else if (arg == 'left') {
+        win.style.width = minWidth + 'px';
+        win.style.left = offsetRight - minWidth + 'px';
+    }
+
+    if (arg == 'bottom' && y - offsetTop >= minHeight) {
+        win.style.height = y - offsetTop + 'px';
+    }
+    else if (arg == 'bottom') {
+        win.style.height = minHeight + 'px';
+    }
+
+    if (arg == 'top' && offsetBottom - y >= minHeight) {
+        win.style.top = y + 'px';
+        win.style.height = offsetBottom - y + 'px';
+    }
+    else if (arg == 'top') {
+        win.style.top = offsetBottom - minHeight + 'px';
+        win.style.height = minHeight + 'px';
+    }
+
+    if (arg == 'top-left') {
+        if (offsetRight - x >= minWidth) {
+            win.style.left = x + 'px';
+            win.style.width = offsetRight - x + 'px';
+        }
+        else {
+            win.style.left = offsetRight - minWidth + 'px';
+            win.style.width = minWidth + 'px';
+        }
+        if (offsetBottom - y >= minHeight) {
+            win.style.top = y + 'px';
+            win.style.height = offsetBottom - y + 'px';
+        }
+        else {
+            win.style.top = offsetBottom - minHeight + 'px';
+            win.style.height = minHeight + 'px';
+        }
+    }
+
+    else if (arg == 'top-right') {
+        if (x - offsetLeft >= minWidth) {
+            win.style.width = x - offsetLeft + 'px';
+        }
+        else {
+            win.style.width = minWidth + 'px';
+        }
+        if (offsetBottom - y >= minHeight) {
+            win.style.top = y + 'px';
+            win.style.height = offsetBottom - y + 'px';
+        }
+        else {
+            win.style.top = offsetBottom - minHeight + 'px';
+            win.style.height = minHeight + 'px';
+        }
+    }
+
+    else if (arg == 'bottom-left') {
+        if (offsetRight - x >= minWidth) {
+            win.style.left = x + 'px';
+            win.style.width = offsetRight - x + 'px';
+        }
+        else {
+            win.style.left = offsetRight - minWidth + 'px';
+            win.style.width = minWidth + 'px';
+        }
+        if (y - offsetTop >= minHeight) {
+            win.style.height = y - offsetTop + 'px';
+        }
+        else {
+            win.style.height = minHeight + 'px';
+        }
+    }
+
+    else if (arg == 'bottom-right') {
+        if (x - offsetLeft >= minWidth) {
+            win.style.width = x - offsetLeft + 'px';
+        }
+        else {
+            win.style.width = minWidth + 'px';
+        }
+        if (y - offsetTop >= minHeight) {
+            win.style.height = y - offsetTop + 'px';
+        }
+        else {
+            win.style.height = minHeight + 'px';
+        }
     }
 }
 let wo = [];
@@ -2055,7 +2194,7 @@ function dragBrightness(e) {
 }
 
 // 控制面板 电量监测
-try{
+try {
     navigator.getBattery().then((battery) => {
         $('.a.dock.control>svg>path')[0].outerHTML = `<path
             d="M 4 7 C 2.3550302 7 1 8.3550302 1 10 L 1 19 C 1 20.64497 2.3550302 22 4 22 L 24 22 C 25.64497 22 27 20.64497 27 19 L 27 10 C 27 8.3550302 25.64497 7 24 7 L 4 7 z M 4 9 L 24 9 C 24.56503 9 25 9.4349698 25 10 L 25 19 C 25 19.56503 24.56503 20 24 20 L 4 20 C 3.4349698 20 3 19.56503 3 19 L 3 10 C 3 9.4349698 3.4349698 9 4 9 z M 5 11 L 5 18 L ${18 * battery.level + 5} 18 L ${18 * battery.level + 5} 11 L 5 11 z M 28 12 L 28 17 L 29 17 C 29.552 17 30 16.552 30 16 L 30 13 C 30 12.448 29.552 12 29 12 L 28 12 z"
@@ -2069,7 +2208,7 @@ try{
             />`;
         });
     });
-}catch(TypeError){
+} catch (TypeError) {
     console.log('内部错误: 无法获取电量');
 }
 
@@ -2108,6 +2247,9 @@ function toggletheme() {
     }
 }
 
+function saveDesktop() {
+    localStorage.setItem('desktop', $('#desktop')[0].innerHTML);
+}
 
 // 拖拽窗口
 const page = document.getElementsByTagName('html')[0];
@@ -2122,9 +2264,13 @@ function win_move(e) {
     else {
         cx = e.clientX, cy = e.clientY;
     }
-    $(this).css('cssText', `left:${cx - deltaLeft}px;top:${cy - deltaTop}px;`);
+    // $(this).css('cssText', `left:${cx - deltaLeft}px;top:${cy - deltaTop}px;`);
+    $(this).css('left', `${cx - deltaLeft}px`);
+    $(this).css('top', `${cy - deltaTop}px`);
     if (cy <= 0) {
-        $(this).css('cssText', `left:${cx - deltaLeft}px;top:${-deltaTop}px`);
+        // $(this).css('cssText', `left:${cx - deltaLeft}px;top:${-deltaTop}px`);
+        $(this).css('left', `${cx - deltaLeft}px`);
+        $(this).css('top', `${-deltaTop}px`);
         if (!(this.classList[1] in nomax)) {
             $('#window-fill').addClass('top');
             setTimeout(() => {
@@ -2136,7 +2282,9 @@ function win_move(e) {
         // console.log(this.classList[1], nomax,this.classList[1] in nomax,not this.classList[1] in nomax);
     }
     else if (cx <= 0) {
-        $(this).css('cssText', `left:${-deltaLeft}px;top:${cy - deltaTop}px`);
+        // $(this).css('cssText', `left:${-deltaLeft}px;top:${cy - deltaTop}px`);
+        $(this).css('left', `${-deltaLeft}px`);
+        $(this).css('top', `${cy - deltaTop}px`);
         if (!(this.classList[1] in nomax)) {
             $('#window-fill').addClass('left');
             setTimeout(() => {
@@ -2147,7 +2295,9 @@ function win_move(e) {
         }
     }
     else if (cx >= document.body.offsetWidth - 2) {
-        $(this).css('cssText', `left:calc(100% - ${deltaLeft}px);top:${cy - deltaTop}px`);
+        // $(this).css('cssText', `left:calc(100% - ${deltaLeft}px);top:${cy - deltaTop}px`);
+        $(this).css('left', `calc(100% - ${deltaLeft}px)`);
+        $(this).css('top', `${cy - deltaTop}px`);
         if (!(this.classList[1] in nomax)) {
             $('#window-fill').addClass('right');
             setTimeout(() => {
@@ -2171,7 +2321,9 @@ function win_move(e) {
         deltaLeft = deltaLeft / (this.offsetWidth - (45 * 3)) * ((0.7 * document.body.offsetWidth) - (45 * 3));
         maxwin(this.classList[1], false);
         // 窗口控制按钮宽 45px
-        $(this).css('cssText', `left:${cx - deltaLeft}px;top:${cy - deltaTop}px;`);
+        // $(this).css('cssText', `left:${cx - deltaLeft}px;top:${cy - deltaTop}px;`);
+        $(this).css('left', `${cx - deltaLeft}px`);
+        $(this).css('top', `${cy - deltaTop}px`);
         $('.window.' + this.classList[1] + '>.titbar>div>.wbtg.max').html('<i class="bi bi-app"></i>');
 
         $(this).addClass('notrans');
@@ -2258,8 +2410,8 @@ page.addEventListener('touchend', () => {
 // 启动
 let updated = false;
 document.getElementsByTagName('body')[0].onload = function nupd() {
-    // $('#loginback').css('opacity', '1');
-    // $('#loginback').css('display', 'flex');
+    $('#loginback').css('opacity', '1');
+    $('#loginback').css('display', 'flex');
     setTimeout(() => {
         $('#loadback').addClass('hide');
     }, 500);
@@ -2273,37 +2425,47 @@ document.getElementsByTagName('body')[0].onload = function nupd() {
     }
     apps.webapps.init();
     //getdata
-    if (localStorage.getItem('theme') == 'dark')$(':root').addClass('dark');
-    if(localStorage.getItem('color1')){
+    if (localStorage.getItem('theme') == 'dark') $(':root').addClass('dark');
+    if (localStorage.getItem('color1')) {
         $(':root').css('--theme-1', localStorage.getItem('color1'));
         $(':root').css('--theme-2', localStorage.getItem('color2'));
     }
+    if (localStorage.getItem('desktop')) {
+        $('#desktop')[0].innerHTML = localStorage.getItem('desktop');
+    }
     // 所以这个东西为啥要在开机的时候加载？
     // 不应该在python.init里面吗？
-//     (async function () {
-//         apps.python.pyodide = await loadPyodide();
-//         apps.python.pyodide.runPython(`
-// import sys
-// import io
-// `);
-//     })();
+    //     (async function () {
+    //         apps.python.pyodide = await loadPyodide();
+    //         apps.python.pyodide.runPython(`
+    // import sys
+    // import io
+    // `);
+    //     })();
     // apps.pythonEditor.load();
     // apps.notepadFonts.load();
     // apps.whiteboard.load();
-    document.querySelectorAll('.window').forEach(w=>{
-        let qw=$(w),wc=w.classList[1];
+    document.querySelectorAll('.window').forEach(w => {
+        let qw = $(w), wc = w.classList[1];
         // window: onmousedown="focwin('explorer')" ontouchstart="focwin('explorer')"
-        qw.attr('onmousedown',`focwin('${wc}')`);
-        qw.attr('ontouchstart',`focwin('${wc}')`);
+        qw.attr('onmousedown', `focwin('${wc}')`);
+        qw.attr('ontouchstart', `focwin('${wc}')`);
         // titbar: oncontextmenu="return showcm(event,'titbar','edge')" ondblclick="maxwin('edge')"
-        qw=$(`.window.${wc}>.titbar`);
-        qw.attr('oncontextmenu',`return showcm(event,'titbar','${wc}')`);
-        if(!(wc in nomax))qw.attr('ondblclick',`maxwin('${wc}')`);
+        qw = $(`.window.${wc}>.titbar`);
+        qw.attr('oncontextmenu', `return showcm(event,'titbar','${wc}')`);
+        if (!(wc in nomax)) {
+            qw.attr('ondblclick', `maxwin('${wc}')`);
+        }
         // icon: onclick="return showcm(event,'titbar','explorer')"
-        qw=$(`.window.${wc}>.titbar>.icon`);
-        qw.attr('onclick',`let os=$(this).offset();stop(event);return showcm({clientX:os.left-5,clientY:os.top+this.offsetHeight+3},'titbar','${wc}')`);
+        qw = $(`.window.${wc}>.titbar>.icon`);
+        qw.attr('onclick', `let os=$(this).offset();stop(event);return showcm({clientX:os.left-5,clientY:os.top+this.offsetHeight+3},'titbar','${wc}')`);
         qw.mousedown(stop);
         $(`.window.${wc}>.titbar>div>.wbtg`).mousedown(stop);
+    });
+    document.querySelectorAll('.window>div.resize-bar').forEach(w => {
+        for (const n of ['top', 'bottom', 'left', 'right', 'top-right', 'top-left', 'bottom-right', 'bottom-left']) {
+            w.insertAdjacentHTML('afterbegin', `<div class="resize-knob ${n}" onmousedown="resizewin(this.parentElement.parentElement, '${n}', this)"></div>`);
+        }
     });
     shownotice('about');
 };
