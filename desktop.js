@@ -389,12 +389,71 @@ let cms = {
         $('#win-about>.update>div>details:first-child').attr('open','open')`],
         ['<i class="bi bi-box-arrow-right"></i> 关闭', `$('.msg.update').removeClass('show')`]
     ],
-    'explorer.content': [
-        ['<i class="bi bi-arrow-clockwise"></i> 刷新', `$('#win-explorer>.main>.content>.view').css('opacity','0');setTimeout(()=>{$('#win-explorer>.main>.content>.view').css('opacity','1');},100);`],
-    ],
     'explorer.folder': [
-        (arg) => {
+        arg => {
             return ['<i class="bi bi-folder2-open"></i> 打开', `apps.explorer.goto('${arg}')`];
+        },
+        arg => {
+            if ($('#win-explorer>.main>.content>.tool>.tit')[0].innerHTML != "此电脑")
+                return ['<i class="bi bi-trash3"></i> 删除', `apps.explorer.del('${arg}')`];
+            return;
+        },
+        arg => {
+            if ($('#win-explorer>.main>.content>.tool>.tit')[0].innerHTML != "此电脑")
+                return ['<i class="bi bi-files"></i> 复制', `apps.explorer.copy_or_cut('${arg}','copy')`];
+            return;
+        },
+        arg => {
+            if ($('#win-explorer>.main>.content>.tool>.tit')[0].innerHTML != "此电脑")
+                return ['<i class="bi bi-scissors"></i> 剪切', `apps.explorer.copy_or_cut('${arg}','cut')`];
+        },
+        arg => {
+            if ($('#win-explorer>.main>.content>.tool>.tit')[0].innerHTML != "此电脑")
+                return ['<i class="bi bi-input-cursor-text"></i> 重命名', `apps.explorer.rename('${arg}')`];
+            return;
+        }
+    ],
+    'explorer.file': [
+        arg => {
+            return ['<i class="bi bi-folder2-open"></i> 打开（目前毛用没有）', ``];
+        },
+        arg => {
+            if ($('#win-explorer>.main>.content>.tool>.tit')[0].innerHTML != "此电脑")
+                return ['<i class="bi bi-trash3"></i> 删除', `apps.explorer.del('${arg}')`];
+            return;
+        },
+                arg => {
+            if ($('#win-explorer>.main>.content>.tool>.tit')[0].innerHTML != "此电脑")
+                return ['<i class="bi bi-files"></i> 复制', `apps.explorer.copy_or_cut('${arg}','copy')`];
+            return;
+        },
+        arg => {
+            if ($('#win-explorer>.main>.content>.tool>.tit')[0].innerHTML != "此电脑")
+                return ['<i class="bi bi-scissors"></i> 剪切', `apps.explorer.copy_or_cut('${arg}','cut')`];
+        },
+        arg => {
+            if ($('#win-explorer>.main>.content>.tool>.tit')[0].innerHTML != "此电脑")
+                return ['<i class="bi bi-input-cursor-text"></i> 重命名', `apps.explorer.rename('${arg}')`];
+            return;
+        }
+    ],
+    'explorer.content': [
+        arg => {
+            if ($('#win-explorer>.main>.content>.tool>.tit')[0].innerHTML != "此电脑")
+                return ['<i class="bi bi-file-earmark-plus"></i> 新建文件', `apps.explorer.add($('#win-explorer>.main>.content>.tool>.tit')[0].innerHTML,'新建文本文档.txt')`];
+        },
+        arg => {
+            if ($('#win-explorer>.main>.content>.tool>.tit')[0].innerHTML != "此电脑")
+                return ['<i class="bi bi-folder-plus"></i> 新建文件夹', `apps.explorer.add($('#win-explorer>.main>.content>.tool>.tit')[0].innerHTML,'新建文件夹',type='files')`];
+            return;
+        },
+        arg => {
+            if ($('#win-explorer>.main>.content>.tool>.tit')[0].innerHTML != "此电脑")
+                return ['<i class="bi bi-file-earmark-arrow-down"></i> 粘贴', `apps.explorer.paste($('#win-explorer>.main>.content>.tool>.tit')[0].innerHTML,'新建文件夹',type='files')`];
+            return;
+        },
+        arg => {
+            return ['<i class="bi bi-arrow-clockwise"></i> 刷新', `$('#win-explorer>.main>.content>.view').css('opacity','0');setTimeout(()=>{$('#win-explorer>.main>.content>.view').css('opacity','1');},100);`];
         }
     ],
     'edge.tab': [
@@ -639,6 +698,14 @@ let nts = {
               <a class="a" onclick="closenotice();widgets.widgets.add('calc')">计算器</a>
               <a class="a" onclick="closenotice();widgets.widgets.add('weather')">天气</a>
             </list>`,
+        btn: [
+            { type: 'cancel', text: '取消', js: 'closenotice();' },
+        ]
+    },
+    'duplication file name': {
+        cnt: `
+            <p class="tit">错误</p>
+            <p>文件名重复</p>`,
         btn: [
             { type: 'cancel', text: '取消', js: 'closenotice();' },
         ]
@@ -900,6 +967,11 @@ let apps = {
             $('#win-bilibili')[0].insertAdjacentHTML('afterbegin', '<iframe src="https://bilibili.com/" frameborder="0" style="width: 100%; height: 100%;" loading="lazy"></iframe>')
         }
     },
+    defender: {
+        init: () => {
+
+        }
+    },
     camera: {
         init: () => {
             if (!localStorage.getItem('camera')) {
@@ -971,9 +1043,31 @@ let apps = {
             }
         }
     },
+    musicPlayer:{
+        init: () => {
+            $('#win-musicPlayer>.menu>list>a.system')[0].click();
+        },
+        page: (name) => {
+            $('#win-musicPlayer>.page>.cnt.' + name).scrollTop(0);
+            $('#win-musicPlayer>.page>.cnt.show').removeClass('show');
+            $('#win-musicPlayer>.page>.cnt.' + name).addClass('show');
+            $('#win-musicPlayer>.menu>list>a.check').removeClass('check');
+            $('#win-musicPlayer>.menu>list>a.' + name).addClass('check');
+        }
+    },
     explorer: {
         init: () => {
             apps.explorer.reset();
+            apps.explorer.Process_Of_Select = "";
+            apps.explorer.is_use = 0;//千万不要删除它，它依托bug运行
+            apps.explorer.is_use2 = 0;//千万不要删除它，它依托bug运行
+            apps.explorer.old_name = "";
+            apps.explorer.clipboard = null;
+            document.addEventListener('keydown', function(event) {
+                if (event.key === 'Delete' && $('.window.foc')[0].classList[1] == "explorer") {
+                    apps.explorer.del(apps.explorer.Process_Of_Select);
+                }
+            });
         },
         reset: () => {
             $('#win-explorer>.main>.content>.view')[0].innerHTML = `<style>#win-explorer>.main>.content>.view>.class{margin-left: 20px;display: flex;}
@@ -1001,26 +1095,179 @@ let apps = {
             </div><p class="info">185.3 GB 可用, 共 216 GB</p></div></a></div>`;
             $('#win-explorer>.main>.content>.tool>.tit')[0].innerHTML = '此电脑';
         },
-        goto: (path) => {
-            $('#win-explorer>.main>.content>.view')[0].innerHTML = '';
+        select: (path,id) => {
+            var elements = document.querySelectorAll('#win-explorer > .main > .content > .view > .select');
+            for (var i = 0; i < elements.length; i++) {
+              elements[i].classList.remove('select');
+            }
+            apps.explorer.Process_Of_Select = path;
+            var pathl = path.split('/');
+            var element = document.getElementById(id);
+            element.classList.add('select');
+            apps.explorer.is_use += 1;
+        },
+        copy_or_cut: (path,operate) =>{ //operate只能为copy或cut
+            var pathl = path.split('/');
+            var name = pathl[pathl.length-1];
+            pathl.pop();
+            let tmp = apps.explorer.path;
+            pathl.forEach(name => {
+                tmp = tmp['folder'][name];
+            });
+
+            if (Object.keys(tmp["folder"]).includes(name))
+            {
+                let name_ = name;
+                apps.explorer.clipboard = ["folder",[name],tmp["folder"][name]];
+                if (operate == "cut")
+                    delete tmp["folder"][name];
+            }
+            else
+            {
+                for (var i = 0; i < tmp["file"].length; i++)
+                {
+                    if (tmp["file"][i]["name"] == name)
+                    {
+                        apps.explorer.clipboard = ["file",tmp["file"][i]];
+                        if (operate == "cut")
+                            delete tmp["file"][i];
+                    }
+                }
+            }
+            apps.explorer.goto($('#win-explorer>.main>.content>.tool>.tit')[0].innerHTML);
+        },
+        paste: (path) =>{
             var pathl = path.split('/');
             let tmp = apps.explorer.path;
             pathl.forEach(name => {
                 tmp = tmp['folder'][name];
             });
-            if (tmp == null) {
+            var clipboard = apps.explorer.clipboard;
+
+            if (apps.explorer.traverseDirectory(tmp,clipboard[1][0]) || apps.explorer.traverseDirectory(tmp,clipboard[1]['name']))
+            {
+                shownotice("duplication file name");
+                return;
+            }
+            // if (apps.explorer.traverseDirectory(tmp,clipboard[1][0]))
+            // {
+            //     clipboard[1][0] += " - 副本";
+            // }
+            // if (apps.explorer.traverseDirectory(tmp,clipboard[1]['name']))
+            // {
+            //     clipboard[1][0] += " - 副本";
+            // }
+            // 这段注释了的代码可以调试一下，会有神奇的bug。
+
+            if(clipboard[0] == "file")
+            {
+                tmp["file"].push(clipboard[1]);
+            }
+            else
+            {
+                tmp['folder'][clipboard[1][0]] = clipboard[2];
+            }
+            apps.explorer.goto($('#win-explorer>.main>.content>.tool>.tit')[0].innerHTML);
+        },
+        del_select: () => {
+            if(apps.explorer.is_use >= 1 && apps.explorer.is_use2 != apps.explorer.is_use)
+            {
+                apps.explorer.is_use2 = apps.explorer.is_use;
+                return;
+            }
+            var elements = document.querySelectorAll('#win-explorer > .main > .content > .view > .change');
+            for (var i = 0; i < elements.length; i++) {
+                elements[i].classList.remove('change');
+                let aTag = elements[i];
+                var on = apps.explorer.old_name;
+                let inputTag = aTag.querySelector("#new_name");
+                var pathl = $('#win-explorer>.main>.content>.tool>.tit')[0].innerHTML.split('/');
+                let tmp = apps.explorer.path;
+                pathl.forEach(name => {
+                    tmp = tmp['folder'][name];
+                });
+                if (inputTag.value == '' || apps.explorer.traverseDirectory(tmp,inputTag.value) || on == inputTag.value)
+                {
+                    if (apps.explorer.traverseDirectory(tmp,inputTag.value) && on != inputTag.value)
+                    {
+                        shownotice("duplication file name");
+                    }
+                    var element = document.getElementById("new_name");
+                    element.parentNode.removeChild(element);
+                    aTag.innerHTML += on;
+                    continue;
+                }
+                name_1 = inputTag.value.split(".");
+                if (name_1[1] == "txt"){
+                    icon_ = "icon/files/txt.png";
+                }
+                else if (name_1[1] == "png" || name_1[1] == "jpg" | name_1[1] == "bmp"){
+                    icon_ = "icon/files/picture.png";
+                }
+                else
+                {
+                    icon_ = "icon/files/none.png";
+                }
+                //这边可以适配更多的文件类型
+
+                
+                aTag.innerHTML += inputTag.value;
+                for (var i = 0; i < tmp["file"].length; i++)
+                {
+                    if (tmp["file"][i]['name'] == on)
+                    {
+                        tmp["file"][i]['name'] = inputTag.value;
+                        tmp["file"][i]['ico'] = icon_;
+                    }
+                }
+                const keys = Object.keys(tmp["folder"]);
+                for (var i = 0; i < keys.length; i++)
+                {
+                    if (keys[i] == on)
+                    {
+                        keys[i] = inputTag.value;
+                        tmp["folder"][inputTag.value] = tmp["folder"][on];
+                        delete tmp["folder"][on];
+                    }
+                }
+                var element = document.getElementById("new_name");
+                element.parentNode.removeChild(element);
+                apps.explorer.goto($('#win-explorer>.main>.content>.tool>.tit')[0].innerHTML);
+
+            }
+            delete elements;
+            apps.explorer.is_use2 = apps.explorer.is_use;
+            var elements = document.querySelectorAll('#win-explorer > .main > .content > .view > .select');
+            for (var i = 0; i < elements.length; i++) {
+              elements[i].classList.remove('select');
+            }
+            apps.explorer.Process_Of_Select = "";
+        },
+        goto: (path) => {
+            apps.explorer.Process_Of_Select = "";
+            $('#win-explorer>.main>.content>.view')[0].innerHTML = '';
+            var pathl = path.split('/');
+            var index_ = 0;
+            let tmp = apps.explorer.path;
+            pathl.forEach(name => {
+                tmp = tmp['folder'][name];
+            });
+            var path_ = path
+            if (Object.keys(tmp["folder"]) == 0 && tmp["file"].length == 0){
                 $('#win-explorer>.main>.content>.view')[0].innerHTML = '<p class="info">此文件夹为空。</p>';
             }
             else {
                 let ht = '';
                 for (folder in tmp['folder']) {
-                    ht += `<a class="a item" ondblclick="apps.explorer.goto('${path}/${folder}')" ontouchend="apps.explorer.goto('${path}/${folder}')" oncontextmenu="showcm(event,'explorer.folder','${path}/${folder}');return stop(event);">
+                    ht += `<a class="a item files" id="file${index_}" onclick="apps.explorer.select('${path}/${folder}','file${index_}');" ondblclick="apps.explorer.goto('${path}/${folder}')" ontouchend="apps.explorer.goto('${path}/${folder}')" oncontextmenu="showcm(event,'explorer.folder','${path}/${folder}');return stop(event);">
                         <img src="apps/icons/explorer/folder.svg">${folder}</a>`;
+                    index_ += 1;
                 }
                 if (tmp['file']) {
                     tmp['file'].forEach(file => {
-                        ht += `<a class="a item act file" ondblclick="${file['command']}" ontouchend="${file['command']}" oncontextmenu="return stop(event);">
+                        ht += `<a class="a item act file" id="file${index_}" onclick="apps.explorer.select('${path_}/${file['name']}','file${index_}');" ondblclick="${file['command']}" ontouchend="${file['command']}" oncontextmenu="showcm(event,'explorer.file','${path_}/${file['name']}');return stop(event);">
                             <img src="${file['ico']}">${file['name']}</a>`;
+                        index_ += 1;
                     });
                 }
                 $('#win-explorer>.main>.content>.view')[0].innerHTML = ht;
@@ -1032,19 +1279,146 @@ let apps = {
             }
             $('#win-explorer>.main>.content>.tool>.tit')[0].innerHTML = path;
         },
+        add: (path,name_,type="file",command="",icon="") => { //type为文件类型，只有文件夹files和文件file
+            var pathl = path.split('/');
+            var icon_ = "";
+            let tmp = apps.explorer.path;
+            pathl.forEach(name => {
+                tmp = tmp['folder'][name];
+            });
+            if (tmp == null)
+            {
+                tmp = {folder:{},file:[]};
+            }
+            if (apps.explorer.traverseDirectory(tmp,name_))
+            {
+                shownotice("duplication file name");
+                return;
+            }
+            name_1 = name_.split(".");
+            
+            if (type=="file"){
+                if (name_1[1] == "txt"){
+                    icon_ = "icon/files/txt.png";
+                    if (command == "")
+                        command = "openapp('notepad')";
+                }
+                else if (name_1[1] == "png" || name_1[1] == "jpg" | name_1[1] == "bmp"){
+                    icon_ = "icon/files/picture.png";
+                }
+                else
+                {
+                    icon_ = "icon/files/none.png";
+                }
+                //这边可以适配更多的文件类型
+                if (icon != "")
+                {
+                    icon_ = icon;
+                }
+                try{
+                    tmp.file.push({ name: name_, ico: icon_, command: command});
+                }
+                catch{
+                    tmp.push(file);
+                    tmp.file.push({ name: name_, ico: icon_, command: command});
+                }
+            }
+            else{
+                tmp.folder[name_] = {folder:{},file:[]};
+            }
+            apps.explorer.goto(path);
+            apps.explorer.rename(path+"/"+name_);
+        },
+        rename: (path) => {
+            var pathl = path.split('/');
+            var name = pathl[pathl.length-1];
+            apps.explorer.old_name = name;
+            pathl.pop();
+            let tmp = apps.explorer.path;
+            pathl.forEach(name => {
+                tmp = tmp['folder'][name];
+            });
+            let element = document.querySelector('#' + apps.explorer.get_file_id(name));
+            let img = element.querySelector("img").outerHTML;
+            element.innerHTML = img;
+            let input = document.createElement("input");
+            input.style.cssText = 'background-color: var(--bg50);border-top: none;border-right: none;border-left: none;border-image: initial;border-bottom: 2.5px solid rgba(127, 127, 127, 0.498);border-radius: 11px;height: 9%;padding: 3px 5px 3px 8px;outline: medium;width: 155%;color: var(--text);transition: all 100ms ease 0s, border 0s ease 0s;box-shadow: 0 1px 2px var(--s3d);';
+            input.id = "new_name";
+            input.value = apps.explorer.old_name;
+            element.appendChild(input);
+            setTimeout(()=>{$("#new_name").focus();$("#new_name").select();},200);
+
+            element.classList.add("change");
+            var input_ = document.getElementById("new_name");
+            input_.addEventListener("keyup", function(event) {
+            if (event.key === "Enter") {
+                event.preventDefault();
+                apps.explorer.del_select();
+            }
+            });
+        },
+        get_file_id: (name) => {  //只能找到已经打开了的文件夹的元素id
+            var elements = document.getElementsByClassName("item");
+            for (var i = 0; i < elements.length; i++) {
+                var element = elements[i];
+                if (element.innerText == name)
+                    return element.id;
+            }
+        },
+        del: (path) => {
+            var pathl = path.split('/');
+            var name = pathl[pathl.length-1];
+            pathl.pop();
+            let tmp = apps.explorer.path;
+            pathl.forEach(name => {
+                tmp = tmp['folder'][name];
+            });
+            tmp_file = tmp['file'];
+            for (var i = 0; i < tmp_file.length; i++)
+            {
+                if (tmp_file[i]['name'] == name)
+                {
+                    tmp_file.splice(i,1);
+                }
+            }
+            tmp_files = tmp['folder'];
+            delete tmp_files[name];
+            apps.explorer.goto(pathl.join("/"));
+        },
+        traverseDirectory(dir,name) {
+            if (dir["file"] == null && dir["folder"] == null)
+                return false;
+            for (var i = 0; i < dir["file"].length; i++)
+            {
+                if (dir["file"][i]['name'] == name)
+                {
+                    return true;
+                }
+            }
+            const keys = Object.keys(dir["folder"]);
+            for (var i = 0; i < keys.length; i++)
+            {
+                if (keys[i] == name)
+                {
+                    return true;
+                }
+            }
+            return false;
+        },
+
         path: {
             folder: {
                 'C:': {
                     folder: {
                         'Program Files': {
-                            folder: { 'WindowsApps': null, 'Microsoft': null },
+                            folder: { 'WindowsApps': {folder:{},file:[]}, 'Microsoft': {folder:{},file:[]} },
                             file: [
                                 { name: 'about.exe', ico: 'icon/about.svg', command: "openapp('about')" },
                                 { name: 'setting.exe', ico: 'icon/setting.svg', command: "openapp('setting')" },
                             ]
                         },
                         'Windows': {
-                            folder: { 'Boot': null, 'System': null, 'System32': null },
+                            folder: { 'Boot': {folder:{},file:[]}, 'System': {folder:{},file:[]}, 'System32': {folder:{},file:[]} },
                             file: [
                                 { name: 'notepad.exe', ico: 'icon/notepad.svg', command: "openapp('notepad')" },
                             ]
@@ -1054,27 +1428,29 @@ let apps = {
                                 'Administrator': {
                                     folder: {
                                         '文档': {
-                                            folder: { 'IISExpress': null, 'PowerToys': null },
+                                            folder: { 'IISExpress': {folder:{},file:[]}, 'PowerToys': {folder:{},file:[]} },
                                             file: [
                                                 { name: '瓶盖介绍.doc', ico: 'icon/files/word.png', command: '' },
                                                 { name: '瓶盖质量统计分析.xlsx', ico: 'icon/files/excel.png', command: '' },
                                             ]
                                         }, '图片': {
-                                            folder: { '本机照片': null, '屏幕截图': null },
+                                            folder: { '本机照片': {folder:{},file:[]}, '屏幕截图': {folder:{},file:[]} },
                                             file: [
                                                 { name: '瓶盖构造图.png', ico: 'icon/files/img.png', command: '' },
                                                 { name: '可口可乐瓶盖.jpg', ico: 'icon/files/img.png', command: '' },
                                             ]
                                         },
-                                        'AppData': null, '音乐': { folder: { '录音机': null } }
+                                        'AppData': {folder:{},file:[]}, '音乐': { folder: { '录音机': {folder:{},file:[]} } }
                                     }
                                 }
                             }
                         }
-                    }
+                    },
+                    file:[
+                    ]
                 },
                 'D:': {
-                    folder: { 'Microsoft': null },
+                    folder: { 'Microsoft': {folder:{},file:[]} },
                     file: [
                         { name: '瓶盖结构说明.docx', ico: 'icon/files/word.png', command: '' },
                         { name: '可口可乐瓶盖历史.pptx', ico: 'icon/files/ppt.png', command: '' },
@@ -1704,10 +2080,10 @@ let widgets = {
     weather: {
         init: () => {
             widgets.weather.update();
-            widgets.weather.handle = setInterval(widgets.weather.update, 30000);
+            widgets.weather.handel = setInterval(widgets.weather.update, 30000);
         },
         remove: () => {
-            clearInterval(widgets.weather.handle);
+            clearInterval(widgets.weather.handel);
         },
         update: () => {
             let wic = {
