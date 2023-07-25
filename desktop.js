@@ -394,21 +394,21 @@ let cms = {
             return ['<i class="bi bi-folder2-open"></i> 打开', `apps.explorer.goto('${arg}')`];
         },
         arg => {
-            if ($('#win-explorer>.main>.content>.tool>.tit')[0].innerHTML != "此电脑")
+            if ($('#win-explorer>.main>.content>.tool>.tit>.path>div.text')[0].innerHTML != "此电脑")
                 return ['<i class="bi bi-trash3"></i> 删除', `apps.explorer.del('${arg}')`];
             return;
         },
         arg => {
-            if ($('#win-explorer>.main>.content>.tool>.tit')[0].innerHTML != "此电脑")
+            if ($('#win-explorer>.main>.content>.tool>.tit>.path>div.text')[0].innerHTML != "此电脑")
                 return ['<i class="bi bi-files"></i> 复制', `apps.explorer.copy_or_cut('${arg}','copy')`];
             return;
         },
         arg => {
-            if ($('#win-explorer>.main>.content>.tool>.tit')[0].innerHTML != "此电脑")
+            if ($('#win-explorer>.main>.content>.tool>.tit>.path>div.text')[0].innerHTML != "此电脑")
                 return ['<i class="bi bi-scissors"></i> 剪切', `apps.explorer.copy_or_cut('${arg}','cut')`];
         },
         arg => {
-            if ($('#win-explorer>.main>.content>.tool>.tit')[0].innerHTML != "此电脑")
+            if ($('#win-explorer>.main>.content>.tool>.tit>.path>div.text')[0].innerHTML != "此电脑")
                 return ['<i class="bi bi-input-cursor-text"></i> 重命名', `apps.explorer.rename('${arg}')`];
             return;
         }
@@ -418,38 +418,38 @@ let cms = {
             return ['<i class="bi bi-folder2-open"></i> 打开（目前毛用没有）', ``];
         },
         arg => {
-            if ($('#win-explorer>.main>.content>.tool>.tit')[0].innerHTML != "此电脑")
+            if ($('#win-explorer>.main>.content>.tool>.tit>.path>div.text')[0].innerHTML != "此电脑")
                 return ['<i class="bi bi-trash3"></i> 删除', `apps.explorer.del('${arg}')`];
             return;
         },
                 arg => {
-            if ($('#win-explorer>.main>.content>.tool>.tit')[0].innerHTML != "此电脑")
+            if ($('#win-explorer>.main>.content>.tool>.tit>.path>div.text')[0].innerHTML != "此电脑")
                 return ['<i class="bi bi-files"></i> 复制', `apps.explorer.copy_or_cut('${arg}','copy')`];
             return;
         },
         arg => {
-            if ($('#win-explorer>.main>.content>.tool>.tit')[0].innerHTML != "此电脑")
+            if ($('#win-explorer>.main>.content>.tool>.tit>.path>div.text')[0].innerHTML != "此电脑")
                 return ['<i class="bi bi-scissors"></i> 剪切', `apps.explorer.copy_or_cut('${arg}','cut')`];
         },
         arg => {
-            if ($('#win-explorer>.main>.content>.tool>.tit')[0].innerHTML != "此电脑")
+            if ($('#win-explorer>.main>.content>.tool>.tit>.path>div.text')[0].innerHTML != "此电脑")
                 return ['<i class="bi bi-input-cursor-text"></i> 重命名', `apps.explorer.rename('${arg}')`];
             return;
         }
     ],
     'explorer.content': [
         arg => {
-            if ($('#win-explorer>.main>.content>.tool>.tit')[0].innerHTML != "此电脑")
-                return ['<i class="bi bi-file-earmark-plus"></i> 新建文件', `apps.explorer.add($('#win-explorer>.main>.content>.tool>.tit')[0].innerHTML,'新建文本文档.txt')`];
+            if ($('#win-explorer>.main>.content>.tool>.tit>.path>div.text')[0].innerHTML != "此电脑")
+                return ['<i class="bi bi-file-earmark-plus"></i> 新建文件', `apps.explorer.add($('#win-explorer>.main>.content>.tool>.tit')[0].dataset.path,'新建文本文档.txt')`];
         },
         arg => {
-            if ($('#win-explorer>.main>.content>.tool>.tit')[0].innerHTML != "此电脑")
-                return ['<i class="bi bi-folder-plus"></i> 新建文件夹', `apps.explorer.add($('#win-explorer>.main>.content>.tool>.tit')[0].innerHTML,'新建文件夹',type='files')`];
+            if ($('#win-explorer>.main>.content>.tool>.tit>.path>div.text')[0].innerHTML != "此电脑")
+                return ['<i class="bi bi-folder-plus"></i> 新建文件夹', `apps.explorer.add($('#win-explorer>.main>.content>.tool>.tit')[0].dataset.path,'新建文件夹',type='files')`];
             return;
         },
         arg => {
-            if ($('#win-explorer>.main>.content>.tool>.tit')[0].innerHTML != "此电脑")
-                return ['<i class="bi bi-file-earmark-arrow-down"></i> 粘贴', `apps.explorer.paste($('#win-explorer>.main>.content>.tool>.tit')[0].innerHTML,'新建文件夹',type='files')`];
+            if ($('#win-explorer>.main>.content>.tool>.tit>.path>div.text')[0].innerHTML != "此电脑")
+                return ['<i class="bi bi-file-earmark-arrow-down"></i> 粘贴', `apps.explorer.paste($('#win-explorer>.main>.content>.tool>.tit')[0].dataset.path,'新建文件夹',type='files')`];
             return;
         },
         arg => {
@@ -462,6 +462,11 @@ let cms = {
         },
         arg => {
             return ['<i class="bi bi-x"></i> 关闭标签页', `apps.edge.close(${arg})`];
+        }
+    ],
+    'taskmgr.processes': [
+        arg => {
+            return ['<i class="bi bi-x"></i> 结束任务', `apps.taskmgr.taskkill('${arg}')`]
         }
     ]
 }
@@ -487,6 +492,7 @@ function showcm(e, cl, arg) {
             $('#cm').addClass('show-begin');
             $('#cm>.foc').focus();
             // 这个.foc是用来模拟焦点的，这句是将焦点放在右键菜单上，注释掉后果不堪设想 >u-)o
+            // 噢 可是如果设置焦点的话在移动设备上会显示虚拟键盘啊 QAQ (By: User782Tec)
             setTimeout(() => {
                 $('#cm').addClass('show');
             }, 0);
@@ -684,8 +690,8 @@ let nts = {
         cnt: `<p class="tit">反馈</p>
             <p>我们非常注重用户的体验与反馈</p>
             <list class="new">
-              <a class="a" onclick="window.open('https://github.com/tjy-gitnub/win12/issues','_blank');" win12_title="在浏览器新窗口打开链接" onmouseenter="showdescp(event)" onmouseleave="hidedescp(event)">在github上提交issue(需要github账户，会得到更高重视)</a>
-              <a class="a" onclick="window.open('https://forms.office.com/Pages/ResponsePage.aspx?id=DQSIkWdsW0yxEjajBLZtrQAAAAAAAAAAAAO__SDw7SZURjUzOUo0VEVXU1pMWlFTSUVGWDNYWU1EWS4u','_blank');" win12_title="在浏览器新窗口打开链接" onmouseenter="showdescp(event)" onmouseleave="hidedescp(event)">在Microsoft Forms上发送反馈(不需要账户，也会重视)</a>
+                <a class="a" onclick="window.open('https://github.com/tjy-gitnub/win12/issues','_blank');" win12_title="在浏览器新窗口打开链接" onmouseenter="showdescp(event)" onmouseleave="hidedescp(event)">在github上提交issue(需要github账户，会得到更高重视)</a>
+                <a class="a" onclick="window.open('https://forms.office.com/Pages/ResponsePage.aspx?id=DQSIkWdsW0yxEjajBLZtrQAAAAAAAAAAAAO__SDw7SZURjUzOUo0VEVXU1pMWlFTSUVGWDNYWU1EWS4u','_blank');" win12_title="在浏览器新窗口打开链接" onmouseenter="showdescp(event)" onmouseleave="hidedescp(event)">在Microsoft Forms上发送反馈(不需要账户，也会重视)</a>
             </list>`,
         btn: [
             { type: 'main', text: '关闭', js: 'closenotice();' },
@@ -695,11 +701,27 @@ let nts = {
         cnt: `
             <p class="tit">添加小组件</p>
             <list class="new">
-              <a class="a" onclick="closenotice();widgets.widgets.add('calc')">计算器</a>
-              <a class="a" onclick="closenotice();widgets.widgets.add('weather')">天气</a>
+                <a class="a" onclick="closenotice(); widgets.widgets.add('calc');">计算器</a>
+                <a class="a" onclick="closenotice(); widgets.widgets.add('weather');">天气</a>
+                <a class="a" onclick="closenotice(); widgets.widgets.add('monitor');">系统性能监视器</a>
             </list>`,
         btn: [
-            { type: 'cancel', text: '取消', js: 'closenotice();' },
+            { type: 'cancel', text: '取消', js: 'closenotice();' }
+        ]
+    },
+    'widgets.monitor': {
+        cnt: `
+        <p class="tit">切换监视器类型</p>
+        <list class="new">
+            <a class="a" onclick="closenotice(); widgets.monitor.type = 'cpu';">CPU利用率</a>
+            <a class="a" onclick="closenotice(); widgets.monitor.type = 'memory';">内存使用率</a>
+            <a class="a" onclick="closenotice(); widgets.monitor.type = 'disk';">磁盘活动时间</a>
+            <a class="a" onclick="closenotice(); widgets.monitor.type = 'wifi-receive';">网络吞吐量-接收</a>
+            <a class="a" onclick="closenotice(); widgets.monitor.type = 'wifi-send';">网络吞吐量-发送</a>
+            <a class="a" onclick="closenotice(); widgets.monitor.type = 'gpu';">GPU利用率</a>
+        </list>`,
+        btn: [
+            { type: 'cancel', text: '取消', js: 'closenotice();' }
         ]
     },
     'duplication file name': {
@@ -842,6 +864,476 @@ let apps = {
                     }, 300);
                 }
             }
+        }
+    },
+    taskmgr: {
+        sortType: 'cpu',
+        sortOrder: 'up-down',
+        tasks: structuredClone(taskmgrTasks),
+        cpu: 0,
+        cpuCtx: null,
+        cpuCanvas: null,
+        cpuLastPos: [0, 0],
+        cpuBgCanvas: null,
+        cpuBgCtx: null,
+        cpuRunningTime: 0,
+        memory: 0,
+        memoryCtx: null,
+        memoryCanvas: null,
+        memoryLastPos: [0, 0],
+        memoryBgCanvas: null,
+        memoryBgCtx: null,
+        memoryCanvas2: null,
+        memoryCtx2: null,
+        disk: 0,
+        diskSpeed: {
+            read: 0,
+            write: 0
+        },
+        diskCanvas: null,
+        diskCtx: null,
+        diskLastPos: [0, 0],
+        diskBgCanvas: null,
+        diskBgCtx: null,
+        diskCanvas2: null,
+        diskCtx2: null,
+        diskBgCanvas2: null,
+        diskBgCtx2: null,
+        diskLastPos2: {
+            read: [0, 0],
+            write: [0, 0]
+        },
+        wifi: [0, 0],
+        wifiCanvas: null,
+        wifiCtx: null,
+        wifiLastPos: [[0, 0], [0, 0]],
+        wifiBgCanvas: null,
+        wifiBgCtx: null,
+        gpu: {
+            d3: 0,
+            copy: 0,
+            videod: 0,
+            videop: 0,
+            usage: 0
+        },
+        gpuMemory: {
+            private: 0,
+            public: 0
+        },
+        gpuCtx: [null, null, null, null],
+        gpuCanvas: [null, null, null, null],
+        gpuLastPos: [[0, 0], [0, 0], [0, 0], [0, 0]],
+        gpuBgCanvas: [null, null, null, null],
+        gpuBgCtx: [null, null, null, null],
+        gpuCanvas2: [null, null],
+        gpuCtx2: [null, null],
+        gpuLastPos2: [[0, 0], [0, 0]],
+        gpuBgCanvas2: [null, null],
+        gpuBgCtx2: [null, null],
+        gpuCanvas3: null,
+        gpuCtx3: null,
+        gpuLastPos3: [0, 0],
+        processList: [],
+        handle: 0,
+        init: () => {
+            $('#win-taskmgr>.menu>list.focs>a')[0].click();
+        },
+        load: (init_all = true) => {
+            if (init_all == true) {
+                $('#win-taskmgr>.main>.cnt.performance>.content>.performance-graph>.graph-cpu>.information>.left>div:nth-child(3)>.value')[0].innerText = apps.taskmgr.tasks.length;
+
+                apps.taskmgr.cpuCanvas = $('#win-taskmgr>.main>.cnt.performance>.content>.performance-graph>.graph-cpu canvas.chart')[0];
+                apps.taskmgr.cpuBgCanvas = $('#win-taskmgr>.main>.cnt.performance>.content>.performance-graph>.graph-cpu canvas.bg')[0];
+                apps.taskmgr.initgraph('cpu', '#2983cc');
+
+                apps.taskmgr.memoryCanvas = $('#win-taskmgr>.main>.cnt.performance>.content>.performance-graph>.graph-memory canvas.chart')[0];
+                apps.taskmgr.memoryBgCanvas = $('#win-taskmgr>.main>.cnt.performance>.content>.performance-graph>.graph-memory canvas.bg')[0];
+                apps.taskmgr.initgraph('memory', '#660099');
+                apps.taskmgr.memoryCanvas2 = $('#win-taskmgr>.main>.cnt.performance>.content>.performance-graph>.graph-memory canvas.chart2')[0];
+                apps.taskmgr.memoryCtx2 = apps.taskmgr.memoryCanvas2.getContext('2d');
+                apps.taskmgr.memoryCtx2.fillStyle = '#66009922';
+                apps.taskmgr.memoryCtx.lineWidth = 4;
+
+                apps.taskmgr.diskCanvas = $('#win-taskmgr>.main>.cnt.performance>.content>.performance-graph>.graph-disk canvas.chart')[0];
+                apps.taskmgr.diskBgCanvas = $('#win-taskmgr>.main>.cnt.performance>.content>.performance-graph>.graph-disk canvas.bg')[0];
+                apps.taskmgr.initgraph('disk', '#008000');
+                apps.taskmgr.diskCanvas2 = $('#win-taskmgr>.main>.cnt.performance>.content>.performance-graph>.graph-disk canvas.chart2')[0];
+                apps.taskmgr.diskLastPos2 = {
+                    read: [apps.taskmgr.diskCanvas2.width, apps.taskmgr.diskCanvas2.height],
+                    write: [apps.taskmgr.diskCanvas2.width, apps.taskmgr.diskCanvas2.height]
+                }
+                apps.taskmgr.diskCtx2 = apps.taskmgr.diskCanvas2.getContext('2d');
+                apps.taskmgr.diskCtx2.strokeStyle = '#008000';
+                apps.taskmgr.diskCtx2.fillStyle = '#00800022';
+                apps.taskmgr.diskCtx2.lineWidth = 3;
+                apps.taskmgr.diskBgCanvas2 = $('#win-taskmgr>.main>.cnt.performance>.content>.performance-graph>.graph-disk canvas.bg2')[0];
+                apps.taskmgr.diskBgCtx2 = apps.taskmgr.diskBgCanvas2.getContext('2d');
+                apps.taskmgr.diskBgCtx2.strokeStyle = '#aeaeae';
+                apps.taskmgr.diskBgCtx2.lineWidth = 1;
+
+                for (var i = 0; i < 4; i++) {
+                    apps.taskmgr.gpuCanvas[i] = $('#win-taskmgr>.main>.cnt.performance>.content>.performance-graph>.graph-gpu>.graphs>.graph' + (i + 1) + '>.chart>canvas.chart')[0];
+                    apps.taskmgr.gpuBgCanvas[i] = $('#win-taskmgr>.main>.cnt.performance>.content>.performance-graph>.graph-gpu>.graphs>.graph' + (i + 1) + '>.chart>canvas.bg')[0];
+                    apps.taskmgr.gpuCtx[i] = apps.taskmgr.gpuCanvas[i].getContext('2d');
+                    apps.taskmgr.gpuBgCtx[i] = apps.taskmgr.gpuBgCanvas[i].getContext('2d');
+                    apps.taskmgr.gpuCtx[i].strokeStyle = '#2983cc';
+                    apps.taskmgr.gpuCtx[i].fillStyle = '#2983cc22';
+                    apps.taskmgr.gpuCtx[i].lineWidth = 4;
+                    apps.taskmgr.gpuLastPos[i] = [apps.taskmgr.gpuCanvas[i].width, apps.taskmgr.gpuCanvas[i].height];
+                    apps.taskmgr.gpuBgCtx[i].strokeStyle = '#aeaeae';
+                    apps.taskmgr.gpuBgCtx[i].lineWidth = 3;
+                    apps.taskmgr.initgrids(apps.taskmgr.gpuBgCtx[i]);
+                }
+                for (var i = 0; i < 2; i++) {
+                    apps.taskmgr.gpuCanvas2[i] = $('#win-taskmgr>.main>.cnt.performance>.content>.performance-graph>.graph-gpu>.gpu2-' + (i + 1) + '>canvas.chart2')[0];
+                    apps.taskmgr.gpuBgCanvas2[i] = $('#win-taskmgr>.main>.cnt.performance>.content>.performance-graph>.graph-gpu>.gpu2-' + (i + 1) + '>canvas.bg2')[0];
+                    apps.taskmgr.gpuCtx2[i] = apps.taskmgr.gpuCanvas2[i].getContext('2d');
+                    apps.taskmgr.gpuBgCtx2[i] = apps.taskmgr.gpuBgCanvas2[i].getContext('2d');
+                    apps.taskmgr.gpuCtx2[i].strokeStyle = '#2983cc';
+                    apps.taskmgr.gpuCtx2[i].fillStyle = '#2983cc22';
+                    apps.taskmgr.gpuCtx2[i].lineWidth = 3;
+                    apps.taskmgr.gpuLastPos2[i] = [apps.taskmgr.gpuCanvas2[i].width, apps.taskmgr.gpuCanvas2[i].height];
+                    apps.taskmgr.gpuBgCtx2[i].strokeStyle = '#aeaeae';
+                    apps.taskmgr.gpuBgCtx2[i].lineWidth = 1;
+                    apps.taskmgr.initgrids(apps.taskmgr.gpuBgCtx2[i]);
+                }
+                apps.taskmgr.gpuCanvas3 = $('#win-taskmgr>.main>.cnt.performance>.content>.performance-graph>.graph-gpu>.graphs>canvas.usage')[0];
+                apps.taskmgr.gpuCtx3 = apps.taskmgr.gpuCanvas3.getContext('2d');
+                apps.taskmgr.gpuCtx3.strokeStyle = '#2983cc';
+                apps.taskmgr.gpuCtx3.fillStyle = '#2983cc22';
+                apps.taskmgr.gpuCtx3.lineWidth = 4;
+                apps.taskmgr.gpuLastPos3 = [apps.taskmgr.gpuCanvas3.width, apps.taskmgr.gpuCanvas3.height];
+
+                apps.taskmgr.wifiCanvas = $('#win-taskmgr>.main>.cnt.performance>.content>.performance-graph>.graph-wifi canvas.chart')[0];
+                apps.taskmgr.wifiBgCanvas = $('#win-taskmgr>.main>.cnt.performance>.content>.performance-graph>.graph-wifi canvas.bg')[0];
+                apps.taskmgr.initgraph('wifi', '#8e5829', false);
+                apps.taskmgr.wifiLastPos = [
+                    [apps.taskmgr.wifiCanvas.width, apps.taskmgr.wifiCanvas.height],
+                    [apps.taskmgr.wifiCanvas.width, apps.taskmgr.wifiCanvas.height]
+                ]
+            }
+
+            if (apps.taskmgr.preLoaded != true && apps.taskmgr.loaded != true) {
+                apps.taskmgr.gpuMemory.private = Number((Math.random() * 4).toFixed(2));
+                apps.taskmgr.gpuMemory.public = Number((Math.random() * 4).toFixed(2));
+                apps.taskmgr.generateProcesses();
+                apps.taskmgr.sort();
+                apps.taskmgr.loadProcesses();
+                apps.taskmgr.performanceLoad();
+            }
+
+            if (init_all == true) {
+                apps.taskmgr.graphLoad();
+                apps.taskmgr.initgrids(apps.taskmgr.cpuBgCtx);
+                apps.taskmgr.initgrids(apps.taskmgr.memoryBgCtx);
+                apps.taskmgr.initgrids(apps.taskmgr.diskBgCtx);
+                apps.taskmgr.initgrids(apps.taskmgr.diskBgCtx2);
+                apps.taskmgr.initgrids(apps.taskmgr.wifiBgCtx);
+                window.setInterval(() => {
+                    apps.taskmgr.loadProcesses();
+                    apps.taskmgr.generateProcesses();
+                    apps.taskmgr.sort();
+                    apps.taskmgr.performanceLoad();
+                    apps.taskmgr.graphLoad();
+                    apps.taskmgr.gridLine();
+                }, 1000);
+            }
+            else if (apps.taskmgr.loaded != true && apps.taskmgr.preLoaded != true) {
+                window.setInterval(() => {
+                    apps.taskmgr.loadProcesses();
+                    apps.taskmgr.generateProcesses();
+                    apps.taskmgr.sort();
+                    apps.taskmgr.performanceLoad();
+                }, 1000);
+            }
+        },
+        page: (name) => {
+            $('#win-taskmgr>.main>.cnt.' + name).scrollTop(0);
+            $('#win-taskmgr>.main>.cnt.show').removeClass('show');
+            $('#win-taskmgr>.main>.cnt.' + name).addClass('show');
+            $('#win-taskmgr>.menu>list.focs>a.check').removeClass('check');
+            $('#win-taskmgr>.menu>list.focs>a.' + name).addClass('check');
+        },
+        graph: (name) => {
+            $('#win-setting>.page>.cnt.' + name).scrollTop(0);
+            $('#win-taskmgr>.main>.cnt.performance>.content>.performance-graph>.show').removeClass('show');
+            $('#win-taskmgr>.main>.cnt.performance>.content>.performance-graph>.' + name).addClass('show');
+            $('#win-taskmgr>.main>.cnt.performance>.content>.select-menu>.check').removeClass('check');
+            $('#win-taskmgr>.main>.cnt.performance>.content>.select-menu>.' + name).addClass('check');
+        },
+        generateProcesses: () => {
+            let processList = [];
+            let max = 100 / apps.taskmgr.tasks.length;
+            let cpusum = 0, memorysum = 0, disksum = 0, diskUsing = Number(Math.random()) > 0.7/*, color = window.getComputedStyle(page, null).getPropertyValue('--href')*/;
+            for (const elt of apps.taskmgr.tasks) {
+                let cpu = Number((Math.random() * max).toFixed(1)),
+                    memory = apps.taskmgr.memory != 0 ? apps.taskmgr.memory / apps.taskmgr.tasks.length + Number(((Math.random() - 0.5) / 5).toFixed(1)) : Number((Math.random() * max).toFixed(1)),
+                    disk = Number((Math.random() * max).toFixed(1)) > (max / 1.2) && diskUsing ? max * Number(Math.random().toFixed(1)) : 0;
+                processList.splice(processList.length, 0, {
+                    name: elt.name,
+                    icon: elt.icon || '',
+                    system: elt.system,
+                    cpu: cpu,
+                    memory: memory,
+                    disk: disk
+                });
+                cpusum = Number((cpusum + cpu).toFixed(1));
+                memorysum = Number((memorysum + memory).toFixed(1));
+                disksum = Number((disksum + disk).toFixed(1));
+            }
+            apps.taskmgr.cpu = cpusum;
+            apps.taskmgr.memory = memorysum;
+            apps.taskmgr.disk = disksum;
+            apps.taskmgr.processList = processList;
+        },
+        loadProcesses: (processList = apps.taskmgr.processList) => {
+            const processContainer = $('#win-taskmgr>.main>.cnt.processes tbody.view')[0];
+            const values = $('#win-taskmgr>.main>.cnt.processes thead>tr>th>.value');
+            const cpu = values[0], memory = values[1], disk = values[2];
+            let selected;
+            if ($('#win-taskmgr>.main>.cnt.processes tbody.view>tr.select>td:first-child>.text')[0]) {
+                selected = $('#win-taskmgr>.main>.cnt.processes tbody.view>tr.select>td:first-child>.text')[0].innerText;
+            }
+            let max = 100 / apps.taskmgr.tasks.length;
+            processContainer.innerHTML = '';
+            for (const elt of processList) {
+                const newElt = document.createElement('tr');
+                newElt.classList.add('notrans');
+                newElt.innerHTML = `<td><div class="text"><div class="icon" style="background-image: url('${elt.icon ? elt.icon : ''}');"></div>${elt.name}</div></td><td style="text-align: right;background-color: ${page.classList.contains('dark') ? '#193662' : '#7ec6ec'}${elt.cpu >= (max / 1.3) ? 'ff' : 'aa'};">${elt.cpu.toFixed(1)}%</td><td style="text-align: right;background-color: ${page.classList.contains('dark') ? '#193662' : '#7ec6ec'}${elt.memory >= (max / 1.3) ? 'ff' : 'aa'};">${elt.memory.toFixed(1)}%</td><td style="text-align: right;background-color: ${page.classList.contains('dark') ? '#193662' : '#7ec6ec'}${elt.disk >= (max / 1.3) ? 'ff' : 'aa'};">${elt.disk.toFixed(1)}%</td><td>${['非常低', '非常低', '非常低', '低', '中'][Math.floor(Math.random() * 5)]}</td>`;
+                if (elt.name == selected) {
+                    newElt.classList.add('select');
+                }
+                processContainer.appendChild(newElt);
+                newElt.onclick = function () {
+                    apps.taskmgr.selectProcess(this);
+                }
+                newElt.oncontextmenu = function (e) {
+                    return showcm(e, 'taskmgr.processes', elt.name);
+                }
+                window.setTimeout(() => {
+                    newElt.classList.remove('notrans');
+                }, 100);
+            }
+            cpu.innerText = apps.taskmgr.cpu.toFixed(1) + '%';
+            memory.innerText = apps.taskmgr.memory.toFixed(1) + '%';
+            disk.innerText = apps.taskmgr.disk.toFixed(1) + '%';
+        },
+        sort: (processList = apps.taskmgr.processList, type = apps.taskmgr.sortType, order = apps.taskmgr.sortOrder) => {
+            processList.sort((a, b) => {
+                if (a[type] > b[type]) {
+                    return order == 'up-down' ? -1 : 1;
+                }
+                else if (a[type] <= b[type]) {
+                    return order == 'up-down' ? 1 : -1;
+                }
+            });
+            apps.taskmgr.processList = processList;
+        },
+        performanceLoad: () => {
+            $('#win-taskmgr>.main>.cnt.performance>.content>.performance-graph>.graph-cpu>.information>.left>div:nth-child(1)>.value')[0].innerText = `${apps.taskmgr.cpu.toFixed(1)}%`;
+            $('#win-taskmgr>.main>.cnt.performance>.content>.performance-graph>.graph-cpu>.information>.left>div:nth-child(2)>.value')[0].innerText = `${(3200 / 100 * apps.taskmgr.cpu).toFixed(1)} GHz`;
+            $('#win-taskmgr>.main>.cnt.performance>.content>.performance-graph>.graph-cpu>.information>.left>div:nth-child(4)>.value')[0].innerText = `${apps.taskmgr.tasks.length * (5 + Math.floor(Math.random() * 5))}`;
+            $('#win-taskmgr>.main>.cnt.performance>.content>.performance-graph>.graph-cpu>.information>.left>div:nth-child(5)>.value')[0].innerText = `${apps.taskmgr.tasks.length * (10 + Math.floor(Math.random() * 20))}`;
+            let sec = apps.taskmgr.cpuRunningTime;
+            let min = Math.floor(sec / 60);
+            sec %= 60;
+            let hour = Math.floor(min / 60);
+            min %= 60;
+            let day = Math.floor(hour / 24);
+            hour %= 24;
+            $('#win-taskmgr>.main>.cnt.performance>.content>.performance-graph>.graph-cpu>.information>.left>div:nth-child(6)>.value')[0].innerText = `${day}:${String(hour).length < 2 ? '0' : ''}${hour}:${String(min).length < 2 ? '0' : ''}${min}:${String(sec).length < 2 ? '0' : ''}${sec}`;
+            $('#win-taskmgr>.main>.cnt.performance>.content>.select-menu>.graph-cpu>.right>.data>.value1')[0].innerText = `${apps.taskmgr.cpu.toFixed(1)}%`;
+            $('#win-taskmgr>.main>.cnt.performance>.content>.select-menu>.graph-cpu>.right>.data>.value2')[0].innerText = `${(3200 / 100 * apps.taskmgr.cpu).toFixed(1)}GHz`;
+
+            $('#win-taskmgr>.main>.cnt.performance>.content>.performance-graph>.graph-memory>.information>.left>div:nth-child(1)>.value')[0].innerText = `${apps.taskmgr.memory.toFixed(1)} GB (0 MB)`;
+            $('#win-taskmgr>.main>.cnt.performance>.content>.performance-graph>.graph-memory>.information>.left>div:nth-child(2)>.value')[0].innerText = `${(100 - apps.taskmgr.memory).toFixed(1)} GB`;
+            $('#win-taskmgr>.main>.cnt.performance>.content>.performance-graph>.graph-memory>.information>.left>div:nth-child(3)>.value')[0].innerText = `${(apps.taskmgr.memory - 2).toFixed(1)} / 100 GB`;
+            $('#win-taskmgr>.main>.cnt.performance>.content>.performance-graph>.graph-memory>.information>.left>div:nth-child(4)>.value')[0].innerText = `${(apps.taskmgr.memory / 2).toFixed(2)} GB`;
+            $('#win-taskmgr>.main>.cnt.performance>.content>.select-menu>.graph-memory>.right>.data>.value1')[0].innerText = `${apps.taskmgr.memory.toFixed(1)} / 100 GB`;
+            $('#win-taskmgr>.main>.cnt.performance>.content>.select-menu>.graph-memory>.right>.data>.value2')[0].innerText = `${apps.taskmgr.memory.toFixed(1)}%`;
+
+            apps.taskmgr.diskSpeed.read = apps.taskmgr.disk != 0 ? (Math.random() * 100).toFixed(2) : 0;
+            apps.taskmgr.diskSpeed.write = apps.taskmgr.disk != 0 ? (Math.random() * 100).toFixed(2) : 0;
+            $('#win-taskmgr>.main>.cnt.performance>.content>.performance-graph>.graph-disk>.information>.left>div:nth-child(1)>.value')[0].innerText = `${apps.taskmgr.disk}%`;
+            $('#win-taskmgr>.main>.cnt.performance>.content>.performance-graph>.graph-disk>.information>.left>div:nth-child(2)>.value')[0].innerText = `${apps.taskmgr.disk != 0 ? Math.random().toFixed(2) : 0} 毫秒`;
+            $('#win-taskmgr>.main>.cnt.performance>.content>.performance-graph>.graph-disk>.information>.left>div:nth-child(3)>.value')[0].innerText = `${apps.taskmgr.diskSpeed.read} ${apps.taskmgr.disk != 0 ? 'MB/秒' : 'KB/秒'}`;
+            $('#win-taskmgr>.main>.cnt.performance>.content>.performance-graph>.graph-disk>.information>.left>div:nth-child(4)>.value')[0].innerText = `${apps.taskmgr.diskSpeed.write} ${apps.taskmgr.disk != 0 ? 'MB/秒' : 'KB/秒'}`;
+            $('#win-taskmgr>.main>.cnt.performance>.content>.select-menu>.graph-disk>.right>.data>.value2')[0].innerText = `${apps.taskmgr.disk}%`;
+
+            $('#win-taskmgr>.main>.cnt.performance>.content>.select-menu>.graph-gpu>.right>.data>.value2')[0].innerText = `${apps.taskmgr.gpu.usage.toFixed(1)}%`;
+
+            apps.taskmgr.gpu.d3 = Number((Math.random() * 15).toFixed(2));
+            apps.taskmgr.gpu.copy = Number((Math.random() * 15).toFixed(2));
+            apps.taskmgr.gpu.videop = Number((Math.random() * 15).toFixed(2));
+            apps.taskmgr.gpu.videod = Number((Math.random() * 15).toFixed(2));
+            apps.taskmgr.gpu.usage = Number(((apps.taskmgr.gpu.d3 + apps.taskmgr.gpu.copy + apps.taskmgr.gpu.videop + apps.taskmgr.gpu.videod) / 4).toFixed(1));
+
+            apps.taskmgr.wifi[0] = Number((Math.random() * 100).toFixed(2));
+            apps.taskmgr.wifi[1] = Number((Math.random() * 100).toFixed(2));
+            $('#win-taskmgr>.main>.cnt.performance>.content>.performance-graph>.graph-wifi>.information>.left>div:nth-child(1)>.value')[0].innerText = `${apps.taskmgr.wifi[1].toFixed(2)} Mbps`;
+            $('#win-taskmgr>.main>.cnt.performance>.content>.performance-graph>.graph-wifi>.information>.left>div:nth-child(2)>.value')[0].innerText = `${apps.taskmgr.wifi[0].toFixed(2)} Mbps`;
+            $('#win-taskmgr>.main>.cnt.performance>.content>.select-menu>.graph-wifi>.right>.data>.value2')[0].innerText = `发送: ${apps.taskmgr.wifi[1]} 接收: ${apps.taskmgr.wifi[0]} Mbps`;
+        },
+        graphLoad: () => {
+            $('#win-taskmgr>.main>.cnt.performance>.content>.select-menu>*>.left>.graph-view-cpu')[0].style.backgroundImage = `url("${apps.taskmgr.drawgraph(apps.taskmgr.cpuCtx, 'cpuLastPos', apps.taskmgr.cpu)}")`;
+            $('#win-taskmgr>.main>.cnt.performance>.content>.select-menu>*>.left>.graph-view-memory')[0].style.backgroundImage = `url("${apps.taskmgr.drawgraph(apps.taskmgr.memoryCtx, 'memoryLastPos', apps.taskmgr.memory)}")`;
+            w = apps.taskmgr.memoryCanvas2.width;
+            h = apps.taskmgr.memoryCanvas2.height;
+            apps.taskmgr.memoryCtx2.clearRect(0, 0, w, h);
+            apps.taskmgr.memoryCtx2.fillRect(0, 0, w / 100 * apps.taskmgr.memory, h);
+            $('#win-taskmgr>.main>.cnt.performance>.content>.select-menu>*>.left>.graph-view-disk')[0].style.backgroundImage = `url("${apps.taskmgr.drawgraph(apps.taskmgr.diskCtx, 'diskLastPos', apps.taskmgr.disk)}")`;
+            // 绘制磁盘传输速率
+            w = apps.taskmgr.diskCanvas2.width;
+            h = apps.taskmgr.diskCanvas2.height;
+            data = apps.taskmgr.diskCtx2.getImageData(w / 60, 0, w - w / 60, h);
+            apps.taskmgr.diskCtx2.clearRect(0, 0, w, h);
+            apps.taskmgr.diskCtx2.putImageData(data, 0, 0);
+            // 读取速度
+            apps.taskmgr.diskCtx2.fillStyle = '#00800022';
+            apps.taskmgr.diskCtx2.setLineDash([]);
+            apps.taskmgr.drawgraph(apps.taskmgr.diskCtx2, apps.taskmgr.diskLastPos2.read, apps.taskmgr.diskSpeed.read, false, false);
+            apps.taskmgr.diskLastPos2.read = [w - w / 60, h / 100 * (100 - apps.taskmgr.diskSpeed.read)];
+            // 写入速度
+            apps.taskmgr.diskCtx2.fillStyle = '#00000000';
+            apps.taskmgr.diskCtx2.setLineDash([4, 4]);
+            apps.taskmgr.drawgraph(apps.taskmgr.diskCtx2, apps.taskmgr.diskLastPos2.write, apps.taskmgr.diskSpeed.write, false, false);
+            apps.taskmgr.diskLastPos2.write = [w - w / 60, h / 100 * (100 - apps.taskmgr.diskSpeed.write)];
+            // 绘制网络
+            w = apps.taskmgr.wifiCanvas.width;
+            h = apps.taskmgr.wifiCanvas.height;
+            data = apps.taskmgr.wifiCtx.getImageData(w / 60, 0, w - w / 60, h);
+            apps.taskmgr.wifiCtx.clearRect(0, 0, w, h);
+            apps.taskmgr.wifiCtx.putImageData(data, 0, 0);
+            // 接收
+            apps.taskmgr.wifiCtx.fillStyle = '#8e582922';
+            apps.taskmgr.wifiCtx.setLineDash([]);
+            apps.taskmgr.drawgraph(apps.taskmgr.wifiCtx, apps.taskmgr.wifiLastPos[0], apps.taskmgr.wifi[0], false, false);
+            apps.taskmgr.wifiLastPos[0] = [w - w / 60, h / 100 * (100 - apps.taskmgr.wifi[0])];
+            // 发送
+            apps.taskmgr.wifiCtx.fillStyle = '#8e582900';
+            apps.taskmgr.wifiCtx.setLineDash([4, 4]);
+            $('#win-taskmgr>.main>.cnt.performance>.content>.select-menu>*>.left>.graph-view-wifi')[0].style.backgroundImage = `url("${apps.taskmgr.drawgraph(apps.taskmgr.wifiCtx, apps.taskmgr.wifiLastPos[1], apps.taskmgr.wifi[1], false, false)}")`;
+            apps.taskmgr.wifiLastPos[1] = [w - w / 60, h / 100 * (100 - apps.taskmgr.wifi[1])];
+            // 绘制显卡
+            for (var i = 0; i < 4; i++) {
+                w = apps.taskmgr.gpuCanvas[i].width;
+                h = apps.taskmgr.gpuCanvas[i].height;
+                apps.taskmgr.drawgraph(apps.taskmgr.gpuCtx[i], apps.taskmgr.gpuLastPos[i], apps.taskmgr.gpu[['d3', 'copy', 'videod', 'videop'][i]], false);
+                apps.taskmgr.gpuLastPos[i] = [w - w / 60, h / 100 * (100 - apps.taskmgr.gpu[['d3', 'copy', 'videod', 'videop'][i]])];
+            }
+            for (var i = 0; i < 2; i++) {
+                w = apps.taskmgr.gpuCanvas2[i].width;
+                h = apps.taskmgr.gpuCanvas2[i].height;
+                apps.taskmgr.drawgraph(apps.taskmgr.gpuCtx2[i], apps.taskmgr.gpuLastPos2[i], apps.taskmgr.gpuMemory[['private', 'public'][i]], setPos = false, move = true, max = [16, 32][i]);
+                apps.taskmgr.gpuLastPos2[i] = [w - w / 60, h / [16, 32][i] * ([16, 32][i] - apps.taskmgr.gpuMemory[['private', 'public'][i]])];
+            }
+            $('#win-taskmgr>.main>.cnt.performance>.content>.select-menu>*>.left>.graph-view-gpu')[0].style.backgroundImage = `url("${apps.taskmgr.drawgraph(apps.taskmgr.gpuCtx3, 'gpuLastPos3', apps.taskmgr.gpu.usage)}")`
+        },
+        changeSort: (elt, type) => {
+            for (const _elt of $('#win-taskmgr>.main>.cnt.processes thead>tr>th>i')) {
+                _elt.className = 'bi';
+            }
+            if (apps.taskmgr.sortOrder == 'up-down' && apps.taskmgr.sortType == type) {
+                elt.className = 'bi bi-chevron-up';
+                apps.taskmgr.sortOrder = 'down-up';
+                apps.taskmgr.sort(apps.taskmgr.processList, type, 'down-up');
+            }
+            else {
+                elt.className = 'bi bi-chevron-down';
+                apps.taskmgr.sortOrder = 'up-down';
+                apps.taskmgr.sortType = type;
+                apps.taskmgr.sort(apps.taskmgr.processList, type, 'up-down');
+            }
+        },
+        gridLine: () => {
+            apps.taskmgr.changeGrids(apps.taskmgr.memoryBgCtx);
+            apps.taskmgr.changeGrids(apps.taskmgr.cpuBgCtx);
+            apps.taskmgr.changeGrids(apps.taskmgr.diskBgCtx);
+            apps.taskmgr.changeGrids(apps.taskmgr.diskBgCtx2);
+            apps.taskmgr.changeGrids(apps.taskmgr.wifiBgCtx);
+            apps.taskmgr.gpuBgCtx.forEach(function (ctx) {
+                apps.taskmgr.changeGrids(ctx);
+            });
+            apps.taskmgr.gpuBgCtx2.forEach(function (ctx) {
+                apps.taskmgr.changeGrids(ctx);
+            });
+        },
+        selectProcess: (elt) => {
+            $('#win-taskmgr>.main>.cnt.processes tbody.view>.select').removeClass('select');
+            $(elt).addClass('select');
+        },
+        taskkill: (name) => {
+            if (name == 'System') {
+                window.location = 'bluescreen.html';
+            }
+            else {
+                apps.taskmgr.tasks.splice(apps.taskmgr.tasks.findIndex(elt => elt.name == name), 1);
+                if (taskmgrTasks.find(elt => elt.name == name).link != null) {
+                    hidewin(taskmgrTasks.find(elt => elt.name == name).link);
+                }
+            }
+        },
+        initgraph: (prefix, color, setPos = true) => {
+            if (setPos == true) {
+                apps.taskmgr[prefix + 'LastPos'] = [apps.taskmgr[prefix + 'Canvas'].width, apps.taskmgr[prefix + 'Canvas'].height];
+            }
+            
+            apps.taskmgr[prefix + 'Ctx'] = apps.taskmgr[prefix + 'Canvas'].getContext('2d');
+            apps.taskmgr[prefix + 'BgCtx'] = apps.taskmgr[prefix + 'BgCanvas'].getContext('2d');
+            apps.taskmgr[prefix + 'Ctx'].strokeStyle = color;
+            console.log(color, color + '22', prefix)
+            apps.taskmgr[prefix + 'Ctx'].fillStyle = color + '22';
+            console.log(apps.taskmgr[prefix + 'Ctx'].fillStyle)
+            apps.taskmgr[prefix + 'Ctx'].lineWidth = 4;
+            apps.taskmgr[prefix + 'BgCtx'].strokeStyle = '#aeaeae';
+            apps.taskmgr[prefix + 'BgCtx'].lineWidth = 3;
+        },
+        initgrids: (ctx) => {
+            for (var i = 0; i <= 10; i++) {
+                ctx.beginPath();
+                ctx.moveTo(0, ctx.canvas.height / 10 * i);
+                ctx.lineTo(ctx.canvas.width, ctx.canvas.height / 10 * i);
+                ctx.stroke();
+                ctx.closePath();
+            }
+            for (var i = 0; i <= 20; i++) {
+                ctx.beginPath();
+                ctx.moveTo(ctx.canvas.width / 20 * i, 0);
+                ctx.lineTo(ctx.canvas.width / 20 * i, ctx.canvas.height);
+                ctx.stroke();
+                ctx.closePath();
+            }
+        },
+        drawgraph(ctx, lastPos, num, setPos = true, move = true, max = 100) {
+            let w = ctx.canvas.width, h = ctx.canvas.height;
+            if (move == true) {
+                data = ctx.getImageData(w / 60, 0, w - w / 60, h);
+                ctx.clearRect(0, 0, w, h);
+                ctx.putImageData(data, 0, 0);
+            }
+            ctx.beginPath();
+            if (setPos == true) {
+                ctx.moveTo(apps.taskmgr[lastPos][0], apps.taskmgr[lastPos][1]);
+            }
+            else {
+                ctx.moveTo(lastPos[0], lastPos[1]);
+            }
+            ctx.lineTo(w, h / max * (max - num));
+            ctx.stroke();
+            ctx.lineTo(w, h);
+            ctx.lineTo(w - w / 60, h);
+            ctx.fill();
+            if (setPos == true) {
+                apps.taskmgr[lastPos] = [w - w / 60, h / max * (max - num)];
+            }
+            return ctx.canvas.toDataURL();
+        },
+        changeGrids: (ctx) => {
+            let left = ctx.getImageData(0, 0, ctx.canvas.width / 30 * 29, ctx.canvas.height);
+            let right = ctx.getImageData(ctx.canvas.width / 30 * 29, 0, ctx.canvas.width / 30, ctx.canvas.height);
+            ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+            ctx.putImageData(left, ctx.canvas.width / 30, 0);
+            ctx.putImageData(right, 0, 0);
         }
     },
     whiteboard: {
@@ -1093,12 +1585,12 @@ let apps = {
             oncontextmenu="showcm(event,'explorer.folder','D:');return stop(event);">
             <img src="apps/icons/explorer/disk.svg"><div><p class="name">本地磁盘 (D:)</p><div class="bar"><div class="content" style="width: 15%;"></div>
             </div><p class="info">185.3 GB 可用, 共 216 GB</p></div></a></div>`;
-            $('#win-explorer>.main>.content>.tool>.tit')[0].innerHTML = '此电脑';
+            $('#win-explorer>.main>.content>.tool>.tit')[0].innerHTML = '<div class="icon" style="background-image: url(\'./apps/icons/explorer/thispc.svg\')"></div><div class="path"><div class="text">此电脑</div></div>';
         },
         select: (path,id) => {
             var elements = document.querySelectorAll('#win-explorer > .main > .content > .view > .select');
             for (var i = 0; i < elements.length; i++) {
-              elements[i].classList.remove('select');
+                elements[i].classList.remove('select');
             }
             apps.explorer.Process_Of_Select = path;
             var pathl = path.split('/');
@@ -1134,13 +1626,28 @@ let apps = {
                     }
                 }
             }
-            apps.explorer.goto($('#win-explorer>.main>.content>.tool>.tit')[0].innerHTML);
+            apps.explorer.goto($('#win-explorer>.main>.content>.tool>.tit')[0].dataset.path);
         },
         paste: (path) =>{
             var pathl = path.split('/');
-            let tmp = apps.explorer.path;
+            let tmp = apps.explorer.path, thisPath = '';
+            $('#win-explorer>.main>.content>.tool>.tit>.path')[0].innerHTML = '';
+            if (pathl[pathl.length - 1] == 'C:') {
+                $('#win-explorer>.main>.content>.tool>.tit>.icon')[0].style.marginTop = '3px';
+                $('#win-explorer>.main>.content>.tool>.tit>.icon')[0].style.backgroundImage = 'url("./apps/icons/explorer/diskwin.svg")';
+            }
+            else if (pathl[pathl.length - 1] == 'D:') {
+                $('#win-explorer>.main>.content>.tool>.tit>.icon')[0].style.marginTop = '0px';
+                $('#win-explorer>.main>.content>.tool>.tit>.icon')[0].style.backgroundImage = 'url("./apps/icons/explorer/disk.svg")';
+            }
+            else {
+                $('#win-explorer>.main>.content>.tool>.tit>.icon')[0].style.marginTop = '0px';
+                $('#win-explorer>.main>.content>.tool>.tit>.icon')[0].style.backgroundImage = 'url("./apps/icons/explorer/folder.svg")';
+            }
             pathl.forEach(name => {
+                thisPath += name + '/';
                 tmp = tmp['folder'][name];
+                $('#win-explorer>.main>.content>.tool>.tit>.path')[0].insertAdjacentHTML('beforeend', `<div class="text" onmousedown="apps.explorer.goto('${thisPath.substring(0, thisPath.length - 1)}');stop(event);">${name}</div> <div class="arrow">></div> `)
             });
             var clipboard = apps.explorer.clipboard;
 
@@ -1167,7 +1674,7 @@ let apps = {
             {
                 tmp['folder'][clipboard[1][0]] = clipboard[2];
             }
-            apps.explorer.goto($('#win-explorer>.main>.content>.tool>.tit')[0].innerHTML);
+            apps.explorer.goto($('#win-explorer>.main>.content>.tool>.tit')[0].datset.path);
         },
         del_select: () => {
             if(apps.explorer.is_use >= 1 && apps.explorer.is_use2 != apps.explorer.is_use)
@@ -1181,7 +1688,7 @@ let apps = {
                 let aTag = elements[i];
                 var on = apps.explorer.old_name;
                 let inputTag = aTag.querySelector("#new_name");
-                var pathl = $('#win-explorer>.main>.content>.tool>.tit')[0].innerHTML.split('/');
+                var pathl = $('#win-explorer>.main>.content>.tool>.tit')[0].dataset.path.split('/');
                 let tmp = apps.explorer.path;
                 pathl.forEach(name => {
                     tmp = tmp['folder'][name];
@@ -1232,14 +1739,14 @@ let apps = {
                 }
                 var element = document.getElementById("new_name");
                 element.parentNode.removeChild(element);
-                apps.explorer.goto($('#win-explorer>.main>.content>.tool>.tit')[0].innerHTML);
+                apps.explorer.goto($('#win-explorer>.main>.content>.tool>.tit')[0].dataset.path);
 
             }
             delete elements;
             apps.explorer.is_use2 = apps.explorer.is_use;
             var elements = document.querySelectorAll('#win-explorer > .main > .content > .view > .select');
             for (var i = 0; i < elements.length; i++) {
-              elements[i].classList.remove('select');
+                elements[i].classList.remove('select');
             }
             apps.explorer.Process_Of_Select = "";
         },
@@ -1247,10 +1754,28 @@ let apps = {
             apps.explorer.Process_Of_Select = "";
             $('#win-explorer>.main>.content>.view')[0].innerHTML = '';
             var pathl = path.split('/');
+            var pathqwq = '';
             var index_ = 0;
             let tmp = apps.explorer.path;
+            $('#win-explorer>.main>.content>.tool>.tit')[0].dataset.path = path;
+            $('#win-explorer>.main>.content>.tool>.tit>.path')[0].innerHTML = '';
+            $('#win-explorer>.main>.content>.tool>.tit>.icon')[0].style.marginTop = '0px';
+            if (pathl[pathl.length - 1] == 'C:') {
+                $('#win-explorer>.main>.content>.tool>.tit>.icon')[0].style.backgroundImage = 'url("apps/icons/explorer/diskwin.svg")';
+                $('#win-explorer>.main>.content>.tool>.tit>.icon')[0].style.marginTop = '2.5px';
+            }
+            else if (pathl[pathl.length - 1] == 'D:') {
+                $('#win-explorer>.main>.content>.tool>.tit>.icon')[0].style.backgroundImage = 'url("apps/icons/explorer/disk.svg")';
+            }
+            else {
+                $('#win-explorer>.main>.content>.tool>.tit>.icon')[0].style.backgroundImage = 'url("apps/icons/explorer/folder.svg")';
+            }
             pathl.forEach(name => {
+                pathqwq += name;
+                $('#win-explorer>.main>.content>.tool>.tit>.path')[0].innerHTML += `<div class="text" onclick="apps.explorer.goto('${pathqwq}')">${name}</div>`;
+                $('#win-explorer>.main>.content>.tool>.tit>.path')[0].innerHTML += '<div class="arrow"> > </div>';
                 tmp = tmp['folder'][name];
+                pathqwq += '/';
             });
             var path_ = path
             if (Object.keys(tmp["folder"]) == 0 && tmp["file"].length == 0){
@@ -1277,7 +1802,7 @@ let apps = {
             } else {
                 $('#win-explorer>.main>.content>.tool>.goback').attr('onclick', `apps.explorer.goto('${path.substring(0, path.length - pathl[pathl.length - 1].length - 1)}')`);
             }
-            $('#win-explorer>.main>.content>.tool>.tit')[0].innerHTML = path;
+            // $('#win-explorer>.main>.content>.tool>.tit')[0].innerHTML = path;
         },
         add: (path,name_,type="file",command="",icon="") => { //type为文件类型，只有文件夹files和文件file
             var pathl = path.split('/');
@@ -1747,14 +2272,14 @@ Microsoft Windows [版本 12.0.39035.7324]
         },
         run: () => {
             const elt = $('#win-terminal>pre.text-cmd')[0];
-            const input = $('#win-terminal>pre>input');
+            const input = $('#win-terminal input');
             const command = input.val();
             var newD = document.createElement('div');
             newD.innerText = `C:\\Windows\\System32> ${command}`;
             elt.appendChild(newD);
             if (command != '') {
                 try {
-                    if ($('.window.' + command)[0] && !$('.window.' + cmd)[0].classList.contains('configs')) {
+                    if ($('.window.' + command)[0] && !$('.window.' + command)[0].classList.contains('configs')) {
                         openapp(command);
                     }
                     else {
@@ -2147,6 +2672,52 @@ let widgets = {
                 $('.wg.weather>.content>.text>.detail').text(`${inf.cap} 体感温度${inf.feels}℃`);
             })
         },
+    },
+    monitor: {
+        type: 'cpu',
+        handle: null,
+        init: () => {
+            if ($('*:not(.template)>*>.wg.monitor')[0].classList.contains('toolbar')) {
+                $('*:not(.template)>*>.wg.monitor>.content>.container>svg>circle').attr('r', '15px');
+            }
+            else {
+                $('*:not(.template)>*>.wg.monitor>.content>.container>svg>circle').attr('r', '26px');
+            }
+            if (apps.taskmgr.preLoaded != true && apps.taskmgr.loaded != true) {
+                apps.taskmgr.load(false);
+                apps.taskmgr.preLoaded = true;
+            }
+            widgets.monitor.update();
+            widgets.monitor.handle = window.setInterval(widgets.monitor.update, 1000);
+        },
+        update: () => {
+            $('*:not(.template)>*>.wg.monitor>.content>.container>svg>circle:last-child').css('stroke-dasharray', `${widgets.monitor.type != 'gpu' ? widgets.monitor.type.match('wifi') ? widgets.monitor.type == 'wifi-send' ? apps.taskmgr.wifi[1] / 100 * (Math.PI * $('*:not(.template)>*>.wg.monitor>.content>.container>svg>circle:last-child')[0].r.baseVal.value * 2): apps.taskmgr.wifi[0] / 100 * (Math.PI * $('*:not(.template)>*>.wg.monitor>.content>.container>svg>circle:last-child')[0].r.baseVal.value * 2) : apps.taskmgr[widgets.monitor.type] / 100 * (Math.PI * $('*:not(.template)>*>.wg.monitor>.content>.container>svg>circle:last-child')[0].r.baseVal.value * 2): apps.taskmgr.gpu.usage / 100 * (Math.PI * $('*:not(.template)>*>.wg.monitor>.content>.container>svg>circle:last-child')[0].r.baseVal.value * 2)}, 170`);
+            if (widgets.monitor.type == 'cpu' || widgets.monitor.type == 'gpu') {
+                $('*:not(.template)>*>.wg.monitor>.content>.container>svg>circle:last-child').css('stroke', '#2983cc');
+                $('*:not(.template)>*>.wg.monitor>.content>.text>.type')[0].innerText = widgets.monitor.type == 'cpu' ? 'CPU利用率' : 'GPU利用率';
+            }
+            else if (widgets.monitor.type == 'memory') {
+                $('*:not(.template)>*>.wg.monitor>.content>.container>svg>circle:last-child').css('stroke', '#660099');
+                $('*:not(.template)>*>.wg.monitor>.content>.text>.type')[0].innerText = '内存使用量';
+            }
+            else if (widgets.monitor.type == 'disk') {
+                $('*:not(.template)>*>.wg.monitor>.content>.container>svg>circle:last-child').css('stroke', '#008000');
+                $('*:not(.template)>*>.wg.monitor>.content>.text>.type')[0].innerText = '磁盘活动时间';
+            }
+            else if (widgets.monitor.type == 'wifi-send') {
+                $('*:not(.template)>*>.wg.monitor>.content>.container>svg>circle:last-child').css('stroke', '#8e5829');
+                $('*:not(.template)>*>.wg.monitor>.content>.text>.type')[0].innerText = '网络吞吐量-发送';
+            }
+            else if (widgets.monitor.type == 'wifi-receive') {
+                $('*:not(.template)>*>.wg.monitor>.content>.container>svg>circle:last-child').css('stroke', '#8e5829');
+                $('*:not(.template)>*>.wg.monitor>.content>.text>.type')[0].innerText = '网络吞吐量-接收';
+            }
+            $('*:not(.template)>*>.wg.monitor>.content>.text>.value')[0].innerText = (widgets.monitor.type != 'gpu' ? widgets.monitor.type.match('wifi') ? widgets.monitor.type == 'wifi-send' ? apps.taskmgr.wifi[1] : apps.taskmgr.wifi[0] : apps.taskmgr[widgets.monitor.type] : apps.taskmgr.gpu.usage).toFixed(widgets.monitor.type.match('wifi') ? 2 : 1) + (widgets.monitor.type.match('wifi') ? 'Mbps' : '%');
+            $('*:not(.template)>*>.wg.monitor>.content>.container>.text>.value')[0].innerText = (widgets.monitor.type != 'gpu' ? widgets.monitor.type.match('wifi') ? widgets.monitor.type == 'wifi-send' ? apps.taskmgr.wifi[1] : apps.taskmgr.wifi[0] : apps.taskmgr[widgets.monitor.type] : apps.taskmgr.gpu.usage).toFixed(widgets.monitor.type.match('wifi') ? 2 : 1) + (widgets.monitor.type.match('wifi') ? 'Mbps' : '%');
+        },
+        remove: () => {
+            window.clearInterval(widgets.monitor.handle);
+        }
     }
 }
 // 日期、时间
@@ -2188,7 +2759,8 @@ let icon = {
     winver: 'about.svg',
     pythonEditor: 'pythonEditor.png',
     run: 'run.png',
-    whiteboard: 'whiteboard.png'
+    whiteboard: 'whiteboard.png',
+    taskmgr: 'taskmgr.png'
 }
 function geticon(name) {
     if (icon[name]) return icon[name];
@@ -2197,6 +2769,9 @@ function geticon(name) {
 
 // 应用与窗口
 function openapp(name) {
+    if (taskmgrTasks.findIndex(elt => elt.link == name) > -1 && apps.taskmgr.tasks.findIndex(elt => elt.link == name) == -1) {
+        apps.taskmgr.tasks.splice(apps.taskmgr.tasks.length, 0, taskmgrTasks.find(elt => elt.link == name));
+    }
     if ($('#taskbar>.' + name).length != 0) {
         if ($('.window.' + name).hasClass('min')) {
             minwin(name);
@@ -2587,6 +3162,15 @@ try {
 } catch (TypeError) {
     console.log('内部错误: 无法获取电量');
 }
+
+// 任务管理器 记录硬件运行时间
+if (localStorage.getItem('cpuRunningTime')) {
+    apps.taskmgr.cpuRunningTime = localStorage.getItem('cpuRunningTime');
+}
+window.setInterval(() => {
+    apps.taskmgr.cpuRunningTime++;
+    localStorage.setItem('cpuRunningTime', apps.taskmgr.cpuRunningTime);
+}, 1000);
 
 // 选择框
 let chstX, chstY;

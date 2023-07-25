@@ -3,6 +3,7 @@
 
 :root {
     --text: #000;
+    --text2: #444;
     --bg: #ffffff;
     --bg50: #ffffff80;
     --bg70: #ffffff80;
@@ -29,6 +30,7 @@
 
 :root.dark {
     --text: #ddd;
+    --text2: #aaa;
     --bg: #000000;
     --bg50: #00000060;
     --bg70: #00000080;
@@ -630,6 +632,10 @@ input-before {
 
 .window>.resize-bar {
     z-index: 1 !important;
+}
+
+.window.max>.resize-bar {
+    display: none !important;
 }
 
 .window>.resize-bar>.resize-knob {

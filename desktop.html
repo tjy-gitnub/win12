@@ -33,6 +33,7 @@
 	<link rel="stylesheet" href="apps/style/whiteboard.css">
 	<link rel="stylesheet" href="apps/style/musicPlayer.css">
 	<link rel="stylesheet" href="apps/style/defender.css">
+	<link rel="stylesheet" href="apps/style/taskmgr.css">
 	<link rel="stylesheet" href="widgets.css">
 	<link rel="manifest" href="pwa/manifest.json">
 	<link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
@@ -227,8 +228,7 @@
 			</g>
 		</svg>
 		<loading id="loadbackloading" style="transition:1s;opacity:0;">
-			<svg style="position:absolute;left:calc(50% - 25px);top:72%;" width="50px" height="50px"
-				viewBox="0 0 16 16">
+			<svg style="position: absolute; left: calc(50% - 25px); top: 72%;" width="50px" height="50px" viewBox="0 0 16 16">
 				<circle cx="8px" cy="8px" r="7px"></circle>
 			</svg>
 			<p id="loadbackupdate"
@@ -276,10 +276,8 @@
 			登录
 		</div>
 		<a class="power" onclick="$(this).addClass('show')">
-			<i class="bi bi-power" onclick="setTimeout(() => {window.location='shutdown.html';},200);"
-				win12_title="关机"></i>
-			<i class="bi bi-arrow-counterclockwise" onclick="setTimeout(() => {window.location='reload.html';},200);"
-				win12_title="重启"></i>
+			<i class="bi bi-power" onclick="setTimeout(() => {window.location='shutdown.html';}, 200);" win12_title="关机"></i>
+			<i class="bi bi-arrow-counterclockwise" onclick="setTimeout(() => {window.location='reload.html';}, 200);" win12_title="重启"></i>
 		</a>
 	</div>
 	<!-- <img src="https://bing.com/th?id=OHR.Trossachs_ZH-CN9299955040_UHD.jpg&qlt=100" alt=""> -->
@@ -354,6 +352,11 @@
 					onclick="openapp('about');hide_startmenu();">
 					<img src="icon/about.svg">
 					<p>关于Win12网页版</p>
+				</a>
+				<a oncontextmenu="return showcm(event, 'smlapp', ['taskmgr', '任务管理器'])"
+					onclick="openapp('taskmgr');hide_startmenu();">
+					<img src="icon/taskmgr.png">
+					<p>任务管理器</p>
 				</a>
 				<a oncontextmenu="return showcm(event, 'smlapp', ['notepad', '记事本'])"
 					onclick="openapp('notepad');hide_startmenu();">
@@ -698,6 +701,34 @@
 							</div>
 						</div>
 					</div>
+					<div class="monitor">
+						<div class="wg monitor">
+							<div class="titbar">
+								<a win12_title="更多" onmouseenter="showdescp(event)" onmouseleave="hidedescp(event)" class="a more notip" onclick="$('.wg.monitor>.titbar>.menu').toggleClass('show')"><i class="bi bi-three-dots"></i></a>
+								<div class="menu">
+									<a class="a chose" win12_title="切换监视器类型" onmouseenter="showdescp(event)" onmouseleave="hidedescp(event)" onclick="shownotice('widgets.monitor')"><i class="bi bi-arrow-left-right"></i></a>
+									<a class="a move" win12_title="移动 (不可用)" onmouseenter="showdescp(event)" onmouseleave="hidedescp(event)"><i class="bi bi-arrows-move"></i></a>
+									<a class="a addtotb" win12_title="添加到任务栏" onmouseenter="showdescp(event)" onmouseleave="hidedescp(event)" onclick="widgets.widgets.addToToolbar('monitor')"><i class="bi bi-menu-app"></i></a>
+									<a class="a delete" win12_title="删除" onmouseenter="showdescp(event)" onmouseleave="hidedescp(event)" onclick="$('.wg.monitor>.titbar>.menu').removeClass('show');widgets.widgets.remove('monitor')"><i class="bi bi-trash"></i></a>
+								</div>
+							</div>
+							<div class="content">
+								<div class="container">
+									<svg width="60px" height="60px">
+										<circle cx="30px" cy="30px" r="26px"></circle>
+										<circle cx="30px" cy="-30px" r="26px"></circle>
+									</svg>
+									<div class="text">
+										<div class="value">50%</div>
+									</div>
+								</div>
+								<div class="text">
+									<p class="type">内存</p>
+									<p class="value">50%</p>
+								</div>
+							</div>
+						</div>
+					</div>
 				</div>
 				<div class="grid">
 
@@ -808,7 +839,7 @@
 					<div class="icon">
 						<icon class="s-icon"></icon>
 					</div>
-					<div class="range-container" onmousedown="dragBrightness(event)">
+					<div class="range-container" onmousedown="dragBrightness(event)" ontouchstart="dragBrightness(event)">
 						<div class="after"></div>
 						<div class="slider-btn"></div>
 					</div>
@@ -1440,7 +1471,7 @@
 			</div>
 		</div>
 	</div>
-	<div class="window defender nb-defender">
+	<div class="window defender" data-min-width="800" style="width: max(800px, 70%)">
 		<div class="resize-bar"></div>
 		<div class="titbar">
 			<img src="icon/defender.svg" class="icon">
@@ -1454,7 +1485,7 @@
 		<div class="loadback">
 			<img src="icon/defender.svg" class="icon">
 		</div>
-		<div class="app-container">
+		<div class="content" id="win-defender">
 			<div class="app-left">
 				<button class="close-menu">
 					<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
@@ -1467,31 +1498,31 @@
 				<ul class="nav-list">
 					<li class="nav-list-item active">
 						<a class="nav-list-link" href="#">
-							<icon class="icon-defender"></icon>
+							<icon></icon>
 							主页
 						</a>
 					</li>
 					<li class="nav-list-item">
 						<a class="nav-list-link" href="#">
-							<icon class="icon-defender"></icon>
+							<icon></icon>
 							病毒威胁与防护
 						</a>
 					</li>
 					<li class="nav-list-item">
 						<a class="nav-list-link" href="#">
-							<icon class="icon-defender"></icon>
+							<icon></icon>
 							账户防护
 						</a>
 					</li>
 					<li class="nav-list-item">
 						<a class="nav-list-link" href="#">
-							<icon class="icon-defender"></icon>
+							<icon></icon>
 							防火墙和网络防护
 						</a>
 					</li>
 					<li class="nav-list-item">
 						<a class="nav-list-link" href="#">
-							<icon class="icon-defender"></icon>
+							<icon></icon>
 							设备安全性
 						</a>
 					</li>
@@ -2230,7 +2261,7 @@
 			<div class="main">
 				<div class="tool micaalt">
 					<a class="a b t act"
-						onclick="apps.explorer.add($('#win-explorer>.main>.content>.tool>.tit')[0].innerHTML,'新建文本文档.txt')"><img
+						onclick="apps.explorer.add($('#win-explorer>.main>.content>.tool>.tit')[0].dataset.path,'新建文本文档.txt')"><img
 							src="apps/icons/explorer/tool-new.png">新建</a>
 					<div class="hr"></div>
 					<a class="a b act"><img src="apps/icons/explorer/tool-cut.png"></a>
@@ -2247,7 +2278,7 @@
 						<a class="a btn btn-icon" style="filter: contrast(0.5);"><i class="bi bi-arrow-left"></i></a>
 						<a class="a btn btn-icon" style="filter: contrast(0.5);"><i class="bi bi-arrow-right"></i></a>
 						<a class="a btn btn-icon goback"><i class="bi bi-arrow-up"></i></a>
-						<p class="tit">此电脑</p>
+						<p class="tit"></p>
 						<div class="search">
 							<input type="text" class="input" placeholder="在这里输入你要搜索的内容">
 							<input-before class="bi bi-search"></input-before>
@@ -2390,7 +2421,8 @@
 						<summary><span>v5.4.2</span> 灾难性程序错误修复</summary>
 						<p>
 							&emsp;&emsp;-修复pwa将主题获取请求拦截的重大灾难性事故<br />
-							&emsp;&emsp;-细节优化和修复</p>
+							&emsp;&emsp;-细节优化和修复
+						</p>
 					</details>
 					<details>
 						<summary><span>v5.4.1</span> bug修复</summary>
@@ -2400,7 +2432,8 @@
 							&emsp;&emsp;-调整大家梦寐以求的开始菜单滚动条<br />
 							&emsp;&emsp;-新增开始菜单固定项右键取消固定选项<br />
 							&emsp;&emsp;-适配主题格式的一些更改<br />
-							&emsp;&emsp;-细节优化和修复</p>
+							&emsp;&emsp;-细节优化和修复
+						</p>
 					</details>
 					<details>
 						<summary><span>v5.4.0</span> 新版logo与图标，UI优化，自定主题与winver</summary>
@@ -2415,7 +2448,8 @@
 							&emsp;&emsp;-UI适配:稍稍更改了不适配的UI<br />
 							&emsp;&emsp;-Bug修复:右键菜单无法关闭<br />
 							&emsp;&emsp;-代码优化:对某些重复代码整理归纳，引入应用的初始化load配置<br />
-							&emsp;&emsp;-细节优化和修复<br /></p>
+							&emsp;&emsp;-细节优化和修复<br />
+						</p>
 					</details>
 					<details>
 						<summary><span>v5.3.1</span> 问题修复</summary>
@@ -2424,7 +2458,8 @@
 							&emsp;&emsp;-修复了样式不正常的问题<br />
 							&emsp;&emsp;-修复了部分情况下Edge浏览器中加载动画圆圈位置不正确的问题<br />
 							&emsp;&emsp;-修复了开始菜单无法滚动的问题<br />
-							&emsp;&emsp;-修复了控制面板的样式问题<br /></p>
+							&emsp;&emsp;-修复了控制面板的样式问题<br />
+						</p>
 					</details>
 					<details>
 						<summary><span>v5.3.0</span> 触控设备适配、“运行”应用、“白板”应用、控制中心与细节修复</summary>
@@ -2442,13 +2477,15 @@
 							&emsp;&emsp;-修复了部分情况下终端不能正常运作的问题(详见由NebulaTechs提出的Issue#87)<br />
 							&emsp;&emsp;-修复了部分情况下Edge浏览器中无法正确显示标签页的问题<br />
 							&emsp;&emsp;-其他一些更改<br />
-							&emsp;&emsp;-格式化部分文档<br /></p>
+							&emsp;&emsp;-格式化部分文档<br />
+						</p>
 					</details>
 					<details>
 						<summary><span>v5.2.4</span> Python编辑器</summary>
 						<p>
 							&emsp;&emsp;<strong>更新来自 @NB-Group</strong><br />
-							&emsp;&emsp;-新增 Python 编辑器应用，编辑器自带自动补全，代码高亮和运行功能。<br /></p>
+							&emsp;&emsp;-新增 Python 编辑器应用，编辑器自带自动补全，代码高亮和运行功能。<br />
+						</p>
 					</details>
 					<details>
 						<summary><span>v5.2.3</span> 登录界面优化和Python解释器</summary>
@@ -2459,7 +2496,8 @@
 							&emsp;&emsp;-新增了Python解释器(此项更新由@NB-Group提供灵感与框架，@User782Tec完善)<br />
 							&emsp;&emsp;-修复了终端选择不正常的问题<br />
 							&emsp;&emsp;-改进了终端，可通过应用标识符来打开应用<br />
-							&emsp;&emsp;-格式化部分文档<br /></p>
+							&emsp;&emsp;-格式化部分文档<br />
+						</p>
 					</details>
 					<details>
 						<summary><span>v5.2.2</span> 细节优化</summary>
@@ -2468,7 +2506,8 @@
 							&emsp;&emsp;-添加登录背景，一些外观优化<br />
 							&emsp;&emsp;-开源许可的完善<br />
 							&emsp;&emsp;-一些优化和修复<br />
-							&emsp;&emsp;-吊一下胃口:v6将使用全新图标(壁纸?)，支持自定义主题 >_-)o</p>
+							&emsp;&emsp;-吊一下胃口:v6将使用全新图标(壁纸?)，支持自定义主题 >_-)o
+						</p>
 					</details>
 					<details>
 						<summary><span>v5.2.1</span> 登录界面，开机音效和细节优化</summary>
@@ -2478,7 +2517,8 @@
 							&emsp;&emsp;-Edge浏览器中，超出标签页范围的文字将会被隐藏以避免文字溢出的问题<br />
 							&emsp;&emsp;-微调Edge浏览器中加载动画的位置<br />
 							&emsp;&emsp;-新增了开机音效和登录界面<br />
-							&emsp;&emsp;-格式化部分文档<br /></p>
+							&emsp;&emsp;-格式化部分文档<br />
+						</p>
 					</details>
 					<details>
 						<summary><span>v5.2.0</span> 相机应用及细节修复</summary>
@@ -2491,7 +2531,8 @@
 							&emsp;&emsp;-修复部分情况下标题栏不显示的问题<br />
 							&emsp;&emsp;-优化窗口布局<br />
 							&emsp;&emsp;-修正部分非标准CSS特性<br />
-							&emsp;&emsp;-格式化部分文档<br /></p>
+							&emsp;&emsp;-格式化部分文档<br />
+						</p>
 					</details>
 					<details>
 						<summary><span>v5.1.2</span> 细节修复和更改</summary>
@@ -2503,7 +2544,8 @@
 							&emsp;&emsp;-其它一些更改<br />
 							&emsp;&emsp;-提示:在github项目页的一些<a
 								onclick="window.open('https://github.com/tjy-gitnub/win12','_blank');"
-								win12_title="https://github.com/tjy-gitnub/win12" class="jump">公告</a></p>
+								win12_title="https://github.com/tjy-gitnub/win12" class="jump">公告</a>
+							</p>
 					</details>
 					<details>
 						<summary><span>v5.1.1</span> 网页加载动画与新增应用</summary>
@@ -2513,14 +2555,16 @@
 							&emsp;&emsp;-Edge浏览器中网页加载时的标签页动画<br />
 							&emsp;&emsp;-增加了点击窗口图标后弹出菜单的功能（部分触控设备不能触发上下文菜单）<br />
 							&emsp;&emsp;-增加应用 VSCode 与 哔哩哔哩<br />
-							&emsp;&emsp;-其它: 格式化文档和修复</p>
+							&emsp;&emsp;-其它: 格式化文档和修复
+						</p>
 					</details>
 					<details>
 						<summary><span>v5.1.0</span> 标签页拖动排序与云母效果</summary>
 						<p>
 							&emsp;&emsp;-标签页:可拖动标签页排序(仅桌面端)<br />
 							&emsp;&emsp;-云母效果(试验):在设置中启用并按"用法"操作<br />
-							&emsp;&emsp;-其它:细节优化和修复</p>
+							&emsp;&emsp;-其它:细节优化和修复
+						</p>
 					</details>
 					<details>
 						<summary><span>v5.0.2</span> 贡献与Edge标签页</summary>
@@ -2529,7 +2573,8 @@
 							&emsp;&emsp;-新标签页:对深色模式的适配，较高安全限制浏览器的适配<br />
 							&emsp;&emsp;-标签页:新增标签页关闭动画<br />
 							&emsp;&emsp;-兼容性:系统控件的防误触<br />
-							&emsp;&emsp;-其它:细节优化和修复</p>
+							&emsp;&emsp;-其它:细节优化和修复
+						</p>
 					</details>
 					<details>
 						<summary><span>v5.0.1</span> 漏洞修复</summary>
@@ -2693,8 +2738,8 @@
 			<img src="icon/terminal.svg" class="icon">
 		</div>
 
-		<div class="content" id="win-terminal">
-			<pre>
+		<div class="content" id="win-terminal" onmouseup="$('#win-terminal input').focus();" ontouchend="$('#win-terminal input').focus();">
+            <pre>
 				Microsoft Windows [版本 12.0.39035.7324]
 				(c) Microsoft Corporation。保留所有权利。
 			</pre>
@@ -2718,8 +2763,8 @@
 			<img src="icon/python.png" class="icon">
 		</div>
 
-		<div class="content" id="win-python">
-			<pre>
+		<div class="content" id="win-python" onmouseup="$('#win-python input').focus();" ontouchend="$('#win-python input').focus();">
+            <pre>
 				Python 3.10.2  [MSC v.1912 64 bit (AMD64)] :: Anaconda, Inc. on win32
 				Type "help", "copyright", "credits" or "license" for more information.
 			</pre>
@@ -3050,13 +3095,460 @@
 			</div>
 		</div>
 	</div>
+	<div class="window taskmgr">
+		<div class="resize-bar"></div>
+		<div class="titbar">
+			<img src="icon/taskmgr.png" class="icon">
+			<p>任务管理器</p>
+			<div>
+				<a class="a wbtg red" onclick="hidewin('taskmgr')"><i class="bi bi-x-lg"></i></a>
+				<a class="a wbtg max" onclick="maxwin('taskmgr')"><i class="bi bi-app"></i></a>
+				<a class="a wbtg" onclick="minwin('taskmgr')"><i class="bi bi-dash-lg"></i></a>
+			</div>
+		</div>
+		<div class="loadback">
+			<img src="icon/taskmgr.png" class="icon">
+		</div>
+		<div class="content" id="win-taskmgr">
+			<div class="menu">
+				<list class="focs">
+					<a class="processes check" onclick="apps.taskmgr.page('processes')">
+						<svg xmlns="http://www.w3.org/2000/svg" width="18px" height="18px" viewBox="3.5 5.5 29 29">
+							<path d="M 5 11 L 5 29 C 5 32 6 33 9 33 L 14 33 C 17 33 18 32 18 29 L 18 7 L 9 7 C 6 7 5 8 5 11 M 18 7 L 27 7 C 30 7 31 8 31 11 L 31 16 C 31 19 30 20 27 20 L 5 20" stroke="var(--text)" stroke-width="1.5" fill="none"/>
+						</svg>
+						进程
+					</a>
+					<a class="performance" onclick="apps.taskmgr.page('performance')"><icon class="s-icon"></icon> 性能</a>
+					<span class="focs"></span>
+				</list>
+			</div>
+			<div class="main">
+				<div class="cnt processes show">
+					<div class="tit">
+						<p>进程</p>
+						<hr>
+					</div>
+					<table>
+						<thead>
+							<tr class="title">
+								<th>进程名称</th>
+								<th class="align-right" onclick="apps.taskmgr.changeSort(this.childNodes[0], 'cpu');"><i class="bi bi-chevron-down"></i><div class="value">11.4%</div>CPU</th>
+								<th class="align-right" onclick="apps.taskmgr.changeSort(this.childNodes[0], 'memory');"><i class="bi"></i><div class="value">11.4%</div>内存</th>
+								<th class="align-right" onclick="apps.taskmgr.changeSort(this.childNodes[0], 'disk');"><i class="bi"></i><div class="value">11.4%</div>硬盘</th>
+								<th class="power">电源使用情况</th>
+							</tr>
+						</thead>
+						<tbody class="view">
+							<!-- 进程信息 -->
+						</tbody>
+					</table>
+				</div>
+				<div class="cnt performance">
+					<div class="tit">
+						<p>性能</p>
+						<hr>
+					</div>
+					<div class="content">
+						<div class="select-menu">
+							<div onclick="apps.taskmgr.graph('graph-cpu')" class="graph-cpu check">
+								<div class="left">
+									<div class="graph-view-cpu"></div>
+								</div>
+								<div class="right">
+									<div class="tit">CPU</div>
+									<div class="data">
+										<div class="value1">11.4%</div>
+										<div class="value2">10GHz</div>
+									</div>
+								</div>
+							</div>
+							<div onclick="apps.taskmgr.graph('graph-memory');" class="graph-memory">
+								<div class="left">
+									<div class="graph-view-memory"></div>
+								</div>
+								<div class="right">
+									<div class="tit">内存</div>
+									<div class="data">
+										<div class="value1">11.4 / 100GB</div>
+										<div class="value2">11.4%</div>
+									</div>
+								</div>
+							</div>
+							<div onclick="apps.taskmgr.graph('graph-disk');" class="graph-disk">
+								<div class="left">
+									<div class="graph-view-disk"></div>
+								</div>
+								<div class="right">
+									<div class="tit">磁盘</div>
+									<div class="data">
+										<div class="tit">SSD</div>
+										<div class="value2">1.14%</div>
+									</div>
+								</div>
+							</div>
+							<div onclick="apps.taskmgr.graph('graph-wifi');" class="graph-wifi">
+								<div class="left">
+									<div class="graph-view-wifi"></div>
+								</div>
+								<div class="right">
+									<div class="tit">Wi-Fi</div>
+									<div class="data">
+										<div class="tit">WLAN</div>
+										<div class="value2">发送: 1145 接收: 1145 Mbps</div>
+									</div>
+								</div>
+							</div>
+							<div onclick="apps.taskmgr.graph('graph-gpu');" class="graph-gpu">
+								<div class="left">
+									<div class="graph-view-gpu"></div>
+								</div>
+								<div class="right">
+									<div class="tit">GPU 0</div>
+									<div class="data">
+										<div class="tit">NBidia GeForce RTX 4090Ti</div>
+										<div class="value2">1%</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="performance-graph">
+							<div class="graph-cpu show">
+								<div class="tit">
+									<div class="left-name">CPU</div>
+									<div class="right-message">The Wandering Earth (R) NB (R) Quantum Chip 550W @ 8192</div>
+								</div>
+								<div class="graph-msg top">
+									<div class="left">% 利用率</div>
+									<div class="right">100%</div>
+								</div>
+								<div class="graph" win12_title="CPU活动">
+									<canvas class="bg" width="1920" height="1080"></canvas>
+									<canvas class="chart" width="1920" height="1080"></canvas>
+								</div>
+								<div class="graph-msg bottom">
+									<div class="left">60 秒</div>
+									<div class="right">0</div>
+								</div>
+								<div class="information">
+									<div class="left">
+										<div><div class="top">利用率</div><div class="value">11.4%</div></div>
+										<div><div class="top">速度</div><div class="value">1024.53 GHz</div></div>
+										<div><div class="top">进程</div><div class="value">1145</div></div>
+										<div><div class="top">线程</div><div class="value">114514</div></div>
+										<div><div class="top">句柄</div><div class="value">114514191918</div></div>
+										<div><div class="top">正常运行时间</div><div class="value">0:11:45:14</div></div>
+									</div>
+									<div class="right">
+										<table>
+											<tbody>
+												<tr>
+													<td>基准速度: </td>
+													<td>10.0 GHz</td>
+												</tr>
+												<tr>
+													<td>插槽: </td>
+													<td>1</td>
+												</tr>
+												<tr>
+													<td>内核: </td>
+													<td>32</td>
+												</tr>
+												<tr>
+													<td>逻辑处理器: </td>
+													<td>32</td>
+												</tr>
+												<tr>
+													<td>虚拟化: </td>
+													<td>已启用</td>
+												</tr>
+												<tr>
+													<td>L1缓存: </td>
+													<td>512 MB</td>
+												</tr>
+												<tr>
+													<td>L2缓存: </td>
+													<td>2.1 GB</td>
+												</tr>
+												<tr>
+													<td>L3缓存: </td>
+													<td>5.5 GB</td>
+												</tr>
+											</tbody>
+										</table>
+									</div>
+								</div>
+							</div>
+							<div class="graph-memory">
+								<div class="tit">
+									<div class="left-name">内存</div>
+									<div class="right-message">100GB</div>
+								</div>
+								<div class="graph-msg top">
+									<div class="left">内存使用量</div>
+									<div class="right">100GB</div>
+								</div>
+								<div class="graph" win12_title="使用中">
+									<canvas class="bg" width="1920" height="1080"></canvas>
+									<canvas class="chart" width="1920" height="1080"></canvas>
+								</div>
+								<div class="graph-msg bottom">
+									<div class="left">60 秒</div>
+									<div class="right">0</div>
+								</div>
+								<div class="graph-msg top">
+									<div class="left">内存组合</div>
+								</div>
+								<div class="graph memory2 minor" style="margin-bottom: 10px; border: 1px #660099 solid; height: 35px !important">
+									<canvas class="chart2" width="1280" height="35"></canvas>
+								</div>
+								<div class="information">
+									<div class="left">
+										<div><div class="top">使用中(已压缩)</div><div class="value">11.4 GB</div></div>
+										<div><div class="top">可用</div><div class="value">88.6 GB</div></div>
+										<div><div class="top">已提交</div><div class="value">12 / 100 GB</div></div>
+										<div><div class="top">已缓存</div><div class="value">5.5 GB</div></div>
+										<div><div class="top">分页缓冲池</div><div class="value">1 GB</div></div>
+										<div><div class="top">非分页缓冲池</div><div class="value">365 MB</div></div>
+									</div>
+									<div class="right">
+										<table>
+											<tbody>
+												<tr>
+													<td>速度: </td>
+													<td>4514MHz</td>
+												</tr>
+												<tr>
+													<td>已使用插槽: </td>
+													<td>2 / 2</td>
+												</tr>
+												<tr>
+													<td>外形规格: </td>
+													<td>Row of chips</td>
+												</tr>
+												<tr>
+													<td>为硬件保留的内存：</td>
+													<td>200MB</td>
+												</tr>
+											</tbody>
+										</table>
+									</div>
+								</div>
+							</div>
+							<div class="graph-disk">
+								<div class="tit">
+									<div class="left-name">磁盘 0 (C: D:)</div>
+									<div class="right-message">NB++ 360G</div>
+								</div>
+								<div class="graph-msg top">
+									<div class="left">活动时间</div>
+									<div class="right">100%</div>
+								</div>
+								<div class="graph" win12_title="磁盘处理读取或写入请求的时间百分比">
+									<canvas class="bg" width="1920" height="1080"></canvas>
+									<canvas class="chart" width="1920" height="1080"></canvas>
+								</div>
+								<div class="graph-msg bottom">
+									<div class="left">60 秒</div>
+									<div class="right">0</div>
+								</div>
+								<div class="graph-msg top">
+									<div class="left">磁盘传输速率</div>
+									<div class="right">100 MB/秒</div>
+								</div>
+								<div class="graph disk2 minor" style="margin-bottom: 10px; height: 70px !important; min-height: 70px !important;">
+									<canvas class="chart2" width="1920" height="280"></canvas>
+									<canvas class="bg2" width="1920" height="280"></canvas>
+								</div>
+								<div class="information">
+									<div class="left">
+										<div><div class="top">活动时间</div><div class="value">1.14%</div></div>
+										<div><div class="top">平均响应时间</div><div class="value">0.014 毫秒</div></div>
+										<div style="border-left: 2px #008000 solid; padding-left: 10px;"><div class="top">读取速度</div><div class="value">14 KB/秒</div></div>
+										<div style="border-left: 2px #008000 dotted; padding-left: 10px;"><div class="top">写入速度</div><div class="value">114 KB/秒</div></div>
+									</div>
+									<div class="right">
+										<table>
+											<tbody>
+												<tr>
+													<td>容量: </td>
+													<td>359 GB</td>
+												</tr>
+												<tr>
+													<td>已格式化: </td>
+													<td>359 GB</td>
+												</tr>
+												<tr>
+													<td>系统磁盘: </td>
+													<td>是</td>
+												</tr>
+												<tr>
+													<td>页面文件: </td>
+													<td>是</td>
+												</tr>
+												<tr>
+													<td>类型: </td>
+													<td>SSD</td>
+												</tr>
+											</tbody>
+										</table>
+									</div>
+								</div>
+							</div>
+							<div class="graph-wifi show">
+								<div class="tit">
+									<div class="left-name">Wi-Fi</div>
+									<div class="right-message">NB Wireless LAN 802.11ac</div>
+								</div>
+								<div class="graph-msg top">
+									<div class="left">吞吐量</div>
+									<div class="right">100 Mbps</div>
+								</div>
+								<div class="graph" win12_title="此网络上的发送和接收活动">
+									<canvas class="bg" width="1920" height="1080"></canvas>
+									<canvas class="chart" width="1920" height="1080"></canvas>
+								</div>
+								<div class="graph-msg bottom">
+									<div class="left">60 秒</div>
+									<div class="right">0</div>
+								</div>
+								<div class="information">
+									<div class="left">
+										<div><div class="top">发送</div><div class="value">114 Mbps</div></div>
+										<div><div class="top">接收</div><div class="value">114 Mbps</div></div>
+									</div>
+									<div class="right">
+										<table>
+											<tbody>
+												<tr>
+													<td>适配器名称: </td>
+													<td>WLAN</td>
+												</tr>
+												<tr>
+													<td>SSID: </td>
+													<td>NB Network</td>
+												</tr>
+												<tr>
+													<td>连接类型: </td>
+													<td>802.11ac</td>
+												</tr>
+												<tr>
+													<td>IPv4地址: </td>
+													<td>114.514.19.810</td>
+												</tr>
+												<tr>
+													<td>IPv6地址: </td>
+													<td>2CBB::2CBB:2CBB:2CBB:2CBB</td>
+												</tr>
+												<tr>
+													<td>信号强度: </td>
+													<td>
+														<svg xmlns="http://www.w3.org/2000/svg" viewBox="4.4 4.4 26.2 31.2" width="1.45em" height="1.4em">
+															<path d="M 5 25 L 5 35 L 10 35 L 10 25 L 5 25 M 10 20 L 10 35 L 15 35 L 15 20 L 10 20 M 15 15 L 20 15 L 20 35 L 15 35 L 15 15 M 20 10 L 25 10 L 25 35 L 20 35 L 20 10 M 25 5 L 25 35 L 30 35 L 30 5 L 25 5" stroke="#8e5829" stroke-width="0.6" fill="#8e582988"/>
+														</svg>
+													</td>
+												</tr>
+											</tbody>
+										</table>
+									</div>
+								</div>
+							</div>
+							<div class="graph-gpu">
+								<div class="tit">
+									<div class="left-name">GPU</div>
+									<div class="right-message">NBidia GeForce RTX 4090Ti</div>
+								</div>
+								<div class="graphs">
+									<canvas class="usage" width="1920" height="1080" style="display: none;"></canvas>
+									<div class="graph1">
+										<div class="title-gpu">3D</div>
+										<div class="chart">
+											<canvas class="bg" width="1920" height="1080"></canvas>
+											<canvas class="chart" width="1920" height="1080"></canvas>
+										</div>
+									</div>
+									<div class="graph2">
+										<div class="title-gpu">Copy</div>
+										<div class="chart">
+											<canvas class="bg" width="1920" height="1080"></canvas>
+											<canvas class="chart" width="1920" height="1080"></canvas>
+										</div>
+									</div>
+									<div class="graph3">
+										<div class="title-gpu">Video Decode</div>
+										<div class="chart">
+											<canvas class="bg" width="1920" height="1080"></canvas>
+											<canvas class="chart" width="1920" height="1080"></canvas>
+										</div>
+									</div>
+									<div class="graph4">
+										<div class="title-gpu">Video Processing</div>
+										<div class="chart">
+											<canvas class="bg" width="1920" height="1080"></canvas>
+											<canvas class="chart" width="1920" height="1080"></canvas>
+										</div>
+									</div>
+								</div>
+								<div class="graph-msg top">
+									<div class="left">专用 GPU 内存利用率</div>
+									<div class="right">16 GB</div>
+								</div>
+								<div class="graph gpu2-1 minor" style="height: 70px !important; min-height: 70px !important;" win12_title="专用 GPU 内存利用率">
+									<canvas class="chart2" width="1920" height="280"></canvas>
+									<canvas class="bg2" width="1920" height="280"></canvas>
+								</div>
+								<div class="graph-msg top">
+									<div class="left">共享 GPU 内存利用率</div>
+									<div class="right">32 GB</div>
+								</div>
+								<div class="graph gpu2-2 minor" style="height: 70px !important; min-height: 70px !important; margin-bottom: 10px" win12_title="共享 GPU 内存利用率">
+									<canvas class="chart2" width="1920" height="280"></canvas>
+									<canvas class="bg2" width="1920" height="280"></canvas>
+								</div>
+								<div class="information">
+									<div class="left">
+										<div><div class="top">利用率</div><div class="value">1.1%</div></div>
+										<div><div class="top">专用 GPU 内存</div><div class="value">0.1 GB / 2 GB</div></div>
+										<div><div class="top">共享 GPU 内存</div><div class="value">1.1 GB / 16 GB</div></div>
+										<div><div class="top">GPU 内存</div><div class="value">1.2 / 18 GB</div></div>
+									</div>
+									<div class="right">
+										<table>
+											<tbody>
+												<tr>
+													<td>驱动程序版本: </td>
+													<td>11.45.14.19</td>
+												</tr>
+												<tr>
+													<td>驱动程序日期: </td>
+													<td>2023 / 4 / 1</td>
+												</tr>
+												<tr>
+													<td>DirectX 版本</td>
+													<td>12 (FL 12.1)</td>
+												</tr>
+												<tr>
+													<td>物理位置: </td>
+													<td>PCI 总线 0、设备 14 、功能 0</td>
+												</tr>
+											</tbody>
+										</table>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<script src="data/tasks.js"></script>
 	<script src="desktop.js"></script>
-	<script src="https://cdn.jsdelivr.net/pyodide/v0.20.0/full/pyodide.js" async></script>
+	<script src="https://fastly.jsdelivr.net/pyodide/v0.23.4/full/pyodide.js" async></script>
 	<!-- <link rel="stylesheet" href="https://pyscript.net/latest/pyscript.css" />
-	<script defer src="https://pyscript.net/latest/pyscript.js"></script> --> <!-- PyScript, 已弃用 -->
-	<script src="https://cdn.jsdelivr.net/gh/ajaxorg/ace-builds@master/src/ace.js"></script>
-	<script src="https://cdn.jsdelivr.net/gh/ajaxorg/ace-builds@master/src-noconflict/ext-language_tools.js"></script>
-	<script src="https://cdn.jsdelivr.net/gh/ajaxorg/ace-builds@master/src-noconflict/ext-error_marker.js"></script>
+	<script defer src="https://pyscript.net/latest/pyscript.js"></script> -->         <!-- PyScript, 已弃用 -->
+	<script src="https://cdn.staticfile.org/ace/1.23.0/ace.min.js"></script>
+	<script src="https://cdn.staticfile.org/ace/1.23.0/ext-language_tools.min.js"></script>
+	<script src="https://cdn.staticfile.org/ace/1.23.0/ext-error_marker.min.js"></script>
 </body>
 
 </html>
