@@ -1,21 +1,24 @@
 .window.terminal-apps {
     --text: #ddd;
     --bg: #000000;
-    --bg50: #00000050;
-    --bg70: #00000070;
-    --sd: #00000070;
+    --bg50: #00000060;
+    --bg70: #000000b7;
+    --sd: #000000a0;
     --card: #72727240;
-    --hover: #ffffff40;
+    --hover: #aaaaaa40;
     --hover-half: #ffffff20;
-    --hover-b: #ffffff30;
+    --hover-b: #eeeeee0f;
     --bggrey: #444;
-    --bgul: url('./bg-dark.svg');
+    --fill:#54545470;
     --mm: #ffffff50;
     --cm: #252525bb;
     --bar: #7272722a;
-    --hr: #00000050;
-    --unfoc: #333;
-    cursor: default;
+    --hr:#333;
+    --unfoc:#202020;
+    --msg:#303030d0;
+    --bd:#ffffff06;
+    --s3d:#11111160;
+    --mica: linear-gradient(140deg,#2d161c,#102d53);
 }
 
 .window.terminal-apps.max>.content {

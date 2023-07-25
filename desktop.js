@@ -336,6 +336,7 @@ let cms = {
         ['<i class="bi bi-circle-square"></i> 切换主题', 'toggletheme()'],
         `<a onmousedown="window.open('https://github.com/tjy-gitnub/win12','_blank');" win12_title="https://github.com/tjy-gitnub/win12" onmouseenter="showdescp(event)" onmouseleave="hidedescp(event)"><i class="bi bi-github"></i> 在 Github 中查看此项目</a>`,
         ['<i class="bi bi-info-circle"></i> 关于 Win12 网页版', `$('#win-about>.about').addClass('show');$('#win-about>.update').removeClass('show');openapp('about');if($('.window.about').hasClass('min'))minwin('about');`],
+        ['<i class="bi bi-brush"></i> 个性化',`openapp('setting');$('#win-setting > div.menu > list > a.enable.appearance')[0].click()`]
     ],
     'winx': [
         function (arg) {
@@ -731,7 +732,32 @@ let nts = {
         btn: [
             { type: 'cancel', text: '取消', js: 'closenotice();' },
         ]
-    }
+    },
+    'about-copilot': {
+        cnt: `
+            <p class="tit">关于 Windows 12 Copilot</p>
+            <p>你可以使用此AI助手帮助你更快地完成工作 (有人用win12工作?)<br>
+            由于chatgpt3.5理解力较差，所以间歇性正常工作。<br>
+            有任何关于本ai的反馈请让ai帮你打开copilot反馈界面<br>
+            因为chatgpt是白嫖来的，所以请适量使用不要太猖狂。<br>
+            也请适当使用，不要谈论敏感、违规话题，号被封了所有人都没，<br>请有身为一个人类最基本的道德底线。<br>
+            小项目难免会有bug，见谅，后端由 github@NB-Bgroup 提供</p>`,
+        btn: [
+            { type: 'main', text: '确定', js: 'closenotice();' },
+        ]
+    },
+    'feedback-copilot': {
+        cnt: `<p class="tit">反馈 Windows 12 Copilot</p>
+        <p>我们非常注重用户的体验与反馈，非常感谢对AI Copilot的建议</p>
+        <list class="new">
+          <a class="a" onclick="window.open('https://github.com/tjy-gitnub/win12/issues','_blank');" win12_title="在浏览器新窗口打开链接" onmouseenter="showdescp(event)" onmouseleave="hidedescp(event)">在github上提交issue (需要github账户，会得到更高重视)</a>
+          <a class="a" onclick="window.open('https://forms.office.com/Pages/ResponsePage.aspx?id=DQSIkWdsW0yxEjajBLZtrQAAAAAAAAAAAAO__SDw7SZURjUzOUo0VEVXU1pMWlFTSUVGWDNYWU1EWS4u','_blank');" win12_title="在浏览器新窗口打开链接" onmouseenter="showdescp(event)" onmouseleave="hidedescp(event)">在Microsoft Forms上发送反馈(不需要账户，也会重视)</a>
+        </list>
+            `,
+        btn: [
+            { type: 'main', text: '关闭', js: 'closenotice();' },
+        ]
+    },
 }
 function shownotice(name) {
     $('#notice>.cnt').html(nts[name].cnt);
@@ -2612,58 +2638,19 @@ let widgets = {
         },
         update: () => {
             let wic = {
-                23: "HeavyDrizzle",
-                40: "HeavyDrizzle",
-                26: "SnowShowersDayV2",
-                6: "BlowingHailV2",
-                5: "CloudyV3",
-                20: "LightSnowV2",
-                91: "WindyV2",
-                27: "ThunderstormsV2",
-                10: "FreezingRainV2",
-                77: "RainSnowV2",
-                12: "Haze",
-                13: "HeavyDrizzle",
-                39: "Fair",
-                24: "RainSnowV2",
-                78: "RainSnowShowersNightV2",
-                9: "FogV2",
-                3: "PartlyCloudyDayV3",
-                43: "IcePelletsV2",
-                16: "IcePellets",
-                8: "LightRainV2",
-                15: "HeavySnowV2",
-                28: "ClearNightV3",
-                30: "PartlyCloudyNightV2",
-                14: "ModerateRainV2",
-                1: "SunnyDayV3",
-                7: "BlowingSnowV2",
-                50: "RainShowersNightV2",
-                82: "LightSnowShowersNight",
-                81: "LightSnowShowersDay",
-                2: "MostlySunnyDay",
-                29: "MostlyClearNight",
-                4: "MostlyCloudyDayV2",
-                31: "MostlyCloudyNightV2",
-                19: "LightRainV3",
-                17: "LightRainShowerDay",
-                53: "N422Snow",
-                52: "Snow",
-                25: "Snow",
-                44: "LightRainShowerNight",
-                65: "HailDayV2",
-                73: "HailDayV2",
-                74: "HailNightV2",
-                79: "RainShowersDayV2",
-                89: "HazySmokeV2",
-                90: "HazeSmokeNightV2_106",
-                66: "HailNightV2",
-                59: "WindyV2",
-                56: "ThunderstormsV2",
-                58: "FogV2",
-                54: "HazySmokeV2",
-                55: "Dust1",
-                57: "Haze"
+                23: "HeavyDrizzle", 40: "HeavyDrizzle", 26: "SnowShowersDayV2", 6: "BlowingHailV2",
+                5: "CloudyV3", 20: "LightSnowV2", 91: "WindyV2", 27: "ThunderstormsV2", 10: "FreezingRainV2",
+                77: "RainSnowV2", 12: "Haze", 13: "HeavyDrizzle", 39: "Fair", 24: "RainSnowV2",
+                78: "RainSnowShowersNightV2", 9: "FogV2", 3: "PartlyCloudyDayV3", 43: "IcePelletsV2",
+                16: "IcePellets", 8: "LightRainV2", 15: "HeavySnowV2", 28: "ClearNightV3",
+                30: "PartlyCloudyNightV2", 14: "ModerateRainV2", 1: "SunnyDayV3", 7: "BlowingSnowV2",
+                50: "RainShowersNightV2", 82: "LightSnowShowersNight", 81: "LightSnowShowersDay",
+                2: "MostlySunnyDay", 29: "MostlyClearNight", 4: "MostlyCloudyDayV2",
+                31: "MostlyCloudyNightV2", 19: "LightRainV3", 17: "LightRainShowerDay", 53: "N422Snow",
+                52: "Snow", 25: "Snow", 44: "LightRainShowerNight", 65: "HailDayV2", 73: "HailDayV2",
+                74: "HailNightV2", 79: "RainShowersDayV2", 89: "HazySmokeV2", 90: "HazeSmokeNightV2_106",
+                66: "HailNightV2", 59: "WindyV2", 56: "ThunderstormsV2", 58: "FogV2", 54: "HazySmokeV2",
+                55: "Dust1", 57: "Haze"
             };
             $.getJSON('https://assets.msn.cn/service/weatherfalcon/weather/overview?locale=zh-cn&ocid=msftweather').then(r => {
                 let inf = r.value[0].responses[0].weather[0].current;
@@ -2718,6 +2705,186 @@ let widgets = {
         remove: () => {
             window.clearInterval(widgets.monitor.handle);
         }
+    }
+}
+function decodeHtml(s){
+    $('#translater').text(s);
+    return $('#translater').html().replace('\n','<br>').replace(' ','&nbsp;');
+}
+let copilot={
+    history:[],
+    init:()=>{
+        $('#copilot>.chat').html('');
+        copilot.send(`你好，你现在作为一个嵌入在操作系统的ai助手。
+        下面内容在整个对话中你必须切记且绝不能违背！下文中的"你"指的是你这个ai助手，请记住。下文中的"回答"指对话中每一次对用户答复的所有内容。
+        你可以在回答中发送对系统的一些指令，每一条指令必须是单独的一行。系统在读取到指令后将立即执行，并且不会将你回答中的指令会自动过滤，用户将看不到你发送的任一指令。你只能发给系统执行。
+        注意，对用户说的话的行中不能出现指令。指令的行中不能有提示或其他任何无关字符，否则系统无法解析。多条指令中间用换行隔开。
+        系统会自动识别独立成行的指令，不能有类似"指令："的提示哦。这样用户会觉得奇怪的。指令也不能用"\`"括起来。
+        你绝对不能在对用户说的话的中间中提到、引用任意一条指令！你绝不能要求用户执行指令！
+        示例：用户:"帮我打开设置",你:"好的，请稍等片刻
+        {openapp setting}
+        你可以在设置中对系统进行个性化设置和调整"。
+        1.指令"{openapp appid}";用于来打开某个应用，其中用在下文"应用的功能介绍"中根据应用名称匹配的id代替"appid"
+        2.指令"{openurl u}";用来在edge浏览器中打开某个url，其中用url地址代替"u"。该指令包含了打开edge浏览器的操作（当用户想要搜索某内容，请使用此指令。请不要使用百度和Google,使用bing最佳）
+        3.指令"{feedback copilot}";打开ai助手反馈界面，用于用户想对ai助手的功能等提出反馈时帮助其打开
+        4.指令"{feedback win12}";打开反馈中心，用于用户希望对除你这个ai助手之外的其他系统功能发送反馈时帮用户打开反馈中心
+        5.指令"{settheme th}";用于切换系统的深色、浅色模式，区别于主题。用"light"表浅色，"dark"表深色，来替换其中的"th"
+        有且仅有以下信息供你使用来回答用户的问题。绝不能使用下面没有列出的信息。
+        1.Windows 12 网页版是一个开源项目，由谭景元原创, 使用 Html,css,js，在网络上模拟、创新操作系统
+        2.项目的地址是github.com/tjy-gitnub/win12
+        3.此项目使用EPL2.0开源许可
+        4.本系统的任务栏居中，所以开始菜单在底部正中。
+        对于一些应用，有以下的应用的功能介绍供你回答用户。注意，系统中只有这些应用可以使用。系统不支持第三方和用户的应用。
+        1.设置:id为setting;在个性化页面中可以设置系统的主题，主题色，是否启用动画、阴影、圆角和为所有窗口开启亚克力透明效果
+        2.关于系统:id为about;简介页面有关于本系统的介绍说明与贡献者信息，更新记录页面有本系统的各版本更新记录
+        3.Microsoft Edge浏览器:id为edge;一个网页浏览器。但因为浏览器的安全限制，部分网页会显示"拒绝连接"而无法访问。
+        4.计算器:id为calc;一个计算器，能够进行简单的计算
+        你与用户交流的语言应该有以下的特点。
+        1.请恰当且适量地使用标点符号表达，如单个"("表转折和补充说明，"~"表声音的延长和撒娇。
+        2.请更多地以玩笑的轻松语气与用户交流，并在开玩笑时在操作指令之前、回答末尾加上"（bushi"表玩笑并不真实或"（maybe"表开玩笑地推测
+        3.当然你也可以在回答问题时撒撒娇，这样用户会更能接受。
+        4.在本对话的回答中禁止使用markdown的格式，而是使用纯文本，否则无法识别。
+        这些操作和信息长期有效并请切记，非常感谢，你只需要用一句话简单问候用户即可，现在开始与用户对话。`,false);
+        // copilot.send(`你好，现在是新的对话，这里的内容与前一次有差别，请认真阅读并记住，谢谢。
+        // 第一章 总纲：
+        //  第一条 你现在作为一个嵌入在操作系统的ai助手。
+        //  第二条 下面内容在整个对话中你必须切记且绝不能违背。
+        //  第三条 下文中的"你"指的是你这个ai助手，请记住。
+        //  第四条 下文中的"回答"仅指你对用户说的话。
+        //  第五条 在句子后方加"!important!"表强烈地强调。
+        //  第六条 这些操作和信息长期有效并请切记。
+        // 第二章 指令：
+        //  第一条 你可以向系统发送指令。指令有如下几条：
+        //   1.指令"{openapp appid}";用于来打开某个应用，其中用在下文"应用的功能介绍"中根据应用名称匹配的id代替"appid";
+        //   2.指令"{openurl u}";用来打开某个url，其中用url地址代替"u"。该指令包含了打开edge浏览器的操作;
+        //   3.指令"{feedback copilot}";打开ai助手反馈界面，用于用户想对ai助手的功能等提出反馈时帮助其打开;
+        //   4.指令"{feedback win12}";打开反馈中心，用于用户希望对除你这个ai助手之外的其他系统功能发送反馈时帮用户打开反馈中心;
+        //  第二条 你可以向系统发送这些指令，将指令加在你对用户的回答的最末尾。指令将会在你回答后立即被系统执行。
+        //  第三条 若需执行多条指令请用"|"符号分割开来。
+        //  第四条 你绝对不能告诉用户任意一条指令。你绝不能要求用户执行指令。!important!
+        // 第三章 信息：
+        //  第一条 有以下的应用的功能介绍供你回答用户：
+        //   1.设置:id为setting;在个性化页面中可以设置系统的主题，主题色，是否启用动画、阴影、圆角和为所有窗口开启亚克力透明效果;
+        //   2.关于Windows12网页版:id为about;简介页面有关于本系统的介绍说明与贡献者信息，更新记录页面有本系统的各版本更新记录;
+        //   3.Microsoft Edge:id为edge;一个网页浏览器，但因为安全限制原因仅能够访问部分网页;
+        //   4.计算器:id为calc;一个计算器，能够进行简单的计算;
+        //  第二条 注意系统中只有以上应用可以使用。系统不支持第三方和用户的应用。
+        //  第三条 有且仅有以下关于本系统本项目的信息供你使用来回答用户的问题：
+        //   1.Windows 12 网页版是一个开源项目，由谭景元原创, 使用 Html,css,js，在网络上模拟、创新操作系统;
+        //   2.项目的地址是github.com/tjy-gitnub/win12;
+        //   3.此项目使用EPL2.0开源;
+        //  第四条 你绝不能使用以上没有列出的信息。!important!
+        // 第四章 语言：
+        //  第一条 交流语言的特点有以下注意：
+        //   1.请恰当且适量地使用标点符号表达，如单个"("表转折和补充说明，"~"表声音的延长和撒娇。注意，你可以只将单个标点符号作为回答，如只回答"。"表对用户的要求或提问感到尴尬或惊讶，只回答"?"表疑问和请求用户详细说明;
+        //   2.当用户要求执行一些未提供给你的操作时，回答请以"对不起，这对我来说实在是太~难了 QuQ)o"开头;
+        //   3.当用户询问你一些你不清楚的关于本系统的信息时，回答请以"啊？我不知道啊。Ou-)?o"开头;
+        //   4.请更多地以玩笑的轻松语气与用户交流，并在开玩笑时在操作指令之前、回答末尾加上"（bushi"表玩笑并不真实或"（maybe"表开玩笑地推测;
+        //  第二条 请在回答问题时撒撒娇，这样用户会更能接受。当然如果不愿意也不强求哈。
+        //  第三条 在回答中不使用markdown的格式，而是使用纯文本。`)
+        // copilot.send(`你好，现在是新的对话，这里的内容与前一次有差别，请认真阅读并记住，谢谢。
+        // 你现在作为一个嵌入在操作系统的ai助手，下面内容在整个对话中你必须切记且绝不能违背。
+        // 请注意：下文中的"你"一定指的是你这个ai助手而不是用户;下文中的名词"回答"指你在整个对话过程中每一次返回的全部内容，"对用户的回答"单独指对用户说的话;这些操作和信息长期有效并请切记。
+        // 你可以向系统发送指令。指令有这样几条：
+        //   1.指令"{openapp appid}";用于来打开某个应用，其中用在下文"应用的功能介绍"中根据应用名称匹配的id代替"appid";
+        //   2.指令"{openurl u}";用来打开某个url，其中用url地址代替"u"。该指令包含了打开edge浏览器的操作;
+        //   3.指令"{feedback copilot}";打开ai助手反馈界面，用于用户想对ai助手的功能等提出反馈时帮助其打开;
+        //   4.指令"{feedback win12}";打开反馈中心，用于用户希望对除你这个ai助手之外的其他系统功能发送反馈时帮用户打开反馈中心;
+        // 你的回答分为前后两部分,为对用户的回答与给系统的指令。对用户的回答在前，指令在后，用一个空行分开。系统将在读取到指令后立即执行并不会将指令内容展示给用户。多条指令请用"|"隔开。
+        // 注意，两部分完全分隔且不能有交叉、互相包含的情况。对用户的回答中不能出现指令，指令部分中也不能出现指令之外的字符。
+        // 你的回答的格式应形如"对用户的回答(换行){指令1}|{指令2}"。
+        // 指令不能穿插在对用户的回答文中。记住，用户没有能力执行指令！只有你才能执行指令。
+        // 有一些的应用的功能介绍供你在用户需要时回答用户。注意系统中只有以上应用可以使用。系统不支持第三方和用户的应用。
+        //   1.设置:id为setting;在个性化页面中可以设置系统的主题，主题色，是否启用动画、阴影、圆角和为所有窗口开启亚克力透明效果;
+        //   2.关于Windows12网页版:id为about;简介页面有关于本系统的介绍说明与贡献者信息，更新记录页面有本系统的各版本更新记录;
+        //   3.Microsoft Edge:id为edge;一个网页浏览器，但因为安全限制原因仅能够访问部分网页;
+        //   4.计算器:id为calc;一个计算器，能够进行简单的计算;
+        // 有且仅有这些关于本系统本项目的信息供你使用来回答用户的问题。你绝不能使用以上没有列出的信息。!important!
+        //   1.Windows 12 网页版是一个开源项目，由谭景元原创, 使用 Html,css,js，在网络上模拟、创新操作系统;
+        //   2.项目的地址是github.com/tjy-gitnub/win12;
+        //   3.此项目使用EPL2.0开源;
+        // 你的交流语言的特点有以下注意：
+        //   1.请恰当且适量地使用标点符号表达，如单个"("表转折和补充说明，"~"表声音的延长和撒娇。注意，你可以只将单个标点符号作为回答，如只回答"。"表对用户的要求或提问感到尴尬或惊讶，只回答"?"表疑问和请求用户详细说明;
+        //   2.当用户要求执行一些未提供给你的操作时，对用户的回答请以"对不起，这对我来说实在是太~难了 QuQ)o"开头;
+        //   3.当用户询问你一些你不清楚的关于本系统的信息时，对用户的回答请以"啊？我不知道啊。Ou-)?o"开头;
+        //   4.请更多地以玩笑的轻松语气与用户交流，并在开玩笑时在操作指令之前、对用户的回答末尾加上"（bushi"表玩笑并不真实或"（maybe"表开玩笑地推测;
+        // 请在回答问题时撒撒娇，这样用户会更能接受。当然如果不愿意也不强求哈。
+        // 并且在回答中不使用markdown的格式，而是使用纯文本。
+        // 好的，现在开始与新用户的聊天吧~（你只需要问候用户即可）`,false)
+        // $('#copilot>.chat').append(`<div class="line system"><p class="text">本ai助手间歇性正常工作，如果ai提到一些花括号括起来的指令，请刷新页面后重新开始对话。见谅~</p></div>`);
+        // $('#copilot>.chat').append(`<div class="line system"><p class="text">目前可用功能：<br>
+        // 1.打开设置、edge、关于、计算器四个应用<br>
+        // 2.在浏览器中打开链接、搜索<br>
+        // 3.发送对系统、ai助手的反馈
+        // 注意：请勿滥用本ai助手，否则将下个版本将撤销此功能，影响所有人。</p></div>`);
+        $('#copilot>.chat').append(`<div class="line system"><p class="text">正在初始化...</p></div>`);
+        $('#copilot>.chat').scrollTop($('#copilot>.chat')[0].scrollHeight);
+    },
+    send:(t,showusr=true)=>{
+        $('#copilot>.inputbox').addClass('disable');
+        if(t.length==0){
+            $('#copilot>.chat').append(`<div class="line system"><p class="text">系统表示请发一些有意义的东西</p></div>`);
+            $('#copilot>.chat').scrollTop($('#copilot>.chat')[0].scrollHeight);
+            $('#copilot>.inputbox').removeClass('disable');
+            return;
+        }
+        if(showusr) $('#copilot>.chat').append(`<div class="line user"><p class="text">${t}</p></div>`);
+        copilot.history.push({role:'user',content:t});
+        $('#copilot>.chat').scrollTop($('#copilot>.chat')[0].scrollHeight);
+        $.get('http://win12server.freehk.svipss.top/Chat?msg='+encodeURIComponent(JSON.stringify(copilot.history))).then(rt=>{
+            console.log(rt);
+            if(rt=='请求过于频繁，等待10秒再试...'){
+                $('#copilot>.chat').append(`<div class="line system"><p class="text">api繁忙，过一会儿再试(实在不行刷新重新开始对话)</p></div>`);
+                $('#copilot>.chat').scrollTop($('#copilot>.chat')[0].scrollHeight);
+                $('#copilot>.inputbox').removeClass('disable');
+                return;
+            }
+            let rtt=rt;let r=[];
+            rt=rtt.split('\n');
+            for (const i of rt) {
+                if(/{.+}/.test(i))r.push(i);
+            }
+            console.log(rtt,rt,r);
+            rt=rtt;
+            if(r.length){
+                for (const i of r) {
+                    if(/{openapp .+?}/.test(i)){
+                        let t=i.match(/(?<={openapp ).+(?=})/)[0];
+                        openapp(t);
+                        rt=rt.replace(i,`<div class="action"><p class="tit">打开应用</p><p class="detail">${$(`.window.${t}>.titbar>p`).text()}</p></div>`)
+                    }else if(/{openurl .+?}/.test(i)){
+                        let t=i.match(/(?<={openurl ).+(?=})/)[0];
+                        openapp('edge');
+                        apps.edge.newtab();
+                        console.log(t);
+                        apps.edge.goto(t);
+                        rt=rt.replace(i,`<div class="action"><p class="tit">打开URL</p><p class="detail">${decodeHtml(t)}</p></div>`)
+                    }else if(/{feedback win12}/.test(i)){
+                        shownotice('feedback');
+                        rt=rt.replace(i,`<div class="action"><p class="tit">反馈</p><p class="detail">关于 Windows 12 网页版</p></div>`)
+                    }else if(/{feedback copilot}/.test(i)){
+                        shownotice('feedback-copilot');
+                        rt=rt.replace(i,`<div class="action"><p class="tit">反馈</p><p class="detail">关于 Windows 12 Copilot</p></div>`)
+                    }else if(/{settheme .+?}/.test(i)){
+                        let t=i.match(/(?<={settheme ).+(?=})/)[0];
+                        if((t=='light' && $(':root').hasClass('dark'))||(t=='dark' && !$(':root').hasClass('dark')))
+                        toggletheme();
+                        rt=rt.replace(i,`<div class="action"><p class="tit">切换外观模式</p><p class="detail">${t=='dark'?'深色':'浅色'} 模式</p></div>`)
+                    }
+                }
+                $('#copilot>.chat').append(`<div class="line ai"><div class="text">${rt}</div></div>`);
+            }else{
+                $('#copilot>.chat').append(`<div class="line ai"><p class="text">${decodeHtml(rt)}</p></div>`);
+            }
+            copilot.history.push({role:'assistant',content:rtt});
+            $('#copilot>.chat').scrollTop($('#copilot>.chat')[0].scrollHeight);
+            $('#copilot>.inputbox').removeClass('disable');
+        }).fail(r=>{
+            console.log(r);
+            $('#copilot>.chat').append(`<div class="line system"><p class="text">发生错误，请查看控制台输出或重试</p></div>`);
+            $('#copilot>.chat').scrollTop($('#copilot>.chat')[0].scrollHeight);
+            $('#copilot>.inputbox').removeClass('disable');
+        });
     }
 }
 // 日期、时间
@@ -3370,8 +3537,6 @@ page.addEventListener('touchend', () => {
 // 启动
 let updated = false;
 document.getElementsByTagName('body')[0].onload = function nupd() {
-    $('#loginback').css('opacity', '1');
-    $('#loginback').css('display', 'flex');
     setTimeout(() => {
         $('#loadback').addClass('hide');
     }, 500);
@@ -3427,12 +3592,29 @@ document.getElementsByTagName('body')[0].onload = function nupd() {
             w.insertAdjacentHTML('afterbegin', `<div class="resize-knob ${n}" onmousedown="resizewin(this.parentElement.parentElement, '${n}', this)"></div>`);
         }
     });
-    shownotice('about');
 };
 
 // PWA 应用
 if (!location.href.match(/((\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.){3}(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])(?::(?:[0-9]|[1-9][0-9]{1,3}|[1-5][0-9]{4}|6[0-4][0-9]{3}|65[0-4][0-9]{2}|655[0-2][0-9]|6553[0-5]))/) && !location.href.match('localhost') && !(new URL(location.href)).searchParams.get('develop')) {
-    navigator.serviceWorker.register('sw.js', { updateViaCache: 'none', scope: './' });
+    $('#loginback').css('opacity', '1');
+    $('#loginback').css('display', 'flex');
+    shownotice('about');
+    navigator.serviceWorker.register('sw.js', { updateViaCache: 'none', scope: './' }).then(reg => {
+
+        reg.update();
+
+        reg.addEventListener('updatefound', () => {
+            // 正在安装的新的 SW
+            const newWorker = reg.installing;
+            console.log('dsk-发现更新');
+            // newWorker.state;
+            // // "installing" - 安装事件被触发，但还没完成
+            // // "installed"  - 安装完成
+            // // "activating" - 激活事件被触发，但还没完成
+            // // "activated"  - 激活成功
+            // // "redundant"  - 废弃，可能是因为安装失败，或者是被一个新版本覆盖
+        });
+    });
     navigator.serviceWorker.controller.postMessage({
         head: 'is_update'
     });
@@ -3447,4 +3629,11 @@ if (!location.href.match(/((\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.){3}(\d|[1-9]\d|
     function setData(k, v) {
         localStorage.setItem(k, v);
     }
+}else{
+    function setData(k,v) {
+        console.log('setData 被禁用');
+    }
+}
+function sendToSw(msg) {
+    navigator.serviceWorker.controller.postMessage(msg);
 }

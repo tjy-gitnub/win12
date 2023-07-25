@@ -1,10 +1,10 @@
 #win-calc {
     display: flex;
     flex-direction: column;
+    padding: 5px;
 }
 
 #calc-input {
-    width: 100%;
     height: 90px;
     border: none;
     outline: none;
@@ -17,27 +17,25 @@
 #win-calc>.keyb {
     flex-grow: 1;
     display: grid;
-    grid-template-columns: repeat(4, 60px);
+    grid-template-columns: repeat(4, 1fr);
     grid-template-rows: repeat(5, 50px);
     gap: 4px;
-    padding: 0 4px 4px;
-    width: 100%;
 }
 
 #win-calc>.keyb>.b {
-    width: 60px;
+    /* width: 60px; */
     height: 50px;
     font-size: 25px;
     text-align: center;
     transition: 40ms;
     border-radius: 7px;
-    border: 1.5px solid #63636330;
-    box-shadow: 0px 1px 4px var(--bd);
+    /* border: 1.5px solid #63636330; */
+    box-shadow: 0px 1px 1px 1px var(--s3d);
     background: var(--card);
     padding-top: 5px;
-    border: 1.5px solid var(--bd);
+    /* border: 1.5px solid var(--bd);
     border-top: 2px solid var(--bd);
-    border-bottom: 1px solid var(--bd);
+    border-bottom: 1px solid var(--bd); */
     /* border-color: var(--bd); */
     transform-origin: bottom;
 }

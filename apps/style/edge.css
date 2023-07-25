@@ -5,25 +5,29 @@
 .window.edge>.titbar>.tabs {
     display: flex;
     flex-grow: 1 !important;
-    height: 100%;
+    height: calc(100% - 2px);
     padding: 2px 1px;
     /* overflow-x:auto; */
     overflow: hidden;
+    align-items: center;
+    margin-top: 2px;
 }
 
 .window.edge>.titbar>.tabs>.tab {
     display: flex;
-    border-radius: 8px;
+    border-radius: 7px;
     max-width: 200px;
     display: flex;
     justify-content: space-between;
-    padding: 3px 0;
+    /* padding: 4px 0; */
+    align-items: center;
     width: 0;
     flex-grow: 1;
     max-width: 200px;
     min-width: none;
     overflow: hidden;
     transition: 50ms;
+    height: 100%;
 }
 
 .window.edge>.titbar>.tabs>.tab::before {
@@ -31,9 +35,8 @@
     position: relative;
     width: 1.5px;
     height: 19px;
-    top: 3px;
-    background: var(--text);
-    opacity: 0.3;
+    background: var(--hr);
+    /* opacity: 0.3; */
     transition: 50ms;
 }
 
@@ -47,7 +50,7 @@
 }
 
 .window.edge>.titbar>.tabs>.tab.show {
-    background: var(--card) !important;
+    background: var(--hover) !important;
     box-shadow: 0 1px 2px var(--sd);
 }
 
@@ -68,12 +71,13 @@
 }
 
 .window.edge>.titbar>.tabs>.tab.moving {
-    background: var(--unfoc) !important;
+    /* background: var(--unfoc) !important; */
+    background: var(--bggrey) !important;
     z-index: 1;
 }
 
 .window.edge>.titbar>.tabs>.tab:hover {
-    background: var(--hover-half);
+    background: var(--hover-b);
 }
 
 .window.edge>.titbar>.tabs>.tab:hover::before,
@@ -93,7 +97,7 @@
 .window.edge>.titbar>.tabs>.tab>.clbtn {
     border-radius: 4px;
     display: block;
-    margin: 3px 5px 0 0;
+    margin: 0 5px 0 0;
     width: 18px;
     height: 18px;
 }
@@ -135,17 +139,18 @@
 
 #win-edge>.tool {
     display: flex;
-    padding: 2px 5px;
+    padding: 6px 7px 2px 7px;
 }
 
 #win-edge>.tool>.a {
-    font-size: 20px;
-    border-radius: 7px;
-    width: 30px;
+    font-size: 18px;
+    border-radius: 6px;
+    width: 35px;
     height: 30px;
     text-align: center;
     transition: 50ms;
-    margin: 0 1px;
+    margin: 0 1.5px;
+    --top:2px;
 }
 
 #win-edge>.tool>.a>.bi::before {

@@ -26,13 +26,16 @@
 ## 效果展示
 > 新的版本有很多变化，仅供参考，请以实物为准 (你点一下 [这里](https://tjy-gitnub.github.io/win12/desktop.html) 就知道了啊，不麻烦`-_-)o` )
 
-![image](https://user-images.githubusercontent.com/71509955/194317185-b64e87c7-4035-4f48-b726-e6cda5f9d81a.png)
-*开始*
+![image](https://tjy-gitnub.github.io/win12/img/start-menu.png)
+*开始菜单*
 
-![image](https://user-images.githubusercontent.com/71509955/194317323-772154ec-b463-403e-9213-78087282263b.png)
-*设置*
+![image](https://tjy-gitnub.github.io/win12/img/colorful-apps.png)
+*丰富的应用*
 
-![image](https://user-images.githubusercontent.com/71509955/194317552-d8ba5f44-fbff-4e4c-b104-0a4a589c3655.png)
+![image](https://tjy-gitnub.github.io/win12/img/dark-mode.png)
+*深色模式*
+
+![image](https://tjy-gitnub.github.io/win12/img/ai-copilot.png)
 *深色模式*
 
 ## 在线体验
@@ -49,7 +52,7 @@
 - [x] 加入特效
 - [x] 窗口功能
 - [x] 应用完善
-- [ ] 添加更多个性化方面的设置
+- [x] 添加更多个性化方面的设置
 - [x] 添加Edge应用
 - [ ] 为更多应用添加标签页
 - [ ] 完善小组件，添加到桌面等功能
@@ -58,7 +61,7 @@
 - [ ] 丰富应用生态
 
 下面是一些...呃......畅..想 `~o~)/`
-- [ ] 建立文件系统
+- [x] 建立文件系统
 - [ ] 建立自己的可执行文件机制
 - [ ] 将exe文件转化并执行
 - [ ] 提供更多api供应用调用
@@ -71,23 +74,3 @@
 - [ ] 适配量子计算机
 - [ ] 接入chatgpt
 - [ ] 将项目更名为 "550W"
-
-## 其它
-AD:不能打开的网页在新标签页打开\
-AN:规则限制，无法完成
-
-AD:支持网页太少/速度太慢/卡\
-AN:过于荒谬，我已尽力了`-_-)o`
-
-AD:系统中链接在Edge应用中打开\
-AN:系统中的链接都不支持跨域访问
-
-AD:添加收藏夹\
-AN:以后会做的
-
-P:无法访问网站/无法输入网站\
-AN:敲回车才能访问
-
-
-最近准备重绘图标,大家觉得这个logo怎么样`>_-)o`
-![logo](https://user-images.githubusercontent.com/71509955/233774324-06ec32da-21ad-4828-ad95-fbed1035f7c2.png)

@@ -4,17 +4,21 @@
 
 #win-about>.menu {
     height: 100%;
-    min-width: 200px;
-    padding: 5px;
+    width: 20%;
+    min-width: 180px;
+    max-width: 250px;
+    padding: 8px 5px 0 14px;
 }
 
 #win-about>.menu>list>* {
-    padding: 5px 10px;
+    padding: 6px 8px 5px 12px;
     display: flex;
+    margin-bottom: 3px;
+    border-radius: 7px;
 }
 
 #win-about>.menu>list>*>img {
-    margin: 2px 5px 0 0;
+    margin: 2px 7px 0 0;
 }
 
 #win-about>.cnt {
@@ -29,14 +33,13 @@
 
 #win-about>.cnt.show {
     flex-grow: 1;
-    width: auto;
     transform: none;
     opacity: 1;
     display: block;
 }
 
 #win-about>.cnt .tit {
-    margin: 0;
+    margin: 8px 0 3px 0;
     display: flex;
 }
 
@@ -44,7 +47,7 @@
     background: linear-gradient(180deg, var(--theme-1), var(--theme-2));
     border-radius: 10px;
     width: 6px;
-    margin: 5px 5px;
+    margin: 5px 8px 5px 5px;
     transition: 200ms;
     /* opacity: 0; */
     transform: scaleY(0);
@@ -57,10 +60,11 @@
 
 #win-about>.update>div>details {
     background-color: var(--card);
-    padding: 10px 10px 0 10px;
-    border-radius: 10px;
-    box-shadow: 3px 3px 5px var(--sd);
-    margin: 10px 10px 0 0;
+    padding: 10px 10px 0 15px;
+    border-radius: 8px;
+    /* box-shadow: 3px 3px 5px var(--sd); */
+    box-shadow: 0 1px 2px 1px var(--s3d);
+    margin: 12px 10px 0 0;
     transition: 100ms, height 0ms, padding-bottom 100ms ease-out;
     overflow: hidden;
     height: 45px;

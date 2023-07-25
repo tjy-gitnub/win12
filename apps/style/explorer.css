@@ -8,11 +8,11 @@
 }
 
 #win-explorer>.menu>.card {
-    margin: 10px;
-    border-radius: 10px;
+    margin: 10px 15px 15px 15px;
+    border-radius: 8px;
     background-color: var(--card);
-    padding: 3px;
-    box-shadow: 2px 2px 5px var(--sd);
+    padding: 4px;
+    box-shadow: 0 1px 2px 1px var(--s3d);
     border: 1.5px solid #6f6f6f30;
 }
 
@@ -55,24 +55,28 @@
     height: calc(100% - 32px);
     display: flex;
     flex-direction: column;
+    overflow: hidden;
 }
 
 #win-explorer>.main>.tool {
     width: 100%;
-    height: 60px;
+    height: 55px;
     display: flex;
-    padding: 5px 10px;
+    padding: 0 10px 5px 10px;
+    /* align-items: center; */
 }
 
 #win-explorer>.main>.tool>.b {
-    height: 40px;
-    padding: 7px;
-    border-radius: 10px;
+    height: 35px;
+    padding: 7px 9px;
+    border-radius: 7px;
     transition: 100ms;
+    margin: 0 1px;
 }
 
 #win-explorer>.main>.tool>.b.t {
     display: flex;
+    align-items: center;
     font-size: 15px;
 }
 
@@ -86,28 +90,28 @@
 }
 
 #win-explorer>.main>.tool>.b>img {
-    width: 25px;
-    height: 25px;
+    width: 20px;
+    height: 20px;
 }
 
 #win-explorer>.main>.tool>.hr {
     width: 2px;
-    height: 35px;
+    height: 25px;
     background-color: #7f7f7f7f;
     border-radius: 10px;
-    margin: 2.5px 7px;
+    margin: 5px 3px;
 }
 
 #win-explorer>.main>.content {
-    width: calc(100% - 10px);
+    width: calc(100% - 15px);
     flex-grow: 1;
     background-color: var(--card);
-    border-radius: 10px;
-    margin: -10px 10px 10px 0;
+    border-radius: 8px;
+    margin: -10px 15px 10px 0;
     padding: 8px;
-    box-shadow: 3px 3px 8px var(--sd);
     overflow-y: auto;
     border: 1.5px solid #6f6f6f30;
+    box-shadow: 0 1px 2px 1px var(--s3d);
 }
 
 #win-explorer>.main>.content>.tool {
@@ -134,47 +138,66 @@
 }
 
 #win-explorer>.main>.content>.tool>.tit {
-    /* display: flex; */
-    /* margin-top: 3px; */
-    /* margin-left: 5px; */
     overflow: hidden;
-    border: 1.5px solid #eeeeee;
-    display: grid;
-    height: min-content;
-    background-color: var(--bg70);
-    flex-grow: 1;
-    margin: 3px 10px 0px 5px;
-    border-radius: 10px;
-    grid-template-columns: min-content auto;
+    display: flex;
+    /* background-color: var(--bg70); */
+    flex-grow: 1 !important;
+    margin: 0px 10px 0px 5px;
+    border-radius: 7px;
+    height: 32px;
+    /* align-items: center; */
 }
 
+#win-explorer>.main>.content>.tool>.tit>.path{
+    display: flex;
+    align-items: center;
+    min-width: 0;
+    overflow-y:hidden;
+    width: calc(100% - 35px);
+}
+
+#win-explorer>.main>.content>.tool>.tit>.path::-webkit-scrollbar{
+    height: 2px;
+}
+#win-explorer>.main>.content>.tool>.tit>.path::-webkit-scrollbar-thumb {
+    background: #7f7f7f70;
+    background-clip: padding-box;
+    border: 0px solid transparent;
+    border-radius: 10px;
+}
+
+
 #win-explorer>.main>.content>.tool>.tit>.path>* {
-    display: inline-block;
+    display: block;
+    /* width: min-content; */
     height: 100%;
+    white-space:nowrap;
 }
 
 #win-explorer>.main>.content>.tool>.tit>.path>.arrow {
-    font-size: 0.87em;
-    color: #555555;
-}
-
-:root.dark #win-explorer>.main>.content>.tool>.tit>.path>.arrow {
-    color: #aaaaaa;
+    opacity: 0.4;
+    font-size: 14px;
+    line-height: 1;
+    height: 14px;
+    margin: 0 4px;
 }
 
 #win-explorer>.main>.content>.tool>.tit>.path>.text:hover {
-    background-color: var(--hover);
+    background-color: var(--hover-b);
 }
 
 #win-explorer>.main>.content>.tool>.tit>.path>.text {
-    padding: 0px 8px;
-    font-size: 1.1em;
+    padding: 2px 5px;
+    height: min-content;
+    border-radius: 5px;
+    font-size: 15px;
 }
 
 #win-explorer>.main>.content>.tool>.tit>.icon {
     width: 25.6px;
     margin-top: -1px;
-    margin-left: 8px;
+    margin-left: 3px;
+    margin-right: 5px;
     background-size: contain;
     background-position: 50% 50%;
     background-repeat: no-repeat;
