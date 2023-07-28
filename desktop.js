@@ -1,265 +1,3 @@
-class FileSystem {
-    constructor() {
-        if (localStorage.getItem('fileSystem')) {
-            this.root = JSON.parse(localStorage.getItem('fileSystem'));
-            this.convertToMap(this.root);
-        } else {
-            this.root = { type: 'dir', children: new Map() };
-        }
-        this.currentDir = this.root;
-        this.directoryMap = new Map();
-        this.directoryMap.set('/', this.root);
-    }
-
-    convertToObj(dir) {
-        if (dir.type === 'dir') {
-            const children = Array.from(dir.children);
-            dir.children = {};
-            for (const [name, child] of children) {
-                dir.children[name] = child;
-                convertToObj(child);
-            }
-        }
-    }
-
-
-    convertToMap(dir) {
-        if (dir.type === 'dir') {
-            dir.children = new Map(Object.entries(dir.children));
-            for (let child of dir.children.values()) {
-                convertToMap(child);
-            }
-        }
-    }
-
-    mkdir(path) {
-        let dirs = path.split('/').filter(Boolean);
-        let currentDir = this.currentDir;
-        let currentPath = '';
-        for (let dir of dirs) {
-            currentPath += `/${dir}`;
-            let found = currentDir.children.get(dir);
-            if (!found) {
-                found = { name: dir, type: 'dir', children: new Map() };
-                currentDir.children.set(dir, found);
-                this.directoryMap.set(currentPath, found);
-            }
-            currentDir = found;
-        }
-    }
-
-    touch(path, content) {
-        let dirs = path.split('/').filter(Boolean);
-        let fileName = dirs.pop();
-        let currentDir = this.currentDir;
-        let currentPath = '';
-        for (let dir of dirs) {
-            currentPath += `/${dir}`;
-            let found = currentDir.children.get(dir);
-            if (!found) {
-                found = { name: dir, type: 'dir', children: new Map() };
-                currentDir.children.set(dir, found);
-                this.directoryMap.set(currentPath, found);
-            }
-            currentDir = found;
-        }
-        let file = currentDir.children.get(fileName);
-        if (!file) {
-            file = { name: fileName, type: 'file' };
-            currentDir.children.set(fileName, file);
-        }
-        file.content = content;
-    }
-    cat(path) {
-        let dirs = path.split('/').filter(Boolean);
-        let fileName = dirs.pop();
-        let currentDir = this.currentDir;
-        for (let dir of dirs) {
-            let found = currentDir.children.get(dir);
-            if (!found) {
-                return null;
-            }
-            currentDir = found;
-        }
-        let file = currentDir.children.get(fileName);
-        return file && file.content;
-    }
-
-    rm(path) {
-        let dirs = path.split('/').filter(Boolean);
-        let fileName = dirs.pop();
-        let currentDir = this.currentDir;
-        for (let dir of dirs) {
-            let found = currentDir.children.get(dir);
-            if (!found) {
-                return null;
-            }
-            currentDir = found;
-        }
-        currentDir.children.delete(fileName);
-    }
-
-    ls() {
-        return Array.from(this.currentDir.children.keys());
-    }
-
-    cd(path) {
-        let dirs = path.split('/').filter(Boolean);
-        let currentDir = this.currentDir;
-        for (let dir of dirs) {
-            let found = currentDir.children.get(dir);
-            if (!found) {
-                return null;
-            }
-            currentDir = found;
-        }
-        this.currentDir = currentDir;
-    }
-
-    mv(oldPath, newPath) {
-        let oldDirs = oldPath.split('/').filter(Boolean);
-        let oldFileName = oldDirs.pop();
-        let oldCurrentDir = this.currentDir;
-        for (let dir of oldDirs) {
-            let found = oldCurrentDir.children.get(dir);
-            if (!found) {
-                return null;
-            }
-            oldCurrentDir = found;
-        }
-        let file = oldCurrentDir.children.get(oldFileName);
-        if (!file) {
-            return null;
-        }
-        this.rm(oldPath);
-        this.touch(newPath, file.content);
-    }
-
-    rename(oldPath, newName) {
-        let oldDirs = oldPath.split('/').filter(Boolean);
-        let oldFileName = oldDirs.pop();
-        let oldCurrentDir = this.currentDir;
-        for (let dir of oldDirs) {
-            let found = oldCurrentDir.children.get(dir);
-            if (!found) {
-                return null;
-            }
-            oldCurrentDir = found;
-        }
-        let file = oldCurrentDir.children.get(oldFileName);
-        if (!file) {
-            return null;
-        }
-        file.name = newName;
-    }
-
-    cp(oldPath, newPath) {
-        let oldDirs = oldPath.split('/').filter(Boolean);
-        let oldFileName = oldDirs.pop();
-        let oldCurrentDir = this.currentDir;
-        for (let dir of oldDirs) {
-            let found = oldCurrentDir.children.get(dir);
-            if (!found) {
-                return null;
-            }
-            oldCurrentDir = found;
-        }
-        let file = oldCurrentDir.children.get(oldFileName);
-        if (!file) {
-            return null;
-        }
-        this.touch(newPath, file.content);
-    }
-
-    renameDir(oldPath, newName) {
-        let oldDirs = oldPath.split('/').filter(Boolean);
-        let oldDirName = oldDirs.pop();
-        let currentPath = '';
-        for (let dir of dirs) {
-            currentPath += `/${dir}`;
-            currentDir = this.directoryMap.get(currentPath);
-            if (!currentDir) {
-                return null;
-            }
-        }
-    }
-    getDirectory(path) {
-        let dirs = path.split('/').filter(Boolean);
-        let currentDir = this.root;
-        let currentPath = '';
-        for (let dir of dirs) {
-            currentPath += `/${dir}`;
-            currentDir = this.directoryMap.get(currentPath);
-            if (!currentDir) {
-                return null;
-            }
-        }
-        return currentDir;
-    }
-
-    getFile(dir, fileName) {
-        return this.getDirectory(dir).children.get(fileName);
-    }
-
-    getParentDir(path) {
-        const dirs = path.split('/').filter(Boolean);
-        dirs.pop();
-        return `/${dirs.join('/')}`;
-    }
-
-    getFilesRecursively(directory = '/') {
-        let files = [];
-        const traverse = (dir, path = '') => {
-            for (const [name, item] of dir.children.entries()) {
-                const newPath = `${path}/${name}`;
-                if (item.type === 'dir') {
-                    files.push(newPath);
-                    traverse(item, newPath);
-                } else {
-                    files.push(newPath);
-                }
-            }
-        };
-        traverse(this.getDirectory(directory), directory);
-        return files;
-    }
-    mv(oldPath, newPath) {
-        let oldDirs = oldPath.split('/').filter(Boolean);
-        let oldFileName = oldDirs.pop();
-        let currentPath = '';
-        for (let dir of oldDirs) {
-            currentPath += `/${dir}`;
-            currentDir = this.directoryMap.get(currentPath);
-            if (!currentDir) {
-                return null;
-            }
-        }
-        let file = currentDir.children.get(oldFileName);
-        if (!file) {
-            return null;
-        }
-        this.rm(oldPath);
-        this.touch(newPath, file.content);
-    }
-
-    listAll(dir = this.root, path = '', result = {}) {
-        for (let [name, item] of dir.children.entries()) {
-            if (item.type === 'file') {
-                result[`${path}/${name}`] = 'file';
-            } else {
-                result[`${path}/${name}`] = 'dir';
-                this.listAll(item, `${path}/${name}`, result);
-            }
-        }
-        return result;
-    }
-    save() {
-        let rootCopy = JSON.parse(JSON.stringify(this.root));
-        this.convertToObj(rootCopy);
-        localStorage.setItem('fileSystem', JSON.stringify(rootCopy));
-    }
-
-}
 // 后端服务器
 const server = 'http://win12server.freehk.svipss.top/';
 const pages = {
@@ -427,8 +165,8 @@ let cms = {
                 return ['<i class="bi bi-trash3"></i> 删除', `apps.explorer.del('${arg}')`];
             return 'null';
         },
-                arg => {
-            if ($('#win-explorer>.path>.tit>.path>div.text').length>1)
+        arg => {
+            if ($('#win-explorer>.main>.content>.tool>.tit>.path>div.text')[0].innerHTML != "此电脑")
                 return ['<i class="bi bi-files"></i> 复制', `apps.explorer.copy_or_cut('${arg}','copy')`];
             return 'null';
         },
@@ -1063,6 +801,10 @@ let apps = {
             }
 
             if (init_all == true) {
+                apps.taskmgr.loadProcesses();
+                apps.taskmgr.generateProcesses();
+                apps.taskmgr.sort();
+                apps.taskmgr.performanceLoad();
                 apps.taskmgr.graphLoad();
                 apps.taskmgr.initgrids(apps.taskmgr.cpuBgCtx);
                 apps.taskmgr.initgrids(apps.taskmgr.memoryBgCtx);
@@ -1317,7 +1059,7 @@ let apps = {
             if (setPos == true) {
                 apps.taskmgr[prefix + 'LastPos'] = [apps.taskmgr[prefix + 'Canvas'].width, apps.taskmgr[prefix + 'Canvas'].height];
             }
-            
+
             apps.taskmgr[prefix + 'Ctx'] = apps.taskmgr[prefix + 'Canvas'].getContext('2d');
             apps.taskmgr[prefix + 'BgCtx'] = apps.taskmgr[prefix + 'BgCanvas'].getContext('2d');
             apps.taskmgr[prefix + 'Ctx'].strokeStyle = color;
@@ -1586,7 +1328,7 @@ let apps = {
             apps.explorer.is_use2 = 0;//千万不要删除它，它依托bug运行
             apps.explorer.old_name = "";
             apps.explorer.clipboard = null;
-            document.addEventListener('keydown', function(event) {
+            document.addEventListener('keydown', function (event) {
                 if (event.key === 'Delete' && $('.window.foc')[0].classList[1] == "explorer") {
                     apps.explorer.del(apps.explorer.Process_Of_Select);
                 }
@@ -1645,7 +1387,7 @@ let apps = {
                 apps.explorer.tabs[apps.explorer.now][2]='';
             // }
         },
-        select: (path,id) => {
+        select: (path, id) => {
             var elements = document.querySelectorAll('#win-explorer > .main > .content > .view > .select');
             for (var i = 0; i < elements.length; i++) {
                 elements[i].classList.remove('select');
@@ -1656,29 +1398,25 @@ let apps = {
             element.classList.add('select');
             apps.explorer.is_use += 1;
         },
-        copy_or_cut: (path,operate) =>{ //operate只能为copy或cut
+        copy_or_cut: (path, operate) => { //operate只能为copy或cut
             var pathl = path.split('/');
-            var name = pathl[pathl.length-1];
+            var name = pathl[pathl.length - 1];
             pathl.pop();
             let tmp = apps.explorer.path;
             pathl.forEach(name => {
                 tmp = tmp['folder'][name];
             });
 
-            if (Object.keys(tmp["folder"]).includes(name))
-            {
+            if (Object.keys(tmp["folder"]).includes(name)) {
                 let name_ = name;
-                apps.explorer.clipboard = ["folder",[name],tmp["folder"][name]];
+                apps.explorer.clipboard = ["folder", [name], tmp["folder"][name]];
                 if (operate == "cut")
                     delete tmp["folder"][name];
             }
-            else
-            {
-                for (var i = 0; i < tmp["file"].length; i++)
-                {
-                    if (tmp["file"][i]["name"] == name)
-                    {
-                        apps.explorer.clipboard = ["file",tmp["file"][i]];
+            else {
+                for (var i = 0; i < tmp["file"].length; i++) {
+                    if (tmp["file"][i]["name"] == name) {
+                        apps.explorer.clipboard = ["file", tmp["file"][i]];
                         if (operate == "cut")
                             delete tmp["file"][i];
                     }
@@ -1686,7 +1424,7 @@ let apps = {
             }
             apps.explorer.goto($('#win-explorer>.path>.tit')[0].dataset.path);
         },
-        paste: (path) =>{
+        paste: (path) => {
             var pathl = path.split('/');
             let tmp = apps.explorer.path, thisPath = '';
             $('#win-explorer>.path>.tit>.path')[0].innerHTML = '';
@@ -1709,8 +1447,7 @@ let apps = {
             });
             var clipboard = apps.explorer.clipboard;
 
-            if (apps.explorer.traverseDirectory(tmp,clipboard[1][0]) || apps.explorer.traverseDirectory(tmp,clipboard[1]['name']))
-            {
+            if (apps.explorer.traverseDirectory(tmp, clipboard[1][0]) || apps.explorer.traverseDirectory(tmp, clipboard[1]['name'])) {
                 shownotice("duplication file name");
                 return;
             }
@@ -1724,19 +1461,16 @@ let apps = {
             // }
             // 这段注释了的代码可以调试一下，会有神奇的bug。
 
-            if(clipboard[0] == "file")
-            {
+            if (clipboard[0] == "file") {
                 tmp["file"].push(clipboard[1]);
             }
-            else
-            {
+            else {
                 tmp['folder'][clipboard[1][0]] = clipboard[2];
             }
             apps.explorer.goto(path);
         },
         del_select: () => {
-            if(apps.explorer.is_use >= 1 && apps.explorer.is_use2 != apps.explorer.is_use)
-            {
+            if (apps.explorer.is_use >= 1 && apps.explorer.is_use2 != apps.explorer.is_use) {
                 apps.explorer.is_use2 = apps.explorer.is_use;
                 return;
             }
@@ -1752,10 +1486,8 @@ let apps = {
                 pathl.forEach(name => {
                     tmp = tmp['folder'][name];
                 });
-                if (inputTag.value == '' || apps.explorer.traverseDirectory(tmp,inputTag.value) || on == inputTag.value)
-                {
-                    if (apps.explorer.traverseDirectory(tmp,inputTag.value) && on != inputTag.value)
-                    {
+                if (inputTag.value == '' || apps.explorer.traverseDirectory(tmp, inputTag.value) || on == inputTag.value) {
+                    if (apps.explorer.traverseDirectory(tmp, inputTag.value) && on != inputTag.value) {
                         shownotice("duplication file name");
                     }
                     var element = document.getElementById("new_name");
@@ -1766,32 +1498,27 @@ let apps = {
                 name_1 = inputTag.value.split(".");
                 if(name_1[0].indexOf('/')>-1)alert('恭喜你发现了这个bug,但是太懒了不想修qwq');
                 console.log(name_1);
-                if (name_1[1] == "txt"){
+                if (name_1[1] == "txt") {
                     icon_ = "icon/files/txt.png";
                 }
-                else if (name_1[1] == "png" || name_1[1] == "jpg" | name_1[1] == "bmp"){
+                else if (name_1[1] == "png" || name_1[1] == "jpg" | name_1[1] == "bmp") {
                     icon_ = "icon/files/picture.png";
                 }
-                else
-                {
+                else {
                     icon_ = "icon/files/none.png";
                 }
                 //这边可以适配更多的文件类型
 
                 aTag.innerHTML += inputTag.value;
-                for (var i = 0; i < tmp["file"].length; i++)
-                {
-                    if (tmp["file"][i]['name'] == on)
-                    {
+                for (var i = 0; i < tmp["file"].length; i++) {
+                    if (tmp["file"][i]['name'] == on) {
                         tmp["file"][i]['name'] = inputTag.value;
                         tmp["file"][i]['ico'] = icon_;
                     }
                 }
                 const keys = Object.keys(tmp["folder"]);
-                for (var i = 0; i < keys.length; i++)
-                {
-                    if (keys[i] == on)
-                    {
+                for (var i = 0; i < keys.length; i++) {
+                    if (keys[i] == on) {
                         keys[i] = inputTag.value;
                         tmp["folder"][inputTag.value] = tmp["folder"][on];
                         delete tmp["folder"][on];
@@ -1842,9 +1569,9 @@ let apps = {
                 tmp = tmp['folder'][name];
                 pathqwq += '/';
             });
-            var path_ = path;
-            if (Object.keys(tmp["folder"]) == 0 && tmp["file"].length == 0){
-                $('#win-explorer>.page>.main>.content>.view')[0].innerHTML = '<p class="info">此文件夹为空。</p>';
+            var path_ = path
+            if (Object.keys(tmp["folder"]) == 0 && tmp["file"].length == 0) {
+                $('#win-explorer>.main>.content>.view')[0].innerHTML = '<p class="info">此文件夹为空。</p>';
             }
             else {
                 let ht = '';
@@ -1870,59 +1597,55 @@ let apps = {
 
             // $('#win-explorer>.path>.tit')[0].innerHTML = path;
         },
-        add: (path,name_,type="file",command="",icon="") => { //type为文件类型，只有文件夹files和文件file
+        add: (path, name_, type = "file", command = "", icon = "") => { //type为文件类型，只有文件夹files和文件file
             var pathl = path.split('/');
             var icon_ = "";
             let tmp = apps.explorer.path;
             pathl.forEach(name => {
                 tmp = tmp['folder'][name];
             });
-            if (tmp == null)
-            {
-                tmp = {folder:{},file:[]};
+            if (tmp == null) {
+                tmp = { folder: {}, file: [] };
             }
-            if (apps.explorer.traverseDirectory(tmp,name_))
-            {
+            if (apps.explorer.traverseDirectory(tmp, name_)) {
                 shownotice("duplication file name");
                 return;
             }
             name_1 = name_.split(".");
-            
-            if (type=="file"){
-                if (name_1[1] == "txt"){
+
+            if (type == "file") {
+                if (name_1[1] == "txt") {
                     icon_ = "icon/files/txt.png";
                     if (command == "")
                         command = "openapp('notepad')";
                 }
-                else if (name_1[1] == "png" || name_1[1] == "jpg" | name_1[1] == "bmp"){
+                else if (name_1[1] == "png" || name_1[1] == "jpg" | name_1[1] == "bmp") {
                     icon_ = "icon/files/picture.png";
                 }
-                else
-                {
+                else {
                     icon_ = "icon/files/none.png";
                 }
                 //这边可以适配更多的文件类型
-                if (icon != "")
-                {
+                if (icon != "") {
                     icon_ = icon;
                 }
-                try{
-                    tmp.file.push({ name: name_, ico: icon_, command: command});
+                try {
+                    tmp.file.push({ name: name_, ico: icon_, command: command });
                 }
-                catch{
+                catch {
                     tmp.push(file);
-                    tmp.file.push({ name: name_, ico: icon_, command: command});
+                    tmp.file.push({ name: name_, ico: icon_, command: command });
                 }
             }
-            else{
-                tmp.folder[name_] = {folder:{},file:[]};
+            else {
+                tmp.folder[name_] = { folder: {}, file: [] };
             }
             apps.explorer.goto(path);
-            apps.explorer.rename(path+"/"+name_);
+            apps.explorer.rename(path + "/" + name_);
         },
         rename: (path) => {
             var pathl = path.split('/');
-            var name = pathl[pathl.length-1];
+            var name = pathl[pathl.length - 1];
             apps.explorer.old_name = name;
             pathl.pop();
             let tmp = apps.explorer.path;
@@ -1938,11 +1661,11 @@ let apps = {
             input.className = "input";
             input.value = apps.explorer.old_name;
             element.appendChild(input);
-            setTimeout(()=>{$("#new_name").focus();$("#new_name").select();},200);
+            setTimeout(() => { $("#new_name").focus(); $("#new_name").select(); }, 200);
 
             element.classList.add("change");
             var input_ = document.getElementById("new_name");
-            input_.addEventListener("keyup", function(event) {
+            input_.addEventListener("keyup", function (event) {
                 if (event.key === "Enter") {
                     event.preventDefault();
                     apps.explorer.del_select();
@@ -1959,39 +1682,33 @@ let apps = {
         },
         del: (path) => {
             var pathl = path.split('/');
-            var name = pathl[pathl.length-1];
+            var name = pathl[pathl.length - 1];
             pathl.pop();
             let tmp = apps.explorer.path;
             pathl.forEach(name => {
                 tmp = tmp['folder'][name];
             });
             tmp_file = tmp['file'];
-            for (var i = 0; i < tmp_file.length; i++)
-            {
-                if (tmp_file[i]['name'] == name)
-                {
-                    tmp_file.splice(i,1);
+            for (var i = 0; i < tmp_file.length; i++) {
+                if (tmp_file[i]['name'] == name) {
+                    tmp_file.splice(i, 1);
                 }
             }
             tmp_files = tmp['folder'];
             delete tmp_files[name];
             apps.explorer.goto(pathl.join("/"));
         },
-        traverseDirectory(dir,name) {
+        traverseDirectory(dir, name) {
             if (dir["file"] == null && dir["folder"] == null)
                 return false;
-            for (var i = 0; i < dir["file"].length; i++)
-            {
-                if (dir["file"][i]['name'] == name)
-                {
+            for (var i = 0; i < dir["file"].length; i++) {
+                if (dir["file"][i]['name'] == name) {
                     return true;
                 }
             }
             const keys = Object.keys(dir["folder"]);
-            for (var i = 0; i < keys.length; i++)
-            {
-                if (keys[i] == name)
-                {
+            for (var i = 0; i < keys.length; i++) {
+                if (keys[i] == name) {
                     return true;
                 }
             }
@@ -2003,14 +1720,14 @@ let apps = {
                 'C:': {
                     folder: {
                         'Program Files': {
-                            folder: { 'WindowsApps': {folder:{},file:[]}, 'Microsoft': {folder:{},file:[]} },
+                            folder: { 'WindowsApps': { folder: {}, file: [] }, 'Microsoft': { folder: {}, file: [] } },
                             file: [
                                 { name: 'about.exe', ico: 'icon/about.svg', command: "openapp('about')" },
                                 { name: 'setting.exe', ico: 'icon/setting.svg', command: "openapp('setting')" },
                             ]
                         },
                         'Windows': {
-                            folder: { 'Boot': {folder:{},file:[]}, 'System': {folder:{},file:[]}, 'System32': {folder:{},file:[]} },
+                            folder: { 'Boot': { folder: {}, file: [] }, 'System': { folder: {}, file: [] }, 'System32': { folder: {}, file: [] } },
                             file: [
                                 { name: 'notepad.exe', ico: 'icon/notepad.svg', command: "openapp('notepad')" },
                             ]
@@ -2020,29 +1737,29 @@ let apps = {
                                 'Administrator': {
                                     folder: {
                                         '文档': {
-                                            folder: { 'IISExpress': {folder:{},file:[]}, 'PowerToys': {folder:{},file:[]} },
+                                            folder: { 'IISExpress': { folder: {}, file: [] }, 'PowerToys': { folder: {}, file: [] } },
                                             file: [
                                                 { name: '瓶盖介绍.doc', ico: 'icon/files/word.png', command: '' },
                                                 { name: '瓶盖质量统计分析.xlsx', ico: 'icon/files/excel.png', command: '' },
                                             ]
                                         }, '图片': {
-                                            folder: { '本机照片': {folder:{},file:[]}, '屏幕截图': {folder:{},file:[]} },
+                                            folder: { '本机照片': { folder: {}, file: [] }, '屏幕截图': { folder: {}, file: [] } },
                                             file: [
                                                 { name: '瓶盖构造图.png', ico: 'icon/files/img.png', command: '' },
                                                 { name: '可口可乐瓶盖.jpg', ico: 'icon/files/img.png', command: '' },
                                             ]
                                         },
-                                        'AppData': {folder:{},file:[]}, '音乐': { folder: { '录音机': {folder:{},file:[]} } }
+                                        'AppData': { folder: {}, file: [] }, '音乐': { folder: { '录音机': { folder: {}, file: [] } } }
                                     }
                                 }
                             }
                         }
                     },
-                    file:[
+                    file: [
                     ]
                 },
                 'D:': {
-                    folder: { 'Microsoft': {folder:{},file:[]} },
+                    folder: { 'Microsoft': { folder: {}, file: [] } },
                     file: [
                         { name: '瓶盖结构说明.docx', ico: 'icon/files/word.png', command: '' },
                         { name: '可口可乐瓶盖历史.pptx', ico: 'icon/files/ppt.png', command: '' },
@@ -2465,11 +2182,16 @@ Microsoft Windows [版本 12.0.39035.7324]
             }, 300);
         },
         reload: () => {
-            $('#win-edge>iframe.show').attr('src', $('#win-edge>iframe.show').attr('src'));
-            if (!$('.window.edge>.titbar>.tabs>.tab.' + apps.edge.tabs[apps.edge.now][0] + '>.reloading')[0]) {
-                $('.window.edge>.titbar>.tabs>.tab.' + apps.edge.tabs[apps.edge.now][0])[0].insertAdjacentHTML('afterbegin', apps.edge.reloadElt);
-                $('#win-edge>iframe.' + apps.edge.tabs[apps.edge.now][0])[0].onload = function () {
-                    $('.window.edge>.titbar>.tabs>.tab.' + this.classList[0])[0].removeChild($('.window.edge>.titbar>.tabs>.tab.' + this.classList[0] + '>.reloading')[0]);
+            if (wifiStatus == false) {
+                $('#win-edge>iframe.show').attr('src', './disconnected.html');
+            }
+            else {
+                $('#win-edge>iframe.show').attr('src', $('#win-edge>iframe.show').attr('src'));
+                if (!$('.window.edge>.titbar>.tabs>.tab.' + apps.edge.tabs[apps.edge.now][0] + '>.reloading')[0]) {
+                    $('.window.edge>.titbar>.tabs>.tab.' + apps.edge.tabs[apps.edge.now][0])[0].insertAdjacentHTML('afterbegin', apps.edge.reloadElt);
+                    $('#win-edge>iframe.' + apps.edge.tabs[apps.edge.now][0])[0].onload = function () {
+                        $('.window.edge>.titbar>.tabs>.tab.' + this.classList[0])[0].removeChild($('.window.edge>.titbar>.tabs>.tab.' + this.classList[0] + '>.reloading')[0]);
+                    }
                 }
             }
         },
@@ -2483,28 +2205,36 @@ Microsoft Windows [版本 12.0.39035.7324]
             }
         },
         goto: (u) => {
-            // 6
-            if (!/^(((ht|f)tps?):\/\/)?([^!@#$%^&*?.\s-]([^!@#$%^&*?.\s]{0,63}[^!@#$%^&*?.\s])?\.)+[a-z]{2,6}\/?/.test(u)) {
-                // 启用必应搜索
-                $('#win-edge>iframe.show').attr('src', 'https://bing.com/search?q=' + u);
-                m_tab.rename('edge',u);
-            }
-            // 检测网址是否带有http头
-            else if (!/^https?:\/\//.test(u)) {
-                $('#win-edge>iframe.show').attr('src', 'http://' + u);
-                m_tab.rename('edge','http://' + u);
+            if (wifiStatus == false) {
+                $('#win-edge>iframe.show').attr('src', './disconnected.html');
+                apps.edge.rename(u);
+                $('#win-edge>.tool>input.url').val(u);
             }
             else {
-                $('#win-edge>iframe.show').attr('src', u);
-                m_tab.rename('edge',u);
+                // 6
+                if (!/^(((ht|f)tps?):\/\/)?([^!@#$%^&*?.\s-]([^!@#$%^&*?.\s]{0,63}[^!@#$%^&*?.\s])?\.)+[a-z]{2,6}\/?/.test(u)) {
+                    // 启用必应搜索
+                    $('#win-edge>iframe.show').attr('src', 'https://bing.com/search?q=' + u);
+                    apps.edge.rename(u);
+                }
+                // 检测网址是否带有http头
+                else if (!/^https?:\/\//.test(u)) {
+                    $('#win-edge>iframe.show').attr('src', 'http://' + u);
+                    apps.edge.rename('http://' + u);
+                }
+                else {
+                    $('#win-edge>iframe.show').attr('src', u);
+                    apps.edge.rename(u);
+                }
+                if (!$('.window.edge>.titbar>.tabs>.tab.' + apps.edge.tabs[apps.edge.now][0] + '>.reloading')[0]) {
+                    $('.window.edge>.titbar>.tabs>.tab.' + apps.edge.tabs[apps.edge.now][0])[0].insertAdjacentHTML('afterbegin', apps.edge.reloadElt);
+                }
+                $('#win-edge>iframe.' + apps.edge.tabs[apps.edge.now][0])[0].onload = function () {
+                    $('.window.edge>.titbar>.tabs>.tab.' + this.classList[0])[0].removeChild($('.window.edge>.titbar>.tabs>.tab.' + this.classList[0] + '>.reloading')[0]);
+                }
+                apps.edge.getTitle($('#win-edge>iframe.show').attr('src'), apps.edge.now);
             }
-            if (!$('.window.edge>.titbar>.tabs>.tab.' + apps.edge.tabs[apps.edge.now][0] + '>.reloading')[0]) {
-                $('.window.edge>.titbar>.tabs>.tab.' + apps.edge.tabs[apps.edge.now][0])[0].insertAdjacentHTML('afterbegin', apps.edge.reloadElt);
-            }
-            $('#win-edge>iframe.' + apps.edge.tabs[apps.edge.now][0])[0].onload = function () {
-                $('.window.edge>.titbar>.tabs>.tab.' + this.classList[0])[0].removeChild($('.window.edge>.titbar>.tabs>.tab.' + this.classList[0] + '>.reloading')[0]);
-            }
-            apps.edge.getTitle($('#win-edge>iframe.show').attr('src'), apps.edge.now);
+
         }
     },
     winver: {
@@ -2610,7 +2340,7 @@ let widgets = {
             widgets.monitor.handle = window.setInterval(widgets.monitor.update, 1000);
         },
         update: () => {
-            $('*:not(.template)>*>.wg.monitor>.content>.container>svg>circle:last-child').css('stroke-dasharray', `${widgets.monitor.type != 'gpu' ? widgets.monitor.type.match('wifi') ? widgets.monitor.type == 'wifi-send' ? apps.taskmgr.wifi[1] / 100 * (Math.PI * $('*:not(.template)>*>.wg.monitor>.content>.container>svg>circle:last-child')[0].r.baseVal.value * 2): apps.taskmgr.wifi[0] / 100 * (Math.PI * $('*:not(.template)>*>.wg.monitor>.content>.container>svg>circle:last-child')[0].r.baseVal.value * 2) : apps.taskmgr[widgets.monitor.type] / 100 * (Math.PI * $('*:not(.template)>*>.wg.monitor>.content>.container>svg>circle:last-child')[0].r.baseVal.value * 2): apps.taskmgr.gpu.usage / 100 * (Math.PI * $('*:not(.template)>*>.wg.monitor>.content>.container>svg>circle:last-child')[0].r.baseVal.value * 2)}, 170`);
+            $('*:not(.template)>*>.wg.monitor>.content>.container>svg>circle:last-child').css('stroke-dasharray', `${widgets.monitor.type != 'gpu' ? widgets.monitor.type.match('wifi') ? widgets.monitor.type == 'wifi-send' ? apps.taskmgr.wifi[1] / 100 * (Math.PI * $('*:not(.template)>*>.wg.monitor>.content>.container>svg>circle:last-child')[0].r.baseVal.value * 2) : apps.taskmgr.wifi[0] / 100 * (Math.PI * $('*:not(.template)>*>.wg.monitor>.content>.container>svg>circle:last-child')[0].r.baseVal.value * 2) : apps.taskmgr[widgets.monitor.type] / 100 * (Math.PI * $('*:not(.template)>*>.wg.monitor>.content>.container>svg>circle:last-child')[0].r.baseVal.value * 2) : apps.taskmgr.gpu.usage / 100 * (Math.PI * $('*:not(.template)>*>.wg.monitor>.content>.container>svg>circle:last-child')[0].r.baseVal.value * 2)}, 170`);
             if (widgets.monitor.type == 'cpu' || widgets.monitor.type == 'gpu') {
                 $('*:not(.template)>*>.wg.monitor>.content>.container>svg>circle:last-child').css('stroke', '#2983cc');
                 $('*:not(.template)>*>.wg.monitor>.content>.text>.type')[0].innerText = widgets.monitor.type == 'cpu' ? 'CPU利用率' : 'GPU利用率';
@@ -3186,12 +2916,18 @@ function hide_widgets() {
     setTimeout(() => { $('#widgets').removeClass('show-begin'); }, 200);
 }
 
-function controlStatus() {
+function controlStatus(name) {
     if (this.classList.contains('active')) {
-        this.classList.remove('active')
+        this.classList.remove('active');
+        if (name == 'wifi') {
+            wifiStatus = false;
+        }
     }
     else if (!this.classList.contains('active')) {
-        this.classList.add('active')
+        this.classList.add('active');
+        if (name == 'wifi') {
+            wifiStatus = true;
+        }
     }
 }
 // 控制面板 亮度调整
@@ -3270,6 +3006,8 @@ window.setInterval(() => {
     apps.taskmgr.cpuRunningTime++;
     localStorage.setItem('cpuRunningTime', apps.taskmgr.cpuRunningTime);
 }, 1000);
+
+var wifiStatus = true;
 
 // 选择框
 let chstX, chstY;
