@@ -395,23 +395,27 @@ let cms = {
             return ['<i class="bi bi-folder2-open"></i> 打开', `apps.explorer.goto('${arg}')`];
         },
         arg => {
-            if ($('#win-explorer>.main>.content>.tool>.tit>.path>div.text')[0].innerHTML != "此电脑")
+            return ['<i class="bi bi-arrow-up-right-square"></i> Open in a new tab', `apps.explorer.newtab('${arg}');`];
+        },
+        arg => {
+            if ($('#win-explorer>.path>.tit>.path>div.text').length>1)
                 return ['<i class="bi bi-trash3"></i> 删除', `apps.explorer.del('${arg}')`];
-            return;
+            return 'null';
         },
         arg => {
-            if ($('#win-explorer>.main>.content>.tool>.tit>.path>div.text')[0].innerHTML != "此电脑")
+            if ($('#win-explorer>.path>.tit>.path>div.text').length>1)
                 return ['<i class="bi bi-files"></i> 复制', `apps.explorer.copy_or_cut('${arg}','copy')`];
-            return;
+            return 'null';
         },
         arg => {
-            if ($('#win-explorer>.main>.content>.tool>.tit>.path>div.text')[0].innerHTML != "此电脑")
+            if ($('#win-explorer>.path>.tit>.path>div.text').length>1)
                 return ['<i class="bi bi-scissors"></i> 剪切', `apps.explorer.copy_or_cut('${arg}','cut')`];
+            return 'null';
         },
         arg => {
-            if ($('#win-explorer>.main>.content>.tool>.tit>.path>div.text')[0].innerHTML != "此电脑")
+            if ($('#win-explorer>.path>.tit>.path>div.text').length>1)
                 return ['<i class="bi bi-input-cursor-text"></i> 重命名', `apps.explorer.rename('${arg}')`];
-            return;
+            return 'null';
         }
     ],
     'explorer.file': [
@@ -419,42 +423,50 @@ let cms = {
             return ['<i class="bi bi-folder2-open"></i> 打开（目前毛用没有）', ``];
         },
         arg => {
-            if ($('#win-explorer>.main>.content>.tool>.tit>.path>div.text')[0].innerHTML != "此电脑")
+            if ($('#win-explorer>.path>.tit>.path>div.text').length>1)
                 return ['<i class="bi bi-trash3"></i> 删除', `apps.explorer.del('${arg}')`];
-            return;
+            return 'null';
         },
                 arg => {
-            if ($('#win-explorer>.main>.content>.tool>.tit>.path>div.text')[0].innerHTML != "此电脑")
+            if ($('#win-explorer>.path>.tit>.path>div.text').length>1)
                 return ['<i class="bi bi-files"></i> 复制', `apps.explorer.copy_or_cut('${arg}','copy')`];
-            return;
+            return 'null';
         },
         arg => {
-            if ($('#win-explorer>.main>.content>.tool>.tit>.path>div.text')[0].innerHTML != "此电脑")
+            if ($('#win-explorer>.path>.tit>.path>div.text').length>1)
                 return ['<i class="bi bi-scissors"></i> 剪切', `apps.explorer.copy_or_cut('${arg}','cut')`];
         },
         arg => {
-            if ($('#win-explorer>.main>.content>.tool>.tit>.path>div.text')[0].innerHTML != "此电脑")
+            if ($('#win-explorer>.path>.tit>.path>div.text').length>1)
                 return ['<i class="bi bi-input-cursor-text"></i> 重命名', `apps.explorer.rename('${arg}')`];
-            return;
+            return 'null';
         }
     ],
     'explorer.content': [
         arg => {
-            if ($('#win-explorer>.main>.content>.tool>.tit>.path>div.text')[0].innerHTML != "此电脑")
-                return ['<i class="bi bi-file-earmark-plus"></i> 新建文件', `apps.explorer.add($('#win-explorer>.main>.content>.tool>.tit')[0].dataset.path,'新建文本文档.txt')`];
+            if ($('#win-explorer>.path>.tit>.path>div.text').length>1)
+                return ['<i class="bi bi-file-earmark-plus"></i> 新建文件', `apps.explorer.add($('#win-explorer>.path>.tit')[0].dataset.path,'新建文本文档.txt')`];
+            return 'null';
         },
         arg => {
-            if ($('#win-explorer>.main>.content>.tool>.tit>.path>div.text')[0].innerHTML != "此电脑")
-                return ['<i class="bi bi-folder-plus"></i> 新建文件夹', `apps.explorer.add($('#win-explorer>.main>.content>.tool>.tit')[0].dataset.path,'新建文件夹',type='files')`];
-            return;
+            if ($('#win-explorer>.path>.tit>.path>div.text').length>1)
+                return ['<i class="bi bi-folder-plus"></i> 新建文件夹', `apps.explorer.add($('#win-explorer>.path>.tit')[0].dataset.path,'新建文件夹',type='files')`];
+            return 'null';
         },
         arg => {
-            if ($('#win-explorer>.main>.content>.tool>.tit>.path>div.text')[0].innerHTML != "此电脑")
-                return ['<i class="bi bi-file-earmark-arrow-down"></i> 粘贴', `apps.explorer.paste($('#win-explorer>.main>.content>.tool>.tit')[0].dataset.path,'新建文件夹',type='files')`];
-            return;
+            if ($('#win-explorer>.path>.tit>.path>div.text').length>1)
+                return ['<i class="bi bi-file-earmark-arrow-down"></i> 粘贴', `apps.explorer.paste($('#win-explorer>.path>.tit')[0].dataset.path,'新建文件夹',type='files')`];
+            return 'null';
         },
         arg => {
-            return ['<i class="bi bi-arrow-clockwise"></i> 刷新', `$('#win-explorer>.main>.content>.view').css('opacity','0');setTimeout(()=>{$('#win-explorer>.main>.content>.view').css('opacity','1');},100);`];
+            if ($('#win-explorer>.path>.tit>.path>div.text').length>1)
+                return ['<i class="bi bi-arrow-clockwise"></i> 刷新', `apps.explorer.goto($('#win-explorer>.path>.tit')[0].dataset.path)`];
+            return ['<i class="bi bi-arrow-clockwise"></i> 刷新', `apps.explorer.reset()`];
+        }
+    ],
+    'explorer.tab': [
+        arg => {
+            return ['<i class="bi bi-x"></i> 关闭标签页', `m_tab.close('explorer',${arg})`];
         }
     ],
     'edge.tab': [
@@ -462,7 +474,7 @@ let cms = {
             return ['<i class="bi bi-pencil-square"></i> 命名标签页', `apps.edge.c_rename(${arg})`];
         },
         arg => {
-            return ['<i class="bi bi-x"></i> 关闭标签页', `apps.edge.close(${arg})`];
+            return ['<i class="bi bi-x"></i> 关闭标签页', `m_tab.close('edge',${arg})`];
         }
     ],
     'taskmgr.processes': [
@@ -494,6 +506,7 @@ function showcm(e, cl, arg) {
             $('#cm>.foc').focus();
             // 这个.foc是用来模拟焦点的，这句是将焦点放在右键菜单上，注释掉后果不堪设想 >u-)o
             // 噢 可是如果设置焦点的话在移动设备上会显示虚拟键盘啊 QAQ (By: User782Tec)
+            // (By: tjy-gitnub)
             setTimeout(() => {
                 $('#cm').addClass('show');
             }, 0);
@@ -514,6 +527,7 @@ function showcm(e, cl, arg) {
     cms[cl].forEach(item => {
         if (typeof (item) == 'function') {
             ret = item(arg);
+            console.log(arg,ret);
             if (ret == 'null') {
                 return true;
             }
@@ -1561,21 +1575,12 @@ let apps = {
             }
         }
     },
-    musicPlayer:{
-        init: () => {
-            $('#win-musicPlayer>.menu>list>a.system')[0].click();
-        },
-        page: (name) => {
-            $('#win-musicPlayer>.page>.cnt.' + name).scrollTop(0);
-            $('#win-musicPlayer>.page>.cnt.show').removeClass('show');
-            $('#win-musicPlayer>.page>.cnt.' + name).addClass('show');
-            $('#win-musicPlayer>.menu>list>a.check').removeClass('check');
-            $('#win-musicPlayer>.menu>list>a.' + name).addClass('check');
-        }
-    },
     explorer: {
         init: () => {
-            apps.explorer.reset();
+            apps.explorer.tabs = [];
+            apps.explorer.len = 0;
+            apps.explorer.newtab();
+            // apps.explorer.reset();
             apps.explorer.Process_Of_Select = "";
             apps.explorer.is_use = 0;//千万不要删除它，它依托bug运行
             apps.explorer.is_use2 = 0;//千万不要删除它，它依托bug运行
@@ -1587,22 +1592,45 @@ let apps = {
                 }
             });
         },
+        tabs: [],
+        now: null,
+        len: 0,
+        newtab:(path='')=>{
+            // if(path==''){
+            //     m_tab.newtab('explorer','此电脑');
+            //     apps.explorer.tabs[apps.explorer.tabs.length-1][2]='';
+            //     m_tab.tab('explorer',apps.explorer.tabs.length - 1);
+            // }else{
+                m_tab.newtab('explorer','');
+                apps.explorer.tabs[apps.explorer.tabs.length-1][2]=path;
+                m_tab.tab('explorer',apps.explorer.tabs.length - 1);
+            // }
+        },
+        settab:(t,i)=>{
+            return `<div class="tab ${t[0]}" onclick="m_tab.tab('explorer',${i})" oncontextmenu="showcm(event,'explorer.tab',${i});stop(event);return false" onmousedown="m_tab.moving('explorer',this,event,${i});stop(event);" ontouchstart="m_tab.moving('exploer',this,event,${i});stop(event);"><p>${t[1]}</p><span class="clbtn bi bi-x" onclick="m_tab.close('explorer',${i});stop(event);"></span></div>`;
+        },
+        tab: (c,load=true)=>{
+            if(load){
+                if(!apps.explorer.tabs[c][2].length)apps.explorer.reset();
+                else apps.explorer.goto(apps.explorer.tabs[c][2]);
+            }
+        },
         reset: () => {
-            $('#win-explorer>.main>.content>.view')[0].innerHTML = `<style>#win-explorer>.main>.content>.view>.class{margin-left: 20px;display: flex;}
-            #win-explorer>.main>.content>.view>.class>img{width: 20px;height: 20px;margin-top: 3px;margin-right: 5px;filter:brightness(0.9);}
-            #win-explorer>.main>.content>.view>.group{display: flex;flex-wrap: wrap;padding: 10px 20px;}
-            #win-explorer>.main>.content>.view>.group>.item{width: 280px;margin: 5px;height:80px;
+            $('#win-explorer>.page>.main>.content>.view')[0].innerHTML = `<style>#win-explorer>.page>.main>.content>.view>.class{margin: 5px 0 0 10px;display: flex;}
+            #win-explorer>.page>.main>.content>.view>.class>img{width: 20px;height: 20px;margin-top: 3px;margin-right: 5px;filter:brightness(0.9);}
+            #win-explorer>.page>.main>.content>.view>.group{display: flex;flex-wrap: wrap;padding: 10px 20px;}
+            #win-explorer>.page>.main>.content>.view>.group>.item{width: 280px;margin: 5px;height:80px;
     box-shadow: 0 1px 2px var(--s3d);
                 background: radial-gradient(circle, var(--card),var(--card));border-radius: 10px;display: flex;}
-            #win-explorer>.main>.content>.view>.group>.item:hover{background-color: var(--hover);}
-            #win-explorer>.main>.content>.view>.group>.item:active{transform: scale(0.97);}
-            #win-explorer>.main>.content>.view>.group>.item>img{width: 55px;height: 55px;margin-top: 18px;margin-left: 10px;}
-            #win-explorer>.main>.content>.view>.group>.item>div{flex-grow: 1;padding: 5px 5px 0 0;}
-            #win-explorer>.main>.content>.view>.group>.item>div>.bar{width: calc(100% - 10px);height: 8px;border-radius: 10px;
+            #win-explorer>.page>.main>.content>.view>.group>.item:hover{background-color: var(--hover);}
+            #win-explorer>.page>.main>.content>.view>.group>.item:active{transform: scale(0.97);}
+            #win-explorer>.page>.main>.content>.view>.group>.item>img{width: 55px;height: 55px;margin-top: 18px;margin-left: 10px;}
+            #win-explorer>.page>.main>.content>.view>.group>.item>div{flex-grow: 1;padding: 5px 5px 0 0;}
+            #win-explorer>.page>.main>.content>.view>.group>.item>div>.bar{width: calc(100% - 10px);height: 8px;border-radius: 10px;
                 background-color: var(--hover-b);margin: 5px 5px;}
-            #win-explorer>.main>.content>.view>.group>.item>div>.bar>.content{height: 100%;background-image: linear-gradient(90deg, var(--theme-1), var(--theme-2));
+            #win-explorer>.page>.main>.content>.view>.group>.item>div>.bar>.content{height: 100%;background-image: linear-gradient(90deg, var(--theme-1), var(--theme-2));
                 border-radius: 10px;}
-            #win-explorer>.main>.content>.view>.group>.item>div>.info{color: #959595;font-size: 14px;}</style>
+            #win-explorer>.page>.main>.content>.view>.group>.item>div>.info{color: #959595;font-size: 14px;}</style>
             <p class="class"><img src="apps/icons/explorer/disk.svg"> 设备和驱动器</p><div class="group">
             <a class="a item act" ondblclick="apps.explorer.goto('C:')" ontouchend="apps.explorer.goto('C:')" oncontextmenu="showcm(event,'explorer.folder','C:');return stop(event);">
             <img src="apps/icons/explorer/diskwin.svg"><div><p class="name">本地磁盘 (C:)</p>
@@ -1611,7 +1639,11 @@ let apps = {
             oncontextmenu="showcm(event,'explorer.folder','D:');return stop(event);">
             <img src="apps/icons/explorer/disk.svg"><div><p class="name">本地磁盘 (D:)</p><div class="bar"><div class="content" style="width: 15%;"></div>
             </div><p class="info">185.3 GB 可用, 共 216 GB</p></div></a></div>`;
-            $('#win-explorer>.main>.content>.tool>.tit')[0].innerHTML = '<div class="icon" style="background-image: url(\'./apps/icons/explorer/thispc.svg\')"></div><div class="path"><div class="text">此电脑</div></div>';
+            $('#win-explorer>.path>.tit')[0].innerHTML = '<div class="icon" style="background-image: url(\'./apps/icons/explorer/thispc.svg\')"></div><div class="path"><div class="text" onclick="apps.explorer.reset()">此电脑</div><div class="arrow">&gt;</div></div>';
+            // if(rename){
+                m_tab.rename('explorer','<img src="./apps/icons/explorer/thispc.svg"> 此电脑');
+                apps.explorer.tabs[apps.explorer.now][2]='';
+            // }
         },
         select: (path,id) => {
             var elements = document.querySelectorAll('#win-explorer > .main > .content > .view > .select');
@@ -1652,28 +1684,28 @@ let apps = {
                     }
                 }
             }
-            apps.explorer.goto($('#win-explorer>.main>.content>.tool>.tit')[0].dataset.path);
+            apps.explorer.goto($('#win-explorer>.path>.tit')[0].dataset.path);
         },
         paste: (path) =>{
             var pathl = path.split('/');
             let tmp = apps.explorer.path, thisPath = '';
-            $('#win-explorer>.main>.content>.tool>.tit>.path')[0].innerHTML = '';
+            $('#win-explorer>.path>.tit>.path')[0].innerHTML = '';
             if (pathl[pathl.length - 1] == 'C:') {
-                $('#win-explorer>.main>.content>.tool>.tit>.icon')[0].style.marginTop = '3px';
-                $('#win-explorer>.main>.content>.tool>.tit>.icon')[0].style.backgroundImage = 'url("./apps/icons/explorer/diskwin.svg")';
+                $('#win-explorer>.path>.tit>.icon')[0].style.marginTop = '3px';
+                $('#win-explorer>.path>.tit>.icon')[0].style.backgroundImage = 'url("./apps/icons/explorer/diskwin.svg")';
             }
             else if (pathl[pathl.length - 1] == 'D:') {
-                $('#win-explorer>.main>.content>.tool>.tit>.icon')[0].style.marginTop = '0px';
-                $('#win-explorer>.main>.content>.tool>.tit>.icon')[0].style.backgroundImage = 'url("./apps/icons/explorer/disk.svg")';
+                $('#win-explorer>.path>.tit>.icon')[0].style.marginTop = '0px';
+                $('#win-explorer>.path>.tit>.icon')[0].style.backgroundImage = 'url("./apps/icons/explorer/disk.svg")';
             }
             else {
-                $('#win-explorer>.main>.content>.tool>.tit>.icon')[0].style.marginTop = '0px';
-                $('#win-explorer>.main>.content>.tool>.tit>.icon')[0].style.backgroundImage = 'url("./apps/icons/explorer/folder.svg")';
+                $('#win-explorer>.path>.tit>.icon')[0].style.marginTop = '0px';
+                $('#win-explorer>.path>.tit>.icon')[0].style.backgroundImage = 'url("./apps/icons/explorer/folder.svg")';
             }
             pathl.forEach(name => {
                 thisPath += name + '/';
                 tmp = tmp['folder'][name];
-                $('#win-explorer>.main>.content>.tool>.tit>.path')[0].insertAdjacentHTML('beforeend', `<div class="text" onmousedown="apps.explorer.goto('${thisPath.substring(0, thisPath.length - 1)}');stop(event);">${name}</div> <div class="arrow">></div> `)
+                $('#win-explorer>.path>.tit>.path')[0].insertAdjacentHTML('beforeend', `<div class="text" onmousedown="apps.explorer.goto('${thisPath.substring(0, thisPath.length - 1)}');stop(event);">${name}</div> <div class="arrow">></div> `)
             });
             var clipboard = apps.explorer.clipboard;
 
@@ -1700,7 +1732,7 @@ let apps = {
             {
                 tmp['folder'][clipboard[1][0]] = clipboard[2];
             }
-            apps.explorer.goto($('#win-explorer>.main>.content>.tool>.tit')[0].datset.path);
+            apps.explorer.goto(path);
         },
         del_select: () => {
             if(apps.explorer.is_use >= 1 && apps.explorer.is_use2 != apps.explorer.is_use)
@@ -1708,13 +1740,14 @@ let apps = {
                 apps.explorer.is_use2 = apps.explorer.is_use;
                 return;
             }
-            var elements = document.querySelectorAll('#win-explorer > .main > .content > .view > .change');
+            var elements = document.querySelectorAll('#win-explorer>.page>.main>.content>.view>.change');
+            console.log(elements);
             for (var i = 0; i < elements.length; i++) {
                 elements[i].classList.remove('change');
                 let aTag = elements[i];
                 var on = apps.explorer.old_name;
                 let inputTag = aTag.querySelector("#new_name");
-                var pathl = $('#win-explorer>.main>.content>.tool>.tit')[0].dataset.path.split('/');
+                var pathl = $('#win-explorer>.path>.tit')[0].dataset.path.split('/');
                 let tmp = apps.explorer.path;
                 pathl.forEach(name => {
                     tmp = tmp['folder'][name];
@@ -1731,6 +1764,8 @@ let apps = {
                     continue;
                 }
                 name_1 = inputTag.value.split(".");
+                if(name_1[0].indexOf('/')>-1)alert('恭喜你发现了这个bug,但是太懒了不想修qwq');
+                console.log(name_1);
                 if (name_1[1] == "txt"){
                     icon_ = "icon/files/txt.png";
                 }
@@ -1743,7 +1778,6 @@ let apps = {
                 }
                 //这边可以适配更多的文件类型
 
-                
                 aTag.innerHTML += inputTag.value;
                 for (var i = 0; i < tmp["file"].length; i++)
                 {
@@ -1765,12 +1799,12 @@ let apps = {
                 }
                 var element = document.getElementById("new_name");
                 element.parentNode.removeChild(element);
-                apps.explorer.goto($('#win-explorer>.main>.content>.tool>.tit')[0].dataset.path);
+                apps.explorer.goto($('#win-explorer>.path>.tit')[0].dataset.path);
 
             }
             delete elements;
             apps.explorer.is_use2 = apps.explorer.is_use;
-            var elements = document.querySelectorAll('#win-explorer > .main > .content > .view > .select');
+            var elements = document.querySelectorAll('#win-explorer>.page>.main>.content>.view>.select');
             for (var i = 0; i < elements.length; i++) {
                 elements[i].classList.remove('select');
             }
@@ -1778,34 +1812,39 @@ let apps = {
         },
         goto: (path) => {
             apps.explorer.Process_Of_Select = "";
-            $('#win-explorer>.main>.content>.view')[0].innerHTML = '';
+            $('#win-explorer>.page>.main>.content>.view')[0].innerHTML = '';
             var pathl = path.split('/');
             var pathqwq = '';
             var index_ = 0;
             let tmp = apps.explorer.path;
-            $('#win-explorer>.main>.content>.tool>.tit')[0].dataset.path = path;
-            $('#win-explorer>.main>.content>.tool>.tit>.path')[0].innerHTML = '';
-            $('#win-explorer>.main>.content>.tool>.tit>.icon')[0].style.marginTop = '0px';
+            $('#win-explorer>.path>.tit')[0].dataset.path = path;
+            $('#win-explorer>.path>.tit>.path')[0].innerHTML = '<div class="text" onclick="apps.explorer.reset()">此电脑</div><div class="arrow">&gt;</div>';
+            $('#win-explorer>.path>.tit>.icon')[0].style.marginTop = '0px';
             if (pathl[pathl.length - 1] == 'C:') {
-                $('#win-explorer>.main>.content>.tool>.tit>.icon')[0].style.backgroundImage = 'url("apps/icons/explorer/diskwin.svg")';
-                $('#win-explorer>.main>.content>.tool>.tit>.icon')[0].style.marginTop = '2.5px';
+                $('#win-explorer>.path>.tit>.icon')[0].style.backgroundImage = 'url("apps/icons/explorer/diskwin.svg")';
+                $('#win-explorer>.path>.tit>.icon')[0].style.marginTop = '2.5px';
+                m_tab.rename('explorer','<img src="./apps/icons/explorer/diskwin.svg" style="margin-top:2.5px">'+pathl[pathl.length-1]);
             }
             else if (pathl[pathl.length - 1] == 'D:') {
-                $('#win-explorer>.main>.content>.tool>.tit>.icon')[0].style.backgroundImage = 'url("apps/icons/explorer/disk.svg")';
+                $('#win-explorer>.path>.tit>.icon')[0].style.backgroundImage = 'url("apps/icons/explorer/disk.svg")';
+                m_tab.rename('explorer','<img src="./apps/icons/explorer/disk.svg">'+pathl[pathl.length-1]);
             }
             else {
-                $('#win-explorer>.main>.content>.tool>.tit>.icon')[0].style.backgroundImage = 'url("apps/icons/explorer/folder.svg")';
+                $('#win-explorer>.path>.tit>.icon')[0].style.backgroundImage = 'url("apps/icons/explorer/folder.svg")';
+                m_tab.rename('explorer','<img src="./apps/icons/explorer/folder.svg">'+pathl[pathl.length-1]);
             }
+            // if(rename){
+                apps.explorer.tabs[apps.explorer.now][2]=path;
+            // }
             pathl.forEach(name => {
                 pathqwq += name;
-                $('#win-explorer>.main>.content>.tool>.tit>.path')[0].innerHTML += `<div class="text" onclick="apps.explorer.goto('${pathqwq}')">${name}</div>`;
-                $('#win-explorer>.main>.content>.tool>.tit>.path')[0].innerHTML += '<div class="arrow"> > </div>';
+                $('#win-explorer>.path>.tit>.path')[0].innerHTML += `<div class="text" onclick="apps.explorer.goto('${pathqwq}')">${name}</div><div class="arrow">&gt;</div>`;
                 tmp = tmp['folder'][name];
                 pathqwq += '/';
             });
-            var path_ = path
+            var path_ = path;
             if (Object.keys(tmp["folder"]) == 0 && tmp["file"].length == 0){
-                $('#win-explorer>.main>.content>.view')[0].innerHTML = '<p class="info">此文件夹为空。</p>';
+                $('#win-explorer>.page>.main>.content>.view')[0].innerHTML = '<p class="info">此文件夹为空。</p>';
             }
             else {
                 let ht = '';
@@ -1821,14 +1860,15 @@ let apps = {
                         index_ += 1;
                     });
                 }
-                $('#win-explorer>.main>.content>.view')[0].innerHTML = ht;
+                $('#win-explorer>.page>.main>.content>.view')[0].innerHTML = ht;
             }
             if (pathl.length == 1) {
-                $('#win-explorer>.main>.content>.tool>.goback').attr('onclick', 'apps.explorer.reset()');
+                $('#win-explorer>.path>.goback').attr('onclick', 'apps.explorer.reset()');
             } else {
-                $('#win-explorer>.main>.content>.tool>.goback').attr('onclick', `apps.explorer.goto('${path.substring(0, path.length - pathl[pathl.length - 1].length - 1)}')`);
+                $('#win-explorer>.path>.goback').attr('onclick', `apps.explorer.goto('${path.substring(0, path.length - pathl[pathl.length - 1].length - 1)}')`);
             }
-            // $('#win-explorer>.main>.content>.tool>.tit')[0].innerHTML = path;
+
+            // $('#win-explorer>.path>.tit')[0].innerHTML = path;
         },
         add: (path,name_,type="file",command="",icon="") => { //type为文件类型，只有文件夹files和文件file
             var pathl = path.split('/');
@@ -1893,8 +1933,9 @@ let apps = {
             let img = element.querySelector("img").outerHTML;
             element.innerHTML = img;
             let input = document.createElement("input");
-            input.style.cssText = 'background-color: var(--bg50);border-top: none;border-right: none;border-left: none;border-image: initial;border-bottom: 2.5px solid rgba(127, 127, 127, 0.498);border-radius: 11px;height: 9%;padding: 3px 5px 3px 8px;outline: medium;width: 155%;color: var(--text);transition: all 100ms ease 0s, border 0s ease 0s;box-shadow: 0 1px 2px var(--s3d);';
+            // input.style.cssText = '';
             input.id = "new_name";
+            input.className = "input";
             input.value = apps.explorer.old_name;
             element.appendChild(input);
             setTimeout(()=>{$("#new_name").focus();$("#new_name").select();},200);
@@ -1902,10 +1943,10 @@ let apps = {
             element.classList.add("change");
             var input_ = document.getElementById("new_name");
             input_.addEventListener("keyup", function(event) {
-            if (event.key === "Enter") {
-                event.preventDefault();
-                apps.explorer.del_select();
-            }
+                if (event.key === "Enter") {
+                    event.preventDefault();
+                    apps.explorer.del_select();
+                }
             });
         },
         get_file_id: (name) => {  //只能找到已经打开了的文件夹的元素id
@@ -2382,11 +2423,9 @@ Microsoft Windows [版本 12.0.39035.7324]
         now: null,
         len: 0,
         reloadElt: '<loading class="reloading"><svg viewBox="0 0 16 16"><circle cx="8px" cy="8px" r="5px"></circle><circle cx="8px" cy="8px" r="5px"></circle></svg></loading>',
-        newtab: () => {
-            apps.edge.tabs.push([apps.edge.len++, '新建标签页']);
-            $('#win-edge').append(`<iframe src="mainpage.html" frameborder="0" class="${apps.edge.tabs[apps.edge.tabs.length - 1][0]}">`)
-            apps.edge.settabs();
-            apps.edge.tab(apps.edge.tabs.length - 1);
+        newtab:()=>{
+            m_tab.newtab('edge','新建标签页');
+            $('#win-edge').append(`<iframe src="mainpage.html" frameborder="0" class="${apps.edge.tabs[apps.edge.tabs.length - 1][0]}">`);
             $('#win-edge>.tool>input.url').focus();
             $("#win-edge>iframe")[apps.edge.tabs.length - 1].onload = function () {
                 this.contentDocument.querySelector('input').onkeyup = function (e) {
@@ -2400,136 +2439,30 @@ Microsoft Windows [版本 12.0.39035.7324]
                         apps.edge.goto($(this.contentDocument.querySelector('input')).val())
                     }
                 }
-            }
-        },
-        settabs: () => {
-            let html = '';
-            for (let i = 0; i < apps.edge.tabs.length; i++) {
-                const t = apps.edge.tabs[i];
-                if ($('.window.edge>.titbar>.tabs>.tab.' + t[0] + '>.reloading')[0]) {
-                    html += `<div class="tab ${t[0]}" onclick="apps.edge.tab(${i})" oncontextmenu="showcm(event,'edge.tab',${i});stop(event);return false" onmousedown="apps.edge.moving(this,event,${i});stop(event);" ontouchstart="apps.edge.moving(this,event,${i});stop(event);">${apps.edge.reloadElt}<p>${t[1]}</p><span class="clbtn bi bi-x" onclick="apps.edge.close(${i})"></span></div>`;
-                }
-                else {
-                    html += `<div class="tab ${t[0]}" onclick="apps.edge.tab(${i})" oncontextmenu="showcm(event,'edge.tab',${i});stop(event);return false" onmousedown="apps.edge.moving(this,event,${i});stop(event);" ontouchstart="apps.edge.moving(this,event,${i});stop(event);"><p>${t[1]}</p><span class="clbtn bi bi-x" onclick="apps.edge.close(${i})"></span></div>`;
-                }
-            }
-            $('.window.edge>.titbar>.tabs')[0].innerHTML = html;
-            $('.window.edge>.titbar>.tabs')[0].innerHTML += '<a class="new bi bi-plus" onclick="apps.edge.newtab();"></a>';
-            // $('.window.edge>.titbar>.tabs>.tab.'+apps.edge.tabs[apps.edge.now][0]).addClass('show');
-        },
-        moving: (t, ev, np) => {
-            let deltaLeft, pos;
-            if (ev.type.match('mouse')) {
-                deltaLeft = ev.clientX;
-            }
-            else if (ev.type.match('touch')) {
-                deltaLeft = ev.touches[0].clientX;
-            }
-            function move_f(e) {
-                let x;
-                if (e.type.match('mouse')) {
-                    x = e.clientX;
-                }
-                else if (e.type.match('touch')) {
-                    x = e.touches[0].clientX;
-                }
-                $(this).css('transform', `translateX(${x - deltaLeft}px)`);
-                pos = Math.floor((this.offsetLeft + x - deltaLeft - 36 + (this.offsetWidth / 2)) / this.offsetWidth);
-                if (pos > apps.edge.tabs.length - 1) {
-                    pos = apps.edge.tabs.length - 1;
-                }
-                $('.window.edge>.titbar>.tabs>.tab.left').removeClass('left');
-                $('.window.edge>.titbar>.tabs>.tab.right').removeClass('right');
-                if (np < pos) {
-                    for (let i = np + 1; i <= pos; i++) {
-                        const ta = apps.edge.tabs[i];
-                        if (ta) {
-                            $('.window.edge>.titbar>.tabs>.tab.' + ta[0]).addClass('left');
-                        }
-                    }
-                }
-                else if (np > pos) {
-                    for (let i = pos; i < np; i++) {
-                        const ta = apps.edge.tabs[i];
-                        if (ta) {
-                            $('.window.edge>.titbar>.tabs>.tab.' + ta[0]).addClass('right');
-                        }
-                    }
-                }
             };
-            page.onmousemove = move_f.bind(t);
-            page.ontouchmove = move_f.bind(t);
-            function up_f(e) {
-                page.onmousemove = null;
-                page.onmouseup = null;
-                page.ontouchmove = null;
-                page.ontouchend = null;
-                let x;
-                if (e.type.match('mouse')) {
-                    x = e.clientX;
-                    pos = Math.floor((this.offsetLeft + x - deltaLeft - 36 + (this.offsetWidth / 2)) / this.offsetWidth);
-                    if (pos > apps.edge.tabs.length - 1) {
-                        pos = apps.edge.tabs.length - 1;
-                    }
-                }
-                if (pos == np || pos > apps.edge.tabs.length || pos < 0) {
-                    $(this).css('transform', 'none');
-                    $(this).removeClass('moving');
-                    $('.window.edge>.titbar>.tabs>.tab.left').removeClass('left');
-                    $('.window.edge>.titbar>.tabs>.tab.right').removeClass('right');
-                }
-                else {
-                    apps.edge.tabs.splice(np < pos ? pos + 1 : pos, 0, apps.edge.tabs[np]);
-                    apps.edge.tabs.splice(np < pos ? np : (np + 1), 1);
-                    apps.edge.settabs();
-                    apps.edge.tab(pos);
-                }
-            }
-            page.onmouseup = up_f.bind(t);
-            page.ontouchend = up_f.bind(t);
-            page.ontouchcancel = up_f.bind(t);
-            $(t).addClass('moving');
+            m_tab.tab('edge',apps.edge.tabs.length - 1);
         },
-        close: (c) => {
-            $('.window.edge>.titbar>.tabs>.tab.' + apps.edge.tabs[c][0]).addClass('close');
-            for (let i = c + 1; i < apps.edge.tabs.length; i++) {
-                const _id = apps.edge.tabs[i][0];
-                $('.window.edge>.titbar>.tabs>.tab.' + _id).addClass('left');
+        settab:(t,i)=>{
+            if ($('.window.edge>.titbar>.tabs>.tab.' + t[0] + '>.reloading')[0]) {
+                return `<div class="tab ${t[0]}" onclick="m_tab.tab('edge',${i})" oncontextmenu="showcm(event,'edge.tab',${i});stop(event);return false" onmousedown="m_tab.moving('edge',this,event,${i});stop(event);" ontouchstart="m_tab.moving('edge',this,event,${i});stop(event);">${apps.edge.reloadElt}<p>${t[1]}</p><span class="clbtn bi bi-x" onclick="m_tab.close('edge',${i})"></span></div>`;
             }
-            setTimeout(() => {
-                $('#win-edge>iframe.' + apps.edge.tabs[c][0]).remove();
-                apps.edge.tabs.splice(c, 1);
-                apps.edge.settabs();
-                if (apps.edge.tabs.length == 0) {
-                    hidewin('edge');
-                }
-                else {
-                    apps.edge.tab(apps.edge.tabs.length - 1);
-                }
-            }, 200);
+            else {
+                return `<div class="tab ${t[0]}" onclick="m_tab.tab('edge',${i})" oncontextmenu="showcm(event,'edge.tab',${i});stop(event);return false" onmousedown="m_tab.moving('edge',this,event,${i});stop(event);" ontouchstart="m_tab.moving('edge',this,event,${i});stop(event);"><p>${t[1]}</p><span class="clbtn bi bi-x" onclick="m_tab.close('edge',${i})"></span></div>`;
+            }
         },
-        tab: (c) => {
-            console.log(c, apps.edge.tabs[c][0])
+        tab: (c)=>{
             $('#win-edge>iframe.show').removeClass('show');
             $('#win-edge>iframe.' + apps.edge.tabs[c][0]).addClass('show');
             $('#win-edge>.tool>input.url').val($('#win-edge>iframe.' + apps.edge.tabs[c][0]).attr('src') == 'mainpage.html' ? '' : $('#win-edge>iframe.' + apps.edge.tabs[c][0]).attr('src'));
             $('#win-edge>.tool>input.rename').removeClass('show');
-            apps.edge.now = c;
-            $('.window.edge>.titbar>.tabs>.tab.show').removeClass('show');
-            $('.window.edge>.titbar>.tabs>.tab.' + apps.edge.tabs[c][0]).addClass('show');
         },
         c_rename: (c) => {
-            apps.edge.tab(c);
+            m_tab.tab('edge',c);
             $('#win-edge>.tool>input.rename').val(apps.edge.tabs[apps.edge.now][1]);
             $('#win-edge>.tool>input.rename').addClass('show');
             setTimeout(() => {
                 $('#win-edge>.tool>input.rename').focus();
             }, 300);
-        },
-        rename: (n) => {
-            apps.edge.tabs[apps.edge.now][1] = n;
-            apps.edge.settabs();
-            apps.edge.tab(apps.edge.now);
         },
         reload: () => {
             $('#win-edge>iframe.show').attr('src', $('#win-edge>iframe.show').attr('src'));
@@ -2545,8 +2478,8 @@ Microsoft Windows [版本 12.0.39035.7324]
             if (response.ok == true) {
                 const text = await response.text();
                 apps.edge.tabs[np][1] = text;
-                apps.edge.settabs();
-                apps.edge.tab(np);
+                m_tab.settabs('edge');
+                m_tab.tab('edge',np);
             }
         },
         goto: (u) => {
@@ -2554,16 +2487,16 @@ Microsoft Windows [版本 12.0.39035.7324]
             if (!/^(((ht|f)tps?):\/\/)?([^!@#$%^&*?.\s-]([^!@#$%^&*?.\s]{0,63}[^!@#$%^&*?.\s])?\.)+[a-z]{2,6}\/?/.test(u)) {
                 // 启用必应搜索
                 $('#win-edge>iframe.show').attr('src', 'https://bing.com/search?q=' + u);
-                apps.edge.rename(u);
+                m_tab.rename('edge',u);
             }
             // 检测网址是否带有http头
             else if (!/^https?:\/\//.test(u)) {
                 $('#win-edge>iframe.show').attr('src', 'http://' + u);
-                apps.edge.rename('http://' + u);
+                m_tab.rename('edge','http://' + u);
             }
             else {
                 $('#win-edge>iframe.show').attr('src', u);
-                apps.edge.rename(u);
+                m_tab.rename('edge',u);
             }
             if (!$('.window.edge>.titbar>.tabs>.tab.' + apps.edge.tabs[apps.edge.now][0] + '>.reloading')[0]) {
                 $('.window.edge>.titbar>.tabs>.tab.' + apps.edge.tabs[apps.edge.now][0])[0].insertAdjacentHTML('afterbegin', apps.edge.reloadElt);
@@ -2578,7 +2511,6 @@ Microsoft Windows [版本 12.0.39035.7324]
         init: () => {
             $('#win-winver>.mesg').show();
         },
-
     }
 }
 
