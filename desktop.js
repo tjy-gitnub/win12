@@ -1,265 +1,3 @@
-class FileSystem {
-    constructor() {
-        if (localStorage.getItem('fileSystem')) {
-            this.root = JSON.parse(localStorage.getItem('fileSystem'));
-            this.convertToMap(this.root);
-        } else {
-            this.root = { type: 'dir', children: new Map() };
-        }
-        this.currentDir = this.root;
-        this.directoryMap = new Map();
-        this.directoryMap.set('/', this.root);
-    }
-
-    convertToObj(dir) {
-        if (dir.type === 'dir') {
-            const children = Array.from(dir.children);
-            dir.children = {};
-            for (const [name, child] of children) {
-                dir.children[name] = child;
-                convertToObj(child);
-            }
-        }
-    }
-
-
-    convertToMap(dir) {
-        if (dir.type === 'dir') {
-            dir.children = new Map(Object.entries(dir.children));
-            for (let child of dir.children.values()) {
-                convertToMap(child);
-            }
-        }
-    }
-
-    mkdir(path) {
-        let dirs = path.split('/').filter(Boolean);
-        let currentDir = this.currentDir;
-        let currentPath = '';
-        for (let dir of dirs) {
-            currentPath += `/${dir}`;
-            let found = currentDir.children.get(dir);
-            if (!found) {
-                found = { name: dir, type: 'dir', children: new Map() };
-                currentDir.children.set(dir, found);
-                this.directoryMap.set(currentPath, found);
-            }
-            currentDir = found;
-        }
-    }
-
-    touch(path, content) {
-        let dirs = path.split('/').filter(Boolean);
-        let fileName = dirs.pop();
-        let currentDir = this.currentDir;
-        let currentPath = '';
-        for (let dir of dirs) {
-            currentPath += `/${dir}`;
-            let found = currentDir.children.get(dir);
-            if (!found) {
-                found = { name: dir, type: 'dir', children: new Map() };
-                currentDir.children.set(dir, found);
-                this.directoryMap.set(currentPath, found);
-            }
-            currentDir = found;
-        }
-        let file = currentDir.children.get(fileName);
-        if (!file) {
-            file = { name: fileName, type: 'file' };
-            currentDir.children.set(fileName, file);
-        }
-        file.content = content;
-    }
-    cat(path) {
-        let dirs = path.split('/').filter(Boolean);
-        let fileName = dirs.pop();
-        let currentDir = this.currentDir;
-        for (let dir of dirs) {
-            let found = currentDir.children.get(dir);
-            if (!found) {
-                return null;
-            }
-            currentDir = found;
-        }
-        let file = currentDir.children.get(fileName);
-        return file && file.content;
-    }
-
-    rm(path) {
-        let dirs = path.split('/').filter(Boolean);
-        let fileName = dirs.pop();
-        let currentDir = this.currentDir;
-        for (let dir of dirs) {
-            let found = currentDir.children.get(dir);
-            if (!found) {
-                return null;
-            }
-            currentDir = found;
-        }
-        currentDir.children.delete(fileName);
-    }
-
-    ls() {
-        return Array.from(this.currentDir.children.keys());
-    }
-
-    cd(path) {
-        let dirs = path.split('/').filter(Boolean);
-        let currentDir = this.currentDir;
-        for (let dir of dirs) {
-            let found = currentDir.children.get(dir);
-            if (!found) {
-                return null;
-            }
-            currentDir = found;
-        }
-        this.currentDir = currentDir;
-    }
-
-    mv(oldPath, newPath) {
-        let oldDirs = oldPath.split('/').filter(Boolean);
-        let oldFileName = oldDirs.pop();
-        let oldCurrentDir = this.currentDir;
-        for (let dir of oldDirs) {
-            let found = oldCurrentDir.children.get(dir);
-            if (!found) {
-                return null;
-            }
-            oldCurrentDir = found;
-        }
-        let file = oldCurrentDir.children.get(oldFileName);
-        if (!file) {
-            return null;
-        }
-        this.rm(oldPath);
-        this.touch(newPath, file.content);
-    }
-
-    rename(oldPath, newName) {
-        let oldDirs = oldPath.split('/').filter(Boolean);
-        let oldFileName = oldDirs.pop();
-        let oldCurrentDir = this.currentDir;
-        for (let dir of oldDirs) {
-            let found = oldCurrentDir.children.get(dir);
-            if (!found) {
-                return null;
-            }
-            oldCurrentDir = found;
-        }
-        let file = oldCurrentDir.children.get(oldFileName);
-        if (!file) {
-            return null;
-        }
-        file.name = newName;
-    }
-
-    cp(oldPath, newPath) {
-        let oldDirs = oldPath.split('/').filter(Boolean);
-        let oldFileName = oldDirs.pop();
-        let oldCurrentDir = this.currentDir;
-        for (let dir of oldDirs) {
-            let found = oldCurrentDir.children.get(dir);
-            if (!found) {
-                return null;
-            }
-            oldCurrentDir = found;
-        }
-        let file = oldCurrentDir.children.get(oldFileName);
-        if (!file) {
-            return null;
-        }
-        this.touch(newPath, file.content);
-    }
-
-    renameDir(oldPath, newName) {
-        let oldDirs = oldPath.split('/').filter(Boolean);
-        let oldDirName = oldDirs.pop();
-        let currentPath = '';
-        for (let dir of dirs) {
-            currentPath += `/${dir}`;
-            currentDir = this.directoryMap.get(currentPath);
-            if (!currentDir) {
-                return null;
-            }
-        }
-    }
-    getDirectory(path) {
-        let dirs = path.split('/').filter(Boolean);
-        let currentDir = this.root;
-        let currentPath = '';
-        for (let dir of dirs) {
-            currentPath += `/${dir}`;
-            currentDir = this.directoryMap.get(currentPath);
-            if (!currentDir) {
-                return null;
-            }
-        }
-        return currentDir;
-    }
-
-    getFile(dir, fileName) {
-        return this.getDirectory(dir).children.get(fileName);
-    }
-
-    getParentDir(path) {
-        const dirs = path.split('/').filter(Boolean);
-        dirs.pop();
-        return `/${dirs.join('/')}`;
-    }
-
-    getFilesRecursively(directory = '/') {
-        let files = [];
-        const traverse = (dir, path = '') => {
-            for (const [name, item] of dir.children.entries()) {
-                const newPath = `${path}/${name}`;
-                if (item.type === 'dir') {
-                    files.push(newPath);
-                    traverse(item, newPath);
-                } else {
-                    files.push(newPath);
-                }
-            }
-        };
-        traverse(this.getDirectory(directory), directory);
-        return files;
-    }
-    mv(oldPath, newPath) {
-        let oldDirs = oldPath.split('/').filter(Boolean);
-        let oldFileName = oldDirs.pop();
-        let currentPath = '';
-        for (let dir of oldDirs) {
-            currentPath += `/${dir}`;
-            currentDir = this.directoryMap.get(currentPath);
-            if (!currentDir) {
-                return null;
-            }
-        }
-        let file = currentDir.children.get(oldFileName);
-        if (!file) {
-            return null;
-        }
-        this.rm(oldPath);
-        this.touch(newPath, file.content);
-    }
-
-    listAll(dir = this.root, path = '', result = {}) {
-        for (let [name, item] of dir.children.entries()) {
-            if (item.type === 'file') {
-                result[`${path}/${name}`] = 'file';
-            } else {
-                result[`${path}/${name}`] = 'dir';
-                this.listAll(item, `${path}/${name}`, result);
-            }
-        }
-        return result;
-    }
-    save() {
-        let rootCopy = JSON.parse(JSON.stringify(this.root));
-        this.convertToObj(rootCopy);
-        localStorage.setItem('fileSystem', JSON.stringify(rootCopy));
-    }
-
-}
 // 后端服务器
 const server = 'http://win12server.freehk.svipss.top/';
 const pages = {
@@ -395,23 +133,27 @@ let cms = {
             return ['<i class="bi bi-folder2-open"></i> 打开', `apps.explorer.goto('${arg}')`];
         },
         arg => {
-            if ($('#win-explorer>.main>.content>.tool>.tit>.path>div.text')[0].innerHTML != "此电脑")
+            return ['<i class="bi bi-arrow-up-right-square"></i> Open in a new tab', `apps.explorer.newtab('${arg}');`];
+        },
+        arg => {
+            if ($('#win-explorer>.path>.tit>.path>div.text').length>1)
                 return ['<i class="bi bi-trash3"></i> 删除', `apps.explorer.del('${arg}')`];
-            return;
+            return 'null';
         },
         arg => {
-            if ($('#win-explorer>.main>.content>.tool>.tit>.path>div.text')[0].innerHTML != "此电脑")
+            if ($('#win-explorer>.path>.tit>.path>div.text').length>1)
                 return ['<i class="bi bi-files"></i> 复制', `apps.explorer.copy_or_cut('${arg}','copy')`];
-            return;
+            return 'null';
         },
         arg => {
-            if ($('#win-explorer>.main>.content>.tool>.tit>.path>div.text')[0].innerHTML != "此电脑")
+            if ($('#win-explorer>.path>.tit>.path>div.text').length>1)
                 return ['<i class="bi bi-scissors"></i> 剪切', `apps.explorer.copy_or_cut('${arg}','cut')`];
+            return 'null';
         },
         arg => {
-            if ($('#win-explorer>.main>.content>.tool>.tit>.path>div.text')[0].innerHTML != "此电脑")
+            if ($('#win-explorer>.path>.tit>.path>div.text').length>1)
                 return ['<i class="bi bi-input-cursor-text"></i> 重命名', `apps.explorer.rename('${arg}')`];
-            return;
+            return 'null';
         }
     ],
     'explorer.file': [
@@ -419,42 +161,50 @@ let cms = {
             return ['<i class="bi bi-folder2-open"></i> 打开（目前毛用没有）', ``];
         },
         arg => {
-            if ($('#win-explorer>.main>.content>.tool>.tit>.path>div.text')[0].innerHTML != "此电脑")
+            if ($('#win-explorer>.path>.tit>.path>div.text').length>1)
                 return ['<i class="bi bi-trash3"></i> 删除', `apps.explorer.del('${arg}')`];
-            return;
-        },
-                arg => {
-            if ($('#win-explorer>.main>.content>.tool>.tit>.path>div.text')[0].innerHTML != "此电脑")
-                return ['<i class="bi bi-files"></i> 复制', `apps.explorer.copy_or_cut('${arg}','copy')`];
-            return;
+            return 'null';
         },
         arg => {
             if ($('#win-explorer>.main>.content>.tool>.tit>.path>div.text')[0].innerHTML != "此电脑")
+                return ['<i class="bi bi-files"></i> 复制', `apps.explorer.copy_or_cut('${arg}','copy')`];
+            return 'null';
+        },
+        arg => {
+            if ($('#win-explorer>.path>.tit>.path>div.text').length>1)
                 return ['<i class="bi bi-scissors"></i> 剪切', `apps.explorer.copy_or_cut('${arg}','cut')`];
         },
         arg => {
-            if ($('#win-explorer>.main>.content>.tool>.tit>.path>div.text')[0].innerHTML != "此电脑")
+            if ($('#win-explorer>.path>.tit>.path>div.text').length>1)
                 return ['<i class="bi bi-input-cursor-text"></i> 重命名', `apps.explorer.rename('${arg}')`];
-            return;
+            return 'null';
         }
     ],
     'explorer.content': [
         arg => {
-            if ($('#win-explorer>.main>.content>.tool>.tit>.path>div.text')[0].innerHTML != "此电脑")
-                return ['<i class="bi bi-file-earmark-plus"></i> 新建文件', `apps.explorer.add($('#win-explorer>.main>.content>.tool>.tit')[0].dataset.path,'新建文本文档.txt')`];
+            if ($('#win-explorer>.path>.tit>.path>div.text').length>1)
+                return ['<i class="bi bi-file-earmark-plus"></i> 新建文件', `apps.explorer.add($('#win-explorer>.path>.tit')[0].dataset.path,'新建文本文档.txt')`];
+            return 'null';
         },
         arg => {
-            if ($('#win-explorer>.main>.content>.tool>.tit>.path>div.text')[0].innerHTML != "此电脑")
-                return ['<i class="bi bi-folder-plus"></i> 新建文件夹', `apps.explorer.add($('#win-explorer>.main>.content>.tool>.tit')[0].dataset.path,'新建文件夹',type='files')`];
-            return;
+            if ($('#win-explorer>.path>.tit>.path>div.text').length>1)
+                return ['<i class="bi bi-folder-plus"></i> 新建文件夹', `apps.explorer.add($('#win-explorer>.path>.tit')[0].dataset.path,'新建文件夹',type='files')`];
+            return 'null';
         },
         arg => {
-            if ($('#win-explorer>.main>.content>.tool>.tit>.path>div.text')[0].innerHTML != "此电脑")
-                return ['<i class="bi bi-file-earmark-arrow-down"></i> 粘贴', `apps.explorer.paste($('#win-explorer>.main>.content>.tool>.tit')[0].dataset.path,'新建文件夹',type='files')`];
-            return;
+            if ($('#win-explorer>.path>.tit>.path>div.text').length>1)
+                return ['<i class="bi bi-file-earmark-arrow-down"></i> 粘贴', `apps.explorer.paste($('#win-explorer>.path>.tit')[0].dataset.path,'新建文件夹',type='files')`];
+            return 'null';
         },
         arg => {
-            return ['<i class="bi bi-arrow-clockwise"></i> 刷新', `$('#win-explorer>.main>.content>.view').css('opacity','0');setTimeout(()=>{$('#win-explorer>.main>.content>.view').css('opacity','1');},100);`];
+            if ($('#win-explorer>.path>.tit>.path>div.text').length>1)
+                return ['<i class="bi bi-arrow-clockwise"></i> 刷新', `apps.explorer.goto($('#win-explorer>.path>.tit')[0].dataset.path)`];
+            return ['<i class="bi bi-arrow-clockwise"></i> 刷新', `apps.explorer.reset()`];
+        }
+    ],
+    'explorer.tab': [
+        arg => {
+            return ['<i class="bi bi-x"></i> 关闭标签页', `m_tab.close('explorer',${arg})`];
         }
     ],
     'edge.tab': [
@@ -462,7 +212,7 @@ let cms = {
             return ['<i class="bi bi-pencil-square"></i> 命名标签页', `apps.edge.c_rename(${arg})`];
         },
         arg => {
-            return ['<i class="bi bi-x"></i> 关闭标签页', `apps.edge.close(${arg})`];
+            return ['<i class="bi bi-x"></i> 关闭标签页', `m_tab.close('edge',${arg})`];
         }
     ],
     'taskmgr.processes': [
@@ -494,6 +244,7 @@ function showcm(e, cl, arg) {
             $('#cm>.foc').focus();
             // 这个.foc是用来模拟焦点的，这句是将焦点放在右键菜单上，注释掉后果不堪设想 >u-)o
             // 噢 可是如果设置焦点的话在移动设备上会显示虚拟键盘啊 QAQ (By: User782Tec)
+            // (By: tjy-gitnub)
             setTimeout(() => {
                 $('#cm').addClass('show');
             }, 0);
@@ -514,6 +265,7 @@ function showcm(e, cl, arg) {
     cms[cl].forEach(item => {
         if (typeof (item) == 'function') {
             ret = item(arg);
+            console.log(arg,ret);
             if (ret == 'null') {
                 return true;
             }
@@ -1049,6 +801,10 @@ let apps = {
             }
 
             if (init_all == true) {
+                apps.taskmgr.loadProcesses();
+                apps.taskmgr.generateProcesses();
+                apps.taskmgr.sort();
+                apps.taskmgr.performanceLoad();
                 apps.taskmgr.graphLoad();
                 apps.taskmgr.initgrids(apps.taskmgr.cpuBgCtx);
                 apps.taskmgr.initgrids(apps.taskmgr.memoryBgCtx);
@@ -1303,7 +1059,7 @@ let apps = {
             if (setPos == true) {
                 apps.taskmgr[prefix + 'LastPos'] = [apps.taskmgr[prefix + 'Canvas'].width, apps.taskmgr[prefix + 'Canvas'].height];
             }
-            
+
             apps.taskmgr[prefix + 'Ctx'] = apps.taskmgr[prefix + 'Canvas'].getContext('2d');
             apps.taskmgr[prefix + 'BgCtx'] = apps.taskmgr[prefix + 'BgCanvas'].getContext('2d');
             apps.taskmgr[prefix + 'Ctx'].strokeStyle = color;
@@ -1561,48 +1317,62 @@ let apps = {
             }
         }
     },
-    musicPlayer:{
-        init: () => {
-            $('#win-musicPlayer>.menu>list>a.system')[0].click();
-        },
-        page: (name) => {
-            $('#win-musicPlayer>.page>.cnt.' + name).scrollTop(0);
-            $('#win-musicPlayer>.page>.cnt.show').removeClass('show');
-            $('#win-musicPlayer>.page>.cnt.' + name).addClass('show');
-            $('#win-musicPlayer>.menu>list>a.check').removeClass('check');
-            $('#win-musicPlayer>.menu>list>a.' + name).addClass('check');
-        }
-    },
     explorer: {
         init: () => {
-            apps.explorer.reset();
+            apps.explorer.tabs = [];
+            apps.explorer.len = 0;
+            apps.explorer.newtab();
+            // apps.explorer.reset();
             apps.explorer.Process_Of_Select = "";
             apps.explorer.is_use = 0;//千万不要删除它，它依托bug运行
             apps.explorer.is_use2 = 0;//千万不要删除它，它依托bug运行
             apps.explorer.old_name = "";
             apps.explorer.clipboard = null;
-            document.addEventListener('keydown', function(event) {
+            document.addEventListener('keydown', function (event) {
                 if (event.key === 'Delete' && $('.window.foc')[0].classList[1] == "explorer") {
                     apps.explorer.del(apps.explorer.Process_Of_Select);
                 }
             });
         },
+        tabs: [],
+        now: null,
+        len: 0,
+        newtab:(path='')=>{
+            // if(path==''){
+            //     m_tab.newtab('explorer','此电脑');
+            //     apps.explorer.tabs[apps.explorer.tabs.length-1][2]='';
+            //     m_tab.tab('explorer',apps.explorer.tabs.length - 1);
+            // }else{
+                m_tab.newtab('explorer','');
+                apps.explorer.tabs[apps.explorer.tabs.length-1][2]=path;
+                m_tab.tab('explorer',apps.explorer.tabs.length - 1);
+            // }
+        },
+        settab:(t,i)=>{
+            return `<div class="tab ${t[0]}" onclick="m_tab.tab('explorer',${i})" oncontextmenu="showcm(event,'explorer.tab',${i});stop(event);return false" onmousedown="m_tab.moving('explorer',this,event,${i});stop(event);" ontouchstart="m_tab.moving('exploer',this,event,${i});stop(event);"><p>${t[1]}</p><span class="clbtn bi bi-x" onclick="m_tab.close('explorer',${i});stop(event);"></span></div>`;
+        },
+        tab: (c,load=true)=>{
+            if(load){
+                if(!apps.explorer.tabs[c][2].length)apps.explorer.reset();
+                else apps.explorer.goto(apps.explorer.tabs[c][2]);
+            }
+        },
         reset: () => {
-            $('#win-explorer>.main>.content>.view')[0].innerHTML = `<style>#win-explorer>.main>.content>.view>.class{margin-left: 20px;display: flex;}
-            #win-explorer>.main>.content>.view>.class>img{width: 20px;height: 20px;margin-top: 3px;margin-right: 5px;filter:brightness(0.9);}
-            #win-explorer>.main>.content>.view>.group{display: flex;flex-wrap: wrap;padding: 10px 20px;}
-            #win-explorer>.main>.content>.view>.group>.item{width: 280px;margin: 5px;height:80px;
+            $('#win-explorer>.page>.main>.content>.view')[0].innerHTML = `<style>#win-explorer>.page>.main>.content>.view>.class{margin: 5px 0 0 10px;display: flex;}
+            #win-explorer>.page>.main>.content>.view>.class>img{width: 20px;height: 20px;margin-top: 3px;margin-right: 5px;filter:brightness(0.9);}
+            #win-explorer>.page>.main>.content>.view>.group{display: flex;flex-wrap: wrap;padding: 10px 20px;}
+            #win-explorer>.page>.main>.content>.view>.group>.item{width: 280px;margin: 5px;height:80px;
     box-shadow: 0 1px 2px var(--s3d);
                 background: radial-gradient(circle, var(--card),var(--card));border-radius: 10px;display: flex;}
-            #win-explorer>.main>.content>.view>.group>.item:hover{background-color: var(--hover);}
-            #win-explorer>.main>.content>.view>.group>.item:active{transform: scale(0.97);}
-            #win-explorer>.main>.content>.view>.group>.item>img{width: 55px;height: 55px;margin-top: 18px;margin-left: 10px;}
-            #win-explorer>.main>.content>.view>.group>.item>div{flex-grow: 1;padding: 5px 5px 0 0;}
-            #win-explorer>.main>.content>.view>.group>.item>div>.bar{width: calc(100% - 10px);height: 8px;border-radius: 10px;
+            #win-explorer>.page>.main>.content>.view>.group>.item:hover{background-color: var(--hover);}
+            #win-explorer>.page>.main>.content>.view>.group>.item:active{transform: scale(0.97);}
+            #win-explorer>.page>.main>.content>.view>.group>.item>img{width: 55px;height: 55px;margin-top: 18px;margin-left: 10px;}
+            #win-explorer>.page>.main>.content>.view>.group>.item>div{flex-grow: 1;padding: 5px 5px 0 0;}
+            #win-explorer>.page>.main>.content>.view>.group>.item>div>.bar{width: calc(100% - 10px);height: 8px;border-radius: 10px;
                 background-color: var(--hover-b);margin: 5px 5px;}
-            #win-explorer>.main>.content>.view>.group>.item>div>.bar>.content{height: 100%;background-image: linear-gradient(90deg, var(--theme-1), var(--theme-2));
+            #win-explorer>.page>.main>.content>.view>.group>.item>div>.bar>.content{height: 100%;background-image: linear-gradient(90deg, var(--theme-1), var(--theme-2));
                 border-radius: 10px;}
-            #win-explorer>.main>.content>.view>.group>.item>div>.info{color: #959595;font-size: 14px;}</style>
+            #win-explorer>.page>.main>.content>.view>.group>.item>div>.info{color: #959595;font-size: 14px;}</style>
             <p class="class"><img src="apps/icons/explorer/disk.svg"> 设备和驱动器</p><div class="group">
             <a class="a item act" ondblclick="apps.explorer.goto('C:')" ontouchend="apps.explorer.goto('C:')" oncontextmenu="showcm(event,'explorer.folder','C:');return stop(event);">
             <img src="apps/icons/explorer/diskwin.svg"><div><p class="name">本地磁盘 (C:)</p>
@@ -1611,9 +1381,13 @@ let apps = {
             oncontextmenu="showcm(event,'explorer.folder','D:');return stop(event);">
             <img src="apps/icons/explorer/disk.svg"><div><p class="name">本地磁盘 (D:)</p><div class="bar"><div class="content" style="width: 15%;"></div>
             </div><p class="info">185.3 GB 可用, 共 216 GB</p></div></a></div>`;
-            $('#win-explorer>.main>.content>.tool>.tit')[0].innerHTML = '<div class="icon" style="background-image: url(\'./apps/icons/explorer/thispc.svg\')"></div><div class="path"><div class="text">此电脑</div></div>';
+            $('#win-explorer>.path>.tit')[0].innerHTML = '<div class="icon" style="background-image: url(\'./apps/icons/explorer/thispc.svg\')"></div><div class="path"><div class="text" onclick="apps.explorer.reset()">此电脑</div><div class="arrow">&gt;</div></div>';
+            // if(rename){
+                m_tab.rename('explorer','<img src="./apps/icons/explorer/thispc.svg"> 此电脑');
+                apps.explorer.tabs[apps.explorer.now][2]='';
+            // }
         },
-        select: (path,id) => {
+        select: (path, id) => {
             var elements = document.querySelectorAll('#win-explorer > .main > .content > .view > .select');
             for (var i = 0; i < elements.length; i++) {
                 elements[i].classList.remove('select');
@@ -1624,61 +1398,56 @@ let apps = {
             element.classList.add('select');
             apps.explorer.is_use += 1;
         },
-        copy_or_cut: (path,operate) =>{ //operate只能为copy或cut
+        copy_or_cut: (path, operate) => { //operate只能为copy或cut
             var pathl = path.split('/');
-            var name = pathl[pathl.length-1];
+            var name = pathl[pathl.length - 1];
             pathl.pop();
             let tmp = apps.explorer.path;
             pathl.forEach(name => {
                 tmp = tmp['folder'][name];
             });
 
-            if (Object.keys(tmp["folder"]).includes(name))
-            {
+            if (Object.keys(tmp["folder"]).includes(name)) {
                 let name_ = name;
-                apps.explorer.clipboard = ["folder",[name],tmp["folder"][name]];
+                apps.explorer.clipboard = ["folder", [name], tmp["folder"][name]];
                 if (operate == "cut")
                     delete tmp["folder"][name];
             }
-            else
-            {
-                for (var i = 0; i < tmp["file"].length; i++)
-                {
-                    if (tmp["file"][i]["name"] == name)
-                    {
-                        apps.explorer.clipboard = ["file",tmp["file"][i]];
+            else {
+                for (var i = 0; i < tmp["file"].length; i++) {
+                    if (tmp["file"][i]["name"] == name) {
+                        apps.explorer.clipboard = ["file", tmp["file"][i]];
                         if (operate == "cut")
                             delete tmp["file"][i];
                     }
                 }
             }
-            apps.explorer.goto($('#win-explorer>.main>.content>.tool>.tit')[0].dataset.path);
+            apps.explorer.goto($('#win-explorer>.path>.tit')[0].dataset.path);
         },
-        paste: (path) =>{
+        paste: (path) => {
             var pathl = path.split('/');
             let tmp = apps.explorer.path, thisPath = '';
-            $('#win-explorer>.main>.content>.tool>.tit>.path')[0].innerHTML = '';
+            $('#win-explorer>.path>.tit>.path')[0].innerHTML = '';
             if (pathl[pathl.length - 1] == 'C:') {
-                $('#win-explorer>.main>.content>.tool>.tit>.icon')[0].style.marginTop = '3px';
-                $('#win-explorer>.main>.content>.tool>.tit>.icon')[0].style.backgroundImage = 'url("./apps/icons/explorer/diskwin.svg")';
+                $('#win-explorer>.path>.tit>.icon')[0].style.marginTop = '3px';
+                $('#win-explorer>.path>.tit>.icon')[0].style.backgroundImage = 'url("./apps/icons/explorer/diskwin.svg")';
             }
             else if (pathl[pathl.length - 1] == 'D:') {
-                $('#win-explorer>.main>.content>.tool>.tit>.icon')[0].style.marginTop = '0px';
-                $('#win-explorer>.main>.content>.tool>.tit>.icon')[0].style.backgroundImage = 'url("./apps/icons/explorer/disk.svg")';
+                $('#win-explorer>.path>.tit>.icon')[0].style.marginTop = '0px';
+                $('#win-explorer>.path>.tit>.icon')[0].style.backgroundImage = 'url("./apps/icons/explorer/disk.svg")';
             }
             else {
-                $('#win-explorer>.main>.content>.tool>.tit>.icon')[0].style.marginTop = '0px';
-                $('#win-explorer>.main>.content>.tool>.tit>.icon')[0].style.backgroundImage = 'url("./apps/icons/explorer/folder.svg")';
+                $('#win-explorer>.path>.tit>.icon')[0].style.marginTop = '0px';
+                $('#win-explorer>.path>.tit>.icon')[0].style.backgroundImage = 'url("./apps/icons/explorer/folder.svg")';
             }
             pathl.forEach(name => {
                 thisPath += name + '/';
                 tmp = tmp['folder'][name];
-                $('#win-explorer>.main>.content>.tool>.tit>.path')[0].insertAdjacentHTML('beforeend', `<div class="text" onmousedown="apps.explorer.goto('${thisPath.substring(0, thisPath.length - 1)}');stop(event);">${name}</div> <div class="arrow">></div> `)
+                $('#win-explorer>.path>.tit>.path')[0].insertAdjacentHTML('beforeend', `<div class="text" onmousedown="apps.explorer.goto('${thisPath.substring(0, thisPath.length - 1)}');stop(event);">${name}</div> <div class="arrow">></div> `)
             });
             var clipboard = apps.explorer.clipboard;
 
-            if (apps.explorer.traverseDirectory(tmp,clipboard[1][0]) || apps.explorer.traverseDirectory(tmp,clipboard[1]['name']))
-            {
+            if (apps.explorer.traverseDirectory(tmp, clipboard[1][0]) || apps.explorer.traverseDirectory(tmp, clipboard[1]['name'])) {
                 shownotice("duplication file name");
                 return;
             }
@@ -1692,37 +1461,33 @@ let apps = {
             // }
             // 这段注释了的代码可以调试一下，会有神奇的bug。
 
-            if(clipboard[0] == "file")
-            {
+            if (clipboard[0] == "file") {
                 tmp["file"].push(clipboard[1]);
             }
-            else
-            {
+            else {
                 tmp['folder'][clipboard[1][0]] = clipboard[2];
             }
-            apps.explorer.goto($('#win-explorer>.main>.content>.tool>.tit')[0].datset.path);
+            apps.explorer.goto(path);
         },
         del_select: () => {
-            if(apps.explorer.is_use >= 1 && apps.explorer.is_use2 != apps.explorer.is_use)
-            {
+            if (apps.explorer.is_use >= 1 && apps.explorer.is_use2 != apps.explorer.is_use) {
                 apps.explorer.is_use2 = apps.explorer.is_use;
                 return;
             }
-            var elements = document.querySelectorAll('#win-explorer > .main > .content > .view > .change');
+            var elements = document.querySelectorAll('#win-explorer>.page>.main>.content>.view>.change');
+            console.log(elements);
             for (var i = 0; i < elements.length; i++) {
                 elements[i].classList.remove('change');
                 let aTag = elements[i];
                 var on = apps.explorer.old_name;
                 let inputTag = aTag.querySelector("#new_name");
-                var pathl = $('#win-explorer>.main>.content>.tool>.tit')[0].dataset.path.split('/');
+                var pathl = $('#win-explorer>.path>.tit')[0].dataset.path.split('/');
                 let tmp = apps.explorer.path;
                 pathl.forEach(name => {
                     tmp = tmp['folder'][name];
                 });
-                if (inputTag.value == '' || apps.explorer.traverseDirectory(tmp,inputTag.value) || on == inputTag.value)
-                {
-                    if (apps.explorer.traverseDirectory(tmp,inputTag.value) && on != inputTag.value)
-                    {
+                if (inputTag.value == '' || apps.explorer.traverseDirectory(tmp, inputTag.value) || on == inputTag.value) {
+                    if (apps.explorer.traverseDirectory(tmp, inputTag.value) && on != inputTag.value) {
                         shownotice("duplication file name");
                     }
                     var element = document.getElementById("new_name");
@@ -1731,33 +1496,29 @@ let apps = {
                     continue;
                 }
                 name_1 = inputTag.value.split(".");
-                if (name_1[1] == "txt"){
+                if(name_1[0].indexOf('/')>-1)alert('恭喜你发现了这个bug,但是太懒了不想修qwq');
+                console.log(name_1);
+                if (name_1[1] == "txt") {
                     icon_ = "icon/files/txt.png";
                 }
-                else if (name_1[1] == "png" || name_1[1] == "jpg" | name_1[1] == "bmp"){
+                else if (name_1[1] == "png" || name_1[1] == "jpg" | name_1[1] == "bmp") {
                     icon_ = "icon/files/picture.png";
                 }
-                else
-                {
+                else {
                     icon_ = "icon/files/none.png";
                 }
                 //这边可以适配更多的文件类型
 
-                
                 aTag.innerHTML += inputTag.value;
-                for (var i = 0; i < tmp["file"].length; i++)
-                {
-                    if (tmp["file"][i]['name'] == on)
-                    {
+                for (var i = 0; i < tmp["file"].length; i++) {
+                    if (tmp["file"][i]['name'] == on) {
                         tmp["file"][i]['name'] = inputTag.value;
                         tmp["file"][i]['ico'] = icon_;
                     }
                 }
                 const keys = Object.keys(tmp["folder"]);
-                for (var i = 0; i < keys.length; i++)
-                {
-                    if (keys[i] == on)
-                    {
+                for (var i = 0; i < keys.length; i++) {
+                    if (keys[i] == on) {
                         keys[i] = inputTag.value;
                         tmp["folder"][inputTag.value] = tmp["folder"][on];
                         delete tmp["folder"][on];
@@ -1765,12 +1526,12 @@ let apps = {
                 }
                 var element = document.getElementById("new_name");
                 element.parentNode.removeChild(element);
-                apps.explorer.goto($('#win-explorer>.main>.content>.tool>.tit')[0].dataset.path);
+                apps.explorer.goto($('#win-explorer>.path>.tit')[0].dataset.path);
 
             }
             delete elements;
             apps.explorer.is_use2 = apps.explorer.is_use;
-            var elements = document.querySelectorAll('#win-explorer > .main > .content > .view > .select');
+            var elements = document.querySelectorAll('#win-explorer>.page>.main>.content>.view>.select');
             for (var i = 0; i < elements.length; i++) {
                 elements[i].classList.remove('select');
             }
@@ -1778,33 +1539,38 @@ let apps = {
         },
         goto: (path) => {
             apps.explorer.Process_Of_Select = "";
-            $('#win-explorer>.main>.content>.view')[0].innerHTML = '';
+            $('#win-explorer>.page>.main>.content>.view')[0].innerHTML = '';
             var pathl = path.split('/');
             var pathqwq = '';
             var index_ = 0;
             let tmp = apps.explorer.path;
-            $('#win-explorer>.main>.content>.tool>.tit')[0].dataset.path = path;
-            $('#win-explorer>.main>.content>.tool>.tit>.path')[0].innerHTML = '';
-            $('#win-explorer>.main>.content>.tool>.tit>.icon')[0].style.marginTop = '0px';
+            $('#win-explorer>.path>.tit')[0].dataset.path = path;
+            $('#win-explorer>.path>.tit>.path')[0].innerHTML = '<div class="text" onclick="apps.explorer.reset()">此电脑</div><div class="arrow">&gt;</div>';
+            $('#win-explorer>.path>.tit>.icon')[0].style.marginTop = '0px';
             if (pathl[pathl.length - 1] == 'C:') {
-                $('#win-explorer>.main>.content>.tool>.tit>.icon')[0].style.backgroundImage = 'url("apps/icons/explorer/diskwin.svg")';
-                $('#win-explorer>.main>.content>.tool>.tit>.icon')[0].style.marginTop = '2.5px';
+                $('#win-explorer>.path>.tit>.icon')[0].style.backgroundImage = 'url("apps/icons/explorer/diskwin.svg")';
+                $('#win-explorer>.path>.tit>.icon')[0].style.marginTop = '2.5px';
+                m_tab.rename('explorer','<img src="./apps/icons/explorer/diskwin.svg" style="margin-top:2.5px">'+pathl[pathl.length-1]);
             }
             else if (pathl[pathl.length - 1] == 'D:') {
-                $('#win-explorer>.main>.content>.tool>.tit>.icon')[0].style.backgroundImage = 'url("apps/icons/explorer/disk.svg")';
+                $('#win-explorer>.path>.tit>.icon')[0].style.backgroundImage = 'url("apps/icons/explorer/disk.svg")';
+                m_tab.rename('explorer','<img src="./apps/icons/explorer/disk.svg">'+pathl[pathl.length-1]);
             }
             else {
-                $('#win-explorer>.main>.content>.tool>.tit>.icon')[0].style.backgroundImage = 'url("apps/icons/explorer/folder.svg")';
+                $('#win-explorer>.path>.tit>.icon')[0].style.backgroundImage = 'url("apps/icons/explorer/folder.svg")';
+                m_tab.rename('explorer','<img src="./apps/icons/explorer/folder.svg">'+pathl[pathl.length-1]);
             }
+            // if(rename){
+                apps.explorer.tabs[apps.explorer.now][2]=path;
+            // }
             pathl.forEach(name => {
                 pathqwq += name;
-                $('#win-explorer>.main>.content>.tool>.tit>.path')[0].innerHTML += `<div class="text" onclick="apps.explorer.goto('${pathqwq}')">${name}</div>`;
-                $('#win-explorer>.main>.content>.tool>.tit>.path')[0].innerHTML += '<div class="arrow"> > </div>';
+                $('#win-explorer>.path>.tit>.path')[0].innerHTML += `<div class="text" onclick="apps.explorer.goto('${pathqwq}')">${name}</div><div class="arrow">&gt;</div>`;
                 tmp = tmp['folder'][name];
                 pathqwq += '/';
             });
             var path_ = path
-            if (Object.keys(tmp["folder"]) == 0 && tmp["file"].length == 0){
+            if (Object.keys(tmp["folder"]) == 0 && tmp["file"].length == 0) {
                 $('#win-explorer>.main>.content>.view')[0].innerHTML = '<p class="info">此文件夹为空。</p>';
             }
             else {
@@ -1821,68 +1587,65 @@ let apps = {
                         index_ += 1;
                     });
                 }
-                $('#win-explorer>.main>.content>.view')[0].innerHTML = ht;
+                $('#win-explorer>.page>.main>.content>.view')[0].innerHTML = ht;
             }
             if (pathl.length == 1) {
-                $('#win-explorer>.main>.content>.tool>.goback').attr('onclick', 'apps.explorer.reset()');
+                $('#win-explorer>.path>.goback').attr('onclick', 'apps.explorer.reset()');
             } else {
-                $('#win-explorer>.main>.content>.tool>.goback').attr('onclick', `apps.explorer.goto('${path.substring(0, path.length - pathl[pathl.length - 1].length - 1)}')`);
+                $('#win-explorer>.path>.goback').attr('onclick', `apps.explorer.goto('${path.substring(0, path.length - pathl[pathl.length - 1].length - 1)}')`);
             }
-            // $('#win-explorer>.main>.content>.tool>.tit')[0].innerHTML = path;
+
+            // $('#win-explorer>.path>.tit')[0].innerHTML = path;
         },
-        add: (path,name_,type="file",command="",icon="") => { //type为文件类型，只有文件夹files和文件file
+        add: (path, name_, type = "file", command = "", icon = "") => { //type为文件类型，只有文件夹files和文件file
             var pathl = path.split('/');
             var icon_ = "";
             let tmp = apps.explorer.path;
             pathl.forEach(name => {
                 tmp = tmp['folder'][name];
             });
-            if (tmp == null)
-            {
-                tmp = {folder:{},file:[]};
+            if (tmp == null) {
+                tmp = { folder: {}, file: [] };
             }
-            if (apps.explorer.traverseDirectory(tmp,name_))
-            {
+            if (apps.explorer.traverseDirectory(tmp, name_)) {
                 shownotice("duplication file name");
                 return;
             }
             name_1 = name_.split(".");
-            
-            if (type=="file"){
-                if (name_1[1] == "txt"){
+
+            if (type == "file") {
+                if (name_1[1] == "txt") {
                     icon_ = "icon/files/txt.png";
                     if (command == "")
                         command = "openapp('notepad')";
                 }
-                else if (name_1[1] == "png" || name_1[1] == "jpg" | name_1[1] == "bmp"){
+                else if (name_1[1] == "png" || name_1[1] == "jpg" | name_1[1] == "bmp") {
                     icon_ = "icon/files/picture.png";
                 }
-                else
-                {
+                else {
                     icon_ = "icon/files/none.png";
                 }
                 //这边可以适配更多的文件类型
-                if (icon != "")
-                {
+                if (icon != "") {
                     icon_ = icon;
                 }
-                try{
-                    tmp.file.push({ name: name_, ico: icon_, command: command});
+                try {
+                    tmp.file.push({ name: name_, ico: icon_, command: command });
                 }
-                catch{
+                catch {
                     tmp.push(file);
-                    tmp.file.push({ name: name_, ico: icon_, command: command});
+                    tmp.file.push({ name: name_, ico: icon_, command: command });
                 }
             }
-            else{
-                tmp.folder[name_] = {folder:{},file:[]};
+            else {
+                tmp.folder[name_] = { folder: {}, file: [] };
             }
             apps.explorer.goto(path);
-            apps.explorer.rename(path+"/"+name_);
+            apps.explorer.rename(path + "/" + name_);
         },
         rename: (path) => {
             var pathl = path.split('/');
-            var name = pathl[pathl.length-1];
+            var name = pathl[pathl.length - 1];
             apps.explorer.old_name = name;
             pathl.pop();
             let tmp = apps.explorer.path;
@@ -1893,19 +1656,20 @@ let apps = {
             let img = element.querySelector("img").outerHTML;
             element.innerHTML = img;
             let input = document.createElement("input");
-            input.style.cssText = 'background-color: var(--bg50);border-top: none;border-right: none;border-left: none;border-image: initial;border-bottom: 2.5px solid rgba(127, 127, 127, 0.498);border-radius: 11px;height: 9%;padding: 3px 5px 3px 8px;outline: medium;width: 155%;color: var(--text);transition: all 100ms ease 0s, border 0s ease 0s;box-shadow: 0 1px 2px var(--s3d);';
+            // input.style.cssText = '';
             input.id = "new_name";
+            input.className = "input";
             input.value = apps.explorer.old_name;
             element.appendChild(input);
-            setTimeout(()=>{$("#new_name").focus();$("#new_name").select();},200);
+            setTimeout(() => { $("#new_name").focus(); $("#new_name").select(); }, 200);
 
             element.classList.add("change");
             var input_ = document.getElementById("new_name");
-            input_.addEventListener("keyup", function(event) {
-            if (event.key === "Enter") {
-                event.preventDefault();
-                apps.explorer.del_select();
-            }
+            input_.addEventListener("keyup", function (event) {
+                if (event.key === "Enter") {
+                    event.preventDefault();
+                    apps.explorer.del_select();
+                }
             });
         },
         get_file_id: (name) => {  //只能找到已经打开了的文件夹的元素id
@@ -1918,39 +1682,33 @@ let apps = {
         },
         del: (path) => {
             var pathl = path.split('/');
-            var name = pathl[pathl.length-1];
+            var name = pathl[pathl.length - 1];
             pathl.pop();
             let tmp = apps.explorer.path;
             pathl.forEach(name => {
                 tmp = tmp['folder'][name];
             });
             tmp_file = tmp['file'];
-            for (var i = 0; i < tmp_file.length; i++)
-            {
-                if (tmp_file[i]['name'] == name)
-                {
-                    tmp_file.splice(i,1);
+            for (var i = 0; i < tmp_file.length; i++) {
+                if (tmp_file[i]['name'] == name) {
+                    tmp_file.splice(i, 1);
                 }
             }
             tmp_files = tmp['folder'];
             delete tmp_files[name];
             apps.explorer.goto(pathl.join("/"));
         },
-        traverseDirectory(dir,name) {
+        traverseDirectory(dir, name) {
             if (dir["file"] == null && dir["folder"] == null)
                 return false;
-            for (var i = 0; i < dir["file"].length; i++)
-            {
-                if (dir["file"][i]['name'] == name)
-                {
+            for (var i = 0; i < dir["file"].length; i++) {
+                if (dir["file"][i]['name'] == name) {
                     return true;
                 }
             }
             const keys = Object.keys(dir["folder"]);
-            for (var i = 0; i < keys.length; i++)
-            {
-                if (keys[i] == name)
-                {
+            for (var i = 0; i < keys.length; i++) {
+                if (keys[i] == name) {
                     return true;
                 }
             }
@@ -1962,14 +1720,14 @@ let apps = {
                 'C:': {
                     folder: {
                         'Program Files': {
-                            folder: { 'WindowsApps': {folder:{},file:[]}, 'Microsoft': {folder:{},file:[]} },
+                            folder: { 'WindowsApps': { folder: {}, file: [] }, 'Microsoft': { folder: {}, file: [] } },
                             file: [
                                 { name: 'about.exe', ico: 'icon/about.svg', command: "openapp('about')" },
                                 { name: 'setting.exe', ico: 'icon/setting.svg', command: "openapp('setting')" },
                             ]
                         },
                         'Windows': {
-                            folder: { 'Boot': {folder:{},file:[]}, 'System': {folder:{},file:[]}, 'System32': {folder:{},file:[]} },
+                            folder: { 'Boot': { folder: {}, file: [] }, 'System': { folder: {}, file: [] }, 'System32': { folder: {}, file: [] } },
                             file: [
                                 { name: 'notepad.exe', ico: 'icon/notepad.svg', command: "openapp('notepad')" },
                             ]
@@ -1979,29 +1737,29 @@ let apps = {
                                 'Administrator': {
                                     folder: {
                                         '文档': {
-                                            folder: { 'IISExpress': {folder:{},file:[]}, 'PowerToys': {folder:{},file:[]} },
+                                            folder: { 'IISExpress': { folder: {}, file: [] }, 'PowerToys': { folder: {}, file: [] } },
                                             file: [
                                                 { name: '瓶盖介绍.doc', ico: 'icon/files/word.png', command: '' },
                                                 { name: '瓶盖质量统计分析.xlsx', ico: 'icon/files/excel.png', command: '' },
                                             ]
                                         }, '图片': {
-                                            folder: { '本机照片': {folder:{},file:[]}, '屏幕截图': {folder:{},file:[]} },
+                                            folder: { '本机照片': { folder: {}, file: [] }, '屏幕截图': { folder: {}, file: [] } },
                                             file: [
                                                 { name: '瓶盖构造图.png', ico: 'icon/files/img.png', command: '' },
                                                 { name: '可口可乐瓶盖.jpg', ico: 'icon/files/img.png', command: '' },
                                             ]
                                         },
-                                        'AppData': {folder:{},file:[]}, '音乐': { folder: { '录音机': {folder:{},file:[]} } }
+                                        'AppData': { folder: {}, file: [] }, '音乐': { folder: { '录音机': { folder: {}, file: [] } } }
                                     }
                                 }
                             }
                         }
                     },
-                    file:[
+                    file: [
                     ]
                 },
                 'D:': {
-                    folder: { 'Microsoft': {folder:{},file:[]} },
+                    folder: { 'Microsoft': { folder: {}, file: [] } },
                     file: [
                         { name: '瓶盖结构说明.docx', ico: 'icon/files/word.png', command: '' },
                         { name: '可口可乐瓶盖历史.pptx', ico: 'icon/files/ppt.png', command: '' },
@@ -2382,11 +2140,9 @@ Microsoft Windows [版本 12.0.39035.7324]
         now: null,
         len: 0,
         reloadElt: '<loading class="reloading"><svg viewBox="0 0 16 16"><circle cx="8px" cy="8px" r="5px"></circle><circle cx="8px" cy="8px" r="5px"></circle></svg></loading>',
-        newtab: () => {
-            apps.edge.tabs.push([apps.edge.len++, '新建标签页']);
-            $('#win-edge').append(`<iframe src="mainpage.html" frameborder="0" class="${apps.edge.tabs[apps.edge.tabs.length - 1][0]}">`)
-            apps.edge.settabs();
-            apps.edge.tab(apps.edge.tabs.length - 1);
+        newtab:()=>{
+            m_tab.newtab('edge','新建标签页');
+            $('#win-edge').append(`<iframe src="mainpage.html" frameborder="0" class="${apps.edge.tabs[apps.edge.tabs.length - 1][0]}">`);
             $('#win-edge>.tool>input.url').focus();
             $("#win-edge>iframe")[apps.edge.tabs.length - 1].onload = function () {
                 this.contentDocument.querySelector('input').onkeyup = function (e) {
@@ -2400,143 +2156,42 @@ Microsoft Windows [版本 12.0.39035.7324]
                         apps.edge.goto($(this.contentDocument.querySelector('input')).val())
                     }
                 }
-            }
-        },
-        settabs: () => {
-            let html = '';
-            for (let i = 0; i < apps.edge.tabs.length; i++) {
-                const t = apps.edge.tabs[i];
-                if ($('.window.edge>.titbar>.tabs>.tab.' + t[0] + '>.reloading')[0]) {
-                    html += `<div class="tab ${t[0]}" onclick="apps.edge.tab(${i})" oncontextmenu="showcm(event,'edge.tab',${i});stop(event);return false" onmousedown="apps.edge.moving(this,event,${i});stop(event);" ontouchstart="apps.edge.moving(this,event,${i});stop(event);">${apps.edge.reloadElt}<p>${t[1]}</p><span class="clbtn bi bi-x" onclick="apps.edge.close(${i})"></span></div>`;
-                }
-                else {
-                    html += `<div class="tab ${t[0]}" onclick="apps.edge.tab(${i})" oncontextmenu="showcm(event,'edge.tab',${i});stop(event);return false" onmousedown="apps.edge.moving(this,event,${i});stop(event);" ontouchstart="apps.edge.moving(this,event,${i});stop(event);"><p>${t[1]}</p><span class="clbtn bi bi-x" onclick="apps.edge.close(${i})"></span></div>`;
-                }
-            }
-            $('.window.edge>.titbar>.tabs')[0].innerHTML = html;
-            $('.window.edge>.titbar>.tabs')[0].innerHTML += '<a class="new bi bi-plus" onclick="apps.edge.newtab();"></a>';
-            // $('.window.edge>.titbar>.tabs>.tab.'+apps.edge.tabs[apps.edge.now][0]).addClass('show');
-        },
-        moving: (t, ev, np) => {
-            let deltaLeft, pos;
-            if (ev.type.match('mouse')) {
-                deltaLeft = ev.clientX;
-            }
-            else if (ev.type.match('touch')) {
-                deltaLeft = ev.touches[0].clientX;
-            }
-            function move_f(e) {
-                let x;
-                if (e.type.match('mouse')) {
-                    x = e.clientX;
-                }
-                else if (e.type.match('touch')) {
-                    x = e.touches[0].clientX;
-                }
-                $(this).css('transform', `translateX(${x - deltaLeft}px)`);
-                pos = Math.floor((this.offsetLeft + x - deltaLeft - 36 + (this.offsetWidth / 2)) / this.offsetWidth);
-                if (pos > apps.edge.tabs.length - 1) {
-                    pos = apps.edge.tabs.length - 1;
-                }
-                $('.window.edge>.titbar>.tabs>.tab.left').removeClass('left');
-                $('.window.edge>.titbar>.tabs>.tab.right').removeClass('right');
-                if (np < pos) {
-                    for (let i = np + 1; i <= pos; i++) {
-                        const ta = apps.edge.tabs[i];
-                        if (ta) {
-                            $('.window.edge>.titbar>.tabs>.tab.' + ta[0]).addClass('left');
-                        }
-                    }
-                }
-                else if (np > pos) {
-                    for (let i = pos; i < np; i++) {
-                        const ta = apps.edge.tabs[i];
-                        if (ta) {
-                            $('.window.edge>.titbar>.tabs>.tab.' + ta[0]).addClass('right');
-                        }
-                    }
-                }
             };
-            page.onmousemove = move_f.bind(t);
-            page.ontouchmove = move_f.bind(t);
-            function up_f(e) {
-                page.onmousemove = null;
-                page.onmouseup = null;
-                page.ontouchmove = null;
-                page.ontouchend = null;
-                let x;
-                if (e.type.match('mouse')) {
-                    x = e.clientX;
-                    pos = Math.floor((this.offsetLeft + x - deltaLeft - 36 + (this.offsetWidth / 2)) / this.offsetWidth);
-                    if (pos > apps.edge.tabs.length - 1) {
-                        pos = apps.edge.tabs.length - 1;
-                    }
-                }
-                if (pos == np || pos > apps.edge.tabs.length || pos < 0) {
-                    $(this).css('transform', 'none');
-                    $(this).removeClass('moving');
-                    $('.window.edge>.titbar>.tabs>.tab.left').removeClass('left');
-                    $('.window.edge>.titbar>.tabs>.tab.right').removeClass('right');
-                }
-                else {
-                    apps.edge.tabs.splice(np < pos ? pos + 1 : pos, 0, apps.edge.tabs[np]);
-                    apps.edge.tabs.splice(np < pos ? np : (np + 1), 1);
-                    apps.edge.settabs();
-                    apps.edge.tab(pos);
-                }
-            }
-            page.onmouseup = up_f.bind(t);
-            page.ontouchend = up_f.bind(t);
-            page.ontouchcancel = up_f.bind(t);
-            $(t).addClass('moving');
+            m_tab.tab('edge',apps.edge.tabs.length - 1);
         },
-        close: (c) => {
-            $('.window.edge>.titbar>.tabs>.tab.' + apps.edge.tabs[c][0]).addClass('close');
-            for (let i = c + 1; i < apps.edge.tabs.length; i++) {
-                const _id = apps.edge.tabs[i][0];
-                $('.window.edge>.titbar>.tabs>.tab.' + _id).addClass('left');
+        settab:(t,i)=>{
+            if ($('.window.edge>.titbar>.tabs>.tab.' + t[0] + '>.reloading')[0]) {
+                return `<div class="tab ${t[0]}" onclick="m_tab.tab('edge',${i})" oncontextmenu="showcm(event,'edge.tab',${i});stop(event);return false" onmousedown="m_tab.moving('edge',this,event,${i});stop(event);" ontouchstart="m_tab.moving('edge',this,event,${i});stop(event);">${apps.edge.reloadElt}<p>${t[1]}</p><span class="clbtn bi bi-x" onclick="m_tab.close('edge',${i})"></span></div>`;
             }
-            setTimeout(() => {
-                $('#win-edge>iframe.' + apps.edge.tabs[c][0]).remove();
-                apps.edge.tabs.splice(c, 1);
-                apps.edge.settabs();
-                if (apps.edge.tabs.length == 0) {
-                    hidewin('edge');
-                }
-                else {
-                    apps.edge.tab(apps.edge.tabs.length - 1);
-                }
-            }, 200);
+            else {
+                return `<div class="tab ${t[0]}" onclick="m_tab.tab('edge',${i})" oncontextmenu="showcm(event,'edge.tab',${i});stop(event);return false" onmousedown="m_tab.moving('edge',this,event,${i});stop(event);" ontouchstart="m_tab.moving('edge',this,event,${i});stop(event);"><p>${t[1]}</p><span class="clbtn bi bi-x" onclick="m_tab.close('edge',${i})"></span></div>`;
+            }
         },
-        tab: (c) => {
-            console.log(c, apps.edge.tabs[c][0])
+        tab: (c)=>{
             $('#win-edge>iframe.show').removeClass('show');
             $('#win-edge>iframe.' + apps.edge.tabs[c][0]).addClass('show');
             $('#win-edge>.tool>input.url').val($('#win-edge>iframe.' + apps.edge.tabs[c][0]).attr('src') == 'mainpage.html' ? '' : $('#win-edge>iframe.' + apps.edge.tabs[c][0]).attr('src'));
             $('#win-edge>.tool>input.rename').removeClass('show');
-            apps.edge.now = c;
-            $('.window.edge>.titbar>.tabs>.tab.show').removeClass('show');
-            $('.window.edge>.titbar>.tabs>.tab.' + apps.edge.tabs[c][0]).addClass('show');
         },
         c_rename: (c) => {
-            apps.edge.tab(c);
+            m_tab.tab('edge',c);
             $('#win-edge>.tool>input.rename').val(apps.edge.tabs[apps.edge.now][1]);
             $('#win-edge>.tool>input.rename').addClass('show');
             setTimeout(() => {
                 $('#win-edge>.tool>input.rename').focus();
             }, 300);
         },
-        rename: (n) => {
-            apps.edge.tabs[apps.edge.now][1] = n;
-            apps.edge.settabs();
-            apps.edge.tab(apps.edge.now);
-        },
         reload: () => {
-            $('#win-edge>iframe.show').attr('src', $('#win-edge>iframe.show').attr('src'));
-            if (!$('.window.edge>.titbar>.tabs>.tab.' + apps.edge.tabs[apps.edge.now][0] + '>.reloading')[0]) {
-                $('.window.edge>.titbar>.tabs>.tab.' + apps.edge.tabs[apps.edge.now][0])[0].insertAdjacentHTML('afterbegin', apps.edge.reloadElt);
-                $('#win-edge>iframe.' + apps.edge.tabs[apps.edge.now][0])[0].onload = function () {
-                    $('.window.edge>.titbar>.tabs>.tab.' + this.classList[0])[0].removeChild($('.window.edge>.titbar>.tabs>.tab.' + this.classList[0] + '>.reloading')[0]);
+            if (wifiStatus == false) {
+                $('#win-edge>iframe.show').attr('src', './disconnected.html');
+            }
+            else {
+                $('#win-edge>iframe.show').attr('src', $('#win-edge>iframe.show').attr('src'));
+                if (!$('.window.edge>.titbar>.tabs>.tab.' + apps.edge.tabs[apps.edge.now][0] + '>.reloading')[0]) {
+                    $('.window.edge>.titbar>.tabs>.tab.' + apps.edge.tabs[apps.edge.now][0])[0].insertAdjacentHTML('afterbegin', apps.edge.reloadElt);
+                    $('#win-edge>iframe.' + apps.edge.tabs[apps.edge.now][0])[0].onload = function () {
+                        $('.window.edge>.titbar>.tabs>.tab.' + this.classList[0])[0].removeChild($('.window.edge>.titbar>.tabs>.tab.' + this.classList[0] + '>.reloading')[0]);
+                    }
                 }
             }
         },
@@ -2545,40 +2200,47 @@ Microsoft Windows [版本 12.0.39035.7324]
             if (response.ok == true) {
                 const text = await response.text();
                 apps.edge.tabs[np][1] = text;
-                apps.edge.settabs();
-                apps.edge.tab(np);
+                m_tab.settabs('edge');
+                m_tab.tab('edge',np);
             }
         },
         goto: (u) => {
-            // 6
-            if (!/^(((ht|f)tps?):\/\/)?([^!@#$%^&*?.\s-]([^!@#$%^&*?.\s]{0,63}[^!@#$%^&*?.\s])?\.)+[a-z]{2,6}\/?/.test(u)) {
-                // 启用必应搜索
-                $('#win-edge>iframe.show').attr('src', 'https://bing.com/search?q=' + u);
+            if (wifiStatus == false) {
+                $('#win-edge>iframe.show').attr('src', './disconnected.html');
                 apps.edge.rename(u);
-            }
-            // 检测网址是否带有http头
-            else if (!/^https?:\/\//.test(u)) {
-                $('#win-edge>iframe.show').attr('src', 'http://' + u);
-                apps.edge.rename('http://' + u);
+                $('#win-edge>.tool>input.url').val(u);
             }
             else {
-                $('#win-edge>iframe.show').attr('src', u);
-                apps.edge.rename(u);
+                // 6
+                if (!/^(((ht|f)tps?):\/\/)?([^!@#$%^&*?.\s-]([^!@#$%^&*?.\s]{0,63}[^!@#$%^&*?.\s])?\.)+[a-z]{2,6}\/?/.test(u)) {
+                    // 启用必应搜索
+                    $('#win-edge>iframe.show').attr('src', 'https://bing.com/search?q=' + u);
+                    apps.edge.rename(u);
+                }
+                // 检测网址是否带有http头
+                else if (!/^https?:\/\//.test(u)) {
+                    $('#win-edge>iframe.show').attr('src', 'http://' + u);
+                    apps.edge.rename('http://' + u);
+                }
+                else {
+                    $('#win-edge>iframe.show').attr('src', u);
+                    apps.edge.rename(u);
+                }
+                if (!$('.window.edge>.titbar>.tabs>.tab.' + apps.edge.tabs[apps.edge.now][0] + '>.reloading')[0]) {
+                    $('.window.edge>.titbar>.tabs>.tab.' + apps.edge.tabs[apps.edge.now][0])[0].insertAdjacentHTML('afterbegin', apps.edge.reloadElt);
+                }
+                $('#win-edge>iframe.' + apps.edge.tabs[apps.edge.now][0])[0].onload = function () {
+                    $('.window.edge>.titbar>.tabs>.tab.' + this.classList[0])[0].removeChild($('.window.edge>.titbar>.tabs>.tab.' + this.classList[0] + '>.reloading')[0]);
+                }
+                apps.edge.getTitle($('#win-edge>iframe.show').attr('src'), apps.edge.now);
             }
-            if (!$('.window.edge>.titbar>.tabs>.tab.' + apps.edge.tabs[apps.edge.now][0] + '>.reloading')[0]) {
-                $('.window.edge>.titbar>.tabs>.tab.' + apps.edge.tabs[apps.edge.now][0])[0].insertAdjacentHTML('afterbegin', apps.edge.reloadElt);
-            }
-            $('#win-edge>iframe.' + apps.edge.tabs[apps.edge.now][0])[0].onload = function () {
-                $('.window.edge>.titbar>.tabs>.tab.' + this.classList[0])[0].removeChild($('.window.edge>.titbar>.tabs>.tab.' + this.classList[0] + '>.reloading')[0]);
-            }
-            apps.edge.getTitle($('#win-edge>iframe.show').attr('src'), apps.edge.now);
+
         }
     },
     winver: {
         init: () => {
             $('#win-winver>.mesg').show();
         },
-
     }
 }
 
@@ -2678,7 +2340,7 @@ let widgets = {
             widgets.monitor.handle = window.setInterval(widgets.monitor.update, 1000);
         },
         update: () => {
-            $('*:not(.template)>*>.wg.monitor>.content>.container>svg>circle:last-child').css('stroke-dasharray', `${widgets.monitor.type != 'gpu' ? widgets.monitor.type.match('wifi') ? widgets.monitor.type == 'wifi-send' ? apps.taskmgr.wifi[1] / 100 * (Math.PI * $('*:not(.template)>*>.wg.monitor>.content>.container>svg>circle:last-child')[0].r.baseVal.value * 2): apps.taskmgr.wifi[0] / 100 * (Math.PI * $('*:not(.template)>*>.wg.monitor>.content>.container>svg>circle:last-child')[0].r.baseVal.value * 2) : apps.taskmgr[widgets.monitor.type] / 100 * (Math.PI * $('*:not(.template)>*>.wg.monitor>.content>.container>svg>circle:last-child')[0].r.baseVal.value * 2): apps.taskmgr.gpu.usage / 100 * (Math.PI * $('*:not(.template)>*>.wg.monitor>.content>.container>svg>circle:last-child')[0].r.baseVal.value * 2)}, 170`);
+            $('*:not(.template)>*>.wg.monitor>.content>.container>svg>circle:last-child').css('stroke-dasharray', `${widgets.monitor.type != 'gpu' ? widgets.monitor.type.match('wifi') ? widgets.monitor.type == 'wifi-send' ? apps.taskmgr.wifi[1] / 100 * (Math.PI * $('*:not(.template)>*>.wg.monitor>.content>.container>svg>circle:last-child')[0].r.baseVal.value * 2) : apps.taskmgr.wifi[0] / 100 * (Math.PI * $('*:not(.template)>*>.wg.monitor>.content>.container>svg>circle:last-child')[0].r.baseVal.value * 2) : apps.taskmgr[widgets.monitor.type] / 100 * (Math.PI * $('*:not(.template)>*>.wg.monitor>.content>.container>svg>circle:last-child')[0].r.baseVal.value * 2) : apps.taskmgr.gpu.usage / 100 * (Math.PI * $('*:not(.template)>*>.wg.monitor>.content>.container>svg>circle:last-child')[0].r.baseVal.value * 2)}, 170`);
             if (widgets.monitor.type == 'cpu' || widgets.monitor.type == 'gpu') {
                 $('*:not(.template)>*>.wg.monitor>.content>.container>svg>circle:last-child').css('stroke', '#2983cc');
                 $('*:not(.template)>*>.wg.monitor>.content>.text>.type')[0].innerText = widgets.monitor.type == 'cpu' ? 'CPU利用率' : 'GPU利用率';
@@ -3254,12 +2916,18 @@ function hide_widgets() {
     setTimeout(() => { $('#widgets').removeClass('show-begin'); }, 200);
 }
 
-function controlStatus() {
+function controlStatus(name) {
     if (this.classList.contains('active')) {
-        this.classList.remove('active')
+        this.classList.remove('active');
+        if (name == 'wifi') {
+            wifiStatus = false;
+        }
     }
     else if (!this.classList.contains('active')) {
-        this.classList.add('active')
+        this.classList.add('active');
+        if (name == 'wifi') {
+            wifiStatus = true;
+        }
     }
 }
 // 控制面板 亮度调整
@@ -3338,6 +3006,8 @@ window.setInterval(() => {
     apps.taskmgr.cpuRunningTime++;
     localStorage.setItem('cpuRunningTime', apps.taskmgr.cpuRunningTime);
 }, 1000);
+
+var wifiStatus = true;
 
 // 选择框
 let chstX, chstY;
