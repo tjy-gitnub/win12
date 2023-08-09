@@ -1463,7 +1463,22 @@
 			<img src="icon/calc.svg" class="icon">
 		</div>
 		<div class="content" id="win-calc">
-			<input id="calc-input" value="" onkeydown="if(event.keyCode == 13)$('#win-calc>.keyb>.ans').click()">
+			<input id="calc-input" value="" onkeydown="
+				console.log(event.keyCode);
+				if (
+					event.keyCode === 8 ||  // 删除
+					event.keyCode === 189 ||  // -
+					event.keyCode === 187 ||  // +
+					event.keyCode === 191 ||  // / ( 乘法和8共用 )
+					event.keyCode === 37 ||  // 向左
+					event.keyCode === 39 ||  // 向右
+					(48 <= event.keyCode && event.keyCode <= 57)  // 数字
+				) {} else {
+					event.preventDefault();
+				}
+				// 回车计算结果
+				if (event.keyCode === 13) $('#win-calc>.keyb>.ans').click();
+			">
 			<div class="keyb">
 				<a class="a b" onclick="
 					let value = parseFloat($('#calc-input').val());
