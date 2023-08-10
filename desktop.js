@@ -3307,3 +3307,38 @@ if (!location.href.match(/((\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.){3}(\d|[1-9]\d|
 function sendToSw(msg) {
     navigator.serviceWorker.controller.postMessage(msg);
 }
+
+function calculate() {
+    let matches = $('#calc-input')[0].value.match(/([-+]?\d*\.?\d+)\s*([-+×÷])\s*([-+]?\d*\.?\d+)/);
+    if (matches) {
+        let operand1 = matches[1];
+        let operator = matches[2];
+        let operand2 = matches[3];
+        switch (operator) {
+            case '+':
+                $('#calc-input')[0].value = new Big(operand1).plus(operand2).toString();
+                break
+            case '-':
+                $('#calc-input')[0].value = new Big(operand1).minus(operand2).toString();
+                break
+            case '×':
+            case '*':
+                $('#calc-input')[0].value = new Big(operand1).times(operand2).toString();
+                break
+            case '÷':
+            case '/':
+                $('#calc-input')[0].value = new Big(operand1).div(operand2).toString();
+                break
+        }
+    }
+}
+
+function calculateSquare() {
+    let num = new Big($('#calc-input')[0].value)
+    $('#calc-input')[0].value = num.times(num).toString()
+}
+
+function calculateSquareRoot() {
+    let num = new Big($('#calc-input')[0].value)
+    $('#calc-input')[0].value = num.sqrt().toString()
+}
