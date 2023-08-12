@@ -446,6 +446,22 @@
 							<div class="content">
 								<input value="0"
 									onkeydown="if(event.keyCode == 13)$('*:not(.template)>*>.wg.calc>.content>.keyb>.ans').click()">
+								<input value="0" onkeydown="
+									if (
+										event.keyCode === 8 ||  // 删除
+										event.keyCode === 189 ||  // -
+										event.keyCode === 187 ||  // +
+										event.keyCode === 191 ||  // / ( 乘法和8共用 )
+										event.keyCode === 37 ||  // 向左
+										event.keyCode === 39 ||  // 向右
+										event.keyCode === 190 ||  // .
+										(48 <= event.keyCode && event.keyCode <= 57)  // 数字
+									) {} else {
+										event.preventDefault();
+									}
+									// 回车计算结果
+									if (event.keyCode === 13) $('*:not(.template)>*>.wg.calc>.content>.keyb>.ans').click();
+								">
 								<a style="grid-area: pow;" class="b"
 									onclick="$('*:not(.template)>*>.wg.calc>.content>input')[0].value*=$('*:not(.template)>*>.wg.calc>.content>input').val()">𝑥²</a>
 								<a style="grid-area: sqrt;" class="b"
@@ -1464,7 +1480,22 @@
 			<img src="icon/calc.svg" class="icon">
 		</div>
 		<div class="content" id="win-calc">
-			<input id="calc-input" value="" onkeydown="if(event.keyCode == 13)$('#win-calc>.keyb>.ans').click()">
+			<input id="calc-input" value="" onkeydown="
+				if (
+					event.keyCode === 8 ||  // 删除
+					event.keyCode === 189 ||  // -
+					event.keyCode === 187 ||  // +
+					event.keyCode === 191 ||  // / ( 乘法和8共用 )
+					event.keyCode === 37 ||  // 向左
+					event.keyCode === 39 ||  // 向右
+					event.keyCode === 190 ||  // .
+					(48 <= event.keyCode && event.keyCode <= 57)  // 数字
+				) {} else {
+					event.preventDefault();
+				}
+				// 回车计算结果
+				if (event.keyCode === 13) $('#win-calc>.keyb>.ans').click();
+			">
 			<div class="keyb">
 				<a class="a b" onclick="calculateSquare()">𝑥²</a>
 				<a class="a b" onclick="calculateSquareRoot()">√𝑥</a>
