@@ -1209,6 +1209,7 @@
 		</div>
 		<!-- partial -->
 		<script src='https://cdns.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.js'></script>
+		<script src="https://unpkg.com/big.js@5.2.2/big.min.js"></script>
 	</div>
 	<div id="window-fill"></div>
 	<div class="window setting">
@@ -1465,8 +1466,8 @@
 		<div class="content" id="win-calc">
 			<input id="calc-input" value="" onkeydown="if(event.keyCode == 13)$('#win-calc>.keyb>.ans').click()">
 			<div class="keyb">
-				<a class="a b" onclick="$('#calc-input')[0].value*=$('#calc-input').val()">𝑥²</a>
-				<a class="a b" onclick="$('#calc-input').val(Math.sqrt($('#calc-input').val()))">√𝑥</a>
+				<a class="a b" onclick="calculateSquare()">𝑥²</a>
+				<a class="a b" onclick="calculateSquareRoot()">√𝑥</a>
 				<a class="a b" onclick="$('#calc-input')[0].value='0'">C</a>
 				<a class="a b u" onclick="apps.calc.add('+')">+</a>
 				<a class="a b" onclick="apps.calc.add('7')">7</a>
@@ -1487,7 +1488,7 @@
 					onclick="if($('#calc-input').val().length > 1) { $('#calc-input').val($('#calc-input')[0].value.substring(0,$('#calc-input')[0].value.length-1)); } else { $('#calc-input').val('0'); }"><i
 						class="bi bi-backspace"></i></a>
 				<a class="a b ans u"
-					onclick="$('#calc-input')[0].value=eval($('#calc-input')[0].value.replace('÷', '/').replace('×', '*'))">
+					onclick="calculate()">
 					=</a>
 			</div>
 		</div>
