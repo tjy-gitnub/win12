@@ -1469,6 +1469,7 @@
 	<div class="window calc">
 		<div class="titbar">
 			<img src="icon/calc.svg" class="icon">
+			<script src="./calculator_kernel.js"></script>
 			<p>计算器</p>
 			<div>
 				<a class="a wbtg red" onclick="hidewin('calc')"><i class="bi bi-x-lg"></i></a>
@@ -1480,46 +1481,31 @@
 			<img src="icon/calc.svg" class="icon">
 		</div>
 		<div class="content" id="win-calc">
-			<input id="calc-input" value="" onkeydown="
-				if (
-					event.keyCode === 8 ||  // 删除
-					event.keyCode === 189 ||  // -
-					event.keyCode === 187 ||  // +
-					event.keyCode === 191 ||  // / ( 乘法和8共用 )
-					event.keyCode === 37 ||  // 向左
-					event.keyCode === 39 ||  // 向右
-					event.keyCode === 190 ||  // .
-					(48 <= event.keyCode && event.keyCode <= 57)  // 数字
-				) {} else {
-					event.preventDefault();
-				}
-				// 回车计算结果
-				if (event.keyCode === 13) $('#win-calc>.keyb>.ans').click();
-			">
+			<p id="calc-input">0</p>
 			<div class="keyb">
-				<a class="a b" onclick="calculateSquare()">𝑥²</a>
-				<a class="a b" onclick="calculateSquareRoot()">√𝑥</a>
-				<a class="a b" onclick="$('#calc-input')[0].value='0'">C</a>
-				<a class="a b u" onclick="apps.calc.add('+')">+</a>
-				<a class="a b" onclick="apps.calc.add('7')">7</a>
-				<a class="a b" onclick="apps.calc.add('8')">8</a>
-				<a class="a b" onclick="apps.calc.add('9')">9</a>
-				<a class="a b u" onclick="apps.calc.add('-')">-</a>
-				<a class="a b" onclick="apps.calc.add('4')">4</a>
-				<a class="a b" onclick="apps.calc.add('5')">5</a>
-				<a class="a b" onclick="apps.calc.add('6')">6</a>
-				<a class="a b u" onclick="apps.calc.add('×')">×</a>
-				<a class="a b" onclick="apps.calc.add('1')">1</a>
-				<a class="a b" onclick="apps.calc.add('2')">2</a>
-				<a class="a b" onclick="apps.calc.add('3')">3</a>
-				<a class="a b u" onclick="apps.calc.add('÷')">÷</a>
-				<a class="a b" onclick="apps.calc.add('.')">.</a>
-				<a class="a b" onclick="apps.calc.add('0')">0</a>
+				<a class="a b" onclick="kernel_Square('calc-input')">𝑥²</a>
+				<a class="a b" onclick="kernel_SquareRoot('calc-input')">√𝑥</a>
+				<a class="a b" onclick="clear_num('calc-input')">C</a>
+				<a class="a b u" onclick="on_click_fun_key(1,'calc-input')">+</a>
+				<a class="a b" onclick="on_click_number_key(7,'calc-input');">7</a>
+				<a class="a b" onclick="on_click_number_key(8,'calc-input');">8</a>
+				<a class="a b" onclick="on_click_number_key(9,'calc-input');">9</a>
+				<a class="a b u" onclick="on_click_fun_key(2,'calc-input')">-</a>
+				<a class="a b" onclick="on_click_number_key(4,'calc-input');">4</a>
+				<a class="a b" onclick="on_click_number_key(5,'calc-input');">5</a>
+				<a class="a b" onclick="on_click_number_key(6,'calc-input');">6</a>
+				<a class="a b u" onclick="aon_click_fun_key(3,'calc-input')">×</a>
+				<a class="a b" onclick="on_click_number_key(1,'calc-input');">1</a>
+				<a class="a b" onclick="on_click_number_key(2,'calc-input');">2</a>
+				<a class="a b" onclick="on_click_number_key(3,'calc-input');">3</a>
+				<a class="a b u" onclick="on_click_fun_key(4,'calc-input')">÷</a>
+				<a class="a b" onclick="on_click_point('calc-input')">.</a>
+				<a class="a b" onclick="on_click_number_key(0,'calc-input');">0</a>
 				<a class="a b"
-					onclick="if($('#calc-input').val().length > 1) { $('#calc-input').val($('#calc-input')[0].value.substring(0,$('#calc-input')[0].value.length-1)); } else { $('#calc-input').val('0'); }"><i
+					onclick="backspace('calc-input')"><i
 						class="bi bi-backspace"></i></a>
 				<a class="a b ans u"
-					onclick="calculate()">
+					onclick="on_click_eq('calc-input')">
 					=</a>
 			</div>
 		</div>
