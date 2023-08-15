@@ -1768,6 +1768,22 @@ let apps = {
             }
         }
     },
+    calc: {
+        init: () => {
+            $('#calc-input').val('0');
+        },
+        add: (arg) => {
+            if (arg >= 1 && arg <= 9 && $('#calc-input')[0].value == '0') {
+                $('#calc-input')[0].value = arg;
+            }
+            else if (arg == '0' && $('#calc-input')[0].value == '0') {
+                $('#calc-input')[0].value = arg;
+            }
+            else {
+                $('#calc-input')[0].value += arg;
+            }
+        }
+    },
     about: {
         init: () => {
             $('#win-about>.about').addClass('show');
