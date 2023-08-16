@@ -1782,11 +1782,23 @@
 			</div>
 		</div>
 	</div>
-	<div class="window notepad">
+	<div class="window notepad" onclick="if(font_window){playWindowsBackground();timer_=setInterval(timer,100)}">
 		<div class="resize-bar"></div>
 		<div class="titbar">
 			<img src="icon/notepad.svg" class="icon">
 			<p>记事本</p>
+			<script>
+				let timer_;
+				var i=0;
+				function timer(){
+					setTimeout("showwin('notepad-fonts');",50);
+					hidewin('notepad-fonts', 'configs');
+					i++;
+					if(i>=5){
+						clearInterval(timer_);
+					}
+				}
+			</script>
 			<div>
 				<a class="a wbtg red" onclick="hidewin('notepad');hidewin('notepad-fonts', 'configs')"><i
 						class="bi bi-x-lg"></i></a>
@@ -1814,7 +1826,7 @@
 			<img src="icon/notepad.svg" class="icon">
 			<p>字体</p>
 			<div>
-				<a class="a wbtg red" onclick="hidewin('notepad-fonts', 'configs')"><i class="bi bi-x-lg"></i></a>
+				<a class="a wbtg red" onclick="hidewin('notepad-fonts', 'configs');font_window=false;"><i class="bi bi-x-lg"></i></a>
 			</div>
 		</div>
 		<div class="loadback">
@@ -1892,7 +1904,7 @@
 			</div>
 			<div class="buttons">
 				<a class="a submit act" onclick="apps.notepadFonts.commitFont();">确定</a>
-				<a class="a cancel act" onclick="hidewin('notepad-fonts', 'configs');">取消</a>
+				<a class="a cancel act" onclick="hidewin('notepad-fonts', 'configs');font_window=false;">取消</a>
 			</div>
 		</div>
 	</div>

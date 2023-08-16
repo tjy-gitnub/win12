@@ -298,6 +298,8 @@ $('#cm>.foc').blur(() => {
         $(x).removeClass('show-begin');
     }, 200);
 });
+let font_window=false;
+
 // 下拉菜单
 dps = {
     'notepad.file': [
@@ -326,9 +328,15 @@ dps = {
         ['<i class="bi bi-type-italic"></i> 插入斜体字', 'hidedp(true);$(\'#win-notepad>.text-box\')[0].innerHTML+=\'<i>I</i>\''],
         ['<i class="bi bi-type-bold"></i> 插入加粗字', 'hidedp(true);$(\'#win-notepad>.text-box\')[0].innerHTML+=\'<b>B</b>\''],
         '<hr>',
-        ['<i class="bi bi-fonts"></i> 字体', 'hidedp(true);showwin(\'notepad-fonts\');apps.notepadFonts.reset();'],
+        ['<i class="bi bi-fonts"></i> 字体', 'font_window=true;hidedp(true);showwin(\'notepad-fonts\');apps.notepadFonts.reset();'],
     ]
 }
+
+function playWindowsBackground(){
+    var audio = new Audio("./media/Windows Background.wav")
+    audio.play()
+}
+
 let dpt = null, isOnDp = false;
 $('#dp')[0].onmouseover = () => { isOnDp = true };
 $('#dp')[0].onmouseleave = () => { isOnDp = false; hidedp() };
@@ -597,7 +605,7 @@ let apps = {
             }, 300);
         },
         run: (cmd) => {
-            if (cmd == 'cmd' || cmd == 'cmd.exe' /* 支持输入“.exe”后缀 */) {
+            if (cmd == 'cmd' || cmd == 'cmd.exe') {
                 openapp('terminal');
             }
             else if (cmd != '') {
