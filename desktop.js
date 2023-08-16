@@ -597,7 +597,7 @@ let apps = {
             }, 300);
         },
         run: (cmd) => {
-            if (cmd == 'cmd') {
+            if (cmd == 'cmd' || cmd == 'cmd.exe' /* 支持输入“.exe”后缀 */) {
                 openapp('terminal');
             }
             else if (cmd != '') {
