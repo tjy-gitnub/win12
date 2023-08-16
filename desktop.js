@@ -2555,6 +2555,8 @@ function loadtime() {
     $('.dock.date>.time').text(time);
     $('#datebox>.tit>.time').text(time);
 }
+apps.setting.theme_get();//提前加载主题
+
 setInterval(loadtime, 1000);
 let d = new Date();
 let today = new Date().getDate();

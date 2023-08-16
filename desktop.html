@@ -1310,7 +1310,7 @@
 									setData('color2',$('div.app-color>div>input.theme2inp').val())">应用</a>
 							</div>
 						</div>
-						<a class="dp theme" onclick="$('.dp.theme').toggleClass('show');if ($('#set-theme>.a').length) return;apps.setting.theme_get();">
+						<a class="dp theme" onclick="$('.dp.theme').toggleClass('show');if (!($('#set-theme>.a').length)) apps.setting.theme_get();">
 							<icon>&#xE771;</icon><div><p>主题</p><p>设置 Windows 的主题 想要<span class="a jump" win12_title="https://github.com/tjy-gitnub/win12-theme" onclick="window.open('https://github.com/tjy-gitnub/win12-theme','_blank')">上传自己的主题</span>?</p></div><i class="bi bi-chevron-down"></i></a>
 						<div class="dp theme" id="set-theme">
 							<loading>
