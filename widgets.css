@@ -128,7 +128,7 @@
     gap: 0px;
 }
 
-.wg.calc>.content>input {
+.wg.calc>.content>p {
     grid-area: input;
     border: none;
     outline: none;
