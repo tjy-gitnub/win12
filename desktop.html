@@ -1481,7 +1481,7 @@
 					onclick="backspace('calc-input')"><i
 						class="bi bi-backspace"></i></a>
 				<a class="a b ans u"
-					onclick="on_click_eq('calc-input')">
+					onclick="if(!on_click_eq('calc-input')){clear_num('calc-input');shownotice('ZeroDivision')}/*使用了win12 API*/">
 					=</a>
 			</div>
 		</div>
@@ -1782,23 +1782,11 @@
 			</div>
 		</div>
 	</div>
-	<div class="window notepad" onclick="if(font_window){playWindowsBackground();timer_=setInterval(timer,100)}">
+	<div class="window notepad" onclick="if(font_window){playWindowsBackground();showwin('notepad-fonts');}">
 		<div class="resize-bar"></div>
 		<div class="titbar">
 			<img src="icon/notepad.svg" class="icon">
 			<p>记事本</p>
-			<script>
-				let timer_;
-				var i=0;
-				function timer(){
-					setTimeout("showwin('notepad-fonts');",50);
-					hidewin('notepad-fonts', 'configs');
-					i++;
-					if(i>=5){
-						clearInterval(timer_);
-					}
-				}
-			</script>
 			<div>
 				<a class="a wbtg red" onclick="hidewin('notepad');hidewin('notepad-fonts', 'configs')"><i
 						class="bi bi-x-lg"></i></a>

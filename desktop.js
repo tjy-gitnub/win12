@@ -470,6 +470,13 @@ let nts = {
             { type: 'cancel', text: '取消', js: 'closenotice();' }
         ]
     },
+    'ZeroDivision': {//计算器报错窗口
+        cnt: `<p class="tit">错误</p>
+            <p>除数不得等于0</p>`,
+        btn: [
+            { type: 'main', text: '好', js: 'closenotice();' },
+        ]
+    },
     'widgets.monitor': {
         cnt: `
         <p class="tit">切换监视器类型</p>
