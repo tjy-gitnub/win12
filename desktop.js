@@ -566,6 +566,7 @@ let apps = {
                 cs.forEach(c => {
                     if (c.type == 'dir') {
                         $.get(c.url).then(cnt => {
+			    $('#set-theme').html('');
                             cnt.forEach(cn => {
                                 if (cn.name == 'theme.json') {
                                     $.getJSON('https://tjy-gitnub.github.io/win12-theme/' + cn.path).then(inf => {
