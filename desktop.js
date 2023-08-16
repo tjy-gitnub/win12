@@ -2195,7 +2195,7 @@ Microsoft Windows [版本 12.0.39035.7324]
         },
         goto: (u) => {
             if (wifiStatus == false) {
-                $('#win-edge>iframe.show').attr('src', './disconnected.html');
+                $('#win-edge>iframe.show').attr('src', './disconnected' + (isDrak?'_dark':'') + '.html');
                 apps.edge.rename(u);
                 $('#win-edge>.tool>input.url').val(u);
             }
@@ -3009,6 +3009,8 @@ window.addEventListener('mouseup', e => {
     $('#desktop>.choose').css('width', 0);
     $('#desktop>.choose').css('height', 0);
 })
+let isDrak = false;
+
 // 主题
 function toggletheme() {
     $('.dock.theme').toggleClass('dk');
@@ -3016,9 +3018,11 @@ function toggletheme() {
     if ($(':root').hasClass('dark')) {
         $('.window.whiteboard>.titbar>p').text('Blackboard');
         setData('theme', 'dark');
+        isDrak = true;
     } else {
         $('.window.whiteboard>.titbar>p').text('Whiteboard');
         setData('theme', 'light');
+        isDrak = false;
     }
 }
 
@@ -3028,6 +3032,7 @@ if (isDarkTheme.matches) { //是深色
     $(':root').toggleClass('dark');
     $('.window.whiteboard>.titbar>p').text('Blackboard');
     localStorage.setItem('theme', 'dark');
+    isDrak = true;
 } else { // 不是深色
     $('.window.whiteboard>.titbar>p').text('Whiteboard');
     localStorage.setItem('theme', 'light');
