@@ -1,4 +1,3 @@
-
 var num1 = 0, num2 = 0;
 var c = 0;
 
@@ -57,7 +56,7 @@ function clear_num(id) {
 
 function on_click_eq(id) {
     if (c == 0) {
-        return
+        return true;
     }
     num2 = Number(document.getElementById(id).innerHTML);
     var num = _calc(num1, num2, c);
