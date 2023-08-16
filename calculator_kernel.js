@@ -52,11 +52,20 @@ function backspace(id) {
 
 function clear_num(id) {
     document.getElementById(id).innerHTML = "0"
+    num1 = 0, num2 = 0, c = 0;
 }
 
 function on_click_eq(id) {
+    if (c == 0) {
+        return
+    }
     num2 = Number(document.getElementById(id).innerHTML);
-    document.getElementById(id).innerHTML = _calc(num1, num2, c).toString()
+    var num = _calc(num1, num2, c);
+    if (num != null) {
+        document.getElementById(id).innerHTML = num.toString()
+        return true;
+    }
+    return false;
 }
 
 function accAdd(arg1, arg2) {
@@ -152,6 +161,6 @@ function _calc(n1, n2, c) {
         case 3:
             return accMul(n1, n2);
         case 4:
-            return accDiv(n1, n2);
+            return (n2 != 0) ? accDiv(n1, n2) : null;
     }
 }
