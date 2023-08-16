@@ -2203,7 +2203,7 @@ Microsoft Windows [版本 12.0.39035.7324]
                 // 6
                 if (!/^(((ht|f)tps?):\/\/)?([^!@#$%^&*?.\s-]([^!@#$%^&*?.\s]{0,63}[^!@#$%^&*?.\s])?\.)+[a-z]{2,6}\/?/.test(u)) {
                     // 启用必应搜索
-                    $('#win-edge>iframe.show').attr('src', 'https://bing.com/search?q=' + u);
+                    $('#win-edge>iframe.show').attr('src', 'https://bing.com/search?q=' + encodeURIComponent(u)/*encodeURIComponent 可以对搜索内容进行编码*/);
                     apps.edge.rename(u);
                 }
                 // 检测网址是否带有http头
@@ -3296,4 +3296,3 @@ if (!location.href.match(/((\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.){3}(\d|[1-9]\d|
 function sendToSw(msg) {
     navigator.serviceWorker.controller.postMessage(msg);
 }
-
