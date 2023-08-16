@@ -2,55 +2,55 @@ var num1 = 0, num2 = 0;
 var c = 0;
 
 function get_num(id) {
-    return Number(document.getElementById(id).innerHTML);
+    return Number(document.getElementById(id).value);
 }
 
 
 function on_click_number_key(key, id) {
     //key:按下的数字键，int
     //id:显示区的id
-    if (document.getElementById(id).innerHTML == "0") {
-        document.getElementById(id).innerHTML = ""
+    if (document.getElementById(id).value == "0") {
+        document.getElementById(id).value = ""
     }
-    document.getElementById(id).innerHTML += key;
+    document.getElementById(id).value += key;
 }
 
 function on_click_fun_key(key, id) {
     //key:按下的功能键，int,加1，减2，乘3，除4
-    num1 = Number(document.getElementById(id).innerHTML);
+    num1 = Number(document.getElementById(id).value);
     c = key;
-    document.getElementById(id).innerHTML = "0"
+    document.getElementById(id).value = "0"
 }
 
 function on_click_point(id) {
-    if (document.getElementById(id).innerHTML == "") {
-        document.getElementById(id).innerHTML = "0"
+    if (document.getElementById(id).value == "") {
+        document.getElementById(id).value = "0"
     }
-    if (!(document.getElementById(id).innerHTML.includes('.'))) {
-        document.getElementById(id).innerHTML += "."
+    if (!(document.getElementById(id).value.includes('.'))) {
+        document.getElementById(id).value += "."
     }
 }
 
 function kernel_Square(id) {
-    document.getElementById(id).innerHTML = Math.pow(get_num(id), 2)
+    document.getElementById(id).value = Math.pow(get_num(id), 2)
 }
 
 function kernel_SquareRoot(id) {
-    document.getElementById(id).innerHTML = Math.sqrt(get_num(id))
+    document.getElementById(id).value = Math.sqrt(get_num(id))
 }
 
 function backspace(id) {
-    if (document.getElementById(id).innerHTML.length > 0) {
-        document.getElementById(id).innerHTML = document.getElementById(id).innerHTML.substring(0, document.getElementById(id).innerHTML.length - 1)
+    if (document.getElementById(id).value.length > 0) {
+        document.getElementById(id).value = document.getElementById(id).value.substring(0, document.getElementById(id).value.length - 1)
     }
-    if (document.getElementById(id).innerHTML == "") {
-        document.getElementById(id).innerHTML = "0"
+    if (document.getElementById(id).value == "") {
+        document.getElementById(id).value = "0"
     }
 }
 
 
 function clear_num(id) {
-    document.getElementById(id).innerHTML = "0"
+    document.getElementById(id).value = "0"
     num1 = 0, num2 = 0, c = 0;
 }
 
@@ -58,10 +58,10 @@ function on_click_eq(id) {
     if (c == 0) {
         return true;
     }
-    num2 = Number(document.getElementById(id).innerHTML);
+    num2 = Number(document.getElementById(id).value);
     var num = _calc(num1, num2, c);
     if (num != null) {
-        document.getElementById(id).innerHTML = num.toString()
+        document.getElementById(id).value = num.toString()
         return true;
     }
     return false;

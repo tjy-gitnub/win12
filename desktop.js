@@ -2280,7 +2280,7 @@ let widgets = {
             null
         },
         remove: () => {
-            document.getElementById('calc-input').innerHTML = "0";
+            document.getElementById('calc-input-widgets').innerHTML = "0";
         }
     },
     weather: {
