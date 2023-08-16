@@ -445,7 +445,7 @@
 								</div>
 							</div>
 							<div class="content">
-								<p id="calc-input-widgets">0</p>
+								<input id="calc-input-widgets" readonly="true" value="0"></input>
 								<a style="grid-area: pow;" class="b" onclick="kernel_Square('calc-input-widgets')">𝑥²</a>
 								<a style="grid-area: sqrt;" class="b" onclick="kernel_SquareRoot('calc-input-widgets')">√𝑥</a>
 								<a style="grid-area: c;" class="b" onclick="clear_num('calc-input-widgets')">C</a>
@@ -465,7 +465,7 @@
 								<a style="grid-area: dot;" class="b" onclick="on_click_point('calc-input-widgets')">.</a>
 								<a style="grid-area: n0;" class="b" onclick="on_click_number_key(0,'calc-input-widgets');">0</a>
 								<a style="grid-area: back;" class="b" onclick="backspace('calc-input-widgets')"><i class="bi bi-backspace"></i></a>
-								<a style="grid-area: ans;" class="b ans u" onclick="on_click_eq('calc-input-widgets')">=</a>
+								<a style="grid-area: ans;" class="b ans u" onclick="if(!on_click_eq('calc-input-widgets')){clear_num('calc-input');shownotice('ZeroDivision')}/*使用了win12 API*/">=</a>
 							</div>
 						</div>
 					</div>
@@ -1457,7 +1457,7 @@
 			<img src="icon/calc.svg" class="icon">
 		</div>
 		<div class="content" id="win-calc">
-			<p id="calc-input">0</p>
+			<input id="calc-input" readonly="true" value="0"></input>
 			<div class="keyb">
 				<a class="a b" onclick="kernel_Square('calc-input')">𝑥²</a>
 				<a class="a b" onclick="kernel_SquareRoot('calc-input')">√𝑥</a>
