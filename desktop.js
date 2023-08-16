@@ -32,7 +32,7 @@ $('input,textarea,*[contenteditable=true]').on('contextmenu', (e) => {
     stop(e);
     return true;
 });
-let nomax = { 'calc': 0, 'notepad-fonts': 0, 'camera-notice': 0, 'winver': 0, 'run': 0 };
+let nomax = { 'calc': 0 /* 其实，计算器是可以最大化的...*/, 'notepad-fonts': 0, 'camera-notice': 0, 'winver': 0, 'run': 0 };
 let nomin = { 'notepad-fonts': 0, 'camera-notice': 0, 'run': 0 };
 let cms = {
     'titbar': [
@@ -1770,18 +1770,7 @@ let apps = {
     },
     calc: {
         init: () => {
-            $('#calc-input').val('0');
-        },
-        add: (arg) => {
-            if (arg >= 1 && arg <= 9 && $('#calc-input')[0].value == '0') {
-                $('#calc-input')[0].value = arg;
-            }
-            else if (arg == '0' && $('#calc-input')[0].value == '0') {
-                $('#calc-input')[0].value = arg;
-            }
-            else {
-                $('#calc-input')[0].value += arg;
-            }
+            document.getElementById('calc-input').innerHTML = "0";
         }
     },
     about: {
@@ -2275,19 +2264,8 @@ let widgets = {
         init: () => {
             null
         },
-        add: (arg) => {
-            if (arg >= 1 && arg <= 9 && $('*:not(.template)>*>.wg.calc>.content>input')[0].value == '0') {
-                $('*:not(.template)>*>.wg.calc>.content>input')[0].value = arg;
-            }
-            else if (arg == '0' && $('*:not(.template)>*>.wg.calc>.content>input')[0].value == '0') {
-                $('*:not(.template)>*>.wg.calc>.content>input')[0].value = arg;
-            }
-            else {
-                $('*:not(.template)>*>.wg.calc>.content>input')[0].value += arg;
-            }
-        },
         remove: () => {
-            null
+            document.getElementById('calc-input').innerHTML = "0";
         }
     },
     weather: {
@@ -3044,6 +3022,17 @@ function toggletheme() {
     }
 }
 
+const isDarkTheme = window.matchMedia("(prefers-color-scheme: dark)");
+if (isDarkTheme.matches) { //是深色
+    $('.dock.theme').toggleClass('dk');
+    $(':root').toggleClass('dark');
+    $('.window.whiteboard>.titbar>p').text('Blackboard');
+    localStorage.setItem('theme', 'dark');
+} else { // 不是深色
+    $('.window.whiteboard>.titbar>p').text('Whiteboard');
+    localStorage.setItem('theme', 'light');
+}
+
 function saveDesktop() {
     localStorage.setItem('desktop', $('#desktop')[0].innerHTML);
 }
@@ -3308,37 +3297,3 @@ function sendToSw(msg) {
     navigator.serviceWorker.controller.postMessage(msg);
 }
 
-function calculate() {
-    let matches = $('#calc-input')[0].value.match(/([-+]?\d*\.?\d+)\s*([-+×÷])\s*([-+]?\d*\.?\d+)/);
-    if (matches) {
-        let operand1 = matches[1];
-        let operator = matches[2];
-        let operand2 = matches[3];
-        switch (operator) {
-            case '+':
-                $('#calc-input')[0].value = new Big(operand1).plus(operand2).toString();
-                break
-            case '-':
-                $('#calc-input')[0].value = new Big(operand1).minus(operand2).toString();
-                break
-            case '×':
-            case '*':
-                $('#calc-input')[0].value = new Big(operand1).times(operand2).toString();
-                break
-            case '÷':
-            case '/':
-                $('#calc-input')[0].value = new Big(operand1).div(operand2).toString();
-                break
-        }
-    }
-}
-
-function calculateSquare() {
-    let num = new Big($('#calc-input')[0].value)
-    $('#calc-input')[0].value = num.times(num).toString()
-}
-
-function calculateSquareRoot() {
-    let num = new Big($('#calc-input')[0].value)
-    $('#calc-input')[0].value = num.sqrt().toString()
-}
