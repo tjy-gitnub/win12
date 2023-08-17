@@ -32,6 +32,7 @@ $('input,textarea,*[contenteditable=true]').on('contextmenu', (e) => {
     stop(e);
     return true;
 });
+var run_cmd = '';
 let nomax = { 'calc': 0 /* 其实，计算器是可以最大化的...*/, 'notepad-fonts': 0, 'camera-notice': 0, 'winver': 0, 'run': 0 ,'EasterEgg':0};
 let nomin = { 'notepad-fonts': 0, 'camera-notice': 0, 'run': 0 ,'EasterEgg':0};
 let cms = {
@@ -475,7 +476,7 @@ let nts = {
             <p>除数不得等于0</p>`,
         btn: [
             { type: 'main', text: '确定', js: 'closenotice();' },
-        ]
+            ]
     },
     'UpdateFinish':{
         cnt: `<p class="tit">更新完成</p>
@@ -497,6 +498,14 @@ let nts = {
         <p>没有可用更新</p> `,
         btn: [
             { type: 'main', text: '确定', js: 'closenotice();' },
+        ]
+    },
+    'Can-not-open-file':{
+        cnt: `<p class="tit">` + run_cmd +`</p>
+        <p>Windows 找不到文件 '` + run_cmd + `'。请确定文件名是否正确后，再试一次。</p> `,
+        btn: [
+            { type: 'main', text: '确定', js: 'closenotice();' },
+            { type: 'detail', text: '在 Micrsoft Edge 中搜索', js: 'closenotice();openapp(\'edge\');window.setTimeout(() => {apps.edge.newtab();apps.edge.goto(' + run_cmd +');}, 300);'}
         ]
     },
     'widgets.monitor': {
@@ -629,13 +638,15 @@ let apps = {
     },
     run: {
         init: () => {
-            $('#win-run>.open>input').val('');
+            $('#win-run>.open>input').val(run_cmd);   //在windows中，运行输入的内容会被保留
             window.setTimeout(() => {
                 $('#win-run>.open>input').focus();
+                $('#win-run>.open>input').select();
             }, 300);
         },
         run: (cmd) => {
             if (cmd == 'cmd' || cmd == 'cmd.exe') {
+                run_cmd = cmd;
                 openapp('terminal');
             }
             else if (cmd != '') {
@@ -654,30 +665,47 @@ let apps = {
                         }
                     });
                     if (valid == true) {
+                        run_cmd = cmd;
                         openapp('explorer');
                         window.setTimeout(() => {
                             apps.explorer.goto(cmd);
                         }, 300);
                     }
                     else {
+                        var have_exe = false;
+                        if (cmd.substring(cmd.length-4,cmd.length)=='.exe'){//如果有“.exe”，就去掉“.exe”，再判断
+                            cmd = cmd.substring(0,cmd.length-4);
+                            have_exe = true;
+                        }
                         if ($('.window.' + cmd)[0] && !$('.window.' + cmd).hasClass('configs')) {
                             openapp(cmd);
+                            cmd += have_exe?'.exe':''
+                            run_cmd = cmd;
                         }
                         else {
-                            openapp('edge');
-                            window.setTimeout(() => {
-                                apps.edge.newtab();
-                                apps.edge.goto(cmd);
-                            }, 300);
+                            cmd += have_exe?'.exe':'';//把裁剪出来的加回去
+                            nts['Can-not-open-file'] = {
+                                cnt: `<p class="tit">` + cmd +`</p>
+                                <p>Windows 找不到文件 '` + cmd + `'。请确定文件名是否正确后，再试一次。</p> `,
+                                btn: [
+                                    { type: 'main', text: '确定', js: "closenotice();showwin('run');$('#win-run>.open>input').select();" },
+                                    { type: 'cancel', text: '在 Micrsoft Edge 中搜索', js: "closenotice();openapp(\'edge\');window.setTimeout(() => {apps.edge.newtab();apps.edge.goto('https://www.bing.com/search?q=" + encodeURIComponent(cmd) +"');}, 300);"}
+                                ]
+                            }
+                            shownotice('Can-not-open-file');
                         }
                     }
                 }
                 catch {
-                    openapp('edge');
-                    window.setTimeout(() => {
-                        apps.edge.newtab();
-                        apps.edge.goto(cmd);
-                    }, 300);
+                    nts['Can-not-open-file'] = {
+                        cnt: `<p class="tit">` + cmd +`</p>
+                        <p>Windows 找不到文件 '` + cmd + `'。请确定文件名是否正确后，再试一次。</p> `,
+                        btn: [
+                            { type: 'main', text: '确定', js: "closenotice();showwin('run');$('#win-run>.open>input').select();" },
+                            { type: 'cancel', text: '在 Micrsoft Edge 中搜索', js: "closenotice();openapp(\'edge\');window.setTimeout(() => {apps.edge.newtab();apps.edge.goto('https://www.bing.com/search?q=" + encodeURIComponent(cmd) +"');}, 300);"}
+                        ]
+                    }
+                    shownotice('Can-not-open-file');
                 }
             }
         }
@@ -2272,6 +2300,11 @@ Microsoft Windows [版本 12.0.39035.7324]
     EasterEgg: {
         init:() => {
             Easter_egg = 0;
+        }
+    },
+    windows12: {
+        init:() => {
+            null
         }
     }
 }

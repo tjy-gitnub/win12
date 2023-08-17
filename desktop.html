@@ -335,9 +335,9 @@
 						<img src="icon/edge.svg">
 						<p>Microsoft Edge</p>
 					</a>
-					<a class="a sm-app enable">
-						<img src="icon/office.png">
-						<p>这是Office</p>
+					<a class="a sm-app enable" onclick="openapp('windows12');hide_startmenu();">
+						<img src="icon/logo.svg">
+						<p>Windows 12</p>
 					</a>
 					<a class="a sm-app enable terminal" onclick="openapp('terminal');hide_startmenu();"
 						oncontextmenu="return showcm(event,'smapp',['terminal','终端'])">
@@ -2081,6 +2081,27 @@
 			</div>
 			<canvas style="display: none;"></canvas>
 			<a style="display: none;"></a>
+		</div>
+	</div>
+	<div class="window windows12">
+		<div class="resize-bar"></div>
+		<div class="titbar">
+			<img src="icon/logo.svg" class="icon">
+			<p>Windows 12</p>
+			<div>
+				<a class="a wbtg red" onclick="hidewin('windows12')"><i class="bi bi-x-lg"></i></a>
+				<a class="a wbtg max" onclick="maxwin('windows12')"><i class="bi bi-app"></i></a>
+				<a class="a wbtg" onclick="minwin('windows12')"><i class="bi bi-dash-lg"></i></a>
+			</div>
+		</div>
+		<div class="loadback">
+			<img src="icon/logo.svg" class="icon">
+		</div>
+		<div class="content" id="win-win12">
+			<iframe style="height:100%; width:100%;object-fit:cover;" id="win12-window" frameborder="no"></iframe>
+			<script>
+				document.getElementById('win12-window').src = window.location.href;
+			</script>
 		</div>
 	</div>
 	<div class="window camera-notice">
