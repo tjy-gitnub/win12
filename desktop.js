@@ -32,7 +32,7 @@ $('input,textarea,*[contenteditable=true]').on('contextmenu', (e) => {
     stop(e);
     return true;
 });
-let nomax = { 'calc': 0, 'notepad-fonts': 0, 'camera-notice': 0, 'winver': 0, 'run': 0 };
+let nomax = { 'calc': 0 /* 其实，计算器是可以最大化的...*/, 'notepad-fonts': 0, 'camera-notice': 0, 'winver': 0, 'run': 0 };
 let nomin = { 'notepad-fonts': 0, 'camera-notice': 0, 'run': 0 };
 let cms = {
     'titbar': [
@@ -298,6 +298,8 @@ $('#cm>.foc').blur(() => {
         $(x).removeClass('show-begin');
     }, 200);
 });
+let font_window=false;
+
 // 下拉菜单
 dps = {
     'notepad.file': [
@@ -326,9 +328,15 @@ dps = {
         ['<i class="bi bi-type-italic"></i> 插入斜体字', 'hidedp(true);$(\'#win-notepad>.text-box\')[0].innerHTML+=\'<i>I</i>\''],
         ['<i class="bi bi-type-bold"></i> 插入加粗字', 'hidedp(true);$(\'#win-notepad>.text-box\')[0].innerHTML+=\'<b>B</b>\''],
         '<hr>',
-        ['<i class="bi bi-fonts"></i> 字体', 'hidedp(true);showwin(\'notepad-fonts\');apps.notepadFonts.reset();'],
+        ['<i class="bi bi-fonts"></i> 字体', 'font_window=true;hidedp(true);showwin(\'notepad-fonts\');apps.notepadFonts.reset();'],
     ]
 }
+
+function playWindowsBackground(){
+    var audio = new Audio("./media/Windows Background.wav")
+    audio.play()
+}
+
 let dpt = null, isOnDp = false;
 $('#dp')[0].onmouseover = () => { isOnDp = true };
 $('#dp')[0].onmouseleave = () => { isOnDp = false; hidedp() };
@@ -462,6 +470,13 @@ let nts = {
             { type: 'cancel', text: '取消', js: 'closenotice();' }
         ]
     },
+    'ZeroDivision': {//计算器报错窗口
+        cnt: `<p class="tit">错误</p>
+            <p>除数不得等于0</p>`,
+        btn: [
+            { type: 'main', text: '好', js: 'closenotice();' },
+        ]
+    },
     'widgets.monitor': {
         cnt: `
         <p class="tit">切换监视器类型</p>
@@ -551,6 +566,7 @@ let apps = {
                 cs.forEach(c => {
                     if (c.type == 'dir') {
                         $.get(c.url).then(cnt => {
+			    $('#set-theme').html('');
                             cnt.forEach(cn => {
                                 if (cn.name == 'theme.json') {
                                     $.getJSON('https://tjy-gitnub.github.io/win12-theme/' + cn.path).then(inf => {
@@ -597,7 +613,7 @@ let apps = {
             }, 300);
         },
         run: (cmd) => {
-            if (cmd == 'cmd') {
+            if (cmd == 'cmd' || cmd == 'cmd.exe') {
                 openapp('terminal');
             }
             else if (cmd != '') {
@@ -1770,18 +1786,7 @@ let apps = {
     },
     calc: {
         init: () => {
-            $('#calc-input').val('0');
-        },
-        add: (arg) => {
-            if (arg >= 1 && arg <= 9 && $('#calc-input')[0].value == '0') {
-                $('#calc-input')[0].value = arg;
-            }
-            else if (arg == '0' && $('#calc-input')[0].value == '0') {
-                $('#calc-input')[0].value = arg;
-            }
-            else {
-                $('#calc-input')[0].value += arg;
-            }
+            document.getElementById('calc-input').innerHTML = "0";
         }
     },
     about: {
@@ -2183,7 +2188,7 @@ Microsoft Windows [版本 12.0.39035.7324]
         },
         reload: () => {
             if (wifiStatus == false) {
-                $('#win-edge>iframe.show').attr('src', './disconnected.html');
+                $('#win-edge>iframe.show').attr('src', './disconnected' + (isDrak?'_dark':'') + '.html');
             }
             else {
                 $('#win-edge>iframe.show').attr('src', $('#win-edge>iframe.show').attr('src'));
@@ -2206,7 +2211,7 @@ Microsoft Windows [版本 12.0.39035.7324]
         },
         goto: (u) => {
             if (wifiStatus == false) {
-                $('#win-edge>iframe.show').attr('src', './disconnected.html');
+                $('#win-edge>iframe.show').attr('src', './disconnected' + (isDrak?'_dark':'') + '.html');
                 apps.edge.rename(u);
                 $('#win-edge>.tool>input.url').val(u);
             }
@@ -2214,7 +2219,7 @@ Microsoft Windows [版本 12.0.39035.7324]
                 // 6
                 if (!/^(((ht|f)tps?):\/\/)?([^!@#$%^&*?.\s-]([^!@#$%^&*?.\s]{0,63}[^!@#$%^&*?.\s])?\.)+[a-z]{2,6}\/?/.test(u)) {
                     // 启用必应搜索
-                    $('#win-edge>iframe.show').attr('src', 'https://bing.com/search?q=' + u);
+                    $('#win-edge>iframe.show').attr('src', 'https://bing.com/search?q=' + encodeURIComponent(u)/*encodeURIComponent 可以对搜索内容进行编码*/);
                     apps.edge.rename(u);
                 }
                 // 检测网址是否带有http头
@@ -2275,19 +2280,8 @@ let widgets = {
         init: () => {
             null
         },
-        add: (arg) => {
-            if (arg >= 1 && arg <= 9 && $('*:not(.template)>*>.wg.calc>.content>input')[0].value == '0') {
-                $('*:not(.template)>*>.wg.calc>.content>input')[0].value = arg;
-            }
-            else if (arg == '0' && $('*:not(.template)>*>.wg.calc>.content>input')[0].value == '0') {
-                $('*:not(.template)>*>.wg.calc>.content>input')[0].value = arg;
-            }
-            else {
-                $('*:not(.template)>*>.wg.calc>.content>input')[0].value += arg;
-            }
-        },
         remove: () => {
-            null
+            document.getElementById('calc-input-widgets').value = "0";
         }
     },
     weather: {
@@ -2562,6 +2556,8 @@ function loadtime() {
     $('.dock.date>.time').text(time);
     $('#datebox>.tit>.time').text(time);
 }
+apps.setting.theme_get();//提前加载主题
+
 setInterval(loadtime, 1000);
 let d = new Date();
 let today = new Date().getDate();
@@ -3031,6 +3027,8 @@ window.addEventListener('mouseup', e => {
     $('#desktop>.choose').css('width', 0);
     $('#desktop>.choose').css('height', 0);
 })
+let isDrak = false;
+
 // 主题
 function toggletheme() {
     $('.dock.theme').toggleClass('dk');
@@ -3038,10 +3036,24 @@ function toggletheme() {
     if ($(':root').hasClass('dark')) {
         $('.window.whiteboard>.titbar>p').text('Blackboard');
         setData('theme', 'dark');
+        isDrak = true;
     } else {
         $('.window.whiteboard>.titbar>p').text('Whiteboard');
         setData('theme', 'light');
+        isDrak = false;
     }
+}
+
+const isDarkTheme = window.matchMedia("(prefers-color-scheme: dark)");
+if (isDarkTheme.matches) { //是深色
+    $('.dock.theme').toggleClass('dk');
+    $(':root').toggleClass('dark');
+    $('.window.whiteboard>.titbar>p').text('Blackboard');
+    localStorage.setItem('theme', 'dark');
+    isDrak = true;
+} else { // 不是深色
+    $('.window.whiteboard>.titbar>p').text('Whiteboard');
+    localStorage.setItem('theme', 'light');
 }
 
 function saveDesktop() {
@@ -3306,39 +3318,4 @@ if (!location.href.match(/((\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.){3}(\d|[1-9]\d|
 }
 function sendToSw(msg) {
     navigator.serviceWorker.controller.postMessage(msg);
-}
-
-function calculate() {
-    let matches = $('#calc-input')[0].value.match(/([-+]?\d*\.?\d+)\s*([-+×÷])\s*([-+]?\d*\.?\d+)/);
-    if (matches) {
-        let operand1 = matches[1];
-        let operator = matches[2];
-        let operand2 = matches[3];
-        switch (operator) {
-            case '+':
-                $('#calc-input')[0].value = new Big(operand1).plus(operand2).toString();
-                break
-            case '-':
-                $('#calc-input')[0].value = new Big(operand1).minus(operand2).toString();
-                break
-            case '×':
-            case '*':
-                $('#calc-input')[0].value = new Big(operand1).times(operand2).toString();
-                break
-            case '÷':
-            case '/':
-                $('#calc-input')[0].value = new Big(operand1).div(operand2).toString();
-                break
-        }
-    }
-}
-
-function calculateSquare() {
-    let num = new Big($('#calc-input')[0].value)
-    $('#calc-input')[0].value = num.times(num).toString()
-}
-
-function calculateSquareRoot() {
-    let num = new Big($('#calc-input')[0].value)
-    $('#calc-input')[0].value = num.sqrt().toString()
 }
