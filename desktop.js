@@ -474,7 +474,29 @@ let nts = {
         cnt: `<p class="tit">错误</p>
             <p>除数不得等于0</p>`,
         btn: [
-            { type: 'main', text: '好', js: 'closenotice();' },
+            { type: 'main', text: '确定', js: 'closenotice();' },
+        ]
+    },
+    'UpdateFinish':{
+        cnt: `<p class="tit">更新完成</p>
+            <p>重启后就能使用新版本了！</p>`,
+        btn: [
+            { type: 'main', text: '立刻重启', js: 'closenotice();window.location.href="./reload.html"' },
+            { type: 'cancel', text: '取消', js: 'closenotice();' }
+        ]
+    },
+    'UpdateError':{
+        cnt: `<p class="tit">更新失败</p>
+            <p>无法更新</p>`,
+        btn: [
+            { type: 'main', text: '确定', js: 'closenotice();' },
+        ]
+    },
+    'NoUpdate':{
+        cnt: `<p class="tit">提示</p>
+        <p>没有可用更新</p> `,
+        btn: [
+            { type: 'main', text: '确定', js: 'closenotice();' },
         ]
     },
     'widgets.monitor': {
@@ -2368,6 +2390,30 @@ let widgets = {
         }
     }
 }
+function UpdateWin12(){
+    if(!window.location.href.includes("https://")&&!window.location.href.includes("http://")){
+        shownotice("NoUpdate");
+        return;
+    }
+    try{
+        $.ajax({
+            url:window.location.href.split('/')[2],
+            dataType:'json',
+            data:{},
+            cache:false, 
+            ifModified :true ,
+        
+            success:function(response){
+                shownotice('UpdateFinish');
+            },
+            async:false
+        });
+    } catch (err) {
+        shownotice('UpdateError');
+    }
+   
+}
+
 function decodeHtml(s){
     $('#translater').text(s);
     return $('#translater').html().replace('\n','<br>').replace(' ','&nbsp;');
