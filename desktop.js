@@ -32,8 +32,8 @@ $('input,textarea,*[contenteditable=true]').on('contextmenu', (e) => {
     stop(e);
     return true;
 });
-let nomax = { 'calc': 0 /* 其实，计算器是可以最大化的...*/, 'notepad-fonts': 0, 'camera-notice': 0, 'winver': 0, 'run': 0 };
-let nomin = { 'notepad-fonts': 0, 'camera-notice': 0, 'run': 0 };
+let nomax = { 'calc': 0 /* 其实，计算器是可以最大化的...*/, 'notepad-fonts': 0, 'camera-notice': 0, 'winver': 0, 'run': 0 ,'EasterEgg':0};
+let nomin = { 'notepad-fonts': 0, 'camera-notice': 0, 'run': 0 ,'EasterEgg':0};
 let cms = {
     'titbar': [
         function (arg) {
@@ -2246,6 +2246,11 @@ Microsoft Windows [版本 12.0.39035.7324]
         init: () => {
             $('#win-winver>.mesg').show();
         },
+    },
+    EasterEgg: {
+        init:() => {
+            Easter_egg = 0;
+        }
     }
 }
 
