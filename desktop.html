@@ -40,6 +40,7 @@
 	<link rel="stylesheet" href="apps/style/login.css">
 	<!-- 各个模块 -->
 	<link rel="stylesheet" href="module/tab.css">
+	<script src="./calculator_kernel.js"></script>
 	<base target="_blank">
 
 	<title>Windows 12 网页版</title>
@@ -444,51 +445,27 @@
 								</div>
 							</div>
 							<div class="content">
-								<input value="0"
-									onkeydown="if(event.keyCode == 13)$('*:not(.template)>*>.wg.calc>.content>.keyb>.ans').click()">
-								<input value="0" onkeydown="
-									if (
-										event.keyCode === 8 ||  // 删除
-										event.keyCode === 189 ||  // -
-										event.keyCode === 187 ||  // +
-										event.keyCode === 191 ||  // / ( 乘法和8共用 )
-										event.keyCode === 37 ||  // 向左
-										event.keyCode === 39 ||  // 向右
-										event.keyCode === 190 ||  // .
-										(48 <= event.keyCode && event.keyCode <= 57)  // 数字
-									) {} else {
-										event.preventDefault();
-									}
-									// 回车计算结果
-									if (event.keyCode === 13) $('*:not(.template)>*>.wg.calc>.content>.keyb>.ans').click();
-								">
-								<a style="grid-area: pow;" class="b"
-									onclick="$('*:not(.template)>*>.wg.calc>.content>input')[0].value*=$('*:not(.template)>*>.wg.calc>.content>input').val()">𝑥²</a>
-								<a style="grid-area: sqrt;" class="b"
-									onclick="$('*:not(.template)>*>.wg.calc>.content>input').val(Math.sqrt($('*:not(.template)>*>.wg.calc>.content>input').val()))">√𝑥</a>
-								<a style="grid-area: c;" class="b"
-									onclick="$('*:not(.template)>*>.wg.calc>.content>input')[0].value='0'">C</a>
-								<a style="grid-area: jia;" class="b u" onclick="widgets.calc.add('+')">+</a>
-								<a style="grid-area: n7;" class="b" onclick="widgets.calc.add('7')">7</a>
-								<a style="grid-area: n8;" class="b" onclick="widgets.calc.add('8')">8</a>
-								<a style="grid-area: n9;" class="b" onclick="widgets.calc.add('9')">9</a>
-								<a style="grid-area: jian;" class="b u" onclick="widgets.calc.add('-')">-</a>
-								<a style="grid-area: n4;" class="b" onclick="widgets.calc.add('4')">4</a>
-								<a style="grid-area: n5;" class="b" onclick="widgets.calc.add('5')">5</a>
-								<a style="grid-area: n6;" class="b" onclick="widgets.calc.add('6')">6</a>
-								<a style="grid-area: cheng;" class="b u" onclick="widgets.calc.add('×')">×</a>
-								<a style="grid-area: n1;" class="b" onclick="widgets.calc.add('1')">1</a>
-								<a style="grid-area: n2;" class="b" onclick="widgets.calc.add('2')">2</a>
-								<a style="grid-area: n3;" class="b" onclick="widgets.calc.add('3')">3</a>
-								<a style="grid-area: chu;" class="b u" onclick="widgets.calc.add('÷')">÷</a>
-								<a style="grid-area: dot;" class="b" onclick="widgets.calc.add('.')">.</a>
-								<a style="grid-area: n0;" class="b" onclick="widgets.calc.add('0')">0</a>
-								<a style="grid-area: back;" class="b"
-									onclick="if($('*:not(.template)>*>.wg.calc>.content>input').val().length > 1) { $('*:not(.template)>*>.wg.calc>.content>input').val($('*:not(.template)>*>.wg.calc>.content>input')[0].value.substring(0,$('*:not(.template)>*>.wg.calc>.content>input')[0].value.length-1)); } else { $('*:not(.template)>*>.wg.calc>.content>input').val('0') }"><i
-										class="bi bi-backspace"></i></a>
-								<a style="grid-area: ans;" class="b ans u"
-									onclick="$('*:not(.template)>*>.wg.calc>.content>input')[0].value=eval($('*:not(.template)>*>.wg.calc>.content>input')[0].value.replace('÷', '/').replace('×', '*'))">
-									=</a>
+								<input id="calc-input-widgets" readonly="true" value="0"></input>
+								<a style="grid-area: pow;" class="b" onclick="kernel_Square('calc-input-widgets')">𝑥²</a>
+								<a style="grid-area: sqrt;" class="b" onclick="kernel_SquareRoot('calc-input-widgets')">√𝑥</a>
+								<a style="grid-area: c;" class="b" onclick="clear_num('calc-input-widgets')">C</a>
+								<a style="grid-area: jia;" class="b u" onclick="on_click_fun_key(1,'calc-input-widgets')">+</a>
+								<a style="grid-area: n7;" class="b" onclick="on_click_number_key(7,'calc-input-widgets');">7</a>
+								<a style="grid-area: n8;" class="b" onclick="on_click_number_key(8,'calc-input-widgets');">8</a>
+								<a style="grid-area: n9;" class="b" onclick="on_click_number_key(9,'calc-input-widgets');">9</a>
+								<a style="grid-area: jian;" class="b u" onclick="on_click_fun_key(2,'calc-input-widgets')">-</a>
+								<a style="grid-area: n4;" class="b" onclick="on_click_number_key(4,'calc-input-widgets');">4</a>
+								<a style="grid-area: n5;" class="b" onclick="on_click_number_key(5,'calc-input-widgets');">5</a>
+								<a style="grid-area: n6;" class="b" onclick="on_click_number_key(6,'calc-input-widgets');">6</a>
+								<a style="grid-area: cheng;" class="b u" onclick="on_click_fun_key(3,'calc-input-widgets')">×</a>
+								<a style="grid-area: n1;" class="b" onclick="on_click_number_key(1,'calc-input-widgets');">1</a>
+								<a style="grid-area: n2;" class="b" onclick="on_click_number_key(2,'calc-input-widgets');">2</a>
+								<a style="grid-area: n3;" class="b" onclick="on_click_number_key(3,'calc-input-widgets');">3</a>
+								<a style="grid-area: chu;" class="b u" onclick="on_click_fun_key(4,'calc-input-widgets')">÷</a>
+								<a style="grid-area: dot;" class="b" onclick="on_click_point('calc-input-widgets')">.</a>
+								<a style="grid-area: n0;" class="b" onclick="on_click_number_key(0,'calc-input-widgets');">0</a>
+								<a style="grid-area: back;" class="b" onclick="backspace('calc-input-widgets')"><i class="bi bi-backspace"></i></a>
+								<a style="grid-area: ans;" class="b ans u" onclick="if(!on_click_eq('calc-input-widgets')){clear_num('calc-input');shownotice('ZeroDivision')}/*使用了win12 API*/">=</a>
 							</div>
 						</div>
 					</div>
@@ -1333,7 +1310,7 @@
 									setData('color2',$('div.app-color>div>input.theme2inp').val())">应用</a>
 							</div>
 						</div>
-						<a class="dp theme" onclick="$('.dp.theme').toggleClass('show');if ($('#set-theme>.a').length) return;apps.setting.theme_get();">
+						<a class="dp theme" onclick="$('.dp.theme').toggleClass('show');if (!($('#set-theme>.a').length)) apps.setting.theme_get();">
 							<icon>&#xE771;</icon><div><p>主题</p><p>设置 Windows 的主题 想要<span class="a jump" win12_title="https://github.com/tjy-gitnub/win12-theme" onclick="window.open('https://github.com/tjy-gitnub/win12-theme','_blank')">上传自己的主题</span>?</p></div><i class="bi bi-chevron-down"></i></a>
 						<div class="dp theme" id="set-theme">
 							<loading>
@@ -1480,46 +1457,31 @@
 			<img src="icon/calc.svg" class="icon">
 		</div>
 		<div class="content" id="win-calc">
-			<input id="calc-input" value="" onkeydown="
-				if (
-					event.keyCode === 8 ||  // 删除
-					event.keyCode === 189 ||  // -
-					event.keyCode === 187 ||  // +
-					event.keyCode === 191 ||  // / ( 乘法和8共用 )
-					event.keyCode === 37 ||  // 向左
-					event.keyCode === 39 ||  // 向右
-					event.keyCode === 190 ||  // .
-					(48 <= event.keyCode && event.keyCode <= 57)  // 数字
-				) {} else {
-					event.preventDefault();
-				}
-				// 回车计算结果
-				if (event.keyCode === 13) $('#win-calc>.keyb>.ans').click();
-			">
+			<input id="calc-input" readonly="true" value="0"></input>
 			<div class="keyb">
-				<a class="a b" onclick="calculateSquare()">𝑥²</a>
-				<a class="a b" onclick="calculateSquareRoot()">√𝑥</a>
-				<a class="a b" onclick="$('#calc-input')[0].value='0'">C</a>
-				<a class="a b u" onclick="apps.calc.add('+')">+</a>
-				<a class="a b" onclick="apps.calc.add('7')">7</a>
-				<a class="a b" onclick="apps.calc.add('8')">8</a>
-				<a class="a b" onclick="apps.calc.add('9')">9</a>
-				<a class="a b u" onclick="apps.calc.add('-')">-</a>
-				<a class="a b" onclick="apps.calc.add('4')">4</a>
-				<a class="a b" onclick="apps.calc.add('5')">5</a>
-				<a class="a b" onclick="apps.calc.add('6')">6</a>
-				<a class="a b u" onclick="apps.calc.add('×')">×</a>
-				<a class="a b" onclick="apps.calc.add('1')">1</a>
-				<a class="a b" onclick="apps.calc.add('2')">2</a>
-				<a class="a b" onclick="apps.calc.add('3')">3</a>
-				<a class="a b u" onclick="apps.calc.add('÷')">÷</a>
-				<a class="a b" onclick="apps.calc.add('.')">.</a>
-				<a class="a b" onclick="apps.calc.add('0')">0</a>
+				<a class="a b" onclick="kernel_Square('calc-input')">𝑥²</a>
+				<a class="a b" onclick="kernel_SquareRoot('calc-input')">√𝑥</a>
+				<a class="a b" onclick="clear_num('calc-input')">C</a>
+				<a class="a b u" onclick="on_click_fun_key(1,'calc-input')">+</a>
+				<a class="a b" onclick="on_click_number_key(7,'calc-input');">7</a>
+				<a class="a b" onclick="on_click_number_key(8,'calc-input');">8</a>
+				<a class="a b" onclick="on_click_number_key(9,'calc-input');">9</a>
+				<a class="a b u" onclick="on_click_fun_key(2,'calc-input')">-</a>
+				<a class="a b" onclick="on_click_number_key(4,'calc-input');">4</a>
+				<a class="a b" onclick="on_click_number_key(5,'calc-input');">5</a>
+				<a class="a b" onclick="on_click_number_key(6,'calc-input');">6</a>
+				<a class="a b u" onclick="aon_click_fun_key(3,'calc-input')">×</a>
+				<a class="a b" onclick="on_click_number_key(1,'calc-input');">1</a>
+				<a class="a b" onclick="on_click_number_key(2,'calc-input');">2</a>
+				<a class="a b" onclick="on_click_number_key(3,'calc-input');">3</a>
+				<a class="a b u" onclick="on_click_fun_key(4,'calc-input')">÷</a>
+				<a class="a b" onclick="on_click_point('calc-input')">.</a>
+				<a class="a b" onclick="on_click_number_key(0,'calc-input');">0</a>
 				<a class="a b"
-					onclick="if($('#calc-input').val().length > 1) { $('#calc-input').val($('#calc-input')[0].value.substring(0,$('#calc-input')[0].value.length-1)); } else { $('#calc-input').val('0'); }"><i
+					onclick="backspace('calc-input')"><i
 						class="bi bi-backspace"></i></a>
 				<a class="a b ans u"
-					onclick="calculate()">
+					onclick="if(!on_click_eq('calc-input')){clear_num('calc-input');shownotice('ZeroDivision')}/*使用了win12 API*/">
 					=</a>
 			</div>
 		</div>
@@ -1820,7 +1782,7 @@
 			</div>
 		</div>
 	</div>
-	<div class="window notepad">
+	<div class="window notepad" onclick="if(font_window){playWindowsBackground();showwin('notepad-fonts');}">
 		<div class="resize-bar"></div>
 		<div class="titbar">
 			<img src="icon/notepad.svg" class="icon">
@@ -1852,7 +1814,7 @@
 			<img src="icon/notepad.svg" class="icon">
 			<p>字体</p>
 			<div>
-				<a class="a wbtg red" onclick="hidewin('notepad-fonts', 'configs')"><i class="bi bi-x-lg"></i></a>
+				<a class="a wbtg red" onclick="hidewin('notepad-fonts', 'configs');font_window=false;"><i class="bi bi-x-lg"></i></a>
 			</div>
 		</div>
 		<div class="loadback">
@@ -1930,7 +1892,7 @@
 			</div>
 			<div class="buttons">
 				<a class="a submit act" onclick="apps.notepadFonts.commitFont();">确定</a>
-				<a class="a cancel act" onclick="hidewin('notepad-fonts', 'configs');">取消</a>
+				<a class="a cancel act" onclick="hidewin('notepad-fonts', 'configs');font_window=false;">取消</a>
 			</div>
 		</div>
 	</div>
