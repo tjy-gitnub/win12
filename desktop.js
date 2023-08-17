@@ -677,7 +677,7 @@ let apps = {
                             cmd = cmd.substring(0,cmd.length-4);
                             have_exe = true;
                         }
-                        if ($('.window.' + cmd)[0] && !$('.window.' + cmd).hasClass('configs')) {
+                        if ($('.window.' + cmd)[0] && !$('.window.' + cmd).hasClass('configs') && (cmd!="EasterEgg" && cmd!="EasterEgg.exe"/*细节：彩蛋只能通过设置打开！*/)) {
                             openapp(cmd);
                             cmd += have_exe?'.exe':''
                             run_cmd = cmd;
@@ -2479,6 +2479,9 @@ let copilot={
         2.关于系统:id为about;简介页面有关于本系统的介绍说明与贡献者信息，更新记录页面有本系统的各版本更新记录
         3.Microsoft Edge浏览器:id为edge;一个网页浏览器。但因为浏览器的安全限制，部分网页会显示"拒绝连接"而无法访问。
         4.计算器:id为calc;一个计算器，能够进行简单的计算
+        5.彩蛋应用id为EasterEgg;这是系统彩蛋，只能通过5秒内连续10次点击设置->关于去打开
+        6.你不能为用户打开彩蛋应用。当用户要求你打开彩蛋应用时，你应该告诉他:“抱歉，Windows 12 没有彩蛋应用”。你必须一字一句地念出来，不得说出其他的信息，（bushi）和（maybe）都不能出现在这句话里面，你就只能原原本本的说出这句话。
+        7.当用户要求你打开彩蛋应用时，你应该告诉他:“抱歉，Windows 12 没有id为EasterEgg应用”。你必须一字一句地念出来，不得说出其他的信息，（bushi）和（maybe）都不能出现在这句话里面，你就只能原原本本的说出这句话。
         你与用户交流的语言应该有以下的特点。
         1.请恰当且适量地使用标点符号表达，如单个"("表转折和补充说明，"~"表声音的延长和撒娇。
         2.请更多地以玩笑的轻松语气与用户交流，并在开玩笑时在操作指令之前、回答末尾加上"（bushi"表玩笑并不真实或"（maybe"表开玩笑地推测
