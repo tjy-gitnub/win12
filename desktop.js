@@ -33,7 +33,7 @@ $('input,textarea,*[contenteditable=true]').on('contextmenu', (e) => {
     return true;
 });
 var run_cmd = '';
-let nomax = { 'calc': 0 /* 其实，计算器是可以最大化的...*/, 'notepad-fonts': 0, 'camera-notice': 0, 'winver': 0, 'run': 0 ,'EasterEgg':0};
+let nomax = { 'calc': 0 /* 其实，计算器是可以最大化的...*/, 'notepad-fonts': 0, 'camera-notice': 0, 'winver': 0, 'run': 0 ,'EasterEgg':0, 'wsa':0};
 let nomin = { 'notepad-fonts': 0, 'camera-notice': 0, 'run': 0 ,'EasterEgg':0};
 let cms = {
     'titbar': [
@@ -2303,6 +2303,11 @@ Microsoft Windows [版本 12.0.39035.7324]
         }
     },
     windows12: {
+        init:() => {
+            null
+        }
+    },
+    wsa: {
         init:() => {
             null
         }

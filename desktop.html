@@ -234,6 +234,11 @@
 					<img src="icon/vscode.png">
 					<p>Visual Studio Code</p>
 				</a>
+				<a oncontextmenu="return showcm(event, 'smlapp', ['wsa', 'Android'])"
+					onclick="openapp('wsa');hide_startmenu();">
+					<img src="icon/wsa.png">
+					<p>适用于 Android™️ 的 Windows 子系统</p>
+				</a>
 			</list>
 		</div>
 		<div id="s-m-r">
@@ -1555,6 +1560,20 @@
 			<div class="cnt update">
 				<h1 class="tit"><span></span>更新记录</h1>
 				<div style="margin-left: 20px;">
+					<details><summary><span>v7.1.0</span> 计算器进一步修复、离线页面的深色模式</summary><p>
+						&emsp;&emsp;(更新来自 @lh11117)<br/>
+						&emsp;&emsp;-进一步修复了计算器精度缺陷和接受输入非法内容的问题<br/>
+						&emsp;&emsp;-为Microsoft Edge浏览器的离线界面添加了深色模式版本<br/>
+						&emsp;&emsp;-其他一些细节修复<br/>
+					</details>
+					<details><summary><span>v7.0.2</span> 计算器修复</summary><p>
+						&emsp;&emsp;-修复计算器计算加减乘除、平方、平方根等运算的精度问题(来自 @cong1223)<br/>
+						&emsp;&emsp;-只允许calc-input输入数字(来自 @iewnfod)<br/>
+					</details>
+					<details><summary><span>v7.0.2</span> (更新来自 @cong1223 和 @iewnfod)</summary><p>
+						&emsp;&emsp;-修复计算器计算加减乘除、平方、平方根等运算的精度问题<br/>
+						&emsp;&emsp;-只允许calc-input输入数字<br/>
+					</details>
 					<details><summary><span>v7.0.1</span> 资源管理器标签页、离线界面与新闻</summary><p>
 						&emsp;&emsp;-文件资源管理器的标签页(来自 @tjy-gitnub)<br />
 						&emsp;&emsp;-新增了Microsoft Edge浏览器的离线界面(来自 @User782Tec)<br />
@@ -2034,6 +2053,24 @@
 		</div>
 		<div class="content" id="win-bilibili">
 			<!-- <iframe src="https://bilibili.com/" frameborder="0" style="width: 100%; height: 100%;" loading="lazy"></iframe> -->
+		</div>
+	</div>
+	<div class="window wsa">
+		<div class="resize-bar"></div>
+		<div class="titbar">
+			<img src="icon/wsa.png" class="icon">
+			<p>适用于 Android™️ 的 Windows 子系统</p>
+			<div>
+				<a class="a wbtg red" onclick="hidewin('wsa')"><i class="bi bi-x-lg"></i></a>
+				<a class="a wbtg max" style="pointer-events: none;color: #777;"><i class="bi bi-app"></i></a>
+				<a class="a wbtg" onclick="minwin('wsa')"><i class="bi bi-dash-lg"></i></a>
+			</div>
+		</div>
+		<div class="loadback">
+			<img src="icon/wsa.png" class="icon">
+		</div>
+		<div class="content" id="win-wsa" style="margin-bottom:auto;">
+			<iframe src="https://android11react.osrc.com/" frameborder="0" style=" width: 100%;height: 100%;" loading="lazy"></iframe>
 		</div>
 	</div>
 	<div class="window pythonEditor">
