@@ -2766,7 +2766,7 @@ function loadtime() {
 }
 apps.setting.theme_get();//提前加载主题
 loadtime();
-setTimeout('setInterval(loadtime, 1000);',1000-da.getMilliseconds());//修复时间不精准的问题。以前的误差：0-999毫秒；现在：几乎没有
+setTimeout('loadtime();setInterval(loadtime, 1000);',1000-da.getMilliseconds());//修复时间不精准的问题。以前的误差：0-999毫秒；现在：几乎没有
 let d = new Date();
 let today = new Date().getDate();
 let start = 7 - ((d.getDate() - d.getDay()) % 7) + 1;

@@ -54,8 +54,8 @@
             <p class="tit">BIOS Setup Utility</p>
         </nav>
         <nav class="pages" style="padding-left: 15px;">
-            <a class="page" id="main" click="window.location.href='./bios.html?main'">Main</a>
-            <a class="page" id="exit" click="window.location.href='./bios.html?exit'">Exit</a>
+            <a class="page" id="main" click="tab=0;ChangePage()">Main</a>
+            <a class="page" id="exit" click="tab=1;ChangePage()">Exit</a>
         </nav>
     </head>
     <div id="mainPage">
@@ -96,19 +96,24 @@
         var btn = 0,btn_back = btn;
         var foc=0,foc_back=foc;
         timeChange();
-        if (!window.location.href.includes("?exit")) {
-            document.getElementById('exitPage').style.display = 'none';
-            document.getElementById('exit').style.cssText = 'background-color: #0100a2;color: #aaaaaa;';
-            document.getElementById('main').style.cssText = 'color: #ffffff;background-color: #aaaaaa;';
-            here = 'main';
-            tab = 0;
-        } else {
-            document.getElementById('mainPage').style.display = 'none';
-            document.getElementById('main').style.cssText = 'background-color: #0100a2;color: #aaaaaa;';
-            document.getElementById('exit').style.cssText = 'color: #ffffff;background-color: #aaaaaa;';
-            here = 'exit';
-            tab = 1;
+        function ChangePage(){
+            if (!tab) {
+                document.getElementById('exitPage').style.display = 'none';
+                document.getElementById('mainPage').style.display = '';
+                document.getElementById('exit').style.cssText = 'background-color: #0100a2;color: #aaaaaa;';
+                document.getElementById('main').style.cssText = 'color: #ffffff;background-color: #aaaaaa;';
+                here = 'main';
+                tab = 0;
+            } else {
+                document.getElementById('mainPage').style.display = 'none';
+                document.getElementById('exitPage').style.display = '';
+                document.getElementById('main').style.cssText = 'background-color: #0100a2;color: #aaaaaa;';
+                document.getElementById('exit').style.cssText = 'color: #ffffff;background-color: #aaaaaa;';
+                here = 'exit';
+                tab = 1;
+            }
         }
+        ChangePage();
         h = window.innerHeight * 0.15;
         w = window.innerWidth * 0.3;
         document.getElementById('confirm').style.height = h + "px";
@@ -128,7 +133,7 @@
                 }
                 if(tab+1>0&&tab+1<=tabs.length&&foc==0){
                     if([37,39].includes(event.keyCode)){
-                        window.location.href = './bios.html?' + tabs[tab];
+                        ChangePage();
                     }
                 } else {
                     tab = tab_back;
