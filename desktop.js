@@ -2442,7 +2442,7 @@ Microsoft Windows [版本 12.0.39035.7324]
     },
     windows12: {
         init:() => {
-            null
+            document.getElementById('win12-window').src = "./boot.html";
         }
     },
     wsa: {

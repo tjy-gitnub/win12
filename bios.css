@@ -22,6 +22,7 @@ body {
     list-style-type: none;
     margin: 0px;
     padding: 5px;
+    cursor: default;
 }
 
 .pages {
@@ -49,7 +50,7 @@ a {
 #mainPage,#exitPage {
     margin: 20px;
     padding: 20px;
-    border:5px solid #000;
+    border:3.5px solid #000;
 }
 
 .exit {
@@ -59,4 +60,14 @@ a {
 .exit:hover{
     color: #fff;
     cursor: default;
+}
+
+.confirm-button{
+    background-color: #fff;
+    color: #000;
+}
+
+.confirm-button:hover{
+    background-color: #000;
+    color: #fff;
 }

@@ -71,6 +71,9 @@
         }
         window.ontouchstart = toBIOS;
         document.getElementById('center-div').style.height = (window.innerHeight * 0.5) + "px";   //适应高度
+        document.oncontextmenu = function(){
+            return false;
+        }
     </script>
 </body>
 
