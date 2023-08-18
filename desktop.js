@@ -2567,7 +2567,6 @@ let widgets = {
     }
 }
 
-
 function decodeHtml(s){
     $('#translater').text(s);
     return $('#translater').html().replace('\n','<br>').replace(' ','&nbsp;');
