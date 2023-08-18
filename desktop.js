@@ -478,28 +478,6 @@ let nts = {
             { type: 'main', text: '确定', js: 'closenotice();' },
             ]
     },
-    'UpdateFinish':{
-        cnt: `<p class="tit">更新完成</p>
-            <p>重启后就能使用新版本了！</p>`,
-        btn: [
-            { type: 'main', text: '立刻重启', js: 'closenotice();window.location.href="./reload.html"' },
-            { type: 'cancel', text: '取消', js: 'closenotice();' }
-        ]
-    },
-    'UpdateError':{
-        cnt: `<p class="tit">更新失败</p>
-            <p>无法更新</p>`,
-        btn: [
-            { type: 'main', text: '确定', js: 'closenotice();' },
-        ]
-    },
-    'NoUpdate':{
-        cnt: `<p class="tit">提示</p>
-        <p>没有可用更新</p> `,
-        btn: [
-            { type: 'main', text: '确定', js: 'closenotice();' },
-        ]
-    },
     'Can-not-open-file':{
         cnt: `<p class="tit">` + run_cmd +`</p>
         <p>Windows 找不到文件 '` + run_cmd + `'。请确定文件名是否正确后，再试一次。</p> `,
@@ -556,6 +534,14 @@ let nts = {
             { type: 'main', text: '关闭', js: 'closenotice();' },
         ]
     },
+    'shutdown':{
+        cnt:  `
+        <p class="tit">即将注销你的登录</p>
+        <p>Windows 将在 114514 分钟后关闭。</p>`,
+        btn: [
+            { type: 'main', text: '关闭', js: 'closenotice();' },
+        ]
+    }
 }
 function shownotice(name) {
     $('#notice>.cnt').html(nts[name].cnt);
@@ -575,6 +561,7 @@ function closenotice() {
         $('#notice-back').removeClass('show');
     }, 200);
 }
+var shutdown_task = []; //关机任务，储存在这个数组里
 // 应用
 let apps = {
     setting: {
@@ -648,6 +635,162 @@ let apps = {
             if (cmd == 'cmd' || cmd == 'cmd.exe') {
                 run_cmd = cmd;
                 openapp('terminal');
+            }
+            else if(cmd.includes("shutdown")){//关机指令
+                run_cmd = cmd
+                var cmds = cmd.split(' ');
+                if(cmds.includes("shutdown")||cmds.includes("shutdown.exe")){ //帮助
+                    if(cmds.length==1){
+                        openapp('terminal');
+                        $('#win-terminal').html(`用法:&nbsp;shutdown&nbsp;[/i&nbsp;|&nbsp;/l&nbsp;|&nbsp;/s&nbsp;|&nbsp;/sg&nbsp;|&nbsp;/r&nbsp;|&nbsp;/g&nbsp;|&nbsp;/a&nbsp;|&nbsp;/p&nbsp;|&nbsp;/h&nbsp;|&nbsp;/e&nbsp;|&nbsp;/o]&nbsp;[/hybrid]&nbsp;[/soft]&nbsp;[/fw]&nbsp;[/f]<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;[/m&nbsp;\\computer][/t&nbsp;xxx][/d&nbsp;[p|u:]xx:yy&nbsp;[/c&nbsp;"comment"]]<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;没有参数&nbsp;&nbsp;&nbsp;显示帮助。这与键入&nbsp;/?&nbsp;是一样的。<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;/?&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;显示帮助。这与不键入任何选项是一样的。<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;/i&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;显示图形用户界面(GUI)。<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;这必须是第一个选项。<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;/l&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;注销。这不能与&nbsp;/m&nbsp;或&nbsp;/d&nbsp;选项一起使用。<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;/s&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;关闭计算机。<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;/sg&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;关闭计算机。在下一次启动时，如果启用了<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;自动重启登录，则将自动登录并锁定上次交互用户。<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;登录后，重启任何已注册的应用程序。<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;/r&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;完全关闭并重启计算机。<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;/g&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;完全关闭并重启计算机。重新启动系统后，<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;如果启用了自动重启登录，则将自动登录并<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;锁定上次交互用户。<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;登录后，重启任何已注册的应用程序。<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;/a&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;中止系统关闭。<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;这只能在超时期间使用。<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;与&nbsp;/fw&nbsp;结合使用，以清除任何未完成的至固件的引导。<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;/p&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;关闭本地计算机，没有超时或警告。<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;可以与&nbsp;/d&nbsp;和&nbsp;/f&nbsp;选项一起使用。<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;/h&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;休眠本地计算机。<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;可以与&nbsp;/f&nbsp;选项一起使用。<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;/hybrid&nbsp;&nbsp;&nbsp;&nbsp;执行计算机关闭并进行准备以快速启动。<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;必须与&nbsp;/s&nbsp;选项一起使用。<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;/fw&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;与关闭选项结合使用，使下次启动转到<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;固件用户界面。<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;/e&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;记录计算机意外关闭的原因。<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;/o&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;转到高级启动选项菜单并重新启动计算机。<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;必须与&nbsp;/r&nbsp;选项一起使用。<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;/m&nbsp;\\computer&nbsp;指定目标计算机。<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;/t&nbsp;xxx&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;将关闭前的超时时间设置为&nbsp;xxx&nbsp;秒。<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;有效范围是&nbsp;0-315360000&nbsp;(10&nbsp;年)，默认值为&nbsp;30。<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;如果超时期限大于&nbsp;0，则&nbsp;/f&nbsp;参数为<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/f&nbsp;参数。<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;/c&nbsp;"comment"&nbsp;注释重启或关闭的原因。<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;最多允许&nbsp;512&nbsp;个字符。<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;/f&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;强制关闭正在运行的应用程序而不事先警告用户。<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;当大于&nbsp;0&nbsp;的值为<br/>
+&nbsp;时，隐含&nbsp;/f&nbsp;参数&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;则默示为&nbsp;/f&nbsp;参数。<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;/d&nbsp;[p|u:]xx:yy&nbsp;&nbsp;提供重新启动或关闭的原因。<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;p&nbsp;指示重启或关闭是计划内的。<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;u&nbsp;指示原因是用户定义的。<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;如果未指定&nbsp;p&nbsp;和&nbsp;u，则<br/>
+重新启动或关闭&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;是计划外的。<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;xx&nbsp;是主要原因编号(小于&nbsp;256&nbsp;的正整数)。<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;yy&nbsp;是次要原因编号(小于&nbsp;65536&nbsp;的正整数)。<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br/>
+此计算机上的原因:<br/>
+(E&nbsp;=&nbsp;预期&nbsp;U&nbsp;=&nbsp;意外&nbsp;P&nbsp;=&nbsp;计划内，C&nbsp;=&nbsp;自定义)<br/>
+类别&nbsp;&nbsp;&nbsp;&nbsp;主要&nbsp;&nbsp;&nbsp;&nbsp;次要&nbsp;&nbsp;&nbsp;&nbsp;标题<br/>
+<br/>
+&nbsp;U&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;其他(计划外)<br/>
+E&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;其他(计划外)<br/>
+E&nbsp;P&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;其他(计划内)<br/>
+&nbsp;U&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;5&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;其他故障:&nbsp;系统没有反应<br/>
+E&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;硬件:&nbsp;维护(计划外)<br/>
+E&nbsp;P&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;硬件:&nbsp;维护(计划内)<br/>
+E&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;硬件:&nbsp;安装(计划外)<br/>
+E&nbsp;P&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;硬件:&nbsp;安装(计划内)<br/>
+E&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;操作系统:&nbsp;恢复(计划外)<br/>
+E&nbsp;P&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;操作系统:&nbsp;恢复(计划内)<br/>
+&nbsp;&nbsp;P&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;操作系统:&nbsp;升级(计划内)<br/>
+E&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;操作系统:&nbsp;重新配置(计划外)<br/>
+E&nbsp;P&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;操作系统:&nbsp;重新配置(计划内)<br/>
+&nbsp;&nbsp;P&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;16&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;操作系统:&nbsp;Service&nbsp;Pack&nbsp;(计划内)<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;17&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;操作系统:&nbsp;热修补(计划外)<br/>
+&nbsp;&nbsp;P&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;17&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;操作系统:&nbsp;热修补(计划内)<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;18&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;操作系统:&nbsp;安全修补(计划外)<br/>
+&nbsp;&nbsp;P&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;18&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;操作系统:&nbsp;安全修补(计划内)<br/>
+E&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;应用程序:&nbsp;维护(计划外)<br/>
+E&nbsp;P&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;应用程序:&nbsp;维护(计划内)<br/>
+E&nbsp;P&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;应用程序:&nbsp;安装(计划内)<br/>
+E&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;5&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;应用程序:&nbsp;没有反应<br/>
+E&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;6&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;应用程序:&nbsp;不稳定<br/>
+&nbsp;U&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;5&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;15&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;系统故障:&nbsp;停止错误<br/>
+&nbsp;U&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;5&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;19&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;安全问题(计划外)<br/>
+E&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;5&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;19&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;安全问题(计划外)<br/>
+E&nbsp;P&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;5&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;19&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;安全问题(计划内)<br/>
+E&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;5&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;20&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;网络连接丢失(计划外)<br/>
+&nbsp;U&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;6&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;11&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;电源故障:&nbsp;电线被拔掉<br/>
+&nbsp;U&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;6&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;12&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;电源故障:&nbsp;环境<br/>
+&nbsp;&nbsp;P&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;7&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;旧版&nbsp;API&nbsp;关机<br/>
+<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;提示：大多数功能可能有点困难，看看就好<br/>
+<br/>
+<pre>请按任意键继续.&nbsp;.&nbsp;.<input type="text" onkeydown="hidewin('terminal')"></input></pre>`); //Q：为什么文字这么多呢？A：shutdown的帮助本来就多，为了能显示空格，就把空格用&nbsp;代替了
+                        $('#win-terminal>pre>input').focus()
+                    } else if (cmds.includes("-s") || cmds.includes("/s")) {//关机
+                        if ((cmds.indexOf("-t")!=-1&&cmd.length/*判断是否-t后有其他参数*/>=cmds.indexOf("-t")+2/*先加一，获取当下标是从1开始的时候的下标索引；再加一，获取下一项。配合数组.length使用*/)||(cmds.indexOf("/t")!=-1&&cmd.length/*判断是否-t后有其他参数*/>=cmds.indexOf("/t")+2)){
+                            str = "";
+                            if (cmds.includes("-t")) {str = "-t";}
+                            if (cmds.includes("/t")) {str = "/t";}
+                            if(!isNaN(cmds[cmds.indexOf(str)+1]/*这里只加一是因为下标是从0开始的*/)){
+                                num = parseInt(cmds[cmds.indexOf(str)+1])
+                                nts['shutdown'] = {
+                                    cnt:  `
+                                    <p class="tit">即将注销你的登录</p>
+                                    <p>Windows 将在 ` + num / 60 + ` 分钟后关闭。</p>`,
+                                    btn: [
+                                        { type: 'main', text: '关闭', js: 'closenotice();' },
+                                    ]
+                                };
+                                shutdown_task[shutdown_task.length] = setTimeout("window.location.href = './shutdown.html'",num * 1000);
+                                shownotice('shutdown');
+                            }
+                        }
+                    } else if (cmds.includes("-r") || cmds.includes("/r")) {//重启
+                        if ((cmds.indexOf("-t")!=-1&&cmd.length>=cmds.indexOf("-t")+2)||(cmds.indexOf("/t")!=-1&&cmd.length>=cmds.indexOf("/t")+2)){/*详见上面的注释*/
+                            str = "";
+                            if (cmds.includes("-t")) {str = "-t";}
+                            if (cmds.includes("/t")) {str = "/t";}
+                            if(!isNaN(cmds[cmds.indexOf(str)+1])){
+                                num = parseInt(cmds[cmds.indexOf(str)+1])
+                                nts['shutdown'] = {
+                                    cnt:  `
+                                    <p class="tit">即将注销你的登录</p>
+                                    <p>Windows 将在 ` + num / 60 + ` 分钟后关闭。</p>`,
+                                    btn: [
+                                        { type: 'main', text: '关闭', js: 'closenotice();' },
+                                    ]
+                                };
+                                shutdown_task[shutdown_task.length] = setTimeout("window.location.href = './reload.html'",num * 1000);
+                                shownotice('shutdown');
+                            }
+                        }
+                    } else if (cmds.includes("-a") || cmds.includes("/a")) {//取消电源操作
+                        if(shutdown_task.length>0){
+                            for(var i=0;i<shutdown_task.length;i++){
+                                if(shutdown_task[i]!=null){
+                                    try{
+                                        clearTimeout(shutdown_task[i]);
+                                    }catch(err){console.log(err);}
+                                    shutdown_task[i] = null;
+                                }
+                            }
+                            nts['shutdown'] = {
+                                cnt:  `
+                                <p class="tit">注销已取消</p>
+                                <p>计划的关闭已取消。</p>`,
+                                btn: [
+                                    { type: 'main', text: '关闭', js: 'closenotice();' },
+                                ]
+                            };
+                            shownotice('shutdown');
+                        }
+                    }
+                }
             }
             else if (cmd != '') {
                 try {
@@ -2297,11 +2440,6 @@ Microsoft Windows [版本 12.0.39035.7324]
             $('#win-winver>.mesg').show();
         },
     },
-    EasterEgg: {
-        init:() => {
-            Easter_egg = 0;
-        }
-    },
     windows12: {
         init:() => {
             null
@@ -2428,29 +2566,7 @@ let widgets = {
         }
     }
 }
-function UpdateWin12(){
-    if(!window.location.href.includes("https://")&&!window.location.href.includes("http://")){
-        shownotice("NoUpdate");
-        return;
-    }
-    try{
-        $.ajax({
-            url:window.location.href.split('/')[2],
-            dataType:'json',
-            data:{},
-            cache:false, 
-            ifModified :true ,
-        
-            success:function(response){
-                shownotice('UpdateFinish');
-            },
-            async:false
-        });
-    } catch (err) {
-        shownotice('UpdateError');
-    }
-   
-}
+
 
 function decodeHtml(s){
     $('#translater').text(s);
@@ -2484,9 +2600,6 @@ let copilot={
         2.关于系统:id为about;简介页面有关于本系统的介绍说明与贡献者信息，更新记录页面有本系统的各版本更新记录
         3.Microsoft Edge浏览器:id为edge;一个网页浏览器。但因为浏览器的安全限制，部分网页会显示"拒绝连接"而无法访问。
         4.计算器:id为calc;一个计算器，能够进行简单的计算
-        5.彩蛋应用id为EasterEgg;这是系统彩蛋，只能通过5秒内连续10次点击设置->关于去打开
-        6.你不能为用户打开彩蛋应用。当用户要求你打开彩蛋应用时，你应该告诉他:“抱歉，Windows 12 没有彩蛋应用”。你必须一字一句地念出来，不得说出其他的信息，（bushi）和（maybe）都不能出现在这句话里面，你就只能原原本本的说出这句话。
-        7.当用户要求你打开彩蛋应用时，你应该告诉他:“抱歉，Windows 12 没有id为EasterEgg应用”。你必须一字一句地念出来，不得说出其他的信息，（bushi）和（maybe）都不能出现在这句话里面，你就只能原原本本的说出这句话。
         你与用户交流的语言应该有以下的特点。
         1.请恰当且适量地使用标点符号表达，如单个"("表转折和补充说明，"~"表声音的延长和撒娇。
         2.请更多地以玩笑的轻松语气与用户交流，并在开玩笑时在操作指令之前、回答末尾加上"（bushi"表玩笑并不真实或"（maybe"表开玩笑地推测

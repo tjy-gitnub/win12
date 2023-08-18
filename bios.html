@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8" />
+    <title>Win 12 BIOS</title>
+    <link rel="stylesheet" href="./bios.css">
+    <script>
+        function addZero(i) {
+            return i < 10 ? ('0' + i) : i
+        }
+        function timeChange() {
+            d = new Date()
+            document.getElementById('time').innerHTML = "[" + addZero(d.getHours()) + ":" + addZero(d.getMinutes()) + ":" + addZero(d.getSeconds()) + "]";
+            document.getElementById('date').innerHTML = "[" + d.getDate() + "/" + (d.getMonth() + 1) + "/" + d.getFullYear() + "]";
+
+            //顺便适应高度
+            document.getElementById('body').style.height = window.innerHeight + "px";
+            document.getElementById('mainPage').style.height = (window.innerHeight - 150 ) + 'px';
+            document.getElementById('exitPage').style.height = (window.innerHeight - 150 ) + 'px';
+        }
+        setTimeout("timeChange();setInterval(timeChange,1000)", 1000 - (new Date()).getMilliseconds());//精确时间
+    </script>
+</head>
+
+<body id="body">
+    <head>
+        <nav>
+            <p class="tit">BIOS Setup Utility</p>
+        </nav>
+        <nav class="pages" style="padding-left: 15px;">
+            <a class="page" id="main" onclick="window.location.href='./bios.html?main'">Main</a>
+            <a class="page" id="exit" onclick="window.location.href='./bios.html?exit'">Exit</a>
+        </nav>
+    </head>
+    <div id="mainPage">
+        <table class="option">
+            <tr>
+                <td>
+                    System Time:
+                </td>
+                <td style="width:10px;"></td>
+                <td id="time">
+                    [11:45:14]
+                </td>
+            </tr>
+            <tr style="height:10px;"></tr>
+            <tr>
+                <td>
+                    System Date:
+                </td>
+                <td style="width:10px;"></td>
+                <td id="date">
+                    [10/08/1919]
+                </td><!--注意：这里的日期为[日/月/年]-->
+            </tr>
+        </table>
+    </div>
+    <div id="exitPage">
+        <a onclick="setTimeout('document.getElementById(`body`).innerHTML=``;document.getElementById(`body`).style.cssText=`background-color: black;`;',500);setTimeout('window.location.href=`./boot.html`',1000); //Boot延迟" class="exit">Exit Discarding Changes</a>
+    </div>
+    <script>
+        timeChange();
+        if(!window.location.href.includes("?exit")){
+            document.getElementById('exitPage').style.display = 'none';
+            document.getElementById('exit').style.cssText = 'background-color: #0100a2;color: #aaaaaa;';
+            document.getElementById('main').style.cssText = 'color: #0100a2;background-color: #aaaaaa;';
+        } else {
+            document.getElementById('mainPage').style.display = 'none';
+            document.getElementById('main').style.cssText = 'background-color: #0100a2;color: #aaaaaa;';
+            document.getElementById('exit').style.cssText = 'color: #0100a2;background-color: #aaaaaa;';
+        }
+    </script>
+</body>
+
+</html>
