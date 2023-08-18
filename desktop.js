@@ -747,7 +747,9 @@ E&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;5&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                     ]
                                 };
                                 shutdown_task[shutdown_task.length] = setTimeout("window.location.href = './shutdown.html'",num * 1000);
-                                shownotice('shutdown');
+                                if(!(cmds.includes("/f")||cmds.includes("-f"))){
+                                    shownotice('shutdown');
+                                }
                             }
                         }
                     } else if (cmds.includes("-r") || cmds.includes("/r")) {//重启
@@ -766,7 +768,9 @@ E&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;5&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                     ]
                                 };
                                 shutdown_task[shutdown_task.length] = setTimeout("window.location.href = './reload.html'",num * 1000);
-                                shownotice('shutdown');
+                                if(!(cmds.includes("/f")||cmds.includes("-f"))){
+                                    shownotice('shutdown');
+                                }
                             }
                         }
                     } else if (cmds.includes("-a") || cmds.includes("/a")) {//取消电源操作
@@ -2761,8 +2765,8 @@ function loadtime() {
     $('#datebox>.tit>.time').text(time);
 }
 apps.setting.theme_get();//提前加载主题
-
-setInterval(loadtime, 1000);
+loadtime();
+setTimeout('setInterval(loadtime, 1000);',1000-da.getMilliseconds());//修复时间不精准的问题。以前的误差：0-999毫秒；现在：几乎没有
 let d = new Date();
 let today = new Date().getDate();
 let start = 7 - ((d.getDate() - d.getDay()) % 7) + 1;
