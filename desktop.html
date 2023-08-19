@@ -93,7 +93,6 @@
 				document.getElementById('loadbacksvg').style.opacity = 1;
 				document.getElementById('loadbackloading').style.opacity = 1;
 			}, 100);
-			var Easter_egg = 0;
 		</script>
 	</div>
 	<div id="loginback">
@@ -238,6 +237,11 @@
 					onclick="openapp('wsa');hide_startmenu();">
 					<img src="icon/wsa.png">
 					<p>适用于 Android™️ 的 Windows 子系统</p>
+				</a>
+				<a oncontextmenu="return showcm(event, 'smlapp', ['windows12', 'Windows 12'])"
+					onclick="openapp('windows12');hide_startmenu();">
+					<img src="icon/logo.svg">
+					<p>Windows 12</p>
 				</a>
 			</list>
 		</div>

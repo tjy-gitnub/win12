@@ -42,9 +42,10 @@ function addMenu(){
         }
         var div = childDivs[i];
         div.setAttribute('iconIndex',i-5);
+        console.log(i-5,div.getAttribute('appname'))
         div.addEventListener('contextmenu',(event)=>{
             if(div.getAttribute('appname')!=undefined){
-                return showcm(event,'desktop.icon',[div.getAttribute('appname'),i-5]);
+                return showcm(event,'desktop.icon',[div.getAttribute('appname'),div.getAttribute('iconIndex')]);
             }
             return false;
         },useCapture=true);
@@ -89,7 +90,7 @@ let cms = {
         }
     ],
     'desktop': [
-        ['<i class="bi bi-arrow-clockwise"></i> 刷新', `$('#desktop').css('opacity','0');setTimeout(()=>{$('#desktop').css('opacity','1');},100);`],
+        ['<i class="bi bi-arrow-clockwise"></i> 刷新', `$('#desktop').css('opacity','0');setTimeout(()=>{$('#desktop').css('opacity','1');},100);setIcon();`],
         ['<i class="bi bi-circle-square"></i> 切换主题', 'toggletheme()'],
         `<a onmousedown="window.open('https://github.com/tjy-gitnub/win12','_blank');" win12_title="https://github.com/tjy-gitnub/win12" onmouseenter="showdescp(event)" onmouseleave="hidedescp(event)"><i class="bi bi-github"></i> 在 Github 中查看此项目</a>`,
         ['<i class="bi bi-info-circle"></i> 关于 Win12 网页版', `$('#win-about>.about').addClass('show');$('#win-about>.update').removeClass('show');openapp('about');if($('.window.about').hasClass('min'))minwin('about');`],
@@ -101,7 +102,7 @@ let cms = {
         },
         function (arg){
             if (arg[1]>=0){
-                return ['删除','desktopItem.splice(desktopItem.indexOf(' + (arg[1]+0) +'), 1);saveDesktop();;setIcon();'];
+                return ['<i class="bi bi-trash3"></i>&nbsp;删除','desktopItem.splice(' + (arg[1]-1) +', 1);saveDesktop();setIcon();addMenu();'];
             } else {
                 return ['','']
             }
@@ -1694,7 +1695,7 @@ E&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;5&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 shownotice("duplication file name");
                 return;
             }
-            // if (apps.explorer.traverseDirectory(tmp,clipboard[1][0]))
+            if (apps.explorer.traverseDirectory(tmp,clipboard[1][0]))
             // {
             //     clipboard[1][0] += " - 副本";
             // }
@@ -1969,10 +1970,34 @@ E&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;5&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                 { name: 'setting.exe', ico: 'icon/setting.svg', command: "openapp('setting')" },
                             ]
                         },
+                        'Program Files (x86)': {
+                            folder: {
+                                'Microsoft': {
+                                    folder: {
+                                        'Edge': {
+                                            folder: {
+                                                'Application': {
+                                                    folder: {'SetupMetrics':{ folder: {}, file: [] }}, 
+                                                    file:[ { name: 'msedge.exe', ico: 'icon/edge.svg', command: "openapp('edge')" }]
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        },
                         'Windows': {
-                            folder: { 'Boot': { folder: {}, file: [] }, 'System': { folder: {}, file: [] }, 'System32': { folder: {}, file: [] } },
+                            folder: { 'Boot': { folder: {}, file: [] }, 'System': { folder: {}, file: [] },'SysWOW64': { folder: {}, file: [] }, 'System32': { folder: {}, file: [
+                                { name: 'calc.exe', ico: 'icon/calc.svg', command: "openapp('calc')" },
+                                { name: 'cmd.exe', ico: 'icon/terminal.svg', command: "openapp('terminal')" },
+                                { name: 'notepad.exe', ico: 'icon/notepad.svg', command: "openapp('notepad')" },//system32也有一个notepad
+                                { name: 'taskmgr.exe', ico: 'icon/taskmgr.png', command: "openapp('taskmgr')" },
+                                { name: 'winver.exe', ico: 'icon/about.svg', command: "openapp('winver')" },
+                            ] } },
                             file: [
+                                { name: 'explorer.exe', ico: 'icon/explorer.svg', command: "apps.explorer.newtab()" },
                                 { name: 'notepad.exe', ico: 'icon/notepad.svg', command: "openapp('notepad')" },
+                                { name: 'py.exe', ico: 'icon/python.png', command: "openapp('python')" },
                             ]
                         },
                         '用户': {
@@ -1992,7 +2017,111 @@ E&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;5&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                                 { name: '可口可乐瓶盖.jpg', ico: 'icon/files/img.png', command: '' },
                                             ]
                                         },
-                                        'AppData': { folder: {}, file: [] }, '音乐': { folder: { '录音机': { folder: {}, file: [] } } }
+                                        'AppData': { folder: {
+                                            'Local': {
+                                                folder: {
+                                                    'Microsoft': {
+                                                        folder: {
+                                                            'Windows': {
+                                                                folder: {
+                                                                    'Fonts':{
+                                                                    },
+                                                                    'TaskManager':{
+                                                                    },
+                                                                    'Themes': {
+                                                                    },
+                                                                    'Shell': {
+                                                                    },
+                                                                    '应用程序快捷方式': {
+                                                                    },
+                                                                }
+                                                            },
+                                                        }
+                                                    },
+                                                    'Programs': {
+                                                        folder: {
+                                                            'Python': {
+                                                                folder: {'Python310':{ 
+                                                                    folder: {
+                                                                        'DLLs': {
+                                                                        },
+                                                                        'Doc': {
+                                                                        },
+                                                                        'include': {
+                                                                        },
+                                                                        'Lib': {
+                                                                            folder: {
+                                                                                'site-packages': {
+                                                                                },
+                                                                                'tkinter': {
+                                                                                },
+                                                                            }
+                                                                        },
+                                                                        'libs': {
+                                                                        },
+                                                                        'Script': {
+                                                                        },
+                                                                        'share': {
+                                                                        },
+                                                                        'tcl': {
+                                                                        },
+                                                                        'Tools': {
+                                                                        }
+                                                                }, file: [
+                                                                    { name: 'python.exe', ico: 'icon/python.png', command: "openapp('python')" }
+                                                                ] }}, 
+                                                            }
+                                                        }
+                                                    },
+                                                    'Temp': {
+                                                        folder: {
+                                                        }
+                                                    },
+                                                }
+                                            },
+                                            'LocalLow': {
+                                                folder: {
+                                                    'Microsoft': {
+                                                        folder: {
+                                                            'Windows': {
+                                                            },
+                                                        }
+                                                    },
+                                                }
+                                            },'Roaming': {
+                                                folder: {
+                                                    'Microsoft': {
+                                                        folder: {
+                                                            'Windows': {
+                                                                folder: {
+                                                                    '「开始」菜单': {
+                                                                        folder: {
+                                                                            '程序': {
+                                                                                folder: {
+                                                                                    
+                                                                                }
+                                                                            },
+                                                                        }
+                                                                    },
+                                                                }
+                                                            },
+                                                        }
+                                                    },
+                                                }
+                                            },
+                                        }, file: [] }, '音乐': { folder: { '录音机': { folder: {}, file: [] } } }
+                                    }
+                                },
+                                '公用': {
+                                    folder: {
+                                        '公用文档': {
+                                            folder: { 'IISExpress': { folder: {}, file: [] }, 'PowerToys': { folder: {}, file: [] } },
+                                            file: []
+                                        }, '公用图片': {
+                                            folder: { '本机照片': { folder: {}, file: [] }, '屏幕截图': { folder: {}, file: [] } },
+                                            file: []
+                                        },
+                                        '公用音乐': { folder: { '录音机': { folder: {}, file: [] } } }
                                     }
                                 }
                             }
