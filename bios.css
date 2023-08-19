@@ -14,6 +14,16 @@ body {
     margin: 0px;
     border: 0px;
     cursor: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -o-user-select: none;
+    user-select: none;
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE 10+ */
+}
+
+::-webkit-scrollbar {
+    display: none; /* Chrome Safari */
 }
 
 .tit {

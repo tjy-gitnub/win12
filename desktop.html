@@ -234,7 +234,7 @@
 					<img src="icon/vscode.png">
 					<p>Visual Studio Code</p>
 				</a>
-				<a oncontextmenu="return showcm(event, 'smlapp', ['wsa', 'Android'])"
+				<a oncontextmenu="return showcm(event, 'smlapp', ['wsa', '适用于 Android™️ 的 Windows 子系统'])"
 					onclick="openapp('wsa');hide_startmenu();">
 					<img src="icon/wsa.png">
 					<p>适用于 Android™️ 的 Windows 子系统</p>
@@ -340,7 +340,8 @@
 						<img src="icon/edge.svg">
 						<p>Microsoft Edge</p>
 					</a>
-					<a class="a sm-app enable" onclick="openapp('windows12');hide_startmenu();">
+					<a class="a sm-app enable" onclick="openapp('windows12');hide_startmenu();"
+						oncontextmenu="return showcm(event,'smapp',['windows12','Windows 12'])">
 						<img src="icon/logo.svg">
 						<p>Windows 12</p>
 					</a>
@@ -846,20 +847,20 @@
 			<i class="bi bi-chevron-down"></i>
 		</div>
 	</div>
-	<div id="desktop" oncontextmenu="return showcm(event,'desktop',null)">
-		<div ondblclick="openapp('explorer');" ontouchstart="openapp('explorer');" win12_title="显示连接到此计算机的驱动器和硬件。">
+	<div id="desktop">
+		<div ondblclick="openapp('explorer');" ontouchstart="openapp('explorer');" win12_title="显示连接到此计算机的驱动器和硬件。" oncontextmenu="return showcm(event,'desktop.icon',['explorer',-1]);" appname="explorer">
 			<img src="apps/icons/explorer/thispc.svg">
 			<p>此电脑</p>
 		</div>
-		<div class="b" ondblclick="openapp('setting');" ontouchstart="openapp('setting');">
+		<div class="b" ondblclick="openapp('setting');" ontouchstart="openapp('setting');" oncontextmenu="return showcm(event,'desktop.icon',['setting',-1]);" appname="setting">
 			<img src="icon/setting.svg">
 			<p>设置</p>
 		</div>
-		<div class="b" ondblclick="openapp('about');" ontouchstart="openapp('about');">
+		<div class="b" ondblclick="openapp('about');" ontouchstart="openapp('about');" oncontextmenu="return showcm(event,'desktop.icon',['about',-1]);" appname="about">
 			<img src="icon/about.svg">
 			<p>关于 Win12 网页版</p>
 		</div>
-		<div class="b" ondblclick="openapp('edge');" ontouchstart="openapp('edge');">
+		<div class="b" ondblclick="openapp('edge');" ontouchstart="openapp('edge');" oncontextmenu="return showcm(event,'desktop.icon',['edge',-1]);" appname="edge">
 			<img src="icon/edge.svg">
 			<p>Microsoft Edge</p>
 		</div>
@@ -869,6 +870,7 @@
 		</div>
 		<span class="choose">
 		</span>
+		<p style="background-color: rgba(11,45,14,0);z-index:1;position: absolute;top:0px;left:0px;height:100%;width:100%" oncontextmenu="return showcm(event,'desktop');"></p>
 	</div>
 	<div id="cm">
 		<input class="foc">
@@ -1248,7 +1250,7 @@
 					<a><img src="apps/icons/setting/time.png">时间和语言</a>
 					<a><img src="apps/icons/setting/game.png">游戏</a>
 					<a><img src="apps/icons/setting/help.png">辅助功能</a>
-					<a><img src="apps/icons/setting/safe.png">隐私和安全性</a>
+					<a class="enable safe" onclick="apps.setting.page('safe')"><img src="apps/icons/setting/safe.png">隐私和安全性</a>
 					<a class="enable update" onclick="apps.setting.page('update')"><img src="apps/icons/setting/update.png">Windows 更新</a>
 					<span class="focs"></span>
 				</list>
@@ -1352,6 +1354,12 @@
 								<a class="a checkbox" onclick="$(this).toggleClass('checked');$(':root').toggleClass('mica')"></a>
 							</div>
 						</div>
+					</div>
+				</div>
+				<div class="cnt safe">
+					<p class="title">隐私和安全性</p>
+					<div class="setting-list">
+						<a onclick="localStorage.setItem('desktop','[]');setIcon();"><icon></icon><div><p>清除桌面图标</p><p>这将清除用户自定义的所有图标</p></div><i class="bi bi-chevron-right"></i></a>
 					</div>
 				</div>
 				<div class="cnt update">

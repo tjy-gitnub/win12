@@ -32,6 +32,24 @@ $('input,textarea,*[contenteditable=true]').on('contextmenu', (e) => {
     stop(e);
     return true;
 });
+function addMenu(){
+    var parentDiv = document.getElementById('desktop');
+    var childDivs = parentDiv.getElementsByTagName('div');
+
+    for (var i = 0; i < childDivs.length; i++) {
+        if(i<=4){//win12内置的5个图标不添加
+            continue;
+        }
+        var div = childDivs[i];
+        div.setAttribute('iconIndex',i-5);
+        div.addEventListener('contextmenu',(event)=>{
+            if(div.getAttribute('appname')!=undefined){
+                return showcm(event,'desktop.icon',[div.getAttribute('appname'),i-5]);
+            }
+            return false;
+        },useCapture=true);
+    }
+}
 var run_cmd = '';
 let nomax = { 'calc': 0 /* 其实，计算器是可以最大化的...*/, 'notepad-fonts': 0, 'camera-notice': 0, 'winver': 0, 'run': 0 ,'EasterEgg':0, 'wsa':0};
 let nomin = { 'notepad-fonts': 0, 'camera-notice': 0, 'run': 0 ,'EasterEgg':0};
@@ -77,6 +95,18 @@ let cms = {
         ['<i class="bi bi-info-circle"></i> 关于 Win12 网页版', `$('#win-about>.about').addClass('show');$('#win-about>.update').removeClass('show');openapp('about');if($('.window.about').hasClass('min'))minwin('about');`],
         ['<i class="bi bi-brush"></i> 个性化',`openapp('setting');$('#win-setting > div.menu > list > a.enable.appearance')[0].click()`]
     ],
+    'desktop.icon':[
+        function (arg){
+            return ['<img src="./icon/files/' + 'exefile.png' + '" style="border-radius:2px;height: auto;width: auto;object-fit: cover;">&nbsp;&nbsp;打开','openapp(`' + arg[0] + '`)']
+        },
+        function (arg){
+            if (arg[1]>=0){
+                return ['删除','desktopItem.splice(desktopItem.indexOf(' + (arg[1]+0) +'), 1);saveDesktop();;setIcon();'];
+            } else {
+                return ['','']
+            }
+        }
+    ],
     'winx': [
         function (arg) {
             if ($('#start-menu').hasClass("show")) {
@@ -106,7 +136,7 @@ let cms = {
             return ['<i class="bi bi-window"></i> 打开', `openapp('${arg[0]}');hide_startmenu();`];
         },
         function (arg) {
-            return ['<i class="bi bi-link-45deg"></i> 在桌面创建链接', "$('#desktop').append(`<div class='b' ondblclick=openapp('" + arg[0] + "')  ontouchstart=openapp('" + arg[0] + "')><img src='icon/" + geticon(arg[0]) + "'><p>" + arg[1] + "</p></div>`);saveDesktop();"];
+            return ['<i class="bi bi-link-45deg"></i> 在桌面创建链接', "var s=`<div class='b' ondblclick=openapp('" + arg[0] + "')  ontouchstart=openapp('" + arg[0] + "') appname='" + arg[0] +"'><img src='icon/" + geticon(arg[0]) + "'><p>" + arg[1] + "</p></div>`;$('#desktop').append(s);desktopItem[desktopItem.length]=s;addMenu();saveDesktop();"];
         },
         function (arg) {
             return ['<i class="bi bi-x"></i> 取消固定', `$('#s-m-r>.pinned>.apps>.sm-app.${arg[0]}').remove()`];
@@ -117,7 +147,7 @@ let cms = {
             return ['<i class="bi bi-window"></i> 打开', `openapp('${arg[0]}');hide_startmenu();`];
         },
         function (arg) {
-            return ['<i class="bi bi-link-45deg"></i> 在桌面创建链接', "$('#desktop').append(`<div class='b' ondblclick=openapp('" + arg[0] + "')  ontouchstart=openapp('" + arg[0] + "')><img src='icon/" + geticon(arg[0]) + "'><p>" + arg[1] + "</p></div>`);saveDesktop();"];
+            return ['<i class="bi bi-link-45deg"></i> 在桌面创建链接', "var s=`<div class='b' ondblclick=openapp('" + arg[0] + "')  ontouchstart=openapp('" + arg[0] + "') appname='" + arg[0] +"'><img src='icon/" + geticon(arg[0]) + "'><p>" + arg[1] + "</p></div>`;$('#desktop').append(s);desktopItem[desktopItem.length]=s;addMenu();saveDesktop();"];
         },
         function (arg) {
             return ['<i class="bi bi-pin-angle"></i> 固定到开始菜单', "pinapp('" + arg[0] + "', '" + arg[1] + "', 'openapp(&quot;" + arg[0] + "&quot;);hide_startmenu();')"];
@@ -3263,9 +3293,9 @@ if (isDarkTheme.matches) { //是深色
     $('.window.whiteboard>.titbar>p').text('Whiteboard');
     localStorage.setItem('theme', 'light');
 }
-
+let desktopItem = [];
 function saveDesktop() {
-    localStorage.setItem('desktop', $('#desktop')[0].innerHTML);
+    localStorage.setItem('desktop', /*$('#desktop')[0].innerHTML*/JSON.stringify(desktopItem));
 }
 
 // 拖拽窗口
@@ -3424,6 +3454,39 @@ page.addEventListener('touchend', () => {
     }
 });
 
+function setIcon(){
+    if (Array.isArray(JSON.parse(localStorage.getItem('desktop')))) {
+        $('#desktop')[0].innerHTML = `<div ondblclick="openapp('explorer');" ontouchstart="openapp('explorer');" win12_title="显示连接到此计算机的驱动器和硬件。" oncontextmenu="return showcm(event,'desktop.icon',['explorer',-1]);" appname="explorer">
+        <img src="apps/icons/explorer/thispc.svg">
+        <p>此电脑</p>
+    </div>
+    <div class="b" ondblclick="openapp('setting');" ontouchstart="openapp('setting');" oncontextmenu="return showcm(event,'desktop.icon',['setting',-1]);" appname="setting">
+        <img src="icon/setting.svg">
+        <p>设置</p>
+    </div>
+    <div class="b" ondblclick="openapp('about');" ontouchstart="openapp('about');" oncontextmenu="return showcm(event,'desktop.icon',['about',-1]);" appname="about">
+        <img src="icon/about.svg">
+        <p>关于 Win12 网页版</p>
+    </div>
+    <div class="b" ondblclick="openapp('edge');" ontouchstart="openapp('edge');" oncontextmenu="return showcm(event,'desktop.icon',['edge',-1]);" appname="edge">
+        <img src="icon/edge.svg">
+        <p>Microsoft Edge</p>
+    </div>
+    <div class="b" ondblclick="shownotice('feedback');" ontouchstart="shownotice('feedback');;">
+        <img src="icon/feedback.svg">
+        <p>发送反馈</p>
+    </div>
+    <span class="choose">
+    </span>
+    <p style="background-color: rgba(11,45,14,0);z-index:1;position: absolute;top:0px;left:0px;height:100%;width:100%" oncontextmenu="return showcm(event,'desktop');"></p>`;
+        desktopItem = JSON.parse(localStorage.getItem('desktop'));
+        desktopItem.forEach((item)=>{
+            $('#desktop')[0].innerHTML += item;
+        })
+        addMenu();
+    }
+}
+
 // 启动
 let updated = false;
 document.getElementsByTagName('body')[0].onload = function nupd() {
@@ -3445,9 +3508,7 @@ document.getElementsByTagName('body')[0].onload = function nupd() {
         $(':root').css('--theme-1', localStorage.getItem('color1'));
         $(':root').css('--theme-2', localStorage.getItem('color2'));
     }
-    if (localStorage.getItem('desktop')) {
-        $('#desktop')[0].innerHTML = localStorage.getItem('desktop');
-    }
+    setIcon();//加载桌面图标
     // 所以这个东西为啥要在开机的时候加载？
     // 不应该在python.init里面吗？
     //     (async function () {
