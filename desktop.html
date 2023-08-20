@@ -2349,7 +2349,7 @@
 		</div>
 		<div class="content" id="win-taskmgr">
 			<div class="menu">
-				<list class="focs">
+				<list class="focs" id="tsk-pages">
 					<a class="processes check" onclick="apps.taskmgr.page('processes')">
 						<svg xmlns="http://www.w3.org/2000/svg" width="18px" height="18px" viewBox="3.5 5.5 29 29">
 							<path d="M 5 11 L 5 29 C 5 32 6 33 9 33 L 14 33 C 17 33 18 32 18 29 L 18 7 L 9 7 C 6 7 5 8 5 11 M 18 7 L 27 7 C 30 7 31 8 31 11 L 31 16 C 31 19 30 20 27 20 L 5 20" stroke="var(--text)" stroke-width="1.5" fill="none"/>
@@ -2365,7 +2365,7 @@
 			</div>
 			<script> //让设置按钮到最底下
 				setInterval(()=>{
-					document.getElementById('set-seting-to-bottom').style.height = (document.getElementById('win-taskmgr').clientHeight-document.getElementById('tsk-setting').clientHeight*3-10) + "px";
+					document.getElementById('set-seting-to-bottom').style.height = (document.getElementById('win-taskmgr').clientHeight-document.getElementById('tsk-setting').clientHeight*document.getElementById('tsk-pages').getElementsByTagName('a').length-10) + "px";
 				},10);
 			</script>
 			<div class="main">
@@ -2791,7 +2791,7 @@
 					</div>
 					<div>
 						<h3>窗口管理</h3>
-						<input type="checkbox" id="tsk-setting-topmost" name="tsk-setting-topmost" style="height: 15px;width:15px;color:#fff;" onclick="if(checked){topmost[topmost.length]='taskmgr'}else{topmost.splice(topmost.indexOf('taskmgr',1))};hidewin('taskmgr');apps.taskmgr.page('processes');$('#win-taskmgr>.menu>list.focs>a')[0].click();saveDesktop();setTimeout('showwin(`taskmgr`)',300);"/><label for="tsk-setting-topmost" style="font-size: 15px;">置于顶层</label>
+						<input type="checkbox" id="tsk-setting-topmost" name="tsk-setting-topmost" style="height: 15px;width:15px;color:#fff;" onclick="if(checked){topmost[topmost.length]='taskmgr'}else{topmost.splice(topmost.indexOf('taskmgr',1))};hidewin('taskmgr');apps.taskmgr.page('processes');$('#win-taskmgr>.menu>list.focs>a')[0].click();saveDesktop();setTimeout('openapp(`taskmgr`)',300);"/><label for="tsk-setting-topmost" style="font-size: 15px;">置于顶层</label>
 					</div>
 				</div>
 			</div>
