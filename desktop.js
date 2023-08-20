@@ -3626,7 +3626,7 @@ function setIcon(){
             topmost=[];
         }
         if(topmost.includes('taskmgr')){
-            document.getElementById('tsk-setting-topmost').checked = true
+            document.getElementById('tsk-setting-topmost').checked = true;
         }
     }
 }
