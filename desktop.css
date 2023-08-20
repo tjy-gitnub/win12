@@ -1574,6 +1574,7 @@ input-before {
     text-align: center;
     margin: 8px 10px 2px 10px;
     padding: 0 3px 3px 3px;
+    z-index:3;
 }
 
 #desktop>div:hover{

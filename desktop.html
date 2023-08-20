@@ -48,7 +48,7 @@
 
 <body>
 	<audio src="media/startup.mp3" id="startup-music"></audio>
-	<div id="loadback" style="background-color:#000;width:100%;height:100%;z-index:105;position:absolute;transition:200ms;">
+	<div id="loadback" style="background-color:#000;width:100%;height:100%;z-index:105;position:absolute;transition:200ms;cursor: none;/*加载界面隐藏鼠标指针*/">
 		<style>
 			#loadback.hide {
 				opacity: 0;
@@ -233,6 +233,16 @@
 					<img src="icon/vscode.png">
 					<p>Visual Studio Code</p>
 				</a>
+				<a oncontextmenu="return showcm(event, 'smlapp', ['wsa', '适用于 Android™️ 的 Windows 子系统'])"
+					onclick="openapp('wsa');hide_startmenu();">
+					<img src="icon/wsa.png">
+					<p>适用于 Android™️ 的 Windows 子系统</p>
+				</a>
+				<a oncontextmenu="return showcm(event, 'smlapp', ['windows12', 'Windows 12'])"
+					onclick="openapp('windows12');hide_startmenu();">
+					<img src="icon/logo.svg">
+					<p>Windows 12</p>
+				</a>
 			</list>
 		</div>
 		<div id="s-m-r">
@@ -334,9 +344,10 @@
 						<img src="icon/edge.svg">
 						<p>Microsoft Edge</p>
 					</a>
-					<a class="a sm-app enable">
-						<img src="icon/office.png">
-						<p>这是Office</p>
+					<a class="a sm-app enable" onclick="openapp('windows12');hide_startmenu();"
+						oncontextmenu="return showcm(event,'smapp',['windows12','Windows 12'])">
+						<img src="icon/logo.svg">
+						<p>Windows 12</p>
 					</a>
 					<a class="a sm-app enable terminal" onclick="openapp('terminal');hide_startmenu();"
 						oncontextmenu="return showcm(event,'smapp',['terminal','终端'])">
@@ -840,20 +851,20 @@
 			<i class="bi bi-chevron-down"></i>
 		</div>
 	</div>
-	<div id="desktop" oncontextmenu="return showcm(event,'desktop',null)">
-		<div ondblclick="openapp('explorer');" ontouchstart="openapp('explorer');" win12_title="显示连接到此计算机的驱动器和硬件。">
+	<div id="desktop">
+		<div ondblclick="openapp('explorer');" ontouchstart="openapp('explorer');" win12_title="显示连接到此计算机的驱动器和硬件。" oncontextmenu="return showcm(event,'desktop.icon',['explorer',-1]);" appname="explorer">
 			<img src="apps/icons/explorer/thispc.svg">
 			<p>此电脑</p>
 		</div>
-		<div class="b" ondblclick="openapp('setting');" ontouchstart="openapp('setting');">
+		<div class="b" ondblclick="openapp('setting');" ontouchstart="openapp('setting');" oncontextmenu="return showcm(event,'desktop.icon',['setting',-1]);" appname="setting">
 			<img src="icon/setting.svg">
 			<p>设置</p>
 		</div>
-		<div class="b" ondblclick="openapp('about');" ontouchstart="openapp('about');">
+		<div class="b" ondblclick="openapp('about');" ontouchstart="openapp('about');" oncontextmenu="return showcm(event,'desktop.icon',['about',-1]);" appname="about">
 			<img src="icon/about.svg">
 			<p>关于 Win12 网页版</p>
 		</div>
-		<div class="b" ondblclick="openapp('edge');" ontouchstart="openapp('edge');">
+		<div class="b" ondblclick="openapp('edge');" ontouchstart="openapp('edge');" oncontextmenu="return showcm(event,'desktop.icon',['edge',-1]);" appname="edge">
 			<img src="icon/edge.svg">
 			<p>Microsoft Edge</p>
 		</div>
@@ -863,6 +874,7 @@
 		</div>
 		<span class="choose">
 		</span>
+		<p style="background-color: rgba(11,45,14,0);z-index:1;position: absolute;top:0px;left:0px;height:100%;width:100%" oncontextmenu="return showcm(event,'desktop');"></p>
 	</div>
 	<div id="cm">
 		<input class="foc">
@@ -1242,7 +1254,7 @@
 					<a><img src="apps/icons/setting/time.png">时间和语言</a>
 					<a><img src="apps/icons/setting/game.png">游戏</a>
 					<a><img src="apps/icons/setting/help.png">辅助功能</a>
-					<a><img src="apps/icons/setting/safe.png">隐私和安全性</a>
+					<a class="enable safe" onclick="apps.setting.page('safe')"><img src="apps/icons/setting/safe.png">隐私和安全性</a>
 					<a class="enable update" onclick="apps.setting.page('update')"><img src="apps/icons/setting/update.png">Windows 更新</a>
 					<span class="focs"></span>
 				</list>
@@ -1348,6 +1360,12 @@
 						</div>
 					</div>
 				</div>
+				<div class="cnt safe">
+					<p class="title">隐私和安全性</p>
+					<div class="setting-list">
+						<a onclick="localStorage.setItem('desktop','[]');setIcon();"><icon></icon><div><p>清除桌面图标</p><p>这将清除用户自定义的所有图标</p></div><i class="bi bi-chevron-right"></i></a>
+					</div>
+				</div>
 				<div class="cnt update">
 					<p class="title">Windows 更新</p>
 					<div class="lo">
@@ -1358,7 +1376,7 @@
 						</div>
 					</div>
 					<div class="setting-list">
-						<div><icon>&#xE794;</icon><div><p>更新已就绪 (别按按钮，否则后果自负！</p><p>v7.0.0</p></div><div class="alr"><a class="a button" style="font-size: 16px;margin-top: -7.5px;" onclick="sendToSw({head:'update'})">更新</a></div></div>
+						<div><icon>&#xE794;</icon><div><p>更新已就绪 (别按按钮，否则后果自负！</p><p>v7.0.0</p></div><div class="alr"><a class="a button" style="font-size: 16px;margin-top: -7.5px;">更新</a></div></div>
 						<a><icon>&#xE946;</icon><div><p>历史版本</p><p>查看历史版本功能</p></div><i class="bi bi-chevron-right"></i></a>
 						<a><icon>&#xE896;</icon><div><p>下载完整内容</p><p>当更新或系统出现问题，使用此项下载最新完整内容</p></div><i class="bi bi-chevron-right"></i></a>
 					</div>
@@ -1554,6 +1572,20 @@
 			<div class="cnt update">
 				<h1 class="tit"><span></span>更新记录</h1>
 				<div style="margin-left: 20px;">
+					<details><summary><span>v7.1.0</span> 计算器进一步修复、离线页面的深色模式</summary><p>
+						&emsp;&emsp;(更新来自 @lh11117)<br/>
+						&emsp;&emsp;-进一步修复了计算器精度缺陷和接受输入非法内容的问题<br/>
+						&emsp;&emsp;-为Microsoft Edge浏览器的离线界面添加了深色模式版本<br/>
+						&emsp;&emsp;-其他一些细节修复<br/>
+					</details>
+					<details><summary><span>v7.0.2</span> 计算器修复</summary><p>
+						&emsp;&emsp;-修复计算器计算加减乘除、平方、平方根等运算的精度问题(来自 @cong1223)<br/>
+						&emsp;&emsp;-只允许calc-input输入数字(来自 @iewnfod)<br/>
+					</details>
+					<details><summary><span>v7.0.2</span> (更新来自 @cong1223 和 @iewnfod)</summary><p>
+						&emsp;&emsp;-修复计算器计算加减乘除、平方、平方根等运算的精度问题<br/>
+						&emsp;&emsp;-只允许calc-input输入数字<br/>
+					</details>
 					<details><summary><span>v7.0.1</span> 资源管理器标签页、离线界面与新闻</summary><p>
 						&emsp;&emsp;-文件资源管理器的标签页(来自 @tjy-gitnub)<br />
 						&emsp;&emsp;-新增了Microsoft Edge浏览器的离线界面(来自 @User782Tec)<br />
@@ -2035,6 +2067,24 @@
 			<!-- <iframe src="https://bilibili.com/" frameborder="0" style="width: 100%; height: 100%;" loading="lazy"></iframe> -->
 		</div>
 	</div>
+	<div class="window wsa">
+		<div class="resize-bar"></div>
+		<div class="titbar">
+			<img src="icon/wsa.png" class="icon">
+			<p>适用于 Android™️ 的 Windows 子系统</p>
+			<div>
+				<a class="a wbtg red" onclick="hidewin('wsa')"><i class="bi bi-x-lg"></i></a>
+				<a class="a wbtg max" style="pointer-events: none;color: #777;"><i class="bi bi-app"></i></a>
+				<a class="a wbtg" onclick="minwin('wsa')"><i class="bi bi-dash-lg"></i></a>
+			</div>
+		</div>
+		<div class="loadback">
+			<img src="icon/wsa.png" class="icon">
+		</div>
+		<div class="content" id="win-wsa" style="margin-bottom:auto;">
+			<iframe src="https://android11react.osrc.com/" frameborder="0" style=" width: 100%;height: 100%;" loading="lazy"></iframe>
+		</div>
+	</div>
 	<div class="window pythonEditor">
 		<div class="resize-bar"></div>
 		<div class="titbar">
@@ -2080,6 +2130,25 @@
 			</div>
 			<canvas style="display: none;"></canvas>
 			<a style="display: none;"></a>
+		</div>
+	</div>
+	<div class="window windows12">
+		<div class="resize-bar"></div>
+		<div class="titbar">
+			<img src="icon/logo.svg" class="icon">
+			<p>Windows 12</p>
+			<div>
+				<a class="a wbtg red" onclick="hidewin('windows12')"><i class="bi bi-x-lg"></i></a>
+				<a class="a wbtg max" onclick="maxwin('windows12')"><i class="bi bi-app"></i></a>
+				<a class="a wbtg" onclick="minwin('windows12')"><i class="bi bi-dash-lg"></i></a>
+				<a class="a wbtg" onclick="apps.windows12.init()"><i class="bi bi-arrow-counterclockwise"></i></a>
+			</div>
+		</div>
+		<div class="loadback">
+			<img src="icon/logo.svg" class="icon">
+		</div>
+		<div class="content" id="win-win12">
+			<iframe style="height:100%; width:100%;object-fit:cover;" id="win12-window" frameborder="no"></iframe>
 		</div>
 	</div>
 	<div class="window camera-notice">
@@ -2288,9 +2357,17 @@
 						进程
 					</a>
 					<a class="performance" onclick="apps.taskmgr.page('performance')"><icon class="s-icon"></icon> 性能</a>
+					<!--添加新的分页请在这条注释前面添加-->
+					<div id="set-seting-to-bottom"></div>
+					<a class="setting" onclick="apps.taskmgr.page('setting')" id="tsk-setting"><i class="bi bi-gear"></i> 设置</a>
 					<span class="focs"></span>
 				</list>
 			</div>
+			<script> //让设置按钮到最底下
+				setInterval(()=>{
+					document.getElementById('set-seting-to-bottom').style.height = (document.getElementById('win-taskmgr').clientHeight-document.getElementById('tsk-setting').clientHeight*3-10) + "px";
+				},10);
+			</script>
 			<div class="main">
 				<div class="cnt processes show">
 					<div class="tit">
@@ -2654,6 +2731,67 @@
 								</div>
 							</div>
 						</div>
+					</div>
+				</div>
+				<div class="cnt setting">
+					<style>
+						/* 隐藏原始复选框 */
+						input[type="checkbox"] {
+							display: none;
+						}
+
+						/* 自定义复选框的外观 */
+						label {
+							display: inline-block;
+							position: relative;
+							padding-left: 25px;
+							margin-right: 10px;
+							cursor: pointer;
+						}
+
+						/* 复选框的外观 */
+						label:before {
+							content: "";
+							display: inline-block;
+							width: 18px;
+							height: 18px;
+							border: 1px solid #ccc;
+							border-radius: 3px;
+							background-color: #fff;
+							position: absolute;
+							left: 0;
+							top: 1px;
+						}
+
+						/* 复选框被选中时的外观 */
+						input[type="checkbox"]:checked + label:before {
+							background-color: #46afe4;
+						}
+
+						/* 复选框的勾选图标 */
+						label:after {
+							content: "\2713";
+							font-size: 14px;
+							color: #fff;
+							position: absolute;
+							left: 4px;
+							top: 0;
+							line-height: 18px;
+							display: none;
+						}
+
+						/* 复选框被选中时的勾选图标 */
+						input[type="checkbox"]:checked + label:after {
+							display: block;
+						}
+					</style>
+					<div class="tit">
+						<p>设置</p>
+						<hr>
+					</div>
+					<div>
+						<h3>窗口管理</h3>
+						<input type="checkbox" id="tsk-setting-topmost" name="tsk-setting-topmost" style="height: 15px;width:15px;color:#fff;" onclick="if(checked){topmost[topmost.length]='taskmgr'}else{topmost.splice(topmost.indexOf('taskmgr',1))};hidewin('taskmgr');apps.taskmgr.page('processes');$('#win-taskmgr>.menu>list.focs>a')[0].click();saveDesktop();setTimeout('showwin(`taskmgr`)',300);"/><label for="tsk-setting-topmost" style="font-size: 15px;">置于顶层</label>
 					</div>
 				</div>
 			</div>
