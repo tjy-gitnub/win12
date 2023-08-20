@@ -52,8 +52,9 @@ function addMenu(){
     }
 }
 var run_cmd = '';
-let nomax = { 'calc': 0 /* 其实，计算器是可以最大化的...*/, 'notepad-fonts': 0, 'camera-notice': 0, 'winver': 0, 'run': 0 ,'EasterEgg':0, 'wsa':0};
-let nomin = { 'notepad-fonts': 0, 'camera-notice': 0, 'run': 0 ,'EasterEgg':0};
+let nomax = { 'calc': 0 /* 其实，计算器是可以最大化的...*/, 'notepad-fonts': 0, 'camera-notice': 0, 'winver': 0, 'run': 0 , 'wsa':0};
+let nomin = { 'notepad-fonts': 0, 'camera-notice': 0, 'run': 0};
+var topmost=[];
 let cms = {
     'titbar': [
         function (arg) {
@@ -3240,7 +3241,11 @@ let wo = [];
 function orderwindow() {
     for (let i = 0; i < wo.length; i++) {
         const win = $('.window.' + wo[wo.length - i - 1]);
-        win.css('z-index', 10 + i);
+        if (topmost.includes(wo[wo.length - i - 1])){
+            win.css('z-index', 10 + i + 50/*这里的50可以改，不要太大，不然会覆盖任务栏；不要太小，不然就和普通窗口没有什么区别了。随着版本的更新，肯定会有更多窗口，以后就可以把数字改打一点点*/);
+        } else {
+            win.css('z-index', 10 + i);
+        }
     }
 }
 // 以下函数基于bug运行，切勿改动！
@@ -3425,6 +3430,7 @@ if (isDarkTheme.matches) { //是深色
 let desktopItem = [];
 function saveDesktop() {
     localStorage.setItem('desktop', /*$('#desktop')[0].innerHTML*/JSON.stringify(desktopItem));
+    localStorage.setItem('topmost', JSON.stringify(topmost));
 }
 
 // 拖拽窗口
@@ -3613,6 +3619,15 @@ function setIcon(){
             $('#desktop')[0].innerHTML += item;
         })
         addMenu();
+    }
+    if(Array.isArray(JSON.parse(localStorage.getItem('desktop')))){
+        topmost = JSON.parse(localStorage.getItem('topmost'));
+        if(!topmost){
+            topmost=[];
+        }
+        if(topmost.includes('taskmgr')){
+            document.getElementById('tsk-setting-topmost').checked = true
+        }
     }
 }
 

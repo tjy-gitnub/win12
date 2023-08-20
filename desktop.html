@@ -2357,9 +2357,17 @@
 						进程
 					</a>
 					<a class="performance" onclick="apps.taskmgr.page('performance')"><icon class="s-icon"></icon> 性能</a>
+					<!--添加新的分页请在这条注释前面添加-->
+					<div id="set-seting-to-bottom"></div>
+					<a class="setting" onclick="apps.taskmgr.page('setting')" id="tsk-setting"><i class="bi bi-gear"></i> 设置</a>
 					<span class="focs"></span>
 				</list>
 			</div>
+			<script> //让设置按钮到最底下
+				setInterval(()=>{
+					document.getElementById('set-seting-to-bottom').style.height = (document.getElementById('win-taskmgr').clientHeight-document.getElementById('tsk-setting').clientHeight*3-10) + "px";
+				},10);
+			</script>
 			<div class="main">
 				<div class="cnt processes show">
 					<div class="tit">
@@ -2723,6 +2731,67 @@
 								</div>
 							</div>
 						</div>
+					</div>
+				</div>
+				<div class="cnt setting">
+					<style>
+						/* 隐藏原始复选框 */
+						input[type="checkbox"] {
+							display: none;
+						}
+
+						/* 自定义复选框的外观 */
+						label {
+							display: inline-block;
+							position: relative;
+							padding-left: 25px;
+							margin-right: 10px;
+							cursor: pointer;
+						}
+
+						/* 复选框的外观 */
+						label:before {
+							content: "";
+							display: inline-block;
+							width: 18px;
+							height: 18px;
+							border: 1px solid #ccc;
+							border-radius: 3px;
+							background-color: #fff;
+							position: absolute;
+							left: 0;
+							top: 1px;
+						}
+
+						/* 复选框被选中时的外观 */
+						input[type="checkbox"]:checked + label:before {
+							background-color: #46afe4;
+						}
+
+						/* 复选框的勾选图标 */
+						label:after {
+							content: "\2713";
+							font-size: 14px;
+							color: #fff;
+							position: absolute;
+							left: 4px;
+							top: 0;
+							line-height: 18px;
+							display: none;
+						}
+
+						/* 复选框被选中时的勾选图标 */
+						input[type="checkbox"]:checked + label:after {
+							display: block;
+						}
+					</style>
+					<div class="tit">
+						<p>设置</p>
+						<hr>
+					</div>
+					<div>
+						<h3>窗口管理</h3>
+						<input type="checkbox" id="tsk-setting-topmost" name="tsk-setting-topmost" style="height: 15px;width:15px;color:#fff;" onclick="if(checked){topmost[topmost.length]='taskmgr'}else{topmost.splice(topmost.indexOf('taskmgr',1))};hidewin('taskmgr');apps.taskmgr.page('processes');$('#win-taskmgr>.menu>list.focs>a')[0].click();saveDesktop();setTimeout('showwin(`taskmgr`)',300);"/><label for="tsk-setting-topmost" style="font-size: 15px;">置于顶层</label>
 					</div>
 				</div>
 			</div>
