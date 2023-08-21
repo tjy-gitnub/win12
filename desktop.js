@@ -2150,8 +2150,8 @@ E&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;5&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
         init: () => {
             $('#win-about>.about').addClass('show');
             $('#win-about>.update').removeClass('show');
-            if ($('#contri').length > 1) return;
-            apps.about.get();
+            if (!($('#contri').length > 1)) apps.about.get();
+            if (!($('#contri').html().includes('刷新'))) apps.about.get_star();
         },
         get: () => {
             $('#contri').html(`<loading><svg width="30px" height="30px" viewBox="0 0 16 16">
@@ -2167,6 +2167,24 @@ E&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;5&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                     $('#contri').append(`<a class="button" onclick="apps.about.get()"><i class="bi bi-arrow-clockwise"></i> 刷新</a>`)
                 }, 200);
             });
+        },
+        get_star:()=>{
+            $('StarShow').html(`<loading><svg width="30px" height="30px" viewBox="0 0 16 16">
+            <circle cx="8px" cy="8px" r="7px" style="stroke:#7f7f7f50;fill:none;stroke-width:3px;"></circle>
+            <circle cx="8px" cy="8px" r="7px" style="stroke:#2983cc;stroke-width:3px;"></circle></svg></loading>`)
+            const repoFullName = 'tjy-gitnub/win12';
+            fetch(`https://api.github.com/repos/${repoFullName}`)
+              .then(response => response.json())
+              .then(data => {
+                setTimeout(() => {
+                    const starCount = data.stargazers_count;
+                    $('#StarShow').html('<div style="display: flex;"><p>&emsp;&emsp;Star 数量：' + starCount +' (实时数据)</p>&emsp;<a class="button" onclick="apps.about.get_star()"><i class="bi bi-arrow-clockwise"></i> 刷新</a></div>')
+                }, 200);
+              })
+              .catch(error => {
+                console.error('获取star数量时出错：', error);
+                $('#StarShow').html('<div style="display: flex;"><p>&emsp;&emsp;哎呀！出错了！</p>&emsp;<a class="button" onclick="apps.about.get_star()"><i class="bi bi-arrow-clockwise"></i> 重试</a></div>')
+              });
         }
     },
     notepad: {

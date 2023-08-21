@@ -42,6 +42,8 @@
 	<link rel="stylesheet" href="module/tab.css">
 	<script src="./calculator_kernel.js"></script>
 	<base target="_blank">
+	<!--Font Awesome 图标库-->
+	<link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/4.7.0/css/font-awesome.css">
 
 	<title>Windows 12 网页版</title>
 </head>
@@ -1553,8 +1555,19 @@
 					<p>&emsp;&emsp;NB-Group为本项目的后端开发做出了重要贡献</p>
 					<p>&emsp;&emsp;在此表示特别感谢！</p>
 					<h2 class="tit"><span></span>贡献者</h2>
-					<p>感谢所有项目的贡献者 (实时数据(我也不知道这个贡献值是怎么算的))</p>
+					<p>&emsp;&emsp;感谢所有项目的贡献者 (实时数据(计算方法：即为Commits次数))</p>
 					<div id="contri">
+						<loading>
+							<svg width="30px" height="30px" viewBox="0 0 16 16">
+								<circle cx="8px" cy="8px" r="7px" style="stroke:#7f7f7f50;fill:none;stroke-width:3px;">
+								</circle>
+								<circle cx="8px" cy="8px" r="7px" style="stroke:#2983cc;stroke-width:3px;"></circle>
+							</svg>
+						</loading>
+					</div>
+					<h2 class="tit"><span></span>Star</h2>
+					<p>&emsp;&emsp;感谢<a class="jump" win12_title="给个Star好不好？(即将跳转到：https://github.com/tjy-gitnub/win12/stargazers)" onclick="window.open('https://github.com/tjy-gitnub/win12/stargazers','_blank')">所有支持我们的人</a></p>
+					<div id="StarShow">
 						<loading>
 							<svg width="30px" height="30px" viewBox="0 0 16 16">
 								<circle cx="8px" cy="8px" r="7px" style="stroke:#7f7f7f50;fill:none;stroke-width:3px;">
@@ -1572,6 +1585,17 @@
 			<div class="cnt update">
 				<h1 class="tit"><span></span>更新记录</h1>
 				<div style="margin-left: 20px;">
+					<details><summary><span>v7.2.0</span> 优化运行、添加Windows12应用、添加WSA</summary><p>
+						&emsp;&emsp;(更新来自 @lh11117 )<br/>
+						&emsp;&emsp;-优化运行<br/>
+						&emsp;&emsp;-添加Windows12应用<br/>
+						&emsp;&emsp;-添加WSA<br/>
+						&emsp;&emsp;-添加shutdown命令<br/>
+						&emsp;&emsp;-添加BIOS系统<br/>
+						&emsp;&emsp;-支持桌面图标删除<br/>
+						&emsp;&emsp;-更丰富的文件目录<br/>
+						&emsp;&emsp;-任务管理器支持置顶<br/>
+					</details>
 					<details><summary><span>v7.1.0</span> 计算器进一步修复、离线页面的深色模式</summary><p>
 						&emsp;&emsp;(更新来自 @lh11117)<br/>
 						&emsp;&emsp;-进一步修复了计算器精度缺陷和接受输入非法内容的问题<br/>
@@ -2350,17 +2374,18 @@
 		<div class="content" id="win-taskmgr">
 			<div class="menu">
 				<list class="focs" id="tsk-pages">
+					<a class="fold" onclick="" style="width:33px;height:33px;margin:0px;" win12_title="折叠（目前还是个摆式）"><i class="fa fa-bars" style="padding:0px;height:33px;width:33px;"></i></a>
 					<a class="processes check" onclick="apps.taskmgr.page('processes')">
 						<svg xmlns="http://www.w3.org/2000/svg" width="18px" height="18px" viewBox="3.5 5.5 29 29">
 							<path d="M 5 11 L 5 29 C 5 32 6 33 9 33 L 14 33 C 17 33 18 32 18 29 L 18 7 L 9 7 C 6 7 5 8 5 11 M 18 7 L 27 7 C 30 7 31 8 31 11 L 31 16 C 31 19 30 20 27 20 L 5 20" stroke="var(--text)" stroke-width="1.5" fill="none"/>
 						</svg>
-						进程
+						<p>进程</p>
 					</a>
-					<a class="performance" onclick="apps.taskmgr.page('performance')"><icon class="s-icon"></icon> 性能</a>
+					<a class="performance" onclick="apps.taskmgr.page('performance')"><icon class="s-icon"></icon><p>性能</p></a>
 					<!--添加新的分页请在这条注释前面添加-->
 					<div id="set-seting-to-bottom"></div>
-					<a class="setting" onclick="apps.taskmgr.page('setting')" id="tsk-setting"><i class="bi bi-gear"></i> 设置</a>
-					<span class="focs"></span>
+					<a class="setting" onclick="apps.taskmgr.page('setting')" id="tsk-setting"><i class="bi bi-gear"></i><p>设置</p></a>
+					<span class="focs" style="top: -445px; left: 0px;"></span>
 				</list>
 			</div>
 			<script> //让设置按钮到最底下

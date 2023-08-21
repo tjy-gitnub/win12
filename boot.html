@@ -70,11 +70,11 @@
                 window.location.href = "./desktop.html";
             }
         }, 300);
-        function toBIOS(phono=true) {
+        function toBIOS(phone=true) {
             if (timer != undefined) {
                 clearInterval(timer);
             }
-            setTimeout('document.getElementById("body").innerHTML="";document.getElementById("body").style.cssText="background-color: black;";',500);setTimeout('window.location.href = "./bios' + (/*(typeof window.orientation !== "undefined") || (navigator.userAgent.indexOf('IEMobile') !== -1)*//*判断是否移动设备*/phono/*这里暂时定义为：触摸=移动设备，F2=桌面设备*/?'_phone':'') + '.html";',1000); //Boot延迟
+            setTimeout('document.getElementById("body").innerHTML="";document.getElementById("body").style.cssText="background-color: black;";',500);setTimeout('window.location.href = "./bios' + (/*(typeof window.orientation !== "undefined") || (navigator.userAgent.indexOf('IEMobile') !== -1)*//*判断是否移动设备*/phone/*这里暂时定义为：触摸=移动设备，F2=桌面设备*/?'_phone':'') + '.html";',1000); //Boot延迟
         }
         window.onkeydown = function (event) {
             event = event || window.event;
