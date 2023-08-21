@@ -124,7 +124,9 @@
 					$('#loginback').css('display', 'none');
 					window.clearInterval(qwq);
 				}, 2000);
-				document.querySelector('audio#startup-music').play();
+				if(use_music){
+					document.querySelector('audio#startup-music').play();
+				}
 			}, 1000);
 			this.onclick = null;
 		">
@@ -1337,27 +1339,32 @@
 						</div>
 						<div class="border-radius"><icon></icon><div><p>圆角</p><p>设置系统界面中是否启用圆角</p></div>
 							<div class="alr">
-								<a class="a checkbox checked" onclick="$(this).toggleClass('checked');$(':root').toggleClass('nobr')"></a>
+								<a class="a checkbox checked" id="sys_setting_1" onclick="$(this).toggleClass('checked');$(':root').toggleClass('nobr');sys_setting[0]=1-sys_setting[0];saveDesktop();"></a>
 							</div>
 						</div>
 						<div class="border-radius"><icon></icon><div><p>动画</p><p>系统界面元素过渡动画</p></div>
 							<div class="alr">
-								<a class="a checkbox checked" onclick="$(this).toggleClass('checked');$(':root').toggleClass('notrans')"></a>
+								<a class="a checkbox checked" id="sys_setting_2" onclick="$(this).toggleClass('checked');$(':root').toggleClass('notrans');sys_setting[1]=1-sys_setting[1];saveDesktop();"></a>
 							</div>
 						</div>
 						<div class="border-radius"><icon></icon><div><p>阴影</p><p>为系统界面元素添加阴影效果</p></div>
 							<div class="alr">
-								<a class="a checkbox checked" onclick="$(this).toggleClass('checked');$(':root').toggleClass('nosd')"></a>
+								<a class="a checkbox checked" id="sys_setting_3" onclick="$(this).toggleClass('checked');$(':root').toggleClass('nosd');sys_setting[2]=1-sys_setting[2];saveDesktop();"></a>
 							</div>
 						</div>
 						<div class="border-radius"><icon></icon><div><p>多窗口透明</p><p>为所有窗口开启透明效果，而不是仅用于焦点窗口 <span class="a jump" win12_title="开启后将占用大量GPU,可能造成卡顿">详细</span></p></div>
 							<div class="alr">
-								<a class="a checkbox" onclick="$(this).toggleClass('checked');$(':root').toggleClass('moreblur')"></a>
+								<a class="a checkbox" id="sys_setting_4" onclick="$(this).toggleClass('checked');$(':root').toggleClass('moreblur');sys_setting[3]=1-sys_setting[3];saveDesktop();"></a>
 							</div>
 						</div>
 						<div class="border-radius"><icon>&#xE621;</icon><div><p>Mica效果 (实验)</p><p>为焦点窗口开启mica效果 <a class="a jump" onclick="shownotice('feedback')">反馈</a></p></div>
 							<div class="alr">
-								<a class="a checkbox" onclick="$(this).toggleClass('checked');$(':root').toggleClass('mica')"></a>
+								<a class="a checkbox" id="sys_setting_5" onclick="$(this).toggleClass('checked');$(':root').toggleClass('mica');sys_setting[4]=1-sys_setting[4];saveDesktop();"></a>
+							</div>
+						</div>
+						<div class="border-radius"><icon><i class="fa fa-music"></icon></i><div><p>开机音乐</p><p>是否启用开机音乐</p></div>
+							<div class="alr">
+								<a class="a checkbox checked" id="sys_setting_6" onclick="sys_setting[5]=1-sys_setting[5];document.getElementById('sys_setting_6').setAttribute('class', 'a checkbox' + (sys_setting[5]?' checked':''));saveDesktop();"></a>
 							</div>
 						</div>
 					</div>

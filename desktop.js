@@ -55,6 +55,8 @@ var run_cmd = '';
 let nomax = { 'calc': 0 /* 其实，计算器是可以最大化的...*/, 'notepad-fonts': 0, 'camera-notice': 0, 'winver': 0, 'run': 0 , 'wsa':0};
 let nomin = { 'notepad-fonts': 0, 'camera-notice': 0, 'run': 0};
 var topmost=[];
+var sys_setting = [1,1,1,0,0,1];
+var use_music = true;
 let cms = {
     'titbar': [
         function (arg) {
@@ -3449,6 +3451,7 @@ let desktopItem = [];
 function saveDesktop() {
     localStorage.setItem('desktop', /*$('#desktop')[0].innerHTML*/JSON.stringify(desktopItem));
     localStorage.setItem('topmost', JSON.stringify(topmost));
+    localStorage.setItem('sys_setting', JSON.stringify(sys_setting));
 }
 
 // 拖拽窗口
@@ -3638,13 +3641,22 @@ function setIcon(){
         })
         addMenu();
     }
-    if(Array.isArray(JSON.parse(localStorage.getItem('desktop')))){
+    if(Array.isArray(JSON.parse(localStorage.getItem('topmost')))){
         topmost = JSON.parse(localStorage.getItem('topmost'));
-        if(!topmost){
-            topmost=[];
-        }
         if(topmost.includes('taskmgr')){
             document.getElementById('tsk-setting-topmost').checked = true;
+        }
+    }
+    if(Array.isArray(JSON.parse(localStorage.getItem('sys_setting')))){
+        var sys_setting_back = JSON.parse(localStorage.getItem('sys_setting'));
+        if(/^(1|0)+$/.test(sys_setting_back.join(''))/* 只含有0和1 */){
+            sys_setting = sys_setting_back;
+            for(var i=0;i<sys_setting.length;i++){
+                document.getElementById('sys_setting_'+(i+1)).setAttribute("class", 'a checkbox' + (sys_setting[i]?' checked':'')); //设置class属性
+                if(i==5){
+                    use_music = sys_setting[i]?true:false;
+                }
+            }
         }
     }
 }
