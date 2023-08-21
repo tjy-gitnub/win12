@@ -257,8 +257,8 @@ let cms = {
     ]
 }
 window.onkeydown=function(event){
+    event.preventDefault();/*取消默认刷新行为*/
     if(event.keyCode==116/*F5被按下(刷新)*/){
-        event.preventDefault();/*取消默认刷新行为*/
         $('#desktop').css('opacity','0');setTimeout(()=>{$('#desktop').css('opacity','1');},100);setIcon();
     }
 }
