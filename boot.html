@@ -78,6 +78,7 @@
         }
         window.onkeydown = function (event) {
             event = event || window.event;
+            event.preventDefault();/*取消浏览器快捷键默认行为*/
             if (event.keyCode == 113) {
                 toBIOS(false)
             }

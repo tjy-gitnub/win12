@@ -101,13 +101,13 @@ let cms = {
     ],
     'desktop.icon':[
         function (arg){
-            return ['<img src="./icon/files/' + 'exefile.png' + '" style="border-radius:2px;height: auto;width: auto;object-fit: cover;">&nbsp;&nbsp;打开','openapp(`' + arg[0] + '`)']
+            return ['<img src="./icon/files/' + (arg[0]=='explorer'?'explorer.png':'exefile.png') + '" style="border-radius:2px;height: auto;width: auto;object-fit: cover;">&nbsp;&nbsp;打开','openapp(`' + arg[0] + '`)']
         },
         function (arg){
             if (arg[1]>=0){
                 return ['<i class="bi bi-trash3"></i>&nbsp;删除','desktopItem.splice(' + (arg[1]-1) +', 1);saveDesktop();setIcon();addMenu();'];
             } else {
-                return ['','']
+                return ['&nbsp;&nbsp;<icon><i class="fa fa-info"></i></icon>&nbsp;&nbsp;&nbsp;&nbsp;属性','null'];
             }
         }
     ],
@@ -256,6 +256,13 @@ let cms = {
         }
     ]
 }
+window.onkeydown=function(event){
+    if(event.keyCode==116/*F5被按下(刷新)*/){
+        event.preventDefault();/*取消默认刷新行为*/
+        $('#desktop').css('opacity','0');setTimeout(()=>{$('#desktop').css('opacity','1');},100);setIcon();
+    }
+}
+
 function showcm(e, cl, arg) {
     if ($('#cm').hasClass('show-begin')) {
         setTimeout(() => {
