@@ -257,8 +257,8 @@ let cms = {
     ]
 }
 window.onkeydown=function(event){
-    event.preventDefault();/*取消默认刷新行为*/
     if(event.keyCode==116/*F5被按下(刷新)*/){
+        event.preventDefault();/*取消默认刷新行为*/
         $('#desktop').css('opacity','0');setTimeout(()=>{$('#desktop').css('opacity','1');},100);setIcon();
     }
 }
@@ -483,7 +483,8 @@ let nts = {
             使用标准网络技术,例如 HTML, CSS 和 JS<br />
             此项目绝不附属于微软,且不应与微软操作系统或产品混淆,<br />
             这也不是 Windows365 cloud PC<br />
-            本项目中微软、Windows和其他示范产品是微软公司的商标</p>`,
+            本项目中微软、Windows和其他示范产品是微软公司的商标<br />
+            本项目中谷歌、Android和其他示范产品是谷歌公司的商标</p>`,
         btn: [
             { type: 'main', text: '关闭', js: 'closenotice();' },
             { type: 'detail', text: '更多', js: "closenotice();openapp('about');if($('.window.about').hasClass('min'))minwin('about');$('.dock.about').removeClass('show')" },
@@ -1089,6 +1090,11 @@ E&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;5&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             $('#win-taskmgr>.main>.cnt.' + name).addClass('show');
             $('#win-taskmgr>.menu>list.focs>a.check').removeClass('check');
             $('#win-taskmgr>.menu>list.focs>a.' + name).addClass('check');
+            if(!(name=='processes'||name=='404')){
+                document.getElementById('tsk-search').style.display = 'none';
+            } else {
+                document.getElementById('tsk-search').style.display = '';
+            }
         },
         graph: (name) => {
             $('#win-setting>.page>.cnt.' + name).scrollTop(0);
@@ -1101,10 +1107,17 @@ E&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;5&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             let processList = [];
             let max = 100 / apps.taskmgr.tasks.length;
             let cpusum = 0, memorysum = 0, disksum = 0, diskUsing = Number(Math.random()) > 0.7/*, color = window.getComputedStyle(page, null).getPropertyValue('--href')*/;
+            var Search_length = 0;
             for (const elt of apps.taskmgr.tasks) {
                 let cpu = Number((Math.random() * max).toFixed(1)),
                     memory = apps.taskmgr.memory != 0 ? apps.taskmgr.memory / apps.taskmgr.tasks.length + Number(((Math.random() - 0.5) / 5).toFixed(1)) : Number((Math.random() * max).toFixed(1)),
                     disk = Number((Math.random() * max).toFixed(1)) > (max / 1.2) && diskUsing ? max * Number(Math.random().toFixed(1)) : 0;
+                cpusum = Number((cpusum + cpu).toFixed(1));
+                memorysum = Number((memorysum + memory).toFixed(1));
+                disksum = Number((disksum + disk).toFixed(1));
+                if(document.getElementById('tsk-search').value!=''&&document.getElementById('tsk-search').style.display==''&&(!elt.name.toLowerCase().includes(document.getElementById('tsk-search').value.toLowerCase()/* 搜索时转换成小写 */))){
+                    continue //搜索
+                }
                 processList.splice(processList.length, 0, {
                     name: elt.name,
                     icon: elt.icon || '',
@@ -1113,14 +1126,20 @@ E&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;5&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                     memory: memory,
                     disk: disk
                 });
-                cpusum = Number((cpusum + cpu).toFixed(1));
-                memorysum = Number((memorysum + memory).toFixed(1));
-                disksum = Number((disksum + disk).toFixed(1));
+                Search_length ++;
+            }
+            if(Search_length==0){
+                apps.taskmgr.page('404')
+            } else {
+                if(document.getElementById('tsk-search').value!=''&&document.getElementById('tsk-search').style.display==''){
+                    apps.taskmgr.page('processes')
+                }
             }
             apps.taskmgr.cpu = cpusum;
             apps.taskmgr.memory = memorysum;
             apps.taskmgr.disk = disksum;
             apps.taskmgr.processList = processList;
+            
         },
         loadProcesses: (processList = apps.taskmgr.processList) => {
             const processContainer = $('#win-taskmgr>.main>.cnt.processes tbody.view')[0];
@@ -2160,7 +2179,7 @@ E&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;5&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             $('#win-about>.about').addClass('show');
             $('#win-about>.update').removeClass('show');
             if (!($('#contri').length > 1)) apps.about.get();
-            if (!($('#contri').html().includes('刷新'))) apps.about.get_star();
+            if (!($('#StarShow').html().includes('刷新'))) apps.about.get_star();
         },
         get: () => {
             $('#contri').html(`<loading><svg width="30px" height="30px" viewBox="0 0 16 16">
@@ -3543,6 +3562,9 @@ for (let i = 0; i < wins.length; i++) {
     const win = wins[i];
     const titbar = titbars[i];
     titbar.addEventListener('mousedown', (e) => {
+        if($('.taskmgr>.titbar>div>input').is(':focus')){
+            return
+        }
         let x = window.getComputedStyle(win, null).getPropertyValue('left').split("px")[0];
         let y = window.getComputedStyle(win, null).getPropertyValue('top').split("px")[0];
         if (y != 0) {

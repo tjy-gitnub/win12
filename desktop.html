@@ -2368,7 +2368,10 @@
 		<div class="resize-bar"></div>
 		<div class="titbar">
 			<img src="icon/taskmgr.png" class="icon">
-			<p>任务管理器</p>
+			<span style="font-size: 15px;margin-top: 9px;">任务管理器</span><!--这里不能用p，否则会有神奇的特性（bug）发生-->
+			<div style="flex-grow: 1;display: flex;align-items: center;justify-content: center;">
+			    <input type="text" class="input" style="width: 75%;" placeholder="键入要搜索的名称" id="tsk-search" oninput="apps.taskmgr.generateProcesses()" value=""></input>
+			</div>
 			<div>
 				<a class="a wbtg red" onclick="hidewin('taskmgr')"><i class="bi bi-x-lg"></i></a>
 				<a class="a wbtg max" onclick="maxwin('taskmgr')"><i class="bi bi-app"></i></a>
@@ -2378,28 +2381,44 @@
 		<div class="loadback">
 			<img src="icon/taskmgr.png" class="icon">
 		</div>
-		<div class="content" id="win-taskmgr">
-			<div class="menu">
-				<list class="focs" id="tsk-pages">
-					<a class="fold" onclick="" style="width:33px;height:33px;margin:0px;" win12_title="折叠（目前还是个摆式）"><icon><i class="fa fa-bars" style="padding:0px;height:33px;width:33px;"></icon></i></a>
-					<a class="processes check" onclick="apps.taskmgr.page('processes')">
+		<div class="content" id="win-taskmgr" style="height:100%">
+			<script> //让设置按钮到最底下
+				setInterval(()=>{
+					document.getElementById('set-seting-to-bottom').style.height = (document.getElementById('win-taskmgr').clientHeight-document.getElementById('tsk-setting').clientHeight*document.getElementById('tsk-pages').getElementsByTagName('a').length-10) + "px";
+				},10);
+				var hide = false;
+				function fold(){
+					if(!hide){
+						$('.taskmgr>.content>.menu>.focs>a>p').hide()
+						$('.taskmgr>.content>.menu>.focs>a').width('18px')
+						$('.taskmgr>.content>.menu>.focs').width('18px')
+						$('.taskmgr>.content>.menu').width('18px')
+					} else {
+						$('.taskmgr>.content>.menu>.focs>a>p').show()
+						$('.taskmgr>.content>.menu>.focs>a').width('222px')
+						$('.taskmgr>.content>.menu>.focs').width('222px')
+						$('.taskmgr>.content>.menu').width('222px')
+					}
+					hide = !hide
+				}
+				fold();//别问我这里为什么要执行一次，问就是有bug
+			</script>
+			<div class="menu" style="height:100%">
+				<list class="focs" id="tsk-pages" style="height:100%">
+					<a class="fold" onclick="fold()" style="width:33px;height:33px;margin:0px;" win12_title="折叠（目前还是个摆式）"><icon><i class="fa fa-bars" style="padding:0px;height:33px;width:33px;"></icon></i></a>
+					<a class="processes check" onclick="apps.taskmgr.page('processes')" win12_title="进程">
 						<svg xmlns="http://www.w3.org/2000/svg" width="18px" height="18px" viewBox="3.5 5.5 29 29">
 							<path d="M 5 11 L 5 29 C 5 32 6 33 9 33 L 14 33 C 17 33 18 32 18 29 L 18 7 L 9 7 C 6 7 5 8 5 11 M 18 7 L 27 7 C 30 7 31 8 31 11 L 31 16 C 31 19 30 20 27 20 L 5 20" stroke="var(--text)" stroke-width="1.5" fill="none"/>
 						</svg>
 						<p>进程</p>
 					</a>
-					<a class="performance" onclick="apps.taskmgr.page('performance')"><icon class="s-icon"></icon><p>性能</p></a>
+					<a class="performance" onclick="apps.taskmgr.page('performance')" win12_title="性能"><icon class="s-icon"></icon><p>性能</p></a>
 					<!--添加新的分页请在这条注释前面添加-->
 					<div id="set-seting-to-bottom"></div>
-					<a class="setting" onclick="apps.taskmgr.page('setting')" id="tsk-setting"><i class="bi bi-gear"></i><p>设置</p></a>
+					<a class="setting" onclick="apps.taskmgr.page('setting')" id="tsk-setting" style="position: relative;bottom:0px;left:0px;" win12_title="设置"><i class="bi bi-gear"></i><p>设置</p></a>
 					<span class="focs" style="top: -445px; left: 0px;"></span>
 				</list>
 			</div>
-			<script> //让设置按钮到最底下
-				setInterval(()=>{
-					document.getElementById('set-seting-to-bottom').style.height = (document.getElementById('win-taskmgr').clientHeight-document.getElementById('tsk-setting').clientHeight*document.getElementById('tsk-pages').getElementsByTagName('a').length-10) + "px";
-				},10);
-			</script>
 			<div class="main">
 				<div class="cnt processes show">
 					<div class="tit">
@@ -2420,6 +2439,13 @@
 							<!-- 进程信息 -->
 						</tbody>
 					</table>
+				</div>
+				<div class="cnt 404">
+					<div class="content" style="text-align: center;">
+						<p><b>无筛选结果</b><br/>请尝试使用其他名称<span style="text-decoration:line-through" win12_title="你想让开发者秃头吗？QwQ！(双击隐藏此消息)" ondblclick="$(this).hide()">、发布者或 PID </span>键入以进行筛选。</p>
+						<br/>
+						<a onclick="document.getElementById('tsk-search').value='';apps.taskmgr.generateProcesses()" style="cursor: pointer;color:var(--href);">重置筛选器</a>
+					</div>
 				</div>
 				<div class="cnt performance">
 					<div class="tit">
@@ -2823,7 +2849,7 @@
 					</div>
 					<div>
 						<h3>窗口管理</h3>
-						<input type="checkbox" id="tsk-setting-topmost" name="tsk-setting-topmost" style="height: 15px;width:15px;color:#fff;" onclick="if(checked){topmost[topmost.length]='taskmgr'}else{topmost.splice(topmost.indexOf('taskmgr',1))};hidewin('taskmgr');apps.taskmgr.page('processes');$('#win-taskmgr>.menu>list.focs>a')[0].click();saveDesktop();setTimeout('openapp(`taskmgr`)',300);"/><label for="tsk-setting-topmost" style="font-size: 15px;">置于顶层</label>
+						<input type="checkbox" id="tsk-setting-topmost" name="tsk-setting-topmost" style="height: 15px;width:15px;color:#fff;" onclick="if(checked){topmost[topmost.length]='taskmgr'}else{topmost.splice(topmost.indexOf('taskmgr',1))};hidewin('taskmgr');apps.taskmgr.page('processes');$('#win-taskmgr>.menu>list.focs>a')[0].click();saveDesktop();document.getElementById('tsk-search').value='';setTimeout('openapp(`taskmgr`);apps.taskmgr.generateProcesses();',300);"/><label for="tsk-setting-topmost" style="font-size: 15px;">置于顶层</label>
 					</div>
 				</div>
 			</div>
