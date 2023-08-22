@@ -3478,6 +3478,7 @@ function saveDesktop() {
     localStorage.setItem('desktop', /*$('#desktop')[0].innerHTML*/JSON.stringify(desktopItem));
     localStorage.setItem('topmost', JSON.stringify(topmost));
     localStorage.setItem('sys_setting', JSON.stringify(sys_setting));
+    localStorage.setItem('root_class', $(':root').attr('class'));
 }
 
 // 拖拽窗口
@@ -3687,6 +3688,9 @@ function setIcon(){
                 }
             }
         }
+    }
+    if(localStorage.getItem('root_class')){
+        $(':root')[0].className = localStorage.getItem('root_class');
     }
 }
 
