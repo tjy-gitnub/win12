@@ -125,7 +125,17 @@
         window.onkeydown = function(event){
             event = event || window.event;
             tab_back = tab;
+            event.preventDefault();/*取消浏览器快捷键默认行为*/
             if(document.getElementById('background').style.display!=''){
+                if(event.keyCode==9){
+                    tab ++;
+                    foc=0;
+                    tab = tab%2;
+                    ChangePage();
+                }
+                if(event.keyCode==121/*F10=退出*/){
+                    eval(document.getElementById('e1').getAttribute('click'));
+                }
                 if (event.keyCode == 39) {
                     tab++;
                 } else if (event.keyCode == 37){

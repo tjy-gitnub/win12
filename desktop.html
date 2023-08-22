@@ -42,6 +42,8 @@
 	<link rel="stylesheet" href="module/tab.css">
 	<script src="./calculator_kernel.js"></script>
 	<base target="_blank">
+	<!--Font Awesome 图标库-->
+	<link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/4.7.0/css/font-awesome.css">
 
 	<title>Windows 12 网页版</title>
 </head>
@@ -122,7 +124,9 @@
 					$('#loginback').css('display', 'none');
 					window.clearInterval(qwq);
 				}, 2000);
-				document.querySelector('audio#startup-music').play();
+				if(use_music){
+					document.querySelector('audio#startup-music').play();
+				}
 			}, 1000);
 			this.onclick = null;
 		">
@@ -1335,27 +1339,32 @@
 						</div>
 						<div class="border-radius"><icon></icon><div><p>圆角</p><p>设置系统界面中是否启用圆角</p></div>
 							<div class="alr">
-								<a class="a checkbox checked" onclick="$(this).toggleClass('checked');$(':root').toggleClass('nobr')"></a>
+								<a class="a checkbox checked" id="sys_setting_1" onclick="$(this).toggleClass('checked');$(':root').toggleClass('nobr');sys_setting[0]=1-sys_setting[0];saveDesktop();"></a>
 							</div>
 						</div>
 						<div class="border-radius"><icon></icon><div><p>动画</p><p>系统界面元素过渡动画</p></div>
 							<div class="alr">
-								<a class="a checkbox checked" onclick="$(this).toggleClass('checked');$(':root').toggleClass('notrans')"></a>
+								<a class="a checkbox checked" id="sys_setting_2" onclick="$(this).toggleClass('checked');$(':root').toggleClass('notrans');sys_setting[1]=1-sys_setting[1];saveDesktop();"></a>
 							</div>
 						</div>
 						<div class="border-radius"><icon></icon><div><p>阴影</p><p>为系统界面元素添加阴影效果</p></div>
 							<div class="alr">
-								<a class="a checkbox checked" onclick="$(this).toggleClass('checked');$(':root').toggleClass('nosd')"></a>
+								<a class="a checkbox checked" id="sys_setting_3" onclick="$(this).toggleClass('checked');$(':root').toggleClass('nosd');sys_setting[2]=1-sys_setting[2];saveDesktop();"></a>
 							</div>
 						</div>
 						<div class="border-radius"><icon></icon><div><p>多窗口透明</p><p>为所有窗口开启透明效果，而不是仅用于焦点窗口 <span class="a jump" win12_title="开启后将占用大量GPU,可能造成卡顿">详细</span></p></div>
 							<div class="alr">
-								<a class="a checkbox" onclick="$(this).toggleClass('checked');$(':root').toggleClass('moreblur')"></a>
+								<a class="a checkbox" id="sys_setting_4" onclick="$(this).toggleClass('checked');$(':root').toggleClass('moreblur');sys_setting[3]=1-sys_setting[3];saveDesktop();"></a>
 							</div>
 						</div>
 						<div class="border-radius"><icon>&#xE621;</icon><div><p>Mica效果 (实验)</p><p>为焦点窗口开启mica效果 <a class="a jump" onclick="shownotice('feedback')">反馈</a></p></div>
 							<div class="alr">
-								<a class="a checkbox" onclick="$(this).toggleClass('checked');$(':root').toggleClass('mica')"></a>
+								<a class="a checkbox" id="sys_setting_5" onclick="$(this).toggleClass('checked');$(':root').toggleClass('mica');sys_setting[4]=1-sys_setting[4];saveDesktop();"></a>
+							</div>
+						</div>
+						<div class="border-radius"><icon><i class="fa fa-music"></icon></i><div><p>开机音乐</p><p>是否启用开机音乐</p></div>
+							<div class="alr">
+								<a class="a checkbox checked" id="sys_setting_6" onclick="sys_setting[5]=1-sys_setting[5];document.getElementById('sys_setting_6').setAttribute('class', 'a checkbox' + (sys_setting[5]?' checked':''));saveDesktop();"></a>
 							</div>
 						</div>
 					</div>
@@ -1363,7 +1372,7 @@
 				<div class="cnt safe">
 					<p class="title">隐私和安全性</p>
 					<div class="setting-list">
-						<a onclick="localStorage.setItem('desktop','[]');setIcon();"><icon></icon><div><p>清除桌面图标</p><p>这将清除用户自定义的所有图标</p></div><i class="bi bi-chevron-right"></i></a>
+						<a onclick="localStorage.setItem('desktop','[]');setIcon();"><icon><i class="bi bi-trash3"></i></icon><div><p>清除桌面图标</p><p>这将清除用户自定义的所有图标</p></div><i class="bi bi-chevron-right"></i></a>
 					</div>
 				</div>
 				<div class="cnt update">
@@ -1553,8 +1562,19 @@
 					<p>&emsp;&emsp;NB-Group为本项目的后端开发做出了重要贡献</p>
 					<p>&emsp;&emsp;在此表示特别感谢！</p>
 					<h2 class="tit"><span></span>贡献者</h2>
-					<p>感谢所有项目的贡献者 (实时数据(我也不知道这个贡献值是怎么算的))</p>
+					<p>&emsp;&emsp;感谢所有项目的贡献者 (实时数据(计算方法：即为Commits次数))</p>
 					<div id="contri">
+						<loading>
+							<svg width="30px" height="30px" viewBox="0 0 16 16">
+								<circle cx="8px" cy="8px" r="7px" style="stroke:#7f7f7f50;fill:none;stroke-width:3px;">
+								</circle>
+								<circle cx="8px" cy="8px" r="7px" style="stroke:#2983cc;stroke-width:3px;"></circle>
+							</svg>
+						</loading>
+					</div>
+					<h2 class="tit"><span></span>Star</h2>
+					<p>&emsp;&emsp;感谢<a class="jump" win12_title="给个Star好不好？(即将跳转到：https://github.com/tjy-gitnub/win12/stargazers)" onclick="window.open('https://github.com/tjy-gitnub/win12/stargazers','_blank')">所有支持我们的人</a></p>
+					<div id="StarShow">
 						<loading>
 							<svg width="30px" height="30px" viewBox="0 0 16 16">
 								<circle cx="8px" cy="8px" r="7px" style="stroke:#7f7f7f50;fill:none;stroke-width:3px;">
@@ -1572,19 +1592,30 @@
 			<div class="cnt update">
 				<h1 class="tit"><span></span>更新记录</h1>
 				<div style="margin-left: 20px;">
+					<details><summary><span>v7.2.0</span> 优化运行、添加Windows12应用、添加WSA</summary><p>
+						&emsp;&emsp;(更新来自 @lh11117 )<br/>
+						&emsp;&emsp;-优化运行<br/>
+						&emsp;&emsp;-添加Windows12应用<br/>
+						&emsp;&emsp;-添加WSA<br/>
+						&emsp;&emsp;-添加shutdown命令<br/>
+						&emsp;&emsp;-添加BIOS系统<br/>
+						&emsp;&emsp;-支持桌面图标删除<br/>
+						&emsp;&emsp;-更丰富的文件目录<br/>
+						&emsp;&emsp;-任务管理器支持置顶<br/></p>
+					</details>
 					<details><summary><span>v7.1.0</span> 计算器进一步修复、离线页面的深色模式</summary><p>
 						&emsp;&emsp;(更新来自 @lh11117)<br/>
 						&emsp;&emsp;-进一步修复了计算器精度缺陷和接受输入非法内容的问题<br/>
 						&emsp;&emsp;-为Microsoft Edge浏览器的离线界面添加了深色模式版本<br/>
-						&emsp;&emsp;-其他一些细节修复<br/>
+						&emsp;&emsp;-其他一些细节修复<br/></p>
 					</details>
 					<details><summary><span>v7.0.2</span> 计算器修复</summary><p>
 						&emsp;&emsp;-修复计算器计算加减乘除、平方、平方根等运算的精度问题(来自 @cong1223)<br/>
-						&emsp;&emsp;-只允许calc-input输入数字(来自 @iewnfod)<br/>
+						&emsp;&emsp;-只允许calc-input输入数字(来自 @iewnfod)<br/></p>
 					</details>
 					<details><summary><span>v7.0.2</span> (更新来自 @cong1223 和 @iewnfod)</summary><p>
 						&emsp;&emsp;-修复计算器计算加减乘除、平方、平方根等运算的精度问题<br/>
-						&emsp;&emsp;-只允许calc-input输入数字<br/>
+						&emsp;&emsp;-只允许calc-input输入数字<br/></p>
 					</details>
 					<details><summary><span>v7.0.1</span> 资源管理器标签页、离线界面与新闻</summary><p>
 						&emsp;&emsp;-文件资源管理器的标签页(来自 @tjy-gitnub)<br />
@@ -2337,7 +2368,10 @@
 		<div class="resize-bar"></div>
 		<div class="titbar">
 			<img src="icon/taskmgr.png" class="icon">
-			<p>任务管理器</p>
+			<span style="font-size: 15px;margin-top: 9px;">任务管理器</span><!--这里不能用p，否则会有神奇的特性（bug）发生-->
+			<div style="flex-grow: 1;display: flex;align-items: center;justify-content: center;">
+			    <input type="text" class="input" style="width: 75%;" placeholder="键入要搜索的名称" id="tsk-search" oninput="apps.taskmgr.generateProcesses()" value=""></input>
+			</div>
 			<div>
 				<a class="a wbtg red" onclick="hidewin('taskmgr')"><i class="bi bi-x-lg"></i></a>
 				<a class="a wbtg max" onclick="maxwin('taskmgr')"><i class="bi bi-app"></i></a>
@@ -2347,27 +2381,44 @@
 		<div class="loadback">
 			<img src="icon/taskmgr.png" class="icon">
 		</div>
-		<div class="content" id="win-taskmgr">
-			<div class="menu">
-				<list class="focs" id="tsk-pages">
-					<a class="processes check" onclick="apps.taskmgr.page('processes')">
-						<svg xmlns="http://www.w3.org/2000/svg" width="18px" height="18px" viewBox="3.5 5.5 29 29">
-							<path d="M 5 11 L 5 29 C 5 32 6 33 9 33 L 14 33 C 17 33 18 32 18 29 L 18 7 L 9 7 C 6 7 5 8 5 11 M 18 7 L 27 7 C 30 7 31 8 31 11 L 31 16 C 31 19 30 20 27 20 L 5 20" stroke="var(--text)" stroke-width="1.5" fill="none"/>
-						</svg>
-						进程
-					</a>
-					<a class="performance" onclick="apps.taskmgr.page('performance')"><icon class="s-icon"></icon> 性能</a>
-					<!--添加新的分页请在这条注释前面添加-->
-					<div id="set-seting-to-bottom"></div>
-					<a class="setting" onclick="apps.taskmgr.page('setting')" id="tsk-setting"><i class="bi bi-gear"></i> 设置</a>
-					<span class="focs"></span>
-				</list>
-			</div>
+		<div class="content" id="win-taskmgr" style="height:100%">
 			<script> //让设置按钮到最底下
 				setInterval(()=>{
 					document.getElementById('set-seting-to-bottom').style.height = (document.getElementById('win-taskmgr').clientHeight-document.getElementById('tsk-setting').clientHeight*document.getElementById('tsk-pages').getElementsByTagName('a').length-10) + "px";
 				},10);
+				var hide = false;
+				function fold(){
+					if(!hide){
+						$('.taskmgr>.content>.menu>.focs>a>p').hide()
+						$('.taskmgr>.content>.menu>.focs>a').width('18px')
+						$('.taskmgr>.content>.menu>.focs').width('18px')
+						$('.taskmgr>.content>.menu').width('18px')
+					} else {
+						$('.taskmgr>.content>.menu>.focs>a>p').show()
+						$('.taskmgr>.content>.menu>.focs>a').width('222px')
+						$('.taskmgr>.content>.menu>.focs').width('222px')
+						$('.taskmgr>.content>.menu').width('222px')
+					}
+					hide = !hide
+				}
+				fold();//别问我这里为什么要执行一次，问就是有bug
 			</script>
+			<div class="menu" style="height:100%">
+				<list class="focs" id="tsk-pages" style="height:100%">
+					<a class="fold" onclick="fold()" style="width:33px;height:33px;margin:0px;" win12_title="折叠（目前还是个摆式）"><icon><i class="fa fa-bars" style="padding:0px;height:33px;width:33px;"></icon></i></a>
+					<a class="processes check" onclick="apps.taskmgr.page('processes')" win12_title="进程">
+						<svg xmlns="http://www.w3.org/2000/svg" width="18px" height="18px" viewBox="3.5 5.5 29 29">
+							<path d="M 5 11 L 5 29 C 5 32 6 33 9 33 L 14 33 C 17 33 18 32 18 29 L 18 7 L 9 7 C 6 7 5 8 5 11 M 18 7 L 27 7 C 30 7 31 8 31 11 L 31 16 C 31 19 30 20 27 20 L 5 20" stroke="var(--text)" stroke-width="1.5" fill="none"/>
+						</svg>
+						<p>进程</p>
+					</a>
+					<a class="performance" onclick="apps.taskmgr.page('performance')" win12_title="性能"><icon class="s-icon"></icon><p>性能</p></a>
+					<!--添加新的分页请在这条注释前面添加-->
+					<div id="set-seting-to-bottom"></div>
+					<a class="setting" onclick="apps.taskmgr.page('setting')" id="tsk-setting" style="position: relative;bottom:0px;left:0px;" win12_title="设置"><i class="bi bi-gear"></i><p>设置</p></a>
+					<span class="focs" style="top: -445px; left: 0px;"></span>
+				</list>
+			</div>
 			<div class="main">
 				<div class="cnt processes show">
 					<div class="tit">
@@ -2388,6 +2439,13 @@
 							<!-- 进程信息 -->
 						</tbody>
 					</table>
+				</div>
+				<div class="cnt 404">
+					<div class="content" style="text-align: center;">
+						<p><b>无筛选结果</b><br/>请尝试使用其他名称<span style="text-decoration:line-through" win12_title="你想让开发者秃头吗？QwQ！(双击隐藏此消息)" ondblclick="$(this).hide()">、发布者或 PID </span>键入以进行筛选。</p>
+						<br/>
+						<a onclick="document.getElementById('tsk-search').value='';apps.taskmgr.generateProcesses()" style="cursor: pointer;color:var(--href);">重置筛选器</a>
+					</div>
 				</div>
 				<div class="cnt performance">
 					<div class="tit">
@@ -2791,7 +2849,7 @@
 					</div>
 					<div>
 						<h3>窗口管理</h3>
-						<input type="checkbox" id="tsk-setting-topmost" name="tsk-setting-topmost" style="height: 15px;width:15px;color:#fff;" onclick="if(checked){topmost[topmost.length]='taskmgr'}else{topmost.splice(topmost.indexOf('taskmgr',1))};hidewin('taskmgr');apps.taskmgr.page('processes');$('#win-taskmgr>.menu>list.focs>a')[0].click();saveDesktop();setTimeout('openapp(`taskmgr`)',300);"/><label for="tsk-setting-topmost" style="font-size: 15px;">置于顶层</label>
+						<input type="checkbox" id="tsk-setting-topmost" name="tsk-setting-topmost" style="height: 15px;width:15px;color:#fff;" onclick="if(checked){topmost[topmost.length]='taskmgr'}else{topmost.splice(topmost.indexOf('taskmgr',1))};hidewin('taskmgr');apps.taskmgr.page('processes');$('#win-taskmgr>.menu>list.focs>a')[0].click();saveDesktop();document.getElementById('tsk-search').value='';setTimeout('openapp(`taskmgr`);apps.taskmgr.generateProcesses();',300);"/><label for="tsk-setting-topmost" style="font-size: 15px;">置于顶层</label>
 					</div>
 				</div>
 			</div>
