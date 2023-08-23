@@ -1,3 +1,21 @@
+@keyframes shine {
+    0% {
+        border-color: #111;
+    }
+    49% {
+        border-color: #111;
+    }
+    51% {
+        border-color: transparent;
+    }
+    98% {
+        border-color: transparent;
+    }
+    100% {
+        border-color: #111;
+    }
+}
+
 .wg {
     border-radius: 10px;
     box-shadow: 1px 2px 5px var(--sd);
@@ -109,9 +127,13 @@
     display: none;
 }
 
+.wg.desktop>.titbar>.menu>.a.addtodt {
+    display: none;
+}
+
 .wg.calc {
-    grid-column-start: span 2;
-    grid-row-start: span 3;
+    grid-column: auto / span 2;
+    grid-row: auto / span 3;
 }
 
 .wg.calc>.content {
@@ -128,16 +150,33 @@
     gap: 0px;
 }
 
-.wg.calc>.content>p {
-    grid-area: input;
+.wg.calc>.content .checked {
+    background-color: var(--mm) !important;
+}
+
+.wg.calc>.content>.container>input {
     border: none;
     outline: none;
     background-color: #00000000;
-    font-size: 33px;
-    padding-top: 15px;
+    font-size: 30px;
     text-align: end;
     color: var(--text);
+    width: 98%;
+    border-right: 2px solid transparent;
+}
+
+.wg.calc>.content>.container {
+    display: flex;
+    grid-area: input;
     width: 100%;
+    align-items: flex-end;
+}
+
+.wg.calc>.content>.container>input:focus {
+    animation-name: shine;
+    animation-duration: 1s;
+    border-color: #111;
+    animation-iteration-count: infinite;
 }
 
 .wg.calc>.content>.b {
@@ -148,10 +187,6 @@
     text-align: center;
     transition: 50ms;
     background: var(--card);
-}
-
-.wg.calc>.content>.b.u {
-    /* padding-top: 3px; */
 }
 
 .wg.calc>.content>.b.ans {
@@ -169,22 +204,27 @@
 }
 
 .wg.weather.menu {
-    grid-column-start: span 3;
-    grid-row-start: span 2;
+    grid-column: auto / span 3;
+    grid-row: auto / span 2;
+}
+
+.wg.weather.desktop {
+    grid-column: auto / span 3;
+    grid-row: auto / span 1;
 }
 
 .wg.weather>.content {
     display: flex;
 }
 
-.wg.weather.menu>.content>.img {
+.wg.weather.menu>.content>.img, .wg.desktop.desktop>.content>.img {
     width: 70px;
     height: 100%;
     background-size: cover;
     margin: 0 10px;
 }
 
-.wg.weather.menu>.content>.text>.temperature {
+.wg.weather.menu>.content>.text>.temperature, .wg.weather.desktop>.content>.text>.temperature {
     font-size: 30px;
     margin: 8px 0;
 }
@@ -210,9 +250,14 @@
     font-size: 18px;
 }
 
-.wg.monitor {
-    grid-column-start: span 3;
-    grid-row-start: span 2;
+.wg.monitor.menu {
+    grid-column: auto / span 3;
+    grid-row: auto / span 2;
+}
+
+.wg.monitor.desktop {
+    grid-column: auto / span 3;
+    grid-row: auto / span 1;
 }
 
 .wg.monitor>.content>.text>.type {

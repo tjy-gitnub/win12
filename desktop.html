@@ -40,10 +40,7 @@
 	<link rel="stylesheet" href="apps/style/login.css">
 	<!-- 各个模块 -->
 	<link rel="stylesheet" href="module/tab.css">
-	<script src="./calculator_kernel.js"></script>
 	<base target="_blank">
-	<!--Font Awesome 图标库-->
-	<link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/4.7.0/css/font-awesome.css">
 
 	<title>Windows 12 网页版</title>
 </head>
@@ -203,7 +200,7 @@
 				</a>
 				<a oncontextmenu="return showcm(event, 'smlapp', ['pythonEditor', 'Python Editor'])"
 					onclick="openapp('pythonEditor');hide_startmenu()">
-					<img src="icon/pythonEditor.png">
+					<img src="icon/pythonEditor.svg">
 					<p>Python Editor</p>
 				</a>
 				<a oncontextmenu="return showcm(event, 'smlapp', ['python', 'Python 3.10.2'])"
@@ -440,70 +437,89 @@
 					<div class="calc">
 						<div class="wg calc">
 							<div class="titbar">
-								<a win12_title="更多" onmouseenter="showdescp(event)" onmouseleave="hidedescp(event)"
-									class="a more notip" onclick="$('.wg.calc>.titbar>.menu').toggleClass('show')"><i
-										class="bi bi-three-dots"></i></a>
+								<a win12_title="更多" onmouseenter="showdescp(event)" onmouseleave="hidedescp(event)" class="a more notip" onclick="$('.wg.calc>.titbar>.menu').toggleClass('show')"><i class="bi bi-three-dots"></i></a>
 								<div class="menu">
-									<a win12_title="打开应用" class="a img openapp"
-										onclick="$('.wg.calc>.titbar>.menu').removeClass('show');hide_widgets();openapp('calc')"
-										onmouseenter="showdescp(event)" onmouseleave="hidedescp(event)">
+									<a win12_title="打开应用" class="a img openapp" onclick="$('.wg.calc>.titbar>.menu').removeClass('show');hide_widgets();openapp('calc')" onmouseenter="showdescp(event)" onmouseleave="hidedescp(event)">
 										<img src="icon/calc.svg">
 									</a>
-									<a class="a move" win12_title="移动 (不可用)" onmouseenter="showdescp(event)"
-										onmouseleave="hidedescp(event)"><i class="bi bi-arrows-move"></i></a>
-									<a class="a addtodt" win12_title="添加到桌面 (不可用)" onmouseenter="showdescp(event)"
-										onmouseleave="hidedescp(event)"><i class="bi bi-box-arrow-in-right"></i></a>
-									<a class="a delete" win12_title="删除" onmouseenter="showdescp(event)"
-										onmouseleave="hidedescp(event)"
-										onclick="$('.wg.calc>.titbar>.menu').removeClass('show');widgets.widgets.remove('calc')"><i
-											class="bi bi-trash"></i></a>
+									<a class="a move" win12_title="移动" onmouseenter="showdescp(event)" onclick="if (!edit_mode) { editMode(); }" onmouseleave="hidedescp(event)"><i class="bi bi-arrows-move"></i></a>
+									<a class="a addtodt" win12_title="添加到桌面" onmouseenter="showdescp(event)" onclick="widgets.widgets.addToDesktop('calc')" onmouseleave="hidedescp(event)"><i class="bi bi-box-arrow-in-right"></i></a>
+									<a class="a delete" win12_title="删除" onmouseenter="showdescp(event)" onmouseleave="hidedescp(event)" onclick="$('.wg.calc>.titbar>.menu').removeClass('show');widgets.widgets.remove('calc')"><i class="bi bi-trash"></i></a>
 								</div>
 							</div>
-							<div class="content">
-								<input id="calc-input-widgets" readonly="true" value="0"></input>
-								<a style="grid-area: pow;" class="b" onclick="kernel_Square('calc-input-widgets')">𝑥²</a>
-								<a style="grid-area: sqrt;" class="b" onclick="kernel_SquareRoot('calc-input-widgets')">√𝑥</a>
-								<a style="grid-area: c;" class="b" onclick="clear_num('calc-input-widgets')">C</a>
-								<a style="grid-area: jia;" class="b u" onclick="on_click_fun_key(1,'calc-input-widgets')">+</a>
-								<a style="grid-area: n7;" class="b" onclick="on_click_number_key(7,'calc-input-widgets');">7</a>
-								<a style="grid-area: n8;" class="b" onclick="on_click_number_key(8,'calc-input-widgets');">8</a>
-								<a style="grid-area: n9;" class="b" onclick="on_click_number_key(9,'calc-input-widgets');">9</a>
-								<a style="grid-area: jian;" class="b u" onclick="on_click_fun_key(2,'calc-input-widgets')">-</a>
-								<a style="grid-area: n4;" class="b" onclick="on_click_number_key(4,'calc-input-widgets');">4</a>
-								<a style="grid-area: n5;" class="b" onclick="on_click_number_key(5,'calc-input-widgets');">5</a>
-								<a style="grid-area: n6;" class="b" onclick="on_click_number_key(6,'calc-input-widgets');">6</a>
-								<a style="grid-area: cheng;" class="b u" onclick="on_click_fun_key(3,'calc-input-widgets')">×</a>
-								<a style="grid-area: n1;" class="b" onclick="on_click_number_key(1,'calc-input-widgets');">1</a>
-								<a style="grid-area: n2;" class="b" onclick="on_click_number_key(2,'calc-input-widgets');">2</a>
-								<a style="grid-area: n3;" class="b" onclick="on_click_number_key(3,'calc-input-widgets');">3</a>
-								<a style="grid-area: chu;" class="b u" onclick="on_click_fun_key(4,'calc-input-widgets')">÷</a>
-								<a style="grid-area: dot;" class="b" onclick="on_click_point('calc-input-widgets')">.</a>
-								<a style="grid-area: n0;" class="b" onclick="on_click_number_key(0,'calc-input-widgets');">0</a>
-								<a style="grid-area: back;" class="b" onclick="backspace('calc-input-widgets')"><i class="bi bi-backspace"></i></a>
-								<a style="grid-area: ans;" class="b ans u" onclick="if(!on_click_eq('calc-input-widgets')){clear_num('calc-input');shownotice('ZeroDivision')}/*使用了win12 API*/">=</a>
+							<div class="content" onmousedown="widgetsMove(this.parentElement, event);" ontouchstart="widgetsMove(this.parentElement, event);">
+								<div class="container">
+									<input id="calc-input-widgets" readonly="true" value="0" onkeydown="
+									switch (event.key) {
+										case '+':
+											widgetCalculator.func_key(1);
+											widgetCalculator.check($('*:not(.template)>*>.wg.calc>.content>.jia')[0]);
+											break;
+										case '-':
+											widgetCalculator.func_key(2);
+											widgetCalculator.check($('*:not(.template)>*>.wg.calc>.content>.jian')[0]);
+											break;
+										case '*':
+											widgetCalculator.func_key(3);
+											widgetCalculator.check($('*:not(.template)>*>.wg.calc>.content>.cheng')[0]);
+											break;
+										case '/':
+											widgetCalculator.func_key(4);
+											widgetCalculator.check($('*:not(.template)>*>.wg.calc>.content>.chu')[0]);
+											break;
+										case '=':
+											widgetCalculator.eq();
+											break;
+										case 'Enter':
+											widgetCalculator.eq();
+											break;
+										case 'Backspace':
+											widgetCalculator.backspace();
+											break;
+										case '.':
+											widgetCalculator.point();
+											break;
+									}
+									if (!isNaN(event.key)) {
+										widgetCalculator.number_key(Number(event.key));
+									}
+								"></input>
+								</div>
+								<a style="grid-area: pow;" class="b" onclick="widgetCalculator.square()">𝑥²</a>
+								<a style="grid-area: sqrt;" class="b" onclick="widgetCalculator.squareRoot()">√𝑥</a>
+								<a style="grid-area: c;" class="b" onclick="widgetCalculator.clear_num()">C</a>
+								<a style="grid-area: jia;" class="b u jia" onclick="widgetCalculator.func_key(1); widgetCalculator.check(this);">+</a>
+								<a style="grid-area: n7;" class="b" onclick="widgetCalculator.number_key(7);">7</a>
+								<a style="grid-area: n8;" class="b" onclick="widgetCalculator.number_key(8);">8</a>
+								<a style="grid-area: n9;" class="b" onclick="widgetCalculator.number_key(9);">9</a>
+								<a style="grid-area: jian;" class="b u jian" onclick="widgetCalculator.func_key(2); widgetCalculator.check(this);">-</a>
+								<a style="grid-area: n4;" class="b" onclick="widgetCalculator.number_key(4);">4</a>
+								<a style="grid-area: n5;" class="b" onclick="widgetCalculator.number_key(5);">5</a>
+								<a style="grid-area: n6;" class="b" onclick="widgetCalculator.number_key(6);">6</a>
+								<a style="grid-area: cheng;" class="b u hceng" onclick="widgetCalculator.func_key(3); widgetCalculator.check(this);">×</a>
+								<a style="grid-area: n1;" class="b" onclick="widgetCalculator.number_key(1);">1</a>
+								<a style="grid-area: n2;" class="b" onclick="widgetCalculator.number_key(2);">2</a>
+								<a style="grid-area: n3;" class="b" onclick="widgetCalculator.number_key(3);">3</a>
+								<a style="grid-area: chu;" class="b u chu" onclick="widgetCalculator.func_key(4); widgetCalculator.check(this);">÷</a>
+								<a style="grid-area: dot;" class="b" onclick="widgetCalculator.point()">.</a>
+								<a style="grid-area: n0;" class="b" onclick="widgetCalculator.number_key(0);">0</a>
+								<a style="grid-area: back;" class="b" onclick="widgetCalculator.backspace()"><i class="bi bi-backspace"></i></a>
+								<a style="grid-area: ans;" class="b ans u" onclick="if(!widgetCalculator.eq()){widgetCalculator.clear_num(); shownotice('ZeroDivision')}">=</a>
 							</div>
 						</div>
 					</div>
 					<div class="weather">
 						<div class="wg weather">
 							<div class="titbar">
-								<a win12_title="更多" onmouseenter="showdescp(event)" onmouseleave="hidedescp(event)"
-									class="a more notip" onclick="$('.wg.weather>.titbar>.menu').toggleClass('show')"><i
-										class="bi bi-three-dots"></i></a>
+								<a win12_title="更多" onmouseenter="showdescp(event)" onmouseleave="hidedescp(event)" class="a more notip" onclick="$('.wg.weather>.titbar>.menu').toggleClass('show')"><i class="bi bi-three-dots"></i></a>
 								<div class="menu">
-									<a class="a move" win12_title="移动 (不可用)" onmouseenter="showdescp(event)"
-										onmouseleave="hidedescp(event)"><i class="bi bi-arrows-move"></i></a>
-									<a class="a addtotb" win12_title="添加到任务栏" onmouseenter="showdescp(event)"
-										onmouseleave="hidedescp(event)"
-										onclick="widgets.widgets.addToToolbar('weather')"><i
-											class="bi bi-menu-app"></i></a>
-									<a class="a delete" win12_title="删除" onmouseenter="showdescp(event)"
-										onmouseleave="hidedescp(event)"
-										onclick="$('.wg.weather>.titbar>.menu').removeClass('show');widgets.widgets.remove('weather')"><i
-											class="bi bi-trash"></i></a>
+									<a class="a move" win12_title="移动" onmouseenter="showdescp(event)" onmouseleave="hidedescp(event)" onclick="if (!edit_mode) { editMode() }"><i class="bi bi-arrows-move"></i></a>
+									<a class="a addtotb" win12_title="添加到任务栏" onmouseenter="showdescp(event)" onmouseleave="hidedescp(event)" onclick="widgets.widgets.addToToolbar('weather')"><i class="bi bi-menu-app"></i></a>
+									<a class="a addtodt" win12_title="添加到桌面" onmouseenter="showdescp(event)" onclick="widgets.widgets.addToDesktop('weather')" onmouseleave="hidedescp(event)"><i class="bi bi-box-arrow-in-right"></i></a>
+									<a class="a delete" win12_title="删除" onmouseenter="showdescp(event)" onmouseleave="hidedescp(event)" onclick="$('.wg.weather>.titbar>.menu').removeClass('show');widgets.widgets.remove('weather')"><i class="bi bi-trash"></i></a>
 								</div>
 							</div>
-							<div class="content">
+							<div class="content" onmousedown="widgetsMove(this.parentElement, event);" ontouchstart="widgetsMove(this.parentElement, event);">
 								<img class="img" />
 								<div class="text">
 									<p class="temperature">92℃</p>
@@ -518,12 +534,13 @@
 								<a win12_title="更多" onmouseenter="showdescp(event)" onmouseleave="hidedescp(event)" class="a more notip" onclick="$('.wg.monitor>.titbar>.menu').toggleClass('show')"><i class="bi bi-three-dots"></i></a>
 								<div class="menu">
 									<a class="a chose" win12_title="切换监视器类型" onmouseenter="showdescp(event)" onmouseleave="hidedescp(event)" onclick="shownotice('widgets.monitor')"><i class="bi bi-arrow-left-right"></i></a>
-									<a class="a move" win12_title="移动 (不可用)" onmouseenter="showdescp(event)" onmouseleave="hidedescp(event)"><i class="bi bi-arrows-move"></i></a>
+									<a class="a move" win12_title="移动" onmouseenter="showdescp(event)" onmouseleave="hidedescp(event)" onclick="if (!edit_mode) { editMode(); }"><i class="bi bi-arrows-move"></i></a>
 									<a class="a addtotb" win12_title="添加到任务栏" onmouseenter="showdescp(event)" onmouseleave="hidedescp(event)" onclick="widgets.widgets.addToToolbar('monitor')"><i class="bi bi-menu-app"></i></a>
+									<a class="a addtodt" win12_title="添加到桌面" onmouseenter="showdescp(event)" onclick="widgets.widgets.addToDesktop('monitor')" onmouseleave="hidedescp(event)"><i class="bi bi-box-arrow-in-right"></i></a>
 									<a class="a delete" win12_title="删除" onmouseenter="showdescp(event)" onmouseleave="hidedescp(event)" onclick="$('.wg.monitor>.titbar>.menu').removeClass('show');widgets.widgets.remove('monitor')"><i class="bi bi-trash"></i></a>
 								</div>
 							</div>
-							<div class="content">
+							<div class="content" onmousedown="widgetsMove(this.parentElement, event);" ontouchstart="widgetsMove(this.parentElement, event);">
 								<div class="container">
 									<svg width="60px" height="60px">
 										<circle cx="30px" cy="30px" r="26px"></circle>
@@ -880,7 +897,7 @@
 		</span>
 		<p style="background-color: rgba(11,45,14,0);z-index:1;position: absolute;top:0px;left:0px;height:100%;width:100%" oncontextmenu="return showcm(event,'desktop');"></p>
 	</div>
-	<div id="cm">
+	<div id="cm" tabindex="-1">
 		<input class="foc">
 		<list>
 		</list>
@@ -891,6 +908,16 @@
 	</div>
 	<div id="descp">
 
+	</div>
+	<div id="desktop-widgets">
+		<div class="widgets-move"></div>
+	</div>
+	<div id="desktop-editbar-container">
+		<div id="desktop-editbar">
+			<div onclick="shownotice('widgets.desktop');"><i class="bi bi-plus"></i> 添加小组件</div>
+			<div onclick="openapp('setting');$('#win-setting > div.menu > list > a.enable.appearance')[0].click();"><i class="bi bi-brush"></i> 个性化</div>
+			<div onclick="editMode();" win12_title="退出编辑模式"><i class="bi bi-x-lg"></i></div>
+		</div>
 	</div>
 	<p id="translater" style="display: none;"></p>
 	<div id="notice-back">
@@ -930,31 +957,31 @@
 				</button>
 				<ul class="nav-list">
 					<li class="nav-list-item active">
-						<a class="nav-list-link" href="#">
+						<a class="nav-list-link">
 							<icon></icon>
 							主页
 						</a>
 					</li>
 					<li class="nav-list-item">
-						<a class="nav-list-link" href="#">
+						<a class="nav-list-link">
 							<icon></icon>
 							病毒威胁与防护
 						</a>
 					</li>
 					<li class="nav-list-item">
-						<a class="nav-list-link" href="#">
+						<a class="nav-list-link">
 							<icon></icon>
 							账户防护
 						</a>
 					</li>
 					<li class="nav-list-item">
-						<a class="nav-list-link" href="#">
+						<a class="nav-list-link">
 							<icon></icon>
 							防火墙和网络防护
 						</a>
 					</li>
 					<li class="nav-list-item">
-						<a class="nav-list-link" href="#">
+						<a class="nav-list-link">
 							<icon></icon>
 							设备安全性
 						</a>
@@ -1197,23 +1224,6 @@
 					data: data,
 					options: options
 				});
-
-				document.querySelector('.open-right-area').addEventListener('click', function () {
-					document.querySelector('.app-right').classList.add('show');
-				});
-
-				document.querySelector('.close-right').addEventListener('click', function () {
-					document.querySelector('.app-right').classList.remove('show');
-				});
-
-				document.querySelector('.menu-button').addEventListener('click', function () {
-					document.querySelector('.app-left').classList.add('show');
-				});
-
-				document.querySelector('.close-menu').addEventListener('click', function () {
-					document.querySelector('.app-left').classList.remove('show');
-				});
-
 			</script>
 		</div>
 		<!-- partial -->
@@ -1378,16 +1388,24 @@
 				<div class="cnt update">
 					<p class="title">Windows 更新</p>
 					<div class="lo">
-						<svg viewBox="0 0 65 65"version="1.1"id="svg5"xmlns:xlink="http://www.w3.org/1999/xlink"xmlns="http://www.w3.org/2000/svg"xmlns:svg="http://www.w3.org/2000/svg"><defs id="defs2"><linearGradient id="linearGradient12966"><stop style="stop-color:#1946ff;stop-opacity:1;"offset="0"id="stop12962"/><stop style="stop-color:#3eddff;stop-opacity:1;"offset="1"id="stop12964"/></linearGradient><linearGradient id="linearGradient10659"><stop style="stop-color:#6c00e8;stop-opacity:1;"offset="0"id="stop10655"/><stop style="stop-color:#d05ed6;stop-opacity:1;"offset="1"id="stop10657"/></linearGradient><linearGradient xlink:href="#linearGradient10659"id="linearGradient10661"x1="40.558044"y1="64.876854"x2="103.16348"y2="64.876854"gradientUnits="userSpaceOnUse"/><linearGradient xlink:href="#linearGradient10659"id="linearGradient12869"gradientUnits="userSpaceOnUse"x1="40.558044"y1="64.876854"x2="103.16348"y2="64.876854"/><linearGradient xlink:href="#linearGradient10659"id="linearGradient12871"gradientUnits="userSpaceOnUse"x1="40.558044"y1="64.876854"x2="103.16348"y2="64.876854"/><linearGradient xlink:href="#linearGradient12966"id="linearGradient12968"x1="40.558044"y1="64.876854"x2="103.16348"y2="64.876854"gradientUnits="userSpaceOnUse"/><linearGradient xlink:href="#linearGradient12966"id="linearGradient13788"gradientUnits="userSpaceOnUse"x1="40.558044"y1="64.876854"x2="103.16348"y2="64.876854"/><linearGradient xlink:href="#linearGradient12966"id="linearGradient13790"gradientUnits="userSpaceOnUse"x1="40.558044"y1="64.876854"x2="103.16348"y2="64.876854"/></defs><g id="layer1"><g id="g8420"transform="rotate(-173.25016,50.599831,57.584909)"style="stroke:url(#linearGradient10661)"><path style="fill:none;stroke:url(#linearGradient12869);stroke-width:5;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none"id="path234-2"d="M 43.058046,79.121117 A 28.487005,28.487005 0 0 1 66.602472,51.066164 28.487005,28.487005 0 0 1 98.316952,69.38588"/><path style="fill:none;stroke:url(#linearGradient12871);stroke-width:5;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none"d="M 85.756154,73.849626 100.66351,72.185133 98.999027,57.27777"id="path1617-6"/></g><g id="g8420-2"transform="rotate(6.74984,459.81282,-281.39813)"style="stroke:url(#linearGradient12968);stroke-opacity:1"><path style="fill:none;stroke:url(#linearGradient13788);stroke-width:5;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1"id="path234-2-2"d="M 43.058046,79.121117 A 28.487005,28.487005 0 0 1 66.602472,51.066164 28.487005,28.487005 0 0 1 98.316952,69.38588"/><path style="fill:none;stroke:url(#linearGradient13790);stroke-width:5;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1"d="M 85.756154,73.849626 100.66351,72.185133 98.999027,57.27777"id="path1617-6-0"/></g></g></svg>
-						<div>
-							<p>Windows 12 目前是最新版本</p>
-							<p class="detail">有更新可用时将会在此显示(有点困难，以后再完善，目前不能用)</p>
+						<svg viewBox="0 0 65 65"version="1.1" id="svg5" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg"><defs id="defs2"><linearGradient id="linearGradient12966"><stop style="stop-color:#1946ff;stop-opacity:1;"offset="0"id="stop12962"/><stop style="stop-color:#3eddff;stop-opacity:1;"offset="1"id="stop12964"/></linearGradient><linearGradient id="linearGradient10659"><stop style="stop-color:#6c00e8;stop-opacity:1;"offset="0"id="stop10655"/><stop style="stop-color:#d05ed6;stop-opacity:1;"offset="1"id="stop10657"/></linearGradient><linearGradient xlink:href="#linearGradient10659"id="linearGradient10661"x1="40.558044"y1="64.876854"x2="103.16348"y2="64.876854"gradientUnits="userSpaceOnUse"/><linearGradient xlink:href="#linearGradient10659"id="linearGradient12869"gradientUnits="userSpaceOnUse"x1="40.558044"y1="64.876854"x2="103.16348"y2="64.876854"/><linearGradient xlink:href="#linearGradient10659"id="linearGradient12871"gradientUnits="userSpaceOnUse"x1="40.558044"y1="64.876854"x2="103.16348"y2="64.876854"/><linearGradient xlink:href="#linearGradient12966"id="linearGradient12968"x1="40.558044"y1="64.876854"x2="103.16348"y2="64.876854"gradientUnits="userSpaceOnUse"/><linearGradient xlink:href="#linearGradient12966"id="linearGradient13788"gradientUnits="userSpaceOnUse"x1="40.558044"y1="64.876854"x2="103.16348"y2="64.876854"/><linearGradient xlink:href="#linearGradient12966"id="linearGradient13790"gradientUnits="userSpaceOnUse"x1="40.558044"y1="64.876854"x2="103.16348"y2="64.876854"/></defs><g id="layer1"><g id="g8420"transform="rotate(-173.25016,50.599831,57.584909)"style="stroke:url(#linearGradient10661)"><path style="fill:none;stroke:url(#linearGradient12869);stroke-width:5;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none"id="path234-2"d="M 43.058046,79.121117 A 28.487005,28.487005 0 0 1 66.602472,51.066164 28.487005,28.487005 0 0 1 98.316952,69.38588"/><path style="fill:none;stroke:url(#linearGradient12871);stroke-width:5;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none"d="M 85.756154,73.849626 100.66351,72.185133 98.999027,57.27777"id="path1617-6"/></g><g id="g8420-2"transform="rotate(6.74984,459.81282,-281.39813)"style="stroke:url(#linearGradient12968);stroke-opacity:1"><path style="fill:none;stroke:url(#linearGradient13788);stroke-width:5;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1"id="path234-2-2"d="M 43.058046,79.121117 A 28.487005,28.487005 0 0 1 66.602472,51.066164 28.487005,28.487005 0 0 1 98.316952,69.38588"/><path style="fill:none;stroke:url(#linearGradient13790);stroke-width:5;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1"d="M 85.756154,73.849626 100.66351,72.185133 98.999027,57.27777"id="path1617-6-0"/></g></g></svg>
+						<div class="update-main">
+							<div class="part">
+								<p class="notice">正在检查更新...</p>
+								<p class="detail"></p>
+							</div>
+							<div><a class="a button" style="font-size: 16px;margin-top: -7.5px;" onclick="apps.setting.checkUpdate()">检查更新</a></div>
 						</div>
 					</div>
 					<div class="setting-list">
-						<div><icon>&#xE794;</icon><div><p>更新已就绪 (别按按钮，否则后果自负！</p><p>v7.0.0</p></div><div class="alr"><a class="a button" style="font-size: 16px;margin-top: -7.5px;">更新</a></div></div>
-						<a><icon>&#xE946;</icon><div><p>历史版本</p><p>查看历史版本功能</p></div><i class="bi bi-chevron-right"></i></a>
-						<a><icon>&#xE896;</icon><div><p>下载完整内容</p><p>当更新或系统出现问题，使用此项下载最新完整内容</p></div><i class="bi bi-chevron-right"></i></a>
+						<div class="update-now"><icon>&#xE794;</icon><div><p>正在检查更新...</p><p></p></div><div class="alr"><a class="a button" style="font-size: 16px;margin-top: -7.5px;" onclick="sendToSw({ head: 'update' }); localStorage.setItem('update', true); shownotice('setting.update')">更新</a></div></div>
+						<a onclick="openapp('about');$('#win-about>.update').addClass('show');$('#win-about>.about').removeClass('show');"><icon>&#xE946;</icon><div><p>历史版本</p><p>查看历史版本功能</p></div><i class="bi bi-chevron-right"></i></a>
+						<a onclick="sendToSw({ head: 'update' })"><icon>&#xE896;</icon><div><p>下载完整内容</p><p>当更新或系统出现问题，使用此项下载最新完整内容</p></div><i class="bi bi-chevron-right"></i></a>
+						<div><icon></icon><div><p>自动更新</p><p>设置是否启用自动更新</p></div>
+							<div class="alr">
+								<a class="checkbox checked a" onclick="$(this).toggleClass('checked'); autoUpdate = !autoUpdate; localStorage.setItem('autoUpdate', autoUpdate)"></a>
+							</div>
+						</div>
 					</div>
 				</div>
 			</div>
@@ -1411,8 +1429,8 @@
 		</div>
 		<div class="content" id="win-explorer">
 			<div class="path">
-				<a class="a btn btn-icon" style="filter: contrast(0.5);"><i class="bi bi-arrow-left"></i></a>
-				<a class="a btn btn-icon" style="filter: contrast(0.5);"><i class="bi bi-arrow-right"></i></a>
+				<a class="a btn btn-icon back" onclick="apps.explorer.back(apps.explorer.tabs[apps.explorer.now][0])"><i class="bi bi-arrow-left"></i></a>
+				<a class="a btn btn-icon front" onclick="apps.explorer.front(apps.explorer.tabs[apps.explorer.now][0])"><i class="bi bi-arrow-right"></i></a>
 				<a class="a btn btn-icon goback"><i class="bi bi-arrow-up"></i></a>
 				<p class="tit"></p>
 				<div class="search">
@@ -1484,32 +1502,65 @@
 			<img src="icon/calc.svg" class="icon">
 		</div>
 		<div class="content" id="win-calc">
-			<input id="calc-input" readonly="true" value="0"></input>
+			<div class="container">
+			<input id="calc-input" readonly="true" value="0" onkeydown="
+				switch (event.key) {
+					case '+':
+						appCalculator.func_key(1);
+						appCalculator.check($('#win-calc>.keyb>.jia')[0]);
+						break;
+					case '-':
+						appCalculator.func_key(2);
+						appCalculator.check($('#win-calc>.keyb>.jian')[0]);
+						break;
+					case '*':
+						appCalculator.func_key(3);
+						appCalculator.check($('#win-calc>.keyb>.cheng')[0]);
+						break;
+					case '/':
+						appCalculator.func_key(4);
+						appCalculator.check($('#win-calc>.keyb>.chu')[0]);
+						break;
+					case '=':
+						appCalculator.eq();
+						break;
+					case 'Enter':
+						appCalculator.eq();
+						break;
+					case 'Backspace':
+						appCalculator.backspace();
+						break;
+					case '.':
+						appCalculator.point();
+						break;
+				}
+				if (!isNaN(event.key)) {
+					appCalculator.number_key(Number(event.key));
+				}
+			"></input>
+			</div>
+			
 			<div class="keyb">
-				<a class="a b" onclick="kernel_Square('calc-input')">𝑥²</a>
-				<a class="a b" onclick="kernel_SquareRoot('calc-input')">√𝑥</a>
-				<a class="a b" onclick="clear_num('calc-input')">C</a>
-				<a class="a b u" onclick="on_click_fun_key(1,'calc-input')">+</a>
-				<a class="a b" onclick="on_click_number_key(7,'calc-input');">7</a>
-				<a class="a b" onclick="on_click_number_key(8,'calc-input');">8</a>
-				<a class="a b" onclick="on_click_number_key(9,'calc-input');">9</a>
-				<a class="a b u" onclick="on_click_fun_key(2,'calc-input')">-</a>
-				<a class="a b" onclick="on_click_number_key(4,'calc-input');">4</a>
-				<a class="a b" onclick="on_click_number_key(5,'calc-input');">5</a>
-				<a class="a b" onclick="on_click_number_key(6,'calc-input');">6</a>
-				<a class="a b u" onclick="aon_click_fun_key(3,'calc-input')">×</a>
-				<a class="a b" onclick="on_click_number_key(1,'calc-input');">1</a>
-				<a class="a b" onclick="on_click_number_key(2,'calc-input');">2</a>
-				<a class="a b" onclick="on_click_number_key(3,'calc-input');">3</a>
-				<a class="a b u" onclick="on_click_fun_key(4,'calc-input')">÷</a>
-				<a class="a b" onclick="on_click_point('calc-input')">.</a>
-				<a class="a b" onclick="on_click_number_key(0,'calc-input');">0</a>
-				<a class="a b"
-					onclick="backspace('calc-input')"><i
-						class="bi bi-backspace"></i></a>
-				<a class="a b ans u"
-					onclick="if(!on_click_eq('calc-input')){clear_num('calc-input');shownotice('ZeroDivision')}/*使用了win12 API*/">
-					=</a>
+				<a class="a b" onclick="appCalculator.square('calc-input')">𝑥²</a>
+				<a class="a b" onclick="appCalculator.squareRoot('calc-input')">√𝑥</a>
+				<a class="a b" onclick="appCalculator.clear_num('calc-input')">C</a>
+				<a class="a b u jia" onclick="appCalculator.func_key(1); appCalculator.check(this);">+</a>
+				<a class="a b" onclick="appCalculator.number_key(7);">7</a>
+				<a class="a b" onclick="appCalculator.number_key(8);">8</a>
+				<a class="a b" onclick="appCalculator.number_key(9);">9</a>
+				<a class="a b u jian" onclick="appCalculator.func_key(2); appCalculator.check(this);">-</a>
+				<a class="a b" onclick="appCalculator.number_key(4);">4</a>
+				<a class="a b" onclick="appCalculator.number_key(5);">5</a>
+				<a class="a b" onclick="appCalculator.number_key(6);">6</a>
+				<a class="a b u cheng" onclick="appCalculator.func_key(3); appCalculator.check(this);">×</a>
+				<a class="a b" onclick="appCalculator.number_key(1);">1</a>
+				<a class="a b" onclick="appCalculator.number_key(2);">2</a>
+				<a class="a b" onclick="appCalculator.number_key(3);">3</a>
+				<a class="a b u chu" onclick="appCalculator.func_key(4); appCalculator.check(this);">÷</a>
+				<a class="a b" onclick="appCalculator.point()">.</a>
+				<a class="a b" onclick="appCalculator.number_key(0);">0</a>
+				<a class="a b" onclick="appCalculator.backspace('calc-input')"><i class="bi bi-backspace"></i></a>
+				<a class="a b ans u" onclick="if(!appCalculator.eq('calc-input')){ appCalculator.clear_num(); shownotice('ZeroDivision')}">=</a>
 			</div>
 		</div>
 	</div>
@@ -1530,33 +1581,25 @@
 		<div class="content" id="win-about">
 			<div class="menu">
 				<list class="focs">
-					<a onclick="$('#win-about>.about').addClass('show');$('#win-about>.update').removeClass('show');"><img
-							src="apps/icons/about/info.svg" height="17px" width="19px">简介</a>
-					<a onclick="$('#win-about>.update').addClass('show');$('#win-about>.about').removeClass('show');"><img
-							src="apps/icons/about/update.svg" height="20px" width="18px">更新记录</a>
+					<a onclick="$('#win-about>.about').addClass('show');$('#win-about>.update').removeClass('show');"><img src="apps/icons/about/info.svg" height="17px" width="19px">简介</a>
+					<a onclick="$('#win-about>.update').addClass('show');$('#win-about>.about').removeClass('show');"><img src="apps/icons/about/update.svg" height="20px" width="18px">更新记录</a>
 				</list>
 			</div>
 			<div class="cnt about">
 				<h1 class="tit"><span></span>Windows 12 网页版</h1>
 				<div style="margin-left: 20px;">
 					<h2 class="tit"><span></span>简介</h2>
-					<p>&emsp;&emsp;Windows 12 网页版是一个开源项目, 由谭景元原创, 使用 Html,css,js , 在网络上模拟、创新操作系统</p>
-					<p>&emsp;&emsp;此项目已发布至 Github, <a
-							onclick="window.open('https://github.com/tjy-gitnub/win12','_blank');"
-							win12_title="https://github.com/tjy-gitnub/win12" class="jump">点击此处查看</a></p>
-					<p>&emsp;&emsp;若您对于该项目有任何意见或建议，请在 Github 上<a
-							onclick="window.open('https://github.com/tjy-gitnub/win12/issues','_blank');"
-							win12_title="https://github.com/tjy-gitnub/win12/issues" class="jump">提交 issues</a>,
-						您的问题会被尽可能快地解决</p>
-					<p>&emsp;&emsp;原创作者谭景元，点击以<a onclick="window.open('https://tjy-gitnub.github.io/','_blank');"
-							win12_title="https://tjy-gitnub.github.io/" class="jump">了解详细</a></p>
+					<p>&emsp;&emsp;Windows 12 网页版是一个开源项目, 由谭景元原创, 使用 HTML, CSS, JavaScript , 在网络上模拟、创新操作系统</p>
+					<p>&emsp;&emsp;此项目已发布至 Github, <a onclick="window.open('https://github.com/tjy-gitnub/win12','_blank');" win12_title="https://github.com/tjy-gitnub/win12" class="jump">点击此处查看</a></p>
+					<p>&emsp;&emsp;若您对于该项目有任何意见或建议，请在 Github 上<a onclick="window.open('https://github.com/tjy-gitnub/win12/issues','_blank');" win12_title="https://github.com/tjy-gitnub/win12/issues" class="jump">提交 issues</a>, 您的问题会被尽可能快地解决</p>
+					<p>&emsp;&emsp;原创作者谭景元，点击以<a onclick="window.open('https://tjy-gitnub.github.io/','_blank');" win12_title="https://tjy-gitnub.github.io/" class="jump">了解详细</a></p>
 					<h2 class="tit"><span></span>开源说明</h2>
-					<p>&emsp;&emsp;此项目是一个开源项目。此项目使用EPL2.0开源许可。开源许可是具有法律效力的合同，请自觉遵守开源许可，尊重他人劳动。</p>
+					<p>&emsp;&emsp;此项目是一个开源项目。此项目使用EPL v2.0开源许可。开源许可是具有法律效力的合同，请自觉遵守开源许可，尊重他人劳动。</p>
 					<p>&emsp;&emsp;根据许可，你可以对该项目进行传播、分发、修改以及二次发布，包括个人和商业用途。</p>
-					<p>&emsp;&emsp;但您必须给出源码来源，<strong>包括作者，项目链接等</strong>，必须使用相同的协议发布。</p>
+					<p>&emsp;&emsp;但您必须给出源码来源，<strong>包括作者，项目链接等</strong>，必须使用相同的协议开源。</p>
 					<p>&emsp;&emsp;若此项目的源码作为项目的一部分与你私有的源码一起发布时，你可以使用其它协议，<strong>但要声明EPL部分的内容并声明此部分继续遵循EPL协议</strong>。
 					</p>
-					<p>&emsp;&emsp;不是在项目基础上进行增加、修改的，仅参考源码的，不需要开源。</p>
+					<p>&emsp;&emsp;不是在项目基础上进行增加、修改的，仅参考源码的，不需要开源，但也仅供学习用途。</p>
 					<h2 class="tit"><span></span>特别感谢</h2>
 					<p>&emsp;&emsp;<strong>特别感谢 @NB-Group</strong></p>
 					<p>&emsp;&emsp;NB-Group为本项目的后端开发做出了重要贡献</p>
@@ -1592,30 +1635,47 @@
 			<div class="cnt update">
 				<h1 class="tit"><span></span>更新记录</h1>
 				<div style="margin-left: 20px;">
+					<details><summary><span>v7.3.0</span> 桌面小组件、Dock自动隐藏、计算器完善和Windows 更新</summary><p>
+						&emsp;&emsp;(更新来自 @User782Tec )<br />
+						&emsp;&emsp;-新增了桌面小组件，可将小组件添加到桌面并调整位置<br />
+						&emsp;&emsp;-新增了编辑模式，可快捷编辑小组件的位置，并提供了相关的快捷入口<br />
+						&emsp;&emsp;-新增了窗口全屏且Dock不在使用时自动隐藏的功能<br />
+						&emsp;&emsp;-为Microsoft Edge浏览器和文件资源管理器新增了后退/前进的功能<br />
+						&emsp;&emsp;-又双叒叕优化计算器的精度问题与安全性问题<br />
+						&emsp;&emsp;-重写更新机制，并完善 Windows 更新<br />
+						&emsp;&emsp;-修复了文件资源管理器中右键文件失效的问题<br />
+						&emsp;&emsp;-修复了文件资源管理器中无法正确显示文件夹中文件的问题<br />
+						&emsp;&emsp;-更换了Python Editor的图标<br />
+						&emsp;&emsp;-完善了开源说明<br />
+						&emsp;&emsp;-其他细节与修复</p>
+					</details>
+					<details><summary><span>v7.2.1</span> README更新、“关于”应用显示实时Star数量、个性化设置支持保存</summary><p>
+						&emsp;&emsp;(更新来自 @lh11117 )<br />
+						&emsp;&emsp;-README更新<br />
+						&emsp;&emsp;-“关于”应用显示实时Star数量<br />
+						&emsp;&emsp;-个性化设置支持保存<br /></p>
+					</details>
 					<details><summary><span>v7.2.0</span> 优化运行、添加Windows12应用、添加WSA</summary><p>
-						&emsp;&emsp;(更新来自 @lh11117 )<br/>
-						&emsp;&emsp;-优化运行<br/>
-						&emsp;&emsp;-添加Windows12应用<br/>
-						&emsp;&emsp;-添加WSA<br/>
-						&emsp;&emsp;-添加shutdown命令<br/>
-						&emsp;&emsp;-添加BIOS系统<br/>
-						&emsp;&emsp;-支持桌面图标删除<br/>
-						&emsp;&emsp;-更丰富的文件目录<br/>
-						&emsp;&emsp;-任务管理器支持置顶<br/></p>
+						&emsp;&emsp;(更新来自 @lh11117 )<br />
+						&emsp;&emsp;-优化运行<br />
+						&emsp;&emsp;-添加Windows12应用<br />
+						&emsp;&emsp;-添加WSA<br />
+						&emsp;&emsp;-添加shutdown命令<br />
+						&emsp;&emsp;-添加BIOS系统<br />
+						&emsp;&emsp;-支持桌面图标删除<br />
+						&emsp;&emsp;-更丰富的文件目录<br />
+						&emsp;&emsp;-任务管理器支持置顶<br /></p>
 					</details>
 					<details><summary><span>v7.1.0</span> 计算器进一步修复、离线页面的深色模式</summary><p>
-						&emsp;&emsp;(更新来自 @lh11117)<br/>
-						&emsp;&emsp;-进一步修复了计算器精度缺陷和接受输入非法内容的问题<br/>
-						&emsp;&emsp;-为Microsoft Edge浏览器的离线界面添加了深色模式版本<br/>
-						&emsp;&emsp;-其他一些细节修复<br/></p>
+						&emsp;&emsp;(更新来自 @lh11117)<br />
+						&emsp;&emsp;-进一步修复了计算器精度缺陷和接受输入非法内容的问题<br />
+						&emsp;&emsp;-为Microsoft Edge浏览器的离线界面添加了深色模式版本<br />
+						&emsp;&emsp;-其他一些细节修复<br /></p>
 					</details>
 					<details><summary><span>v7.0.2</span> 计算器修复</summary><p>
-						&emsp;&emsp;-修复计算器计算加减乘除、平方、平方根等运算的精度问题(来自 @cong1223)<br/>
-						&emsp;&emsp;-只允许calc-input输入数字(来自 @iewnfod)<br/></p>
-					</details>
-					<details><summary><span>v7.0.2</span> (更新来自 @cong1223 和 @iewnfod)</summary><p>
-						&emsp;&emsp;-修复计算器计算加减乘除、平方、平方根等运算的精度问题<br/>
-						&emsp;&emsp;-只允许calc-input输入数字<br/></p>
+						&emsp;&emsp;(更新来自 @cong1223 和 @iewnfod)<br />
+						&emsp;&emsp;-修复计算器计算加减乘除、平方、平方根等运算的精度问题(来自 @cong1223)<br />
+						&emsp;&emsp;-只允许calc-input输入数字(来自 @iewnfod)<br /></p>
 					</details>
 					<details><summary><span>v7.0.1</span> 资源管理器标签页、离线界面与新闻</summary><p>
 						&emsp;&emsp;-文件资源管理器的标签页(来自 @tjy-gitnub)<br />
@@ -2026,10 +2086,10 @@
 		</div>
 		<div class="content" id="win-edge">
 			<div class="tool">
-				<a class="a" style="filter: contrast(0.2);">
+				<a class="a back" onclick="apps.edge.back(apps.edge.tabs[apps.edge.now][0]);">
 					<i class="bi bi-arrow-left-short" style="font-size: 25px;--top:-5px;"></i>
 				</a>
-				<a class="a" style="filter: contrast(0.2);">
+				<a class="a front" onclick="apps.edge.front(apps.edge.tabs[apps.edge.now][0]);">
 					<i class="bi bi-arrow-right-short" style="font-size: 25px;--top:-5px;"></i>
 				</a>
 				<a class="a" onclick="apps.edge.reload()">
@@ -2119,7 +2179,7 @@
 	<div class="window pythonEditor">
 		<div class="resize-bar"></div>
 		<div class="titbar">
-			<img src="icon/pythonEditor.png" class="icon">
+			<img src="icon/pythonEditor.svg" class="icon">
 			<p>Python Editor</p>
 			<div>
 				<a class="a wbtg red" onclick="hidewin('pythonEditor')"><i class="bi bi-x-lg"></i></a>
@@ -2129,7 +2189,7 @@
 			</div>
 		</div>
 		<div class="loadback">
-			<img src="icon/pythonEditor.png" class="icon">
+			<img src="icon/pythonEditor.svg" class="icon">
 		</div>
 		<div class="content" id="win-pythonEditor">
 			<div id="win-python-ace-editor"></div>
@@ -2442,8 +2502,8 @@
 				</div>
 				<div class="cnt 404">
 					<div class="content" style="text-align: center;">
-						<p><b>无筛选结果</b><br/>请尝试使用其他名称<span style="text-decoration:line-through" win12_title="你想让开发者秃头吗？QwQ！(双击隐藏此消息)" ondblclick="$(this).hide()">、发布者或 PID </span>键入以进行筛选。</p>
-						<br/>
+						<p><b>无筛选结果</b><br />请尝试使用其他名称<span style="text-decoration:line-through" win12_title="你想让开发者秃头吗？QwQ！(双击隐藏此消息)" ondblclick="$(this).hide()">、发布者或 PID </span>键入以进行筛选。</p>
+						<br />
 						<a onclick="document.getElementById('tsk-search').value='';apps.taskmgr.generateProcesses()" style="cursor: pointer;color:var(--href);">重置筛选器</a>
 					</div>
 				</div>
@@ -2864,6 +2924,9 @@
 	<script src="https://cdn.staticfile.org/ace/1.23.0/ace.min.js"></script>
 	<script src="https://cdn.staticfile.org/ace/1.23.0/ext-language_tools.min.js"></script>
 	<script src="https://cdn.staticfile.org/ace/1.23.0/ext-error_marker.min.js"></script>
+	<script src='https://cdn.staticfile.org/big.js/6.2.1/big.min.js'></script>
+	<script src="./scripts/calculator_kernel.js"></script>
+	<script src='https://cdns.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.js'></script>
 </body>
 
 </html>

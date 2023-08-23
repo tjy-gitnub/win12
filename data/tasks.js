@@ -34,7 +34,7 @@ let taskmgrTasks = [
     },
     {
         name: 'Python Editor(Python程序编辑器)',
-        icon: 'icon/pythonEditor.png',
+        icon: 'icon/pythonEditor.svg',
         link: 'pythonEditor'
     },
     {

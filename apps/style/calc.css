@@ -1,3 +1,21 @@
+@keyframes shine {
+    0% {
+        border-color: #111;
+    }
+    49% {
+        border-color: #111;
+    }
+    51% {
+        border-color: transparent;
+    }
+    98% {
+        border-color: transparent;
+    }
+    100% {
+        border-color: #111;
+    }
+}
+
 #win-calc {
     display: flex;
     flex-direction: column;
@@ -5,13 +23,28 @@
 }
 
 #calc-input {
-    height: 90px;
+    /* height: 90px; */
     border: none;
+    border-right: 2px solid transparent;
     outline: none;
     background-color: #00000000;
     font-size: 35px;
     text-align: end;
     color: var(--text);
+    width: 100%;
+}
+
+#win-calc>.container {
+    height: 90px;
+    display: flex;
+    align-items: center;
+}
+
+#calc-input:focus {
+    border-color: #111;
+    animation-name: shine;
+    animation-duration: 1s;
+    animation-iteration-count: infinite;
 }
 
 #win-calc>.keyb {
@@ -38,6 +71,10 @@
     border-bottom: 1px solid var(--bd); */
     /* border-color: var(--bd); */
     transform-origin: bottom;
+}
+
+#win-calc>.keyb>.checked {
+    background-color: var(--mm) !important;
 }
 
 #win-calc>.keyb>.b.u {

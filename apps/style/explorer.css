@@ -158,6 +158,11 @@
     font-size: 15px;
 } */
 
+#win-explorer>.path>.front.disabled, #win-explorer>.path>.back.disabled {
+    filter: contrast(0.2);
+    pointer-events: none;
+}
+
 #win-explorer>.path>.btn {
     transition: 100ms;
     font-size: 17px;

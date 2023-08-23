@@ -126,10 +126,6 @@ hr {
     background-color: #afafaf50;
 }
 
-.scsmoo {
-    /* scroll-behavior: smooth; */
-}
-
 ::-webkit-scrollbar {
     border-radius: 7px;
     height: 14px;
@@ -186,7 +182,12 @@ list:not(.new)>a:active,
     width: 100%;
     z-index: 92;
     padding: 0 5px;
-    justify-content:center;
+    justify-content: center;
+    transition: bottom 400ms;
+}
+
+#dock-box.hide {
+    bottom: -60px;
 }
 
 .dock {
@@ -1611,6 +1612,118 @@ input-before {
     border-radius: 5px;
     background-color: var(--hover-half);
     display: none;
+}
+
+#desktop-widgets {
+    display: grid;
+    /* justify-content: center; */
+    gap: 10px;
+    grid-template-columns: repeat(auto-fill, 83px);
+    grid-template-rows: repeat(auto-fill, 83px);
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 100%;
+    height: calc(100% - 50px);
+    /* width: max-content; */
+    grid-auto-flow: row;
+    direction: rtl;
+    padding: 20px;
+    pointer-events: none;
+}
+
+#desktop-widgets * {
+    direction: ltr;
+    pointer-events: auto;
+}
+
+#desktop-widgets>* {
+    background-color: var(--bg70);
+    backdrop-filter: blur(180px) saturate(1.5);
+    filter: none;
+    -webkit-backdrop-filter: blur(80px) saturate(1.5);
+    box-shadow: 3px 3px 20px 3px var(--sd);
+    transition: all 500ms;
+}
+
+#desktop-widgets>*.moving {
+    transition: none;
+}
+
+#desktop-widgets>*.moving>.content {
+    opacity: 0.5;
+}
+
+#desktop-widgets>*.notrans {
+    transition: none !important;
+}
+
+#desktop-widgets>.widgets-move {
+    display: none;
+    background-color: #3daee922;
+    border: 1px solid #3daee9;
+    border-radius: 10px;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    box-shadow: none;
+}
+
+#desktop-widgets>.widgets-move.show {
+    display: block;
+}
+
+#desktop-widgets.edit>* .content * {
+    pointer-events: none;
+}
+
+#desktop-widgets.edit>* {
+    cursor: grab;
+}
+
+#desktop-widgets.edit>*>.content {
+    transition: opacity 500ms;
+}
+
+
+#desktop-widgets.edit>*>.content:hover {
+    opacity: 0.5;
+}
+
+#desktop-editbar-container {
+    width: 100%;
+    position: fixed;
+    top: -50px;
+    left: 0px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: top 500ms;
+}
+
+#desktop-editbar-container.show {
+    top: 0px;
+}
+
+#desktop-editbar {
+    background-color: var(--bg70);
+    backdrop-filter: blur(180px) saturate(1.5);
+    filter: none;
+    -webkit-backdrop-filter: blur(80px) saturate(1.5);
+    box-shadow: 3px 3px 20px 3px var(--sd);
+    border-radius: 0px 0px 8px 8px;
+    display: flex;
+    gap: 13px;
+    padding: 4px 20px;
+}
+
+#desktop-editbar>* {
+    transition: background-color 80ms;
+    padding: 1px 7px;
+    border-radius: 5px;
+}
+
+#desktop-editbar>*:hover {
+    background-color: var(--hover);
 }
 
 .input {

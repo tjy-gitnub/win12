@@ -24,6 +24,11 @@
     --top:2px;
 }
 
+#win-edge>.tool>.a.disabled {
+    filter: contrast(0.2);
+    pointer-events: none;
+}
+
 #win-edge>.tool>.a>.bi::before {
     position: relative;
     top: var(--top);
