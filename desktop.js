@@ -109,7 +109,7 @@ let cms = {
     ],
     'desktop.icon':[
         function (arg){
-            return ['<i class="bi bi-folder2-open"></i> 打开','openapp("' + arg[0] + '")']
+            return ['<i class="bi bi-folder2-open"></i> 打开','openapp(`' + arg[0] + '`)']
         },
         function (arg) {
             if (arg[1] >= 0) {
