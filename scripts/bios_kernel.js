@@ -60,9 +60,20 @@ window.onkeydown = function (event) {
     event = event || window.event;
     tab_back = tab;
     if (document.getElementById('background').style.display != '') {
+        if(event.keyCode==9){
+            tab ++;
+            foc=0;
+            tab = tab%2;
+            ChangePage();
+        }
+        if(event.keyCode==121/*F10=退出*/){
+            eval(document.getElementById('e1').getAttribute('click'));
+        }
         if (event.keyCode == 39) {
+            event.preventDefault();
             tab++;
         } else if (event.keyCode == 37) {
+            event.preventDefault();
             tab--;
         }
         if (tab + 1 > 0 && tab + 1 <= tabs.length && foc == 0) {
@@ -74,8 +85,10 @@ window.onkeydown = function (event) {
         }
         foc_back = foc;
         if (event.keyCode == 40) {
+            event.preventDefault();
             foc++;
         } else if (event.keyCode == 38) {
+            event.preventDefault();
             foc--;
         }
         if (tab == 1 && foc <= 3 && foc >= 0) {
@@ -104,8 +117,10 @@ window.onkeydown = function (event) {
     } else {
         btn_back = btn;
         if (event.keyCode == 39) {
+            event.preventDefault();
             btn++;
         } else if (event.keyCode == 37) {
+            event.preventDefault();
             btn--;
         }
         if ([0, 1].includes(btn)) {
@@ -120,6 +135,7 @@ window.onkeydown = function (event) {
             btn = btn_back;
         }
         if (event.keyCode == 13) {
+            event.preventDefault();
             if (btn) {
                 eval(document.getElementById('cancel-btn').getAttribute('click'));
             } else {
