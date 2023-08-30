@@ -27,7 +27,7 @@ function toBIOS() {
         document.getElementById("body").style.cssText = "background-color: black;"
     }, 500);
     setTimeout(() => {
-        window.location.href = "./bios"
+        window.location.href = "./bios.html"
     }, 1000);
 }
 window.onkeydown = function (event) {

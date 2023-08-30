@@ -12,7 +12,7 @@
 	&emsp;&emsp;-文件资源管理器的新动画<br />
 	&emsp;&emsp;-桌面图标点击效果<br />
 	&emsp;&emsp;-修复设置的小竖条位置问题<br />
-	&emsp;&emsp;-新新闻<br />
+	&emsp;&emsp;-新闻<br />
 	&emsp;&emsp;-细节优化和修复</p>
 </details>
 <details><summary><span>v4.2.0</span> 外观整改</summary><p>
