@@ -105,7 +105,7 @@
 .wg.toolbar {
     border-radius: 8px;
     height: 100%;
-    background-color: var(--bg70);
+    background-color: var(--cm);
     backdrop-filter: blur(20px) saturate(1.5);
     -webkit-backdrop-filter: blur(20px) saturate(1.5);
     box-shadow: 0 1px 2px #44444460, 0px 3px 25px 1px var(--sd);
@@ -205,7 +205,7 @@
 
 .wg.weather.menu {
     grid-column: auto / span 3;
-    grid-row: auto / span 2;
+    grid-row: auto / span 1;
 }
 
 .wg.weather.desktop {
@@ -241,18 +241,18 @@
 }
 
 .wg.toolbar.weather>.content>.text {
-    font-size: 8px;
+    font-size: 9px;
     padding-top: 5px;
     margin-right: 10px;
 }
 
 .wg.toolbar.weather>.content>.text>.temperature {
-    font-size: 18px;
+    font-size: 19px;
 }
 
 .wg.monitor.menu {
     grid-column: auto / span 3;
-    grid-row: auto / span 2;
+    grid-row: auto / span 1;
 }
 
 .wg.monitor.desktop {

@@ -9,7 +9,7 @@
 
 	<!-- Windows 12 网页版 谭景元原创  -->
 
-	<!-- Windows 12 网页版是一个开放源项目,
+	<!-- Windows 12 网页版 是一个开放源项目,
 	希望让用户在网络上预先体验 Windows 12,
 	内容可能与 Windows 12 正式版本不一致。
 	使用标准网络技术,例如 HTML、CSS 和 Javascript
@@ -42,7 +42,7 @@
 	<link rel="stylesheet" href="module/tab.css">
 	<base target="_blank">
 
-	<title>Windows 12 网页版</title>
+	<title>{{ this.name }}</title>
 </head>
 
 <body>
@@ -85,7 +85,7 @@
 			<svg style="position:absolute;left:calc(50% - 25px);top:72%;" width="50px" height="50px" viewBox="0 0 16 16">
 				<circle cx="8px" cy="8px" r="7px"></circle>
 			</svg>
-			<p id="loadbackupdate" style="position:absolute;top:calc(72% + 55px);left:0;width:100%;text-align:center;color:#fff;font-size: 25px;display:none;">正在更新</p>
+			<p id="loadbackupdate" style="position:absolute;top:calc(72% + 55px);left:0;width:100%;text-align:center;color:#fff;font-size: 25px;display:none;">{{ ldb.updating }}</p>
 		</loading>
 		<script>
 			setTimeout(() => {
@@ -94,16 +94,18 @@
 			}, 100);
 		</script>
 	</div>
+	<script src="language.js"></script>
 	<div id="loginback">
 		<div class="user"></div>
 		<div class="name">Administrator</div>
 		<div id="login" onclick="
 			this.id = 'login-after';
-			this.innerText = '登录中...';
+			console.log(lang);
+			this.innerText = lang.ldb.logining+'...';
 			document.querySelector('#loginback').removeChild(document.querySelector('#loginback .power'));
 			var qwq = window.setInterval(() => {
 				if (this.innerText.match(/\.\.\./)) {
-					this.innerText = '登录中.';
+					this.innerText = lang.ldb.logining+'.';
 				}
 				else {
 					this.innerText += '.';
@@ -127,11 +129,11 @@
 			}, 1000);
 			this.onclick = null;
 		">
-			登录
+			{{ ldb.login }}
 		</div>
 		<a class="power" onclick="$(this).addClass('show')">
-			<i class="bi bi-power" onclick="setTimeout(() => {window.location='shutdown.html';}, 200);" win12_title="关机"></i>
-			<i class="bi bi-arrow-counterclockwise" onclick="setTimeout(() => {window.location='reload.html';}, 200);" win12_title="重启"></i>
+			<i class="bi bi-power" onclick="setTimeout(() => {window.location='shutdown.html';}, 200);" win12_title="{{ sys.shtd }}"></i>
+			<i class="bi bi-arrow-counterclockwise" onclick="setTimeout(() => {window.location='reload.html';}, 200);" win12_title="{{ sys.rest }}"></i>
 		</a>
 	</div>
 	<!-- <img src="https://bing.com/th?id=OHR.Trossachs_ZH-CN9299955040_UHD.jpg&qlt=100" alt=""> -->
@@ -143,7 +145,7 @@
 				<svg viewBox="0,0,257,344" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" overflow="hidden"><defs><clipPath id="user-clip0"><rect x="382" y="195" width="257" height="344" /></clipPath><linearGradient x1="351.462" y1="233.56" x2="669.496" y2="500.422" gradientUnits="userSpaceOnUse" spreadMethod="reflect" id="user-fill1"><stop offset="0" stop-color="#A964C8" /><stop offset="0.35" stop-color="#A964C8" /><stop offset="0.87" stop-color="#2D8AD5" /><stop offset="1" stop-color="#2D8AD5" /></linearGradient><linearGradient x1="351.462" y1="233.56" x2="669.496" y2="500.422" gradientUnits="userSpaceOnUse" spreadMethod="reflect" id="user-fill2"><stop offset="0" stop-color="#A964C8" /><stop offset="0.35" stop-color="#A964C8" /><stop offset="0.87" stop-color="#2D8AD5" /><stop offset="1" stop-color="#2D8AD5" /></linearGradient></defs><g clip-path="url(#user-clip0)" transform="translate(-382 -195)"><path d="M637.755 433.872C642.215 515.221 579.577 537.983 508.011 537.983 436.444 537.983 376.676 507.833 383.513 437.11 383.109 425.234 389.59 414.133 398.634 409.891 413.82 402.768 444.753 402.936 507.484 402.997 570.214 403.058 609.164 402.279 621.521 407.947 633.878 413.614 638.011 424.609 637.755 433.872Z" fill="url(#user-fill1)" fill-rule="evenodd" /><path d="M422 285C422 235.847 461.623 196 510.5 196 559.377 196 599 235.847 599 285 599 334.153 559.377 374 510.5 374 461.623 374 422 334.153 422 285Z" fill="url(#user-fill2)" fill-rule="evenodd" /></g></svg>
 			</div>
 			<p style="width: 100%;text-align: center;margin: -50px 0 20px 0;font-size: 30px;">Administartor</p>
-			<input type="text" class="input" win12_title="搜索" placeholder="在这里输入你要搜索的内容" onfocus="hide_startmenu();
+			<input type="text" class="input" win12_title="{{ sys.search }}" placeholder="{{ sys.srchp }}" onfocus="hide_startmenu();
 				$('#search-btn').addClass('show');
 				$('#search-win').addClass('show-begin');
 				setTimeout(() => {
@@ -152,41 +154,41 @@
 				$('#search-input').focus();">
 			<input-before class="bi bi-search"></input-before>
 			<list>
-				<p class="text">可用</p>
+				<p class="text">{{ sm.lab1 }}</p>
 				<a oncontextmenu="return showcm(event, 'smlapp', ['setting', '设置'])"
 					onclick="openapp('setting');hide_startmenu();">
 					<img src="icon/setting.svg">
-					<p>设置</p>
+					<p>{{ setting.name }}</p>
 				</a>
 				<a oncontextmenu="return showcm(event, 'smlapp', ['explorer', '文件资源管理器'])"
 					onclick="openapp('explorer');hide_startmenu();">
 					<img src="icon/explorer.svg">
-					<p>文件资源管理器</p>
+					<p>{{ explorer.name }}</p>
 				</a>
 				<a oncontextmenu="return showcm(event, 'smlapp', ['calc', '计算器'])"
 					onclick="openapp('calc');hide_startmenu();">
 					<img src="icon/calc.svg">
-					<p>计算器</p>
+					<p>{{ calc.name }}</p>
 				</a>
 				<a oncontextmenu="return showcm(event, 'smlapp', ['run', '运行'])"
 					onclick="openapp('run');hide_startmenu();">
 					<img src="icon/run.png">
-					<p>运行</p>
+					<p>{{ run.name }}</p>
 				</a>
 				<a oncontextmenu="return showcm(event, 'smlapp', ['about', '关于Win12网页版'])"
 					onclick="openapp('about');hide_startmenu();">
 					<img src="icon/about.svg">
-					<p>关于Win12网页版</p>
+					<p>{{ about.stname }}</p>
 				</a>
 				<a oncontextmenu="return showcm(event, 'smlapp', ['taskmgr', '任务管理器'])"
 					onclick="openapp('taskmgr');hide_startmenu();">
 					<img src="icon/taskmgr.png">
-					<p>任务管理器</p>
+					<p>{{ taskmgr.name }}</p>
 				</a>
 				<a oncontextmenu="return showcm(event, 'smlapp', ['notepad', '记事本'])"
 					onclick="openapp('notepad');hide_startmenu();">
 					<img src="icon/notepad.svg">
-					<p>记事本</p>
+					<p>{{ notepad.name }}</p>
 				</a>
 				<a oncontextmenu="return showcm(event, 'smlapp', ['edge', 'Microsoft Edge'])"
 					onclick="openapp('edge');hide_startmenu();">
@@ -196,7 +198,7 @@
 				<a oncontextmenu="return showcm(event, 'smlapp', ['camera', '相机'])"
 					onclick="apps.camera.notice();hide_startmenu()">
 					<img src="icon/camera.svg">
-					<p>相机</p>
+					<p>{{ camera.name }}</p>
 				</a>
 				<a oncontextmenu="return showcm(event, 'smlapp', ['pythonEditor', 'Python Editor'])"
 					onclick="openapp('pythonEditor');hide_startmenu()">
@@ -211,7 +213,7 @@
 				<a oncontextmenu="return showcm(event, 'smlapp', ['terminal', '终端'])"
 					onclick="openapp('terminal');hide_startmenu();">
 					<img src="icon/terminal.svg">
-					<p>终端</p>
+					<p>{{ terminal.name }}</p>
 				</a>
 				<a oncontextmenu="return showcm(event, 'smlapp', ['whiteboard', 'Whiteboard'])"
 					onclick="openapp('whiteboard');hide_startmenu();">
@@ -221,13 +223,13 @@
 				<a oncontextmenu="return showcm(event, 'smlapp', ['defender', 'Windows 安全中心'])"
 					onclick="openapp('defender');hide_startmenu();">
 					<img src="icon/defender.svg">
-					<p>Windows 安全中心</p>
+					<p>{{ defender.name }}</p>
 				</a>
-				<p class="text">Web 应用</p>
+				<p class="text">{{ sm.labweb }}</p>
 				<a oncontextmenu="return showcm(event, 'smlapp', ['bilibili', '哔哩哔哩'])"
 					onclick="openapp('bilibili');hide_startmenu();">
 					<img src="icon/bilibili.png">
-					<p>哔哩哔哩</p>
+					<p>{{ webapp.bilibili }}</p>
 				</a>
 				<a oncontextmenu="return showcm(event, 'smlapp', ['vscode', 'Visual Studio Code'])"
 					onclick="openapp('vscode');hide_startmenu();">
@@ -237,7 +239,7 @@
 				<a oncontextmenu="return showcm(event, 'smlapp', ['wsa', '适用于 Android™️ 的 Windows 子系统'])"
 					onclick="openapp('wsa');hide_startmenu();">
 					<img src="icon/wsa.png">
-					<p>适用于 Android™️ 的 Windows 子系统</p>
+					<p>{{ webapp.wsa }}</p>
 				</a>
 				<a oncontextmenu="return showcm(event, 'smlapp', ['windows12', 'Windows 12'])"
 					onclick="openapp('windows12');hide_startmenu();">
@@ -252,30 +254,30 @@
 					<a class="a sm-app enable"
 						onclick="openapp('explorer');apps.explorer.goto('C:/用户/Administrator/文档');hide_startmenu();">
 						<img src="icon/folder/docs.svg">
-						<p>文档</p>
+						<p>{{ explorer.folder.docs }}</p>
 					</a>
 					<a class="a sm-app enable"
 						onclick="openapp('explorer');apps.explorer.goto('C:/用户/Administrator/图片');hide_startmenu();">
 						<img src="icon/folder/pics.svg">
-						<p>图片</p>
+						<p>{{ explorer.folder.pics }}</p>
 					</a>
 					<a class="a sm-app enable"
 						onclick="openapp('explorer');apps.explorer.goto('C:/用户/Administrator/音乐');hide_startmenu();">
 						<img src="icon/folder/music.svg">
-						<p>音乐</p>
+						<p>{{ explorer.folder.music }}</p>
 					</a>
 				</div>
 				<div class="tool">
 					<p style="font-size: 40px;margin-bottom: -10px;" class="time">12:00</p>
 					<p class="date">星期一, 2368年13月34日</p>
-					<a class="a btn btn-icon power" win12_title="电源" onclick="$(this).addClass('show')">
+					<a class="a btn btn-icon power" win12_title="{{ sys.power }}" onclick="$(this).addClass('show')">
 						<span class="bi bi-power"></span>
 						<i class="bi bi-power" onclick="$('#start-menu').removeClass('show');
-						setTimeout(() => {window.location='shutdown.html';},200);" win12_title="关机"></i>
+						setTimeout(() => {window.location='shutdown.html';},200);" win12_title="{{ sys.shtd }}"></i>
 						<i class="bi bi-arrow-counterclockwise" onclick="$('#start-menu').removeClass('show');
-						setTimeout(() => {window.location='reload.html';},200);" win12_title="重启"></i>
+						setTimeout(() => {window.location='reload.html';},200);" win12_title="{{ sys.rest }}"></i>
 					</a>
-					<a class="a btn btn-icon big" win12_title="切换全屏" onclick="
+					<a class="a btn btn-icon big" win12_title="{{ sm.toglfullscrn }}" onclick="
 					if($('#start-menu').hasClass('max')){
 						$('#start-menu>#s-m-r>.row1>.tool>.btn-icon.big').html('<i class=\'bi bi-arrows-angle-expand\'></i>');
 						$('#start-menu').removeClass('max');
@@ -291,9 +293,9 @@
 			<div class="pinned">
 				<!-- 已固定 卡片 -->
 				<div class="title">
-					<p>已固定</p>
+					<p>{{ sm.pinned }}</p>
 					<div>
-						<a class="a more-btn">所有应用 <i class="bi bi-chevron-right"></i></a>
+						<a class="a more-btn">{{ sm.allapp }} <i class="bi bi-chevron-right"></i></a>
 						<!-- 这个好像没什么必要 -->
 					</div>
 				</div>
@@ -301,41 +303,41 @@
 					<a class="a sm-app enable calc" onclick="openapp('calc');hide_startmenu();"
 						oncontextmenu="return showcm(event,'smapp',['calc','计算器'])">
 						<img src="icon/calc.svg">
-						<p>计算器</p>
+						<p>{{ calc.name }}</p>
 					</a>
 					<a class="a sm-app enable camera" onclick="apps.camera.notice();hide_startmenu();"
 						oncontextmenu="return showcm(event,'smapp',['camera', '相机'])">
 						<img src="icon/camera.svg">
-						<p>相机</p>
+						<p>{{ camera.name }}</p>
 					</a>
 					<a class="a sm-app enable" onclick="shownotice('feedback');">
 						<img src="icon/feedback.svg">
-						<p>反馈中心</p>
+						<p>{{ x.feedback }}</p>
 					</a>
 					<a class="a sm-app enable defender" onclick="openapp('defender');hide_startmenu();"
 						oncontextmenu="return showcm(event,'smapp',['defender','Windows 安全中心'])">
 						<img src="icon/defender.svg">
-						<p>Windows 安全中心</p>
+						<p>{{ defender.name }}</p>
 					</a>
 					<a class="a sm-app enable about" onclick="openapp('about');hide_startmenu();"
 						oncontextmenu="return showcm(event,'smapp',['about','关于 Win12 网页版'])">
 						<img src="icon/about.svg">
-						<p>关于Win12网页版</p>
+						<p>{{ about.stname }}</p>
 					</a>
 					<a class="a sm-app enable explorer" onclick="openapp('explorer');hide_startmenu();"
 						oncontextmenu="return showcm(event,'smapp',['explorer','文件资源管理器'])">
 						<img src="icon/explorer.svg">
-						<p>文件资源管理器</p>
+						<p>{{ explorer.name }}</p>
 					</a>
 					<a class="a sm-app enable notepad" onclick="openapp('notepad');hide_startmenu();"
 						oncontextmenu="return showcm(event,'smapp',['notepad','记事本'])">
 						<img src="icon/notepad.svg">
-						<p>记事本</p>
+						<p>{{ notepad.name }}</p>
 					</a>
 					<a class="a sm-app enable setting" onclick="openapp('setting');hide_startmenu();"
 						oncontextmenu="return showcm(event,'smapp',['setting','设置'])">
 						<img src="icon/setting.svg">
-						<p>设置 </p>
+						<p>{{ setting.name }}</p>
 					</a>
 					<a class="a sm-app"><img src="icon/store.svg">
 						<p>Microsoft Store</p>
@@ -353,24 +355,24 @@
 					<a class="a sm-app enable terminal" onclick="openapp('terminal');hide_startmenu();"
 						oncontextmenu="return showcm(event,'smapp',['terminal','终端'])">
 						<img src="icon/terminal.svg">
-						<p>终端</p>
+						<p>{{ terminal.name }}</p>
 					</a>
 				</div>
 			</div>
 			<div class="tuijian">
 				<!-- 推荐的项目 卡片 -->
 				<div class="title">
-					<p>推荐的项目</p>
+					<p>{{ sm.tj }}</p>
 					<div>
-						<a class="a more-btn">更多 <i class="bi bi-chevron-right"></i></a>
+						<a class="a more-btn">{{ sm.more }} <i class="bi bi-chevron-right"></i></a>
 					</div>
 				</div>
 				<div class="apps">
-					<a class="a tj-obj act"><img src="icon/files/ppt.png"><div><p>科学地使用瓶盖.pptx</p><p>5 分钟前</p></div></a>
-					<a class="a tj-obj act"><img src="icon/files/img.png"><div><p>可口可乐瓶盖.jpg</p><p>7 分钟前</p></div></a>
-					<a class="a tj-obj act"><img src="icon/files/img.png"><div><p>瓶盖构造图.jpg</p><p>16 分钟前</p></div></a>
-					<a class="a tj-obj act"><img src="icon/files/word.png"><div><p>瓶盖的构造及作用.docx</p><p>24 分钟前</p></div></a>
-					<a class="a tj-obj act"><img src="icon/files/excel.png"><div><p>可口可乐瓶盖厚度.xlsx</p><p>35 分钟前</p></div></a>
+					<a class="a tj-obj act"><img src="icon/files/ppt.png"><div><p>科学地使用瓶盖.pptx</p><p>5 {{ sm.minago }}</p></div></a>
+					<a class="a tj-obj act"><img src="icon/files/img.png"><div><p>可口可乐瓶盖.jpg</p><p>7 {{ sm.minago }}</p></div></a>
+					<a class="a tj-obj act"><img src="icon/files/img.png"><div><p>瓶盖构造图.jpg</p><p>16 {{ sm.minago }}</p></div></a>
+					<a class="a tj-obj act"><img src="icon/files/word.png"><div><p>瓶盖的构造及作用.docx</p><p>24 {{ sm.minago }}</p></div></a>
+					<a class="a tj-obj act"><img src="icon/files/excel.png"><div><p>可口可乐瓶盖厚度.xlsx</p><p>35 {{ sm.minago }}</p></div></a>
 				</div>
 			</div>
 		</div>
@@ -381,21 +383,21 @@
 			oninput="apps.search.search(this.value.length)">
 		<input-before class="bi bi-search"></input-before>
 		<div class="tab">
-			<a class="now">全部</a><a>应用</a><a>文档</a><a>网页</a>
-			<a>电子邮件</a><a>人员</a><a>设置</a><a>视频</a>
-			<a>文件夹</a><a>音乐</a><a>照片</a>
+			<a class="now">{{ sch.all }}</a><a>{{ sch.app }}</a><a>{{ sch.doc }}</a><a>{{ sch.web }}</a>
+			<a>{{ sch.mail }}</a><a>{{ sch.pep }}</a><a>{{ sch.stig }}</a><a>{{ sch.vido }}</a>
+			<a>{{ sch.fld }}</a><a>{{ sch.msc }}</a><a>{{ sch.pic }}</a>
 		</div>
 		<div class="ans">
 			<div class="list">
 				<list>
-					<p class="text">推荐</p>
+					<p class="text">{{ sch.tj }}</p>
 					<a onclick="openapp('setting');$('#search-btn').removeClass('show');
 					$('#search-win').removeClass('show');
 					setTimeout(() => {
 						$('#search-win').removeClass('show-begin');
 					}, 200);">
 						<img src="icon/setting.svg">
-						<p>设置</p>
+						<p>{{ setting.name }}</p>
 					</a>
 					<a onclick="openapp('about');$('#search-btn').removeClass('show');
 					$('#search-win').removeClass('show');
@@ -403,7 +405,7 @@
 						$('#search-win').removeClass('show-begin');
 					}, 200);">
 						<img src="icon/about.svg">
-						<p>关于Win12网页版</p>
+						<p>{{ about.stname }}</p>
 					</a>
 				</list>
 			</div>
@@ -416,9 +418,9 @@
 				<hr>
 				<div class="option">
 					<list>
-						<a class="a">打开</a>
-						<a class="a">打开文件所在位置</a>
-						<a class="a">复制路径</a>
+						<a class="a">{{ sch.open }}</a>
+						<a class="a">{{ sch.opinloc }}</a>
+						<a class="a">{{ sch.cpypath }}</a>
 					</list>
 				</div>
 			</div>
@@ -427,10 +429,10 @@
 	<div id="widgets">
 		<div class="widgets">
 			<div class="bar">
-				<p class="tit">小组件</p>
+				<p class="tit">{{ widmenu.widget }}</p>
 				<button onclick="shownotice('widgets')" class="a act btn btn-icon big"
 					style="background: linear-gradient(100deg, var(--theme-1), var(--theme-2));color:#fff;"
-					win12_title="添加"><i class="bi bi-plus-lg"></i></button>
+					win12_title="{{ widmenu.add }}"><i class="bi bi-plus-lg"></i></button>
 			</div>
 			<div class="content">
 				<div class="template">
@@ -566,8 +568,8 @@
 		<span class="hr"></span>
 		<div class="news">
 			<div class="bar">
-				<p class="tit">新闻</p>
-				<p style="color: #7f7f7f;margin-right: 5px;margin-top: 2px;">注意: 新闻内容均不属实 </p>
+				<p class="tit">{{ widmenu.news }}</p>
+				<p style="color: #7f7f7f;margin-right: 5px;margin-top: 2px;">{{ widmenu.ation }}</p>
 			</div>
 			<div class="content">
 				<div class="card" style="grid-column: 1/6;grid-row: 1/3;color: #fff;background: var(--bgul);background-position:0 -278px;background-size: 100%;">
@@ -575,46 +577,45 @@
 					<a class="a" style="margin: 5px 0 0 50px;font-size: 17px;color: #9dd0fb;text-shadow: 0 0 3px #000;" onclick="hide_widgets();
 					openapp('about');if($('.window.about').hasClass('min'))minwin('about');
 					$('#win-about>.about').removeClass('show');$('#win-about>.update').addClass('show');
-					$('#win-about>.update>div>details:first-child').attr('open','open')">详细信息 ></a>
+					$('#win-about>.update>div>details:first-child').attr('open','open')">{{ widmenu.detail }}</a>
 				</div>
 				<div class="card"
 					style="grid-column: 4/6;grid-row: 7/9;background:url(img/win13.jpg) right;background-size: cover;">
 					<p class="tit" style="margin: 70px 0 0 10px;color: #fff;">Windows13 即将发布，官方透露: 将自带 Macos 子系统</p>
 					<a class="a"
-						style="margin: 5px 0 0 80px;font-size: 17px;color: #9dd0fb;text-shadow: 0 0 3px #000;">详细信息
-						></a>
+						style="margin: 5px 0 0 80px;font-size: 17px;color: #9dd0fb;text-shadow: 0 0 3px #000;">{{ widmenu.detail }}</a>
 				</div>
 				<div class="card"
 					style="grid-column: 4/6;grid-row: 3/5;background:linear-gradient(#00000000,var(--bg) 70%),url(img/win11.jpg) center;background-size: cover;">
 					<p class="tit" style="margin: 100px 0 0 10px;">Windows11 将于下周停止支持</p>
-					<a class="a" style="margin: 5px 0 0 80px;font-size: 17px;">详细信息 ></a>
+					<a class="a" style="margin: 5px 0 0 80px;font-size: 17px;">{{ widmenu.detail }}</a>
 				</div>
 				<div class="card"
 					style="grid-column: 1/3;grid-row: 5/7;background:linear-gradient(#00000000,#111 80%),url(img/corsiri.svg) bottom;background-size: 150%;">
 					<p class="tit" style="margin: 80px 0 0px 10px;color: #fff;">2029年,微软终重拾Cortana 微软员工透露:将与Siri整合</p>
-					<a class="a" style="margin: 0 0 0 80px;font-size: 17px;color: #9dd0fb;">详细信息 ></a>
+					<a class="a" style="margin: 0 0 0 80px;font-size: 17px;color: #9dd0fb;">{{ widmenu.detail }}</a>
 				</div>
 				<div class="card"
 					style="grid-column: 1/4;grid-row: 7/9;background:linear-gradient(#00000000,#111 90%),url(img/wsm.png) left;background-size: 120%;">
 					<p class="tit" style="margin: 100px 0 0px 10px;color: #fff;">微软发布 Windows Subsystem for MacOS</p>
-					<a class="a" style="margin: 0 0 0 170px;font-size: 17px;color: #9dd0fb;">详细信息 ></a>
+					<a class="a" style="margin: 0 0 0 170px;font-size: 17px;color: #9dd0fb;">{{ widmenu.detail }}</a>
 				</div>
 				<div class="card" style="grid-column: 3/6;grid-row: 5/7;background:linear-gradient(#00000000 0 30%,var(--bg) 70%),url(img/mc.jpg) bottom;background-size: cover;">
 					<p class="tit" style="margin: 100px 0 -20px 10px;">今日凌晨,Minecraft把代理权交给中国航天员谭景元,网易败下阵来了?</p>
-					<a class="a" style="margin: 0 0 0 170px;font-size: 17px;">详细信息 ></a>
+					<a class="a" style="margin: 0 0 0 170px;font-size: 17px;">{{ widmenu.detail }}</a>
 				</div>
 				<div class="card" style="grid-column: 1/4;grid-row: 3/5;background:linear-gradient(#00000000 0 30%,var(--bg) 80%),url(img/yq.jpg) center;background-size: cover;">
 					<p class="tit" style="margin: 120px 0 -20px 10px;">中国航天员谭景元昨天下午成功登月</p>
-					<a class="a" style="margin: 0 0 0 150px;font-size: 17px;">详细信息 ></a>
+					<a class="a" style="margin: 0 0 0 150px;font-size: 17px;">{{ widmenu.detail }}</a>
 				</div>
 				<div class="card" style="grid-column: 3/6;grid-row: 9/11;background:linear-gradient(#00000000 0 30%,var(--bg) 80%),url(img/office.png) center;background-size: cover;">
 					<p class="tit" style="margin: 100px 0 0 10px;">微软发布声控Office套件，用户可以用嗓子完成文件编辑</p>
-					<a class="a" style="margin: 0 0 0 160px;font-size: 17px;">详细信息 ></a>
+					<a class="a" style="margin: 0 0 0 160px;font-size: 17px;">{{ widmenu.detail }}</a>
 				</div>
 				<div class="card"
 					style="grid-column: 1/4;grid-row: 11/13;background:linear-gradient(#00000000,var(--bg) 70%),url(img/earth.webp) center;background-size: cover;">
 					<p class="tit" style="margin: 100px 0 0 10px;">流浪地球4首支预告片发布</p>
-					<a class="a" style="margin: 5px 0 0 160px;font-size: 17px;">详细信息 ></a>
+					<a class="a" style="margin: 5px 0 0 160px;font-size: 17px;">{{ widmenu.detail }}</a>
 				</div>
 				<div class="card" style="grid-column: 1/3;grid-row: 9/11;background:#171b22;">
 					<p class="tit" style="font-size: 19px;margin: 50px 0 0 10px;color: #fff;">想给新闻增加更多奇思妙想?
@@ -639,12 +640,12 @@
 			</div>
 		</div>
 		<div class="chat">
-			<a class="a btn button" onclick="copilot.init()">开始对话</a>
+			<a class="a btn" onclick="copilot.init()">{{ copilot.start }}</a>
 			<p style="margin-top: 20px;">注意:目前后端发生了一点小问题，大概率不能使用，若能使用当然就运气好了。</p>
 		</div>
 		<div class="inputbox disable">
 			<input type="text" class="input" onkeydown="if(event.keyCode==13){copilot.send($(this).val());$(this).val('');this.blur()}">
-			<a class="a send btn" onclick="copilot.send($('#copilot>.inputbox>.input').val());$('#copilot>.inputbox>.input').val('');">发送</a>
+			<a class="a send btn" onclick="copilot.send($('#copilot>.inputbox>.input').val());$('#copilot>.inputbox>.input').val('');">{{ copilot.send }}</a>
 		</div>
 	</div>
 	<div id="control">
@@ -660,31 +661,31 @@
 					<div class="icon active" onclick="controlStatus.call(this)">
 						<icon class="s-icon"></icon>
 					</div>
-					<div class="tit">蓝牙</div>
+					<div class="tit">{{ ctrol.blteeth }}</div>
 				</div>
 				<div class="btn3">
 					<div class="icon" onclick="controlStatus.call(this)">
 						<icon class="s-icon"></icon>
 					</div>
-					<div class="tit">飞行模式</div>
+					<div class="tit">{{ ctrol.airpl }}</div>
 				</div>
 				<div class="btn4">
 					<div class="icon" onclick="controlStatus.call(this)">
 						<icon class="s-icon"></icon>
 					</div>
-					<div class="tit">夜间模式</div>
+					<div class="tit">{{ ctrol.nightl }}</div>
 				</div>
 				<div class="btn5">
 					<div class="icon" onclick="controlStatus.call(this)">
 						<icon class="s-icon"></icon>
 					</div>
-					<div class="tit">移动热点</div>
+					<div class="tit">{{ ctrol.hotspot }}</div>
 				</div>
 				<div class="btn6">
 					<div class="icon" onclick="controlStatus.call(this)">
 						<icon class="s-icon"></icon>
 					</div>
-					<div class="tit">辅助功能</div>
+					<div class="tit">{{ ctrol.access }}</div>
 				</div>
 			</div>
 			<div class="bottom">
@@ -708,7 +709,8 @@
 		</div>
 		<div class="cont">
 			<div class="head">
-				<p>一</p><p>二</p><p>三</p><p>四</p><p>五</p><p>六</p><p>日</p>
+				<p>{{ time.wabb.1 }}</p><p>{{ time.wabb.2 }}</p><p>{{ time.wabb.3 }}</p><p>{{ time.wabb.4 }}</p>
+				<p>{{ time.wabb.5 }}</p><p>{{ time.wabb.6 }}</p><p>{{ time.wabb.7 }}</p>
 			</div>
 			<div class="body">
 			</div>
@@ -717,7 +719,7 @@
 	<div id="dock-box">
 		<!-- Dock(任务)栏 -->
 		<div class="dock dock-start">
-			<a class="dock-btn" id="start-btn" win12_title="开始" onclick="
+			<a class="dock-btn" id="start-btn" win12_title="{{ sys.start }}" onclick="
 				if($('#start-menu').hasClass('show')){
 					hide_startmenu();
 				}
@@ -760,7 +762,7 @@
 				</svg>
 				<img src="icon/logo.svg" class="ico">
 			</a>
-			<a class="dock-btn" id="search-btn" win12_title="搜索" onclick="
+			<a class="dock-btn" id="search-btn" win12_title="{{ sys.search }}" onclick="
 			if ($('#search-win').hasClass('show')) {
 				$('#search-btn').removeClass('show');
 				$('#search-win').removeClass('show');
@@ -781,7 +783,7 @@
 				<svg class="out" width="26" height="26" viewBox="0,0,228,229" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" overflow="hidden"><defs><clipPath id="clip-search-out-0"><rect x="548" y="268" width="228" height="229"/></clipPath><linearGradient x1="738.799" y1="300.076" x2="608.064" y2="486.786" gradientUnits="userSpaceOnUse" spreadMethod="reflect" id="fill-search-out-1"><stop offset="0" stop-color="#A6A6A6"/><stop offset="0.18" stop-color="#A6A6A6"/><stop offset="0.91" stop-color="#595959"/><stop offset="1" stop-color="#595959"/></linearGradient></defs><g clip-path="url(#clip-search-out-0)" transform="translate(-548 -268)"><path d="M640 268.696C690.41 268.696 731.276 309.574 731.276 360 731.276 378.91 725.529 396.477 715.687 411.049L713.816 413.318 771.4 470.903C777.068 476.571 777.068 485.761 771.4 491.429 765.732 497.097 756.542 497.097 750.874 491.429L693.292 433.847 691.033 435.711C676.465 445.556 658.904 451.305 640 451.304 589.59 451.305 548.724 410.426 548.724 360 548.724 309.574 589.59 268.696 640 268.696Z" fill="url(#fill-search-out-1)" fill-rule="evenodd"/></g></svg>
 				<svg class="in" width="20" height="20" viewBox="0,0,134,134" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" overflow="hidden"><defs><clipPath id="clip-search-in-0"><rect x="573" y="293" width="134" height="134"/></clipPath><linearGradient x1="611.068" y1="280.509" x2="668.932" y2="439.491" gradientUnits="userSpaceOnUse" spreadMethod="reflect" id="fill-search-in-1"><stop offset="0" stop-color="#82CDF6"/><stop offset="0.18" stop-color="#82CDF6"/><stop offset="0.91" stop-color="#4297D6"/><stop offset="1" stop-color="#4297D6"/></linearGradient><image width="132" height="132" xlink:href="data:image/png;base64,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" preserveAspectRatio="none" id="img2"></image><clipPath id="clip-search-in-3"><rect x="574" y="294" width="132" height="132"/></clipPath></defs><g clip-path="url(#clip-search-in-0)" transform="translate(-573 -293)"><path d="M574 360C574 323.549 603.549 294 640 294 676.451 294 706 323.549 706 360 706 396.451 676.451 426 640 426 603.549 426 574 396.451 574 360Z" fill="url(#fill-search-in-1)" fill-rule="evenodd"/><g clip-path="url(#clip-search-in-3)"><use width="100%" height="100%" xlink:href="#img2" transform="translate(574 294)"></use></g></g></svg>
 			</a>
-			<a class="dock-btn" id="widgets-btn" win12_title="小组件" onclick="
+			<a class="dock-btn" id="widgets-btn" win12_title="{{ sys.widgets }}" onclick="
 			if($('#widgets').hasClass('show')){
 				hide_widgets();
 			}
@@ -814,7 +816,7 @@
 		<div id="toolbar">
 
 		</div>
-		<div class="a dock theme" win12_title="切换主题" onclick="toggletheme()">
+		<div class="a dock theme" win12_title="{{ sys.tgltheme }}" onclick="toggletheme()">
 			<svg viewBox="0,0,307,307" class="light" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" overflow="hidden"><defs><clipPath id="theme-light-clip0"><rect x="79" y="77" width="307" height="307" /></clipPath><linearGradient x1="128.499" y1="49.9991" x2="337.501" y2="412.001" gradientUnits="userSpaceOnUse" spreadMethod="reflect" id="theme-light-fill1"><stop offset="0" stop-color="#FFC567" /><stop offset="0.18" stop-color="#FFC567" /><stop offset="0.8" stop-color="#EE54F2" /></linearGradient></defs><g clip-path="url(#theme-light-clip0)" transform="translate(-79 -77)"><path d="M80 231C80 146.5 148.5 78 233 78 317.5 78 386 146.5 386 231 386 315.5 317.5 384 233 384 148.5 384 80 315.5 80 231Z" fill="url(#theme-light-fill1)" fill-rule="evenodd" /></g></svg>
 			<svg viewBox="0,0,275,294" class="dark" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" overflow="hidden"><defs><clipPath id="theme-dark-clip0"><rect x="525" y="230" width="275" height="294" /></clipPath><linearGradient x1="599.492" y1="203.887" x2="725.508" y2="550.113" gradientUnits="userSpaceOnUse" spreadMethod="reflect" id="theme-dark-fill1"><stop offset="0" stop-color="#2474B6" /><stop offset="0.42" stop-color="#2474B6" /><stop offset="0.98" stop-color="#FFD966" /><stop offset="1" stop-color="#FFD966" /></linearGradient></defs><g clip-path="url(#theme-dark-clip0)" transform="translate(-525 -230)"><path d="M635.002 236.062C638.664 240.491 639.245 246.694 636.469 251.721 625.869 271.094 620.334 292.809 620.372 314.869 620.372 388.255 680.469 447.679 754.537 447.679 764.199 447.679 773.604 446.675 782.643 444.759 788.307 443.538 794.156 445.809 797.493 450.526 801.036 455.459 800.803 462.148 796.925 466.824 767.803 502.434 724.103 523.073 677.976 523 593.458 523 525 455.217 525 371.701 525 308.846 563.757 254.933 618.942 232.083 624.588 229.708 631.132 231.329 635.002 236.062Z" fill="url(#theme-dark-fill1)" fill-rule="evenodd" /></g></svg>
 		</div>
@@ -875,15 +877,15 @@
 	<div id="desktop">
 		<div ondblclick="openapp('explorer');" ontouchstart="openapp('explorer');" win12_title="显示连接到此计算机的驱动器和硬件。" oncontextmenu="return showcm(event,'desktop.icon',['explorer',-1]);" appname="explorer">
 			<img src="apps/icons/explorer/thispc.svg">
-			<p>此电脑</p>
+			<p>{{ sys.thispc }}</p>
 		</div>
 		<div class="b" ondblclick="openapp('setting');" ontouchstart="openapp('setting');" oncontextmenu="return showcm(event,'desktop.icon',['setting',-1]);" appname="setting">
 			<img src="icon/setting.svg">
-			<p>设置</p>
+			<p>{{ setting.name }}</p>
 		</div>
 		<div class="b" ondblclick="openapp('about');" ontouchstart="openapp('about');" oncontextmenu="return showcm(event,'desktop.icon',['about',-1]);" appname="about">
 			<img src="icon/about.svg">
-			<p>关于 Win12 网页版</p>
+			<p>{{ about.midname }}</p>
 		</div>
 		<div class="b" ondblclick="openapp('edge');" ontouchstart="openapp('edge');" oncontextmenu="return showcm(event,'desktop.icon',['edge',-1]);" appname="edge">
 			<img src="icon/edge.svg">
@@ -891,7 +893,7 @@
 		</div>
 		<div class="b" ondblclick="shownotice('feedback');" ontouchstart="shownotice('feedback');;">
 			<img src="icon/feedback.svg">
-			<p>反馈中心</p>
+			<p>{{ x.feedback }}</p>
 		</div>
 		<span class="choose">
 		</span>
@@ -914,9 +916,9 @@
 	</div>
 	<div id="desktop-editbar-container">
 		<div id="desktop-editbar">
-			<div onclick="shownotice('widgets.desktop');"><i class="bi bi-plus"></i> 添加小组件</div>
+			<div onclick="shownotice('widgets.desktop');"><i class="bi bi-plus"></i> {{ editmode.add }}</div>
 			<div onclick="openapp('setting');$('#win-setting > div.menu > list > a.enable.appearance')[0].click();"><i class="bi bi-brush"></i> 个性化</div>
-			<div onclick="editMode();" win12_title="退出编辑模式"><i class="bi bi-x-lg"></i></div>
+			<div onclick="editMode();" win12_title="{{ editmode.exit }}"><i class="bi bi-x-lg"></i></div>
 		</div>
 	</div>
 	<p id="translater" style="display: none;"></p>
@@ -935,7 +937,7 @@
 		<div class="resize-bar"></div>
 		<div class="titbar">
 			<img src="icon/defender.svg" class="icon">
-			<p>Windows 安全中心</p>
+			<p>{{ defender.name }}</p>
 			<div>
 				<a class="a wbtg red" onclick="hidewin('defender')"><i class="bi bi-x-lg"></i></a>
 				<a class="a wbtg max" onclick="maxwin('defender')"><i class="bi bi-app"></i></a>
@@ -958,39 +960,29 @@
 				<ul class="nav-list">
 					<li class="nav-list-item active">
 						<a class="nav-list-link">
-							<icon></icon>
-							主页
-						</a>
+							<icon></icon>{{ defender.home }}						</a>
 					</li>
 					<li class="nav-list-item">
 						<a class="nav-list-link">
-							<icon></icon>
-							病毒威胁与防护
-						</a>
+							<icon></icon>{{ defender.viru }}						</a>
 					</li>
 					<li class="nav-list-item">
 						<a class="nav-list-link">
-							<icon></icon>
-							账户防护
-						</a>
+							<icon></icon>{{ defender.acct }}						</a>
 					</li>
 					<li class="nav-list-item">
 						<a class="nav-list-link">
-							<icon></icon>
-							防火墙和网络防护
-						</a>
+							<icon></icon>{{ defender.fiwnet }}						</a>
 					</li>
 					<li class="nav-list-item">
 						<a class="nav-list-link">
-							<icon></icon>
-							设备安全性
-						</a>
+							<icon></icon>{{ defender.dvic }}						</a>
 					</li>
 				</ul>
 			</div>
 			<div class="app-main">
 				<div class="main-header-line">
-					<h1>安全性概览</h1>
+					<h1>{{ defender.aqxgl }}</h1>
 					<div class="action-buttons">
 						<button class="open-right-area">
 							<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
@@ -1014,7 +1006,7 @@
 					<div class="chart-container-wrapper">
 						<div class="chart-container">
 							<div class="chart-info-wrapper">
-								<h2>网络流量使用</h2>
+								<h2>{{ defender.wlllsy }}</h2>
 								<span>20.5 M</span>
 							</div>
 							<div class="chart-svg">
@@ -1033,7 +1025,7 @@
 					<div class="chart-container-wrapper">
 						<div class="chart-container">
 							<div class="chart-info-wrapper">
-								<h2>网络速度</h2>
+								<h2>{{ defender.wlsd }}</h2>
 								<span>99 M/S</span>
 							</div>
 							<div class="chart-svg">
@@ -1052,7 +1044,7 @@
 					<div class="chart-container-wrapper">
 						<div class="chart-container">
 							<div class="chart-info-wrapper">
-								<h2>入侵病毒清除</h2>
+								<h2>{{ defender.rqbdqc }}</h2>
 								<h3 style="color: white;">所有病毒均被清除</h3>
 							</div>
 							<div class="chart-svg">
@@ -1073,8 +1065,8 @@
 					<div class="chart-container-wrapper big">
 						<div class="chart-container">
 							<div class="chart-container-header">
-								<h2>电脑受病毒攻击频率</h2>
-								<span>过去 30 天</span>
+								<h2>{{ defender.sgjpl }}</h2>
+								<span>{{ defender.gq30t }}</span>
 							</div>
 							<div class="line-chart">
 								<canvas id="chart"></canvas>
@@ -1087,8 +1079,8 @@
 					<div class="chart-container-wrapper small">
 						<div class="chart-container">
 							<div class="chart-container-header">
-								<h2>网络通信比例</h2>
-								<span href="#">这个月</span>
+								<h2>{{ defender.wltxbl }}</h2>
+								<span href="#">{{ defender.zgy }}</span>
 							</div>
 							<div class="acquisitions-bar">
 								<span class="bar-progress rejected" style="width:1%;"></span>
@@ -1098,29 +1090,29 @@
 							</div>
 							<div class="progress-bar-info">
 								<span class="progress-color applications"></span>
-								<span class="progress-type">请求成功</span>
+								<span class="progress-type">{{ defender.qqcg }}</span>
 								<span class="progress-amount">80%</span>
 							</div>
 							<div class="progress-bar-info">
 								<span class="progress-color shortlisted"></span>
-								<span class="progress-type">请求失败</span>
+								<span class="progress-type">{{ defender.qqsb }}</span>
 								<span class="progress-amount">5%</span>
 							</div>
 							<div class="progress-bar-info">
 								<span class="progress-color on-hold"></span>
-								<span class="progress-type">请求发出后无响应</span>
+								<span class="progress-type">{{ defender.qqwxy }}</span>
 								<span class="progress-amount">19%</span>
 							</div>
 							<div class="progress-bar-info">
 								<span class="progress-color rejected"></span>
-								<span class="progress-type">含有病毒</span>
+								<span class="progress-type">{{ defender.hybd }}</span>
 								<span class="progress-amount">1%</span>
 							</div>
 						</div>
 						<div class="chart-container applicants">
 							<div class="chart-container-header">
-								<h2>请求记录</h2>
-								<span>今天 仅展示最近5次请求</span>
+								<h2>{{ defender.qqjl }}</h2>
+								<span>{{ defender.jt5qq }}</span>
 							</div>
 							<div class="applicant-line">
 								<div class="applicant-info">
@@ -1167,7 +1159,7 @@
 				var data = {
 					labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
 					datasets: [{
-						label: '病毒攻击次数',
+						label: lang.defender.gjcs,
 						backgroundColor: gradient,
 						pointBackgroundColor: '#00c7d6',
 						borderWidth: 1,
@@ -1235,7 +1227,7 @@
 		<div class="resize-bar"></div>
 		<div class="titbar">
 			<img src="icon/setting.svg" class="icon">
-			<p>设置</p>
+			<p>{{ setting.name }}</p>
 			<div>
 				<a class="a wbtg red" onclick="hidewin('setting')"><i class="bi bi-x-lg"></i></a>
 				<a class="a wbtg max" onclick="maxwin('setting')"><i class="bi bi-app"></i></a>
@@ -1250,73 +1242,73 @@
 				<a class="a user">
 					<svg viewBox="0,0,257,344" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" overflow="hidden"><defs><clipPath id="user-clip1"><rect x="382" y="195" width="257" height="344" /></clipPath><linearGradient x1="351.462" y1="233.56" x2="669.496" y2="500.422" gradientUnits="userSpaceOnUse" spreadMethod="reflect" id="user-fill3"><stop offset="0" stop-color="#A964C8" /><stop offset="0.35" stop-color="#A964C8" /><stop offset="0.87" stop-color="#2D8AD5" /><stop offset="1" stop-color="#2D8AD5" /></linearGradient><linearGradient x1="351.462" y1="233.56" x2="669.496" y2="500.422" gradientUnits="userSpaceOnUse" spreadMethod="reflect" id="user-fill4"><stop offset="0" stop-color="#A964C8" /><stop offset="0.35" stop-color="#A964C8" /><stop offset="0.87" stop-color="#2D8AD5" /><stop offset="1" stop-color="#2D8AD5" /></linearGradient></defs><g clip-path="url(#user-clip1)" transform="translate(-382 -195)"><path d="M637.755 433.872C642.215 515.221 579.577 537.983 508.011 537.983 436.444 537.983 376.676 507.833 383.513 437.11 383.109 425.234 389.59 414.133 398.634 409.891 413.82 402.768 444.753 402.936 507.484 402.997 570.214 403.058 609.164 402.279 621.521 407.947 633.878 413.614 638.011 424.609 637.755 433.872Z" fill="url(#user-fill3)" fill-rule="evenodd" /><path d="M422 285C422 235.847 461.623 196 510.5 196 559.377 196 599 235.847 599 285 599 334.153 559.377 374 510.5 374 461.623 374 422 334.153 422 285Z" fill="url(#user-fill4)" fill-rule="evenodd" /></g></svg>
 					<div>
-						<p>瓶盖</p>
+						<p>{{ setting.usr }}</p>
 						<p>tanjingyuan@win12.com</p>
 					</div>
 				</a>
-				<input type="text" class="input" placeholder="查找设置" style="padding-left: 30px;">
+				<input type="text" class="input" placeholder="{{ setting.srchp }}" style="padding-left: 30px;">
 				<input-before class="bi bi-search"></input-before>
 				<list class="focs">
 					<a class="enable system check" onclick="apps.setting.page('system')"><img
-							src="apps/icons/setting/system.png">系统</a>
-					<a><img src="apps/icons/setting/blueteeth.png">蓝牙和其他设备</a>
-					<a><img src="apps/icons/setting/network.png">网络和 Internet</a>
+							src="apps/icons/setting/system.png">{{ setting.sys }}</a>
+					<a><img src="apps/icons/setting/blueteeth.png">{{ setting.blue }}</a>
+					<a><img src="apps/icons/setting/network.png">{{ setting.netw }}</a>
 					<a class="enable appearance" onclick="apps.setting.page('appearance')"><img
-							src="apps/icons/setting/personal.png">个性化</a>
-					<a><img src="apps/icons/setting/apps.png">应用</a>
-					<a><img src="apps/icons/setting/user.png">账户</a>
-					<a><img src="apps/icons/setting/time.png">时间和语言</a>
-					<a><img src="apps/icons/setting/game.png">游戏</a>
-					<a><img src="apps/icons/setting/help.png">辅助功能</a>
-					<a class="enable safe" onclick="apps.setting.page('safe')"><img src="apps/icons/setting/safe.png">隐私和安全性</a>
-					<a class="enable update" onclick="apps.setting.page('update')"><img src="apps/icons/setting/update.png">Windows 更新</a>
+							src="apps/icons/setting/personal.png">{{ setting.appr }}</a>
+					<a><img src="apps/icons/setting/apps.png">{{ setting.app }}</a>
+					<a><img src="apps/icons/setting/user.png">{{ setting.acc }}</a>
+					<a><img src="apps/icons/setting/time.png">{{ setting.time }}</a>
+					<a><img src="apps/icons/setting/game.png">{{ setting.game }}</a>
+					<a><img src="apps/icons/setting/help.png">{{ setting.hlp }}</a>
+					<a class="enable safe" onclick="apps.setting.page('safe')"><img src="apps/icons/setting/safe.png">{{ setting.safe }}</a>
+					<a class="enable update" onclick="apps.setting.page('update')"><img src="apps/icons/setting/update.png">{{ setting.upd }}</a>
 					<span class="focs"></span>
 				</list>
 			</div>
 			<div class="page">
 				<div class="cnt system show">
-					<p class="title">系统</p>
+					<p class="title">{{ setting.sys }}</p>
 					<div style="display: flex;">
 						<p class="s-icon" style="font-size: 70px;margin: -8px 10px 0px 20px;"></p>
 						<div>
 							<p style="font-size: 28px;text-overflow: ellipsis;white-space: nowrap;">Desktop-PingGai</p>
-							<p style="color: #7f7f7f;margin:-8px 0 -5px 0;">瓶盖</p>
+							<p style="color: #7f7f7f;margin:-8px 0 -5px 0;">{{ setting.usr }}</p>
 							<a style="color: var(--href);text-decoration: underline !important;;" class="a">重命名</a>
 						</div>
 					</div>
 					<div class="setting-list">
-						<a><icon></icon><div><p>显示</p><p>显示器、亮度、夜间模式、显示描述</p></div><i class="bi bi-chevron-right"></i></a>
-						<a><icon></icon><div><p>声音</p><p>声音级别、输入、输出、声音设备</p></div><i class="bi bi-chevron-right"></i></a>
-						<a><icon></icon><div><p>通知</p><p>来自系统和应用的警报</p></div><i class="bi bi-chevron-right"></i></a>
-						<a><icon></icon><div><p>专注助手</p><p>通知、自动规则</p></div><i class="bi bi-chevron-right"></i></a>
-						<a><icon class="b">&#xF186;</icon><div><p>电源</p><p>睡眠、电池使用情况、节电模式</p></div><i class="bi bi-chevron-right"></i></a>
-						<a><icon></icon><div><p>存储</p><p>存储空间、驱动器、配置规则</p></div><i class="bi bi-chevron-right"></i></a>
-						<a><icon></icon><div><p>多任务处理</p><p>贴靠窗口、桌面、任务切换</p></div><i class="bi bi-chevron-right"></i></a>
-						<a><icon></icon><div><p>激活</p><p>激活状态、订阅、产品密钥</p></div><i class="bi bi-chevron-right"></i></a>
-						<a><icon></icon><div><p>疑难解答</p><p>建议的疑难解答、首选项和历史记录</p></div><i class="bi bi-chevron-right"></i></a>
-						<a><icon></icon><div><p>恢复</p><p>重置、高级启动、返回</p></div><i class="bi bi-chevron-right"></i></a>
-						<a><icon></icon><div><p>投影到此电脑</p><p>权限、配对 PIN、可发现性</p></div><i class="bi bi-chevron-right"></i></a>
-						<a><icon></icon><div><p>远程桌面</p><p>远程桌面用户、连接权限</p></div><i class="bi bi-chevron-right"></i></a>
-						<a><icon></icon><div><p>剪贴板</p><p>剪贴和复制历史记录、同步、清除</p></div><i class="bi bi-chevron-right"></i></a>
-						<a><icon></icon><div><p>关于</p><p>设备规格、重命名电脑、Windows 规格</p></div><i class="bi bi-chevron-right"></i></a>
+						<a><icon></icon><div><p>{{ setting.system.disp }}</p><p>{{ setting.system.dispd }}</p></div><i class="bi bi-chevron-right"></i></a>
+						<a><icon></icon><div><p>{{ setting.system.sond }}</p><p>{{ setting.system.sondd }}</p></div><i class="bi bi-chevron-right"></i></a>
+						<a><icon></icon><div><p>{{ setting.system.noti }}</p><p>{{ setting.system.notid }}</p></div><i class="bi bi-chevron-right"></i></a>
+						<a><icon></icon><div><p>{{ setting.system.focs }}</p><p>{{ setting.system.focsd }}</p></div><i class="bi bi-chevron-right"></i></a>
+						<a><icon class="b">&#xF186;</icon><div><p>{{ setting.system.powr }}</p><p>{{ setting.system.powrd }}</p></div><i class="bi bi-chevron-right"></i></a>
+						<a><icon></icon><div><p>{{ setting.system.strg }}</p><p>{{ setting.system.strgd }}</p></div><i class="bi bi-chevron-right"></i></a>
+						<a><icon></icon><div><p>{{ setting.system.mult }}</p><p>{{ setting.system.multd }}</p></div><i class="bi bi-chevron-right"></i></a>
+						<a><icon></icon><div><p>{{ setting.system.actv }}</p><p>{{ setting.system.actvd }}</p></div><i class="bi bi-chevron-right"></i></a>
+						<a><icon></icon><div><p>{{ setting.system.trbl }}</p><p>{{ setting.system.trbld }}</p></div><i class="bi bi-chevron-right"></i></a>
+						<a><icon></icon><div><p>{{ setting.system.recv }}</p><p>{{ setting.system.recvd }}</p></div><i class="bi bi-chevron-right"></i></a>
+						<a><icon></icon><div><p>{{ setting.system.prjc }}</p><p>{{ setting.system.prjcd }}</p></div><i class="bi bi-chevron-right"></i></a>
+						<a><icon></icon><div><p>{{ setting.system.remt }}</p><p>{{ setting.system.remtd }}</p></div><i class="bi bi-chevron-right"></i></a>
+						<a><icon></icon><div><p>{{ setting.system.clpb }}</p><p>{{ setting.system.clpbd }}</p></div><i class="bi bi-chevron-right"></i></a>
+						<a><icon></icon><div><p>{{ setting.system.abot }}</p><p>{{ setting.system.abotd }} 规格</p></div><i class="bi bi-chevron-right"></i></a>
 					</div>
 				</div>
 				<div class="cnt appearance">
-					<p class="title">个性化</p>
+					<p class="title">{{ setting.appr }}</p>
 					<div class="setting-list" style="margin-top: 10px;">
 						<a class="dp app-color" onclick="$('.dp.app-color').toggleClass('show');">
 							<icon></icon>
 							<div>
-								<p>颜色</p>
-								<p>设置 Windows 的主题色</p>
+								<p>{{ setting.appearance.color }}</p>
+								<p>{{ setting.appearance.colord }}</p>
 							</div><i class="bi bi-chevron-down"></i>
 						</a>
 						<div class="dp app-color">
-							<p>当前颜色</p>
+							<p>{{ setting.appearance.colornow }}</p>
 							<div class="color"
 								style="background: linear-gradient(120deg,var(--theme-1),var(--theme-2));"></div>
 							<br />
-							<p>自定义颜色</p>
+							<p>{{ setting.appearance.colorset }}</p>
 							<div style="display: flex;">
 								<div class="a act color theme1" style="background: #47acff"
 									onclick="$('div.app-color>div>input.theme1inp')[0].click();"></div>
@@ -1333,11 +1325,11 @@
 									value="#1168ae">
 								<a class="a button" style="margin-left: 20px;" onclick="$(':root').css('--theme-1',$('div.app-color>div>input.theme1inp').val());
 									$(':root').css('--theme-2',$('div.app-color>div>input.theme2inp').val());setData('color1',$('div.app-color>div>input.theme1inp').val());
-									setData('color2',$('div.app-color>div>input.theme2inp').val())">应用</a>
+									setData('color2',$('div.app-color>div>input.theme2inp').val())">{{ setting.appearance.apply }}</a>
 							</div>
 						</div>
 						<a class="dp theme" onclick="$('.dp.theme').toggleClass('show');if (!($('#set-theme>.a').length)) apps.setting.theme_get();">
-							<icon>&#xE771;</icon><div><p>主题</p><p>设置 Windows 的主题 想要<span class="a jump" win12_title="https://github.com/tjy-gitnub/win12-theme" onclick="window.open('https://github.com/tjy-gitnub/win12-theme','_blank')">上传自己的主题</span>?</p></div><i class="bi bi-chevron-down"></i></a>
+							<icon>&#xE771;</icon><div><p>{{ setting.appearance.theme }}</p><p>{{ setting.appearance.themed }}</p></div><i class="bi bi-chevron-down"></i></a>
 						<div class="dp theme" id="set-theme">
 							<loading>
 								<svg width="30px" height="30px" viewBox="0 0 16 16">
@@ -1347,32 +1339,32 @@
 								</svg>
 							</loading>
 						</div>
-						<div class="border-radius"><icon></icon><div><p>圆角</p><p>设置系统界面中是否启用圆角</p></div>
+						<div class="border-radius"><icon></icon><div><p>{{ setting.appearance.bdrd }}</p><p>{{ setting.appearance.bdrdd }}</p></div>
 							<div class="alr">
 								<a class="a checkbox checked" id="sys_setting_1" onclick="$(this).toggleClass('checked');$(':root').toggleClass('nobr');sys_setting[0]=1-sys_setting[0];saveDesktop();"></a>
 							</div>
 						</div>
-						<div class="border-radius"><icon></icon><div><p>动画</p><p>系统界面元素过渡动画</p></div>
+						<div class="border-radius"><icon></icon><div><p>{{ setting.appearance.animn }}</p><p>{{ setting.appearance.animnd }}</p></div>
 							<div class="alr">
 								<a class="a checkbox checked" id="sys_setting_2" onclick="$(this).toggleClass('checked');$(':root').toggleClass('notrans');sys_setting[1]=1-sys_setting[1];saveDesktop();"></a>
 							</div>
 						</div>
-						<div class="border-radius"><icon></icon><div><p>阴影</p><p>为系统界面元素添加阴影效果</p></div>
+						<div class="border-radius"><icon></icon><div><p>{{ setting.appearance.shadow }}</p><p>{{ setting.appearance.shadowd }}</p></div>
 							<div class="alr">
 								<a class="a checkbox checked" id="sys_setting_3" onclick="$(this).toggleClass('checked');$(':root').toggleClass('nosd');sys_setting[2]=1-sys_setting[2];saveDesktop();"></a>
 							</div>
 						</div>
-						<div class="border-radius"><icon></icon><div><p>多窗口透明</p><p>为所有窗口开启透明效果，而不是仅用于焦点窗口 <span class="a jump" win12_title="开启后将占用大量GPU,可能造成卡顿">详细</span></p></div>
+						<div class="border-radius"><icon></icon><div><p>{{ setting.appearance.blurall }}</p><p>{{ setting.appearance.blued }}</p></div>
 							<div class="alr">
 								<a class="a checkbox" id="sys_setting_4" onclick="$(this).toggleClass('checked');$(':root').toggleClass('moreblur');sys_setting[3]=1-sys_setting[3];saveDesktop();"></a>
 							</div>
 						</div>
-						<div class="border-radius"><icon>&#xE621;</icon><div><p>Mica效果 (实验)</p><p>为焦点窗口开启mica效果 <a class="a jump" onclick="shownotice('feedback')">反馈</a></p></div>
+						<div class="border-radius"><icon>&#xE621;</icon><div><p>{{ setting.appearance.mica }}</p><p>{{ setting.appearance.micad }} <a class="a jump" onclick="shownotice('feedback')">{{ setting.appearance.feedback }}</a></p></div>
 							<div class="alr">
 								<a class="a checkbox" id="sys_setting_5" onclick="$(this).toggleClass('checked');$(':root').toggleClass('mica');sys_setting[4]=1-sys_setting[4];saveDesktop();"></a>
 							</div>
 						</div>
-						<div class="border-radius"><icon><i class="bi bi-music-note-beamed"></i></icon><div><p>开机音乐</p><p>是否启用开机音乐</p></div>
+						<div class="border-radius"><icon><i class="bi bi-music-note-beamed"></i></icon><div><p>{{ setting.appearance.music }}</p><p>{{ setting.appearance.musicd }}</p></div>
 							<div class="alr">
 								<a class="a checkbox checked" id="sys_setting_6" onclick="sys_setting[5]=1-sys_setting[5];document.getElementById('sys_setting_6').setAttribute('class', 'a checkbox' + (sys_setting[5]?' checked':''));saveDesktop();"></a>
 							</div>
@@ -1586,10 +1578,10 @@
 				</list>
 			</div>
 			<div class="cnt about">
-				<h1 class="tit"><span></span>Windows 12 网页版</h1>
+				<h1 class="tit"><span></span> this.name#</h1>
 				<div style="margin-left: 20px;">
 					<h2 class="tit"><span></span>简介</h2>
-					<p>&emsp;&emsp;Windows 12 网页版是一个开源项目, 由谭景元原创, 使用 HTML, CSS, JavaScript , 在网络上模拟、创新操作系统</p>
+					<p>&emsp;&emsp;{{ this.name }}是一个开源项目, 由谭景元原创, 使用 HTML, CSS, JavaScript , 在网络上模拟、创新操作系统</p>
 					<p>&emsp;&emsp;此项目已发布至 Github, <a onclick="window.open('https://github.com/tjy-gitnub/win12','_blank');" win12_title="https://github.com/tjy-gitnub/win12" class="jump">点击此处查看</a></p>
 					<p>&emsp;&emsp;若您对于该项目有任何意见或建议，请在 Github 上<a onclick="window.open('https://github.com/tjy-gitnub/win12/issues','_blank');" win12_title="https://github.com/tjy-gitnub/win12/issues" class="jump">提交 issues</a>, 您的问题会被尽可能快地解决</p>
 					<p>&emsp;&emsp;原创作者谭景元，点击以<a onclick="window.open('https://tjy-gitnub.github.io/','_blank');" win12_title="https://tjy-gitnub.github.io/" class="jump">了解详细</a></p>
@@ -1635,9 +1627,6 @@
 			<div class="cnt update">
 				<h1 class="tit"><span></span>更新记录</h1>
 				<div style="margin-left: 20px;">
-					<details><summary><span>v7.3.2</span> 细节更改</summary><p>
-						&emsp;&emsp;没有新增内容 (各位可以抽时间去看看readme.md，一些特殊情况</p>
-					</details>
 					<details><summary><span>v7.3.1</span> 修复v7.3.0更新带来的bug</summary><p>
 						&emsp;&emsp;修复v7.3.0更新带来的bug</p>
 					</details>
@@ -2922,8 +2911,8 @@
 		</div>
 	</div>
 	<script src="data/tasks.js"></script>
-	<script src="desktop.js"></script>
 	<script src="module/tab.js"></script>
+	<script src="desktop.js"></script>
 	<script src="https://fastly.jsdelivr.net/pyodide/v0.23.4/full/pyodide.js" async></script>
 	<!-- <link rel="stylesheet" href="https://pyscript.net/latest/pyscript.css" />
 	<script defer src="https://pyscript.net/latest/pyscript.js"></script> -->         <!-- PyScript, 已弃用 -->

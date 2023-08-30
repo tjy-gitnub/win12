@@ -1,4 +1,5 @@
 // 后端服务器
+loadlang();
 const server = 'http://win12server.freehk.svipss.top/';
 const pages = {
     'get-title': '', // 获取标题
@@ -524,6 +525,7 @@ let nts = {
         ]
     },
     'ZeroDivision': {//计算器报错窗口
+        // 甚至还报错我真的哭死，直接输入框显示给error啥的不就完了。。
         cnt: `<p class="tit">错误</p>
             <p>除数不得等于0</p>`,
         btn: [
@@ -636,6 +638,106 @@ function closenotice() {
     }, 200);
 }
 var shutdown_task = []; //关机任务，储存在这个数组里
+// 为什么要数组？
+// 运行的指令
+function runcmd(cmd) {
+    if (cmd == 'cmd' || cmd == 'cmd.exe') {
+        run_cmd = cmd;
+        openapp('terminal');
+        return true;
+    }else if(cmd in apps){
+        openapp(cmd);
+        return true;
+    }else if(cmd.replace('.exe','') in apps){
+        openapp(cmd.replace('.exe',''))
+        return true;
+    }else if(cmd.includes("shutdown")){//关机指令
+        run_cmd = cmd
+        var cmds = cmd.split(' ');
+        if(cmds.includes("shutdown")||cmds.includes("shutdown.exe")){ //帮助
+            if(cmds.length==1){
+                openapp('terminal');
+                $('#win-terminal').html(`
+<pre>
+shutdown [-s] [-r] [-f] [-a] [-t time]
+-s:关机
+-r:重启
+-f:注销
+-a:取消之前的操作
+-t time:指定在 time秒 后操作
+
+其余不多做介绍了
+请按任意键继续.&nbsp;.&nbsp;.<input type="text" onkeydown="hidewin('terminal')"></input></pre>`); //Q：为什么文字这么多呢？A：shutdown的帮助本来就多，为了能显示空格，就把空格用&nbsp;代替了
+// 所以你是没事干吗？。。提示：github并不是以行数来计算贡献的哦   from @tjy-gitnub
+                $('#win-terminal>pre>input').focus()
+            } else if (cmds.includes("-s") || cmds.includes("/s")) {//关机
+                if ((cmds.indexOf("-t")!=-1&&cmd.length/*判断是否-t后有其他参数*/>=cmds.indexOf("-t")+2/*先加一，获取当下标是从1开始的时候的下标索引；再加一，获取下一项。配合数组.length使用*/)||(cmds.indexOf("/t")!=-1&&cmd.length/*判断是否-t后有其他参数*/>=cmds.indexOf("/t")+2)){
+                    str = "";
+                    if (cmds.includes("-t")) {str = "-t";}
+                    if (cmds.includes("/t")) {str = "/t";}
+                    if(!isNaN(cmds[cmds.indexOf(str)+1]/*这里只加一是因为下标是从0开始的*/)){
+                        num = parseInt(cmds[cmds.indexOf(str)+1])
+                        nts['shutdown'] = {
+                            cnt:  `
+                            <p class="tit">即将注销你的登录</p>
+                            <p>Windows 将在 ` + num / 60 + ` 分钟后关闭。</p>`,
+                            btn: [
+                                { type: 'main', text: '关闭', js: 'closenotice();' },
+                            ]
+                        };
+                        shutdown_task[shutdown_task.length] = setTimeout("window.location.href = './shutdown.html'",num * 1000);
+                        if(!(cmds.includes("/f")||cmds.includes("-f"))){
+                            shownotice('shutdown');
+                        }
+                    }
+                }
+            } else if (cmds.includes("-r") || cmds.includes("/r")) {//重启
+                if ((cmds.indexOf("-t")!=-1&&cmd.length>=cmds.indexOf("-t")+2)||(cmds.indexOf("/t")!=-1&&cmd.length>=cmds.indexOf("/t")+2)){/*详见上面的注释*/
+                    str = "";
+                    if (cmds.includes("-t")) {str = "-t";}
+                    if (cmds.includes("/t")) {str = "/t";}
+                    if(!isNaN(cmds[cmds.indexOf(str)+1])){
+                        num = parseInt(cmds[cmds.indexOf(str)+1])
+                        nts['shutdown'] = {
+                            cnt:  `
+                            <p class="tit">即将注销你的登录</p>
+                            <p>Windows 将在 ` + num / 60 + ` 分钟后关闭。</p>`,
+                            btn: [
+                                { type: 'main', text: '关闭', js: 'closenotice();' },
+                            ]
+                        };
+                        shutdown_task[shutdown_task.length] = setTimeout("window.location.href = './reload.html'",num * 1000);
+                        if(!(cmds.includes("/f")||cmds.includes("-f"))){
+                            shownotice('shutdown');
+                        }
+                    }
+                }
+            } else if (cmds.includes("-a") || cmds.includes("/a")) {//取消电源操作
+                if(shutdown_task.length>0){
+                    for(var i=0;i<shutdown_task.length;i++){
+                        if(shutdown_task[i]!=null){
+                            try{
+                                clearTimeout(shutdown_task[i]);
+                            }catch(err){console.log(err);}
+                            shutdown_task[i] = null;
+                        }
+                    }
+                    nts['shutdown'] = {
+                        cnt:  `
+                        <p class="tit">注销已取消</p>
+                        <p>计划的关闭已取消。</p>`,
+                        btn: [
+                            { type: 'main', text: '关闭', js: 'closenotice();' },
+                        ]
+                    };
+                    shownotice('shutdown');
+                }
+            }
+            return true;
+        }
+    }
+    return false;
+}
 // 应用
 let apps = {
     setting: {
@@ -745,227 +847,52 @@ let apps = {
             }, 300);
         },
         run: (cmd) => {
-            if (cmd == 'cmd' || cmd == 'cmd.exe') {
-                run_cmd = cmd;
-                openapp('terminal');
-            }
-            else if (cmd.includes("shutdown")) {//关机指令
-                run_cmd = cmd
-                var cmds = cmd.split(' ');
-                if (cmds.includes("shutdown") || cmds.includes("shutdown.exe")) { //帮助
-                    if (cmds.length == 1) {
-                        openapp('terminal');
-                        $('#win-terminal').html(`用法:&nbsp;shutdown&nbsp;[/i&nbsp;|&nbsp;/l&nbsp;|&nbsp;/s&nbsp;|&nbsp;/sg&nbsp;|&nbsp;/r&nbsp;|&nbsp;/g&nbsp;|&nbsp;/a&nbsp;|&nbsp;/p&nbsp;|&nbsp;/h&nbsp;|&nbsp;/e&nbsp;|&nbsp;/o]&nbsp;[/hybrid]&nbsp;[/soft]&nbsp;[/fw]&nbsp;[/f]<br />
-&nbsp;&nbsp;&nbsp;&nbsp;[/m&nbsp;\\computer][/t&nbsp;xxx][/d&nbsp;[p|u:]xx:yy&nbsp;[/c&nbsp;"comment"]]<br />
-&nbsp;&nbsp;&nbsp;&nbsp;<br />
-&nbsp;&nbsp;&nbsp;&nbsp;没有参数&nbsp;&nbsp;&nbsp;显示帮助。这与键入&nbsp;/?&nbsp;是一样的。<br />
-&nbsp;&nbsp;&nbsp;&nbsp;/?&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;显示帮助。这与不键入任何选项是一样的。<br />
-&nbsp;&nbsp;&nbsp;&nbsp;/i&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;显示图形用户界面(GUI)。<br />
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;这必须是第一个选项。<br />
-&nbsp;&nbsp;&nbsp;&nbsp;/l&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;注销。这不能与&nbsp;/m&nbsp;或&nbsp;/d&nbsp;选项一起使用。<br />
-&nbsp;&nbsp;&nbsp;&nbsp;/s&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;关闭计算机。<br />
-&nbsp;&nbsp;&nbsp;&nbsp;/sg&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;关闭计算机。在下一次启动时，如果启用了<br />
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;自动重启登录，则将自动登录并锁定上次交互用户。<br />
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;登录后，重启任何已注册的应用程序。<br />
-&nbsp;&nbsp;&nbsp;&nbsp;/r&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;完全关闭并重启计算机。<br />
-&nbsp;&nbsp;&nbsp;&nbsp;/g&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;完全关闭并重启计算机。重新启动系统后，<br />
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;如果启用了自动重启登录，则将自动登录并<br />
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;锁定上次交互用户。<br />
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;登录后，重启任何已注册的应用程序。<br />
-&nbsp;&nbsp;&nbsp;&nbsp;/a&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;中止系统关闭。<br />
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;这只能在超时期间使用。<br />
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;与&nbsp;/fw&nbsp;结合使用，以清除任何未完成的至固件的引导。<br />
-&nbsp;&nbsp;&nbsp;&nbsp;/p&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;关闭本地计算机，没有超时或警告。<br />
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;可以与&nbsp;/d&nbsp;和&nbsp;/f&nbsp;选项一起使用。<br />
-&nbsp;&nbsp;&nbsp;&nbsp;/h&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;休眠本地计算机。<br />
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;可以与&nbsp;/f&nbsp;选项一起使用。<br />
-&nbsp;&nbsp;&nbsp;&nbsp;/hybrid&nbsp;&nbsp;&nbsp;&nbsp;执行计算机关闭并进行准备以快速启动。<br />
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;必须与&nbsp;/s&nbsp;选项一起使用。<br />
-&nbsp;&nbsp;&nbsp;&nbsp;/fw&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;与关闭选项结合使用，使下次启动转到<br />
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;固件用户界面。<br />
-&nbsp;&nbsp;&nbsp;&nbsp;/e&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;记录计算机意外关闭的原因。<br />
-&nbsp;&nbsp;&nbsp;&nbsp;/o&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;转到高级启动选项菜单并重新启动计算机。<br />
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;必须与&nbsp;/r&nbsp;选项一起使用。<br />
-&nbsp;&nbsp;&nbsp;&nbsp;/m&nbsp;\\computer&nbsp;指定目标计算机。<br />
-&nbsp;&nbsp;&nbsp;&nbsp;/t&nbsp;xxx&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;将关闭前的超时时间设置为&nbsp;xxx&nbsp;秒。<br />
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;有效范围是&nbsp;0-315360000&nbsp;(10&nbsp;年)，默认值为&nbsp;30。<br />
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;如果超时期限大于&nbsp;0，则&nbsp;/f&nbsp;参数为<br />
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/f&nbsp;参数。<br />
-&nbsp;&nbsp;&nbsp;&nbsp;/c&nbsp;"comment"&nbsp;注释重启或关闭的原因。<br />
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;最多允许&nbsp;512&nbsp;个字符。<br />
-&nbsp;&nbsp;&nbsp;&nbsp;/f&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;强制关闭正在运行的应用程序而不事先警告用户。<br />
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;当大于&nbsp;0&nbsp;的值为<br />
-&nbsp;时，隐含&nbsp;/f&nbsp;参数&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;则默示为&nbsp;/f&nbsp;参数。<br />
-&nbsp;&nbsp;&nbsp;&nbsp;/d&nbsp;[p|u:]xx:yy&nbsp;&nbsp;提供重新启动或关闭的原因。<br />
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;p&nbsp;指示重启或关闭是计划内的。<br />
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;u&nbsp;指示原因是用户定义的。<br />
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;如果未指定&nbsp;p&nbsp;和&nbsp;u，则<br />
-重新启动或关闭&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;是计划外的。<br />
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;xx&nbsp;是主要原因编号(小于&nbsp;256&nbsp;的正整数)。<br />
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;yy&nbsp;是次要原因编号(小于&nbsp;65536&nbsp;的正整数)。<br />
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br />
-此计算机上的原因:<br />
-(E&nbsp;=&nbsp;预期&nbsp;U&nbsp;=&nbsp;意外&nbsp;P&nbsp;=&nbsp;计划内，C&nbsp;=&nbsp;自定义)<br />
-类别&nbsp;&nbsp;&nbsp;&nbsp;主要&nbsp;&nbsp;&nbsp;&nbsp;次要&nbsp;&nbsp;&nbsp;&nbsp;标题<br />
-<br />
-&nbsp;U&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;其他(计划外)<br />
-E&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;其他(计划外)<br />
-E&nbsp;P&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;其他(计划内)<br />
-&nbsp;U&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;5&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;其他故障:&nbsp;系统没有反应<br />
-E&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;硬件:&nbsp;维护(计划外)<br />
-E&nbsp;P&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;硬件:&nbsp;维护(计划内)<br />
-E&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;硬件:&nbsp;安装(计划外)<br />
-E&nbsp;P&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;硬件:&nbsp;安装(计划内)<br />
-E&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;操作系统:&nbsp;恢复(计划外)<br />
-E&nbsp;P&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;操作系统:&nbsp;恢复(计划内)<br />
-&nbsp;&nbsp;P&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;操作系统:&nbsp;升级(计划内)<br />
-E&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;操作系统:&nbsp;重新配置(计划外)<br />
-E&nbsp;P&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;操作系统:&nbsp;重新配置(计划内)<br />
-&nbsp;&nbsp;P&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;16&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;操作系统:&nbsp;Service&nbsp;Pack&nbsp;(计划内)<br />
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;17&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;操作系统:&nbsp;热修补(计划外)<br />
-&nbsp;&nbsp;P&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;17&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;操作系统:&nbsp;热修补(计划内)<br />
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;18&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;操作系统:&nbsp;安全修补(计划外)<br />
-&nbsp;&nbsp;P&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;18&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;操作系统:&nbsp;安全修补(计划内)<br />
-E&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;应用程序:&nbsp;维护(计划外)<br />
-E&nbsp;P&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;应用程序:&nbsp;维护(计划内)<br />
-E&nbsp;P&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;应用程序:&nbsp;安装(计划内)<br />
-E&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;5&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;应用程序:&nbsp;没有反应<br />
-E&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;6&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;应用程序:&nbsp;不稳定<br />
-&nbsp;U&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;5&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;15&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;系统故障:&nbsp;停止错误<br />
-&nbsp;U&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;5&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;19&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;安全问题(计划外)<br />
-E&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;5&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;19&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;安全问题(计划外)<br />
-E&nbsp;P&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;5&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;19&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;安全问题(计划内)<br />
-E&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;5&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;20&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;网络连接丢失(计划外)<br />
-&nbsp;U&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;6&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;11&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;电源故障:&nbsp;电线被拔掉<br />
-&nbsp;U&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;6&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;12&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;电源故障:&nbsp;环境<br />
-&nbsp;&nbsp;P&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;7&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;旧版&nbsp;API&nbsp;关机<br />
-<br />
-&nbsp;&nbsp;&nbsp;&nbsp;提示：大多数功能可能有点困难，看看就好<br />
-<br />
-<pre>请按任意键继续.&nbsp;.&nbsp;.<input type="text" onkeydown="hidewin('terminal')"></input></pre>`); //Q：为什么文字这么多呢？A：shutdown的帮助本来就多，为了能显示空格，就把空格用&nbsp;代替了 User782Tec: 是不是有一种东西叫做innerText?
-                        $('#win-terminal>pre>input').focus()
-                    } else if (cmds.includes("-s") || cmds.includes("/s")) {//关机
-                        if ((cmds.indexOf("-t") != -1 && cmd.length/*判断是否-t后有其他参数*/ >= cmds.indexOf("-t") + 2/*先加一，获取当下标是从1开始的时候的下标索引；再加一，获取下一项。配合数组.length使用*/) || (cmds.indexOf("/t") != -1 && cmd.length/*判断是否-t后有其他参数*/ >= cmds.indexOf("/t") + 2)) {
-                            str = "";
-                            if (cmds.includes("-t")) { str = "-t"; }
-                            if (cmds.includes("/t")) { str = "/t"; }
-                            if (!isNaN(cmds[cmds.indexOf(str) + 1]/*这里只加一是因为下标是从0开始的*/)) {
-                                num = parseInt(cmds[cmds.indexOf(str) + 1])
-                                nts['shutdown'] = {
-                                    cnt: `
-                                    <p class="tit">即将注销你的登录</p>
-                                    <p>Windows 将在 ` + num / 60 + ` 分钟后关闭。</p>`,
-                                    btn: [
-                                        { type: 'main', text: '关闭', js: 'closenotice();' },
-                                    ]
-                                };
-                                shutdown_task[shutdown_task.length] = setTimeout("window.location.href = './shutdown.html'", num * 1000);
-                                if (!(cmds.includes("/f") || cmds.includes("-f"))) {
-                                    shownotice('shutdown');
-                                }
+            if(!runcmd(cmd)){
+                if (cmd != '') {
+                    try {
+                        cmd = cmd.replace(/\/$/, '');
+                        var pathl = cmd.split('/');
+                        let tmp = apps.explorer.path;
+                        let valid = true;
+                        pathl.forEach(name => {
+                            if (tmp['folder'].hasOwnProperty(name)) {
+                                tmp = tmp['folder'][name];
                             }
-                        }
-                    } else if (cmds.includes("-r") || cmds.includes("/r")) {//重启
-                        if ((cmds.indexOf("-t") != -1 && cmd.length >= cmds.indexOf("-t") + 2) || (cmds.indexOf("/t") != -1 && cmd.length >= cmds.indexOf("/t") + 2)) {/*详见上面的注释*/
-                            str = "";
-                            if (cmds.includes("-t")) { str = "-t"; }
-                            if (cmds.includes("/t")) { str = "/t"; }
-                            if (!isNaN(cmds[cmds.indexOf(str) + 1])) {
-                                num = parseInt(cmds[cmds.indexOf(str) + 1])
-                                nts['shutdown'] = {
-                                    cnt: `
-                                    <p class="tit">即将注销你的登录</p>
-                                    <p>Windows 将在 ` + num / 60 + ` 分钟后关闭。</p>`,
-                                    btn: [
-                                        { type: 'main', text: '关闭', js: 'closenotice();' },
-                                    ]
-                                };
-                                shutdown_task[shutdown_task.length] = setTimeout("window.location.href = './reload.html'", num * 1000);
-                                if (!(cmds.includes("/f") || cmds.includes("-f"))) {
-                                    shownotice('shutdown');
-                                }
+                            else {
+                                valid = false;
+                                return false;
                             }
-                        }
-                    } else if (cmds.includes("-a") || cmds.includes("/a")) {//取消电源操作
-                        if (shutdown_task.length > 0) {
-                            for (var i = 0; i < shutdown_task.length; i++) {
-                                if (shutdown_task[i] != null) {
-                                    try {
-                                        clearTimeout(shutdown_task[i]);
-                                    } catch (err) { console.log(err); }
-                                    shutdown_task[i] = null;
-                                }
-                            }
-                            nts['shutdown'] = {
-                                cnt: `
-                                <p class="tit">注销已取消</p>
-                                <p>计划的关闭已取消。</p>`,
-                                btn: [
-                                    { type: 'main', text: '关闭', js: 'closenotice();' },
-                                ]
-                            };
-                            shownotice('shutdown');
-                        }
-                    }
-                }
-            }
-            else if (cmd != '') {
-                try {
-                    cmd = cmd.replace(/\/$/, '');
-                    var pathl = cmd.split('/');
-                    let tmp = apps.explorer.path;
-                    let valid = true;
-                    pathl.forEach(name => {
-                        if (tmp['folder'].hasOwnProperty(name)) {
-                            tmp = tmp['folder'][name];
-                        }
-                        else {
-                            valid = false;
-                            return false;
-                        }
-                    });
-                    if (valid == true) {
-                        run_cmd = cmd;
-                        openapp('explorer');
-                        window.setTimeout(() => {
-                            apps.explorer.goto(cmd);
-                        }, 300);
-                    }
-                    else {
-                        var have_exe = false;
-                        if (cmd.substring(cmd.length - 4, cmd.length) == '.exe') {//如果有“.exe”，就去掉“.exe”，再判断
-                            cmd = cmd.substring(0, cmd.length - 4);
-                            have_exe = true;
-                        }
-                        if ($('.window.' + cmd)[0] && !$('.window.' + cmd).hasClass('configs') && (cmd != "EasterEgg" && cmd != "EasterEgg.exe"/*细节：彩蛋只能通过设置打开！*/)) {
-                            openapp(cmd);
-                            cmd += have_exe ? '.exe' : ''
+                        });
+                        if (valid == true) {
                             run_cmd = cmd;
+                            openapp('explorer');
+                            window.setTimeout(() => {
+                                apps.explorer.goto(cmd);
+                            }, 300);
                         }
                         else {
-                            cmd += have_exe ? '.exe' : '';//把裁剪出来的加回去
                             nts['Can-not-open-file'] = {
-                                cnt: `<p class="tit">` + cmd + `</p>
+                                cnt: `<p class="tit">` + cmd +`</p>
                                 <p>Windows 找不到文件 '` + cmd + `'。请确定文件名是否正确后，再试一次。</p> `,
                                 btn: [
                                     { type: 'main', text: '确定', js: "closenotice();showwin('run');$('#win-run>.open>input').select();" },
-                                    { type: 'cancel', text: '在 Micrsoft Edge 中搜索', js: "closenotice();openapp(\'edge\');window.setTimeout(() => {apps.edge.newtab();apps.edge.goto('https://www.bing.com/search?q=" + encodeURIComponent(cmd) + "');}, 300);" }
+                                    { type: 'cancel', text: '在 Micrsoft Edge 中搜索', js: "closenotice();openapp(\'edge\');window.setTimeout(() => {apps.edge.newtab();apps.edge.goto('https://www.bing.com/search?q=" + encodeURIComponent(cmd) +"');}, 300);"}
                                 ]
                             }
                             shownotice('Can-not-open-file');
                         }
                     }
-                }
-                catch {
-                    nts['Can-not-open-file'] = {
-                        cnt: `<p class="tit">` + cmd + `</p>
-                        <p>Windows 找不到文件 '` + cmd + `'。请确定文件名是否正确后，再试一次。</p> `,
-                        btn: [
-                            { type: 'main', text: '确定', js: "closenotice();showwin('run');$('#win-run>.open>input').select();" },
-                            { type: 'cancel', text: '在 Micrsoft Edge 中搜索', js: "closenotice();openapp(\'edge\');window.setTimeout(() => {apps.edge.newtab();apps.edge.goto('https://www.bing.com/search?q=" + encodeURIComponent(cmd) + "');}, 300);" }
-                        ]
+                    catch {
+                        nts['Can-not-open-file'] = {
+                            cnt: `<p class="tit">` + cmd +`</p>
+                            <p>Windows 找不到文件 '` + cmd + `'。请确定文件名是否正确后，再试一次。</p> `,
+                            btn: [
+                                { type: 'main', text: '确定', js: "closenotice();showwin('run');$('#win-run>.open>input').select();" },
+                                { type: 'cancel', text: '在 Micrsoft Edge 中搜索', js: "closenotice();openapp(\'edge\');window.setTimeout(() => {apps.edge.newtab();apps.edge.goto('https://www.bing.com/search?q=" + encodeURIComponent(cmd) +"');}, 300);"}
+                            ]
+                        }
+                        shownotice('Can-not-open-file');
                     }
-                    shownotice('Can-not-open-file');
                 }
             }
         }
@@ -2079,34 +2006,22 @@ E&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;5&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             }
             return false;
         },
-
+        // 禁止奇奇怪怪的缩进！尽量压行，不要毫无意义地全部格式化和展开！
         path: {
-            folder: {
-                'C:': {
+            folder: {'C:': {
                     folder: {
                         'Program Files': {
                             folder: { 'WindowsApps': { folder: {}, file: [] }, 'Microsoft': { folder: {}, file: [] } },
                             file: [
                                 { name: 'about.exe', ico: 'icon/about.svg', command: "openapp('about')" },
                                 { name: 'setting.exe', ico: 'icon/setting.svg', command: "openapp('setting')" },
-                            ]
-                        },
-                        'Program Files (x86)': {
-                            folder: {
-                                'Microsoft': {
-                                    folder: {
-                                        'Edge': {
-                                            folder: {
+                        ]},
+                        'Program Files (x86)': {folder: {
+                                'Microsoft': {folder: {'Edge': {folder: {
                                                 'Application': {
-                                                    folder: { 'SetupMetrics': { folder: {}, file: [] } },
-                                                    file: [{ name: 'msedge.exe', ico: 'icon/edge.svg', command: "openapp('edge')" }]
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        },
+                                                    folder: {'SetupMetrics':{ folder: {}, file: [] }}, 
+                                                    file:[ { name: 'msedge.exe', ico: 'icon/edge.svg', command: "openapp('edge')" }]
+                        }}}}}}},
                         'Windows': {
                             folder: {
                                 'Boot': { folder: {}, file: [] }, 'System': { folder: {}, file: [] }, 'SysWOW64': { folder: {}, file: [] }, 'System32': {
@@ -2125,10 +2040,7 @@ E&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;5&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                 { name: 'py.exe', ico: 'icon/python.png', command: "openapp('python')" },
                             ]
                         },
-                        '用户': {
-                            folder: {
-                                'Administrator': {
-                                    folder: {
+                        '用户': {folder: {'Administrator': {folder: {
                                         '文档': {
                                             folder: { 'IISExpress': { folder: {}, file: [] }, 'PowerToys': { folder: {}, file: [] } },
                                             file: [
@@ -2140,110 +2052,42 @@ E&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;5&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                             file: [
                                                 { name: '瓶盖构造图.png', ico: 'icon/files/img.png', command: '' },
                                                 { name: '可口可乐瓶盖.jpg', ico: 'icon/files/img.png', command: '' },
-                                            ]
-                                        },
-                                        'AppData': {
-                                            folder: {
-                                                'Local': {
-                                                    folder: {
-                                                        'Microsoft': {
-                                                            folder: {
-                                                                'Windows': {
-                                                                    folder: {
-                                                                        'Fonts': {
-                                                                        },
-                                                                        'TaskManager': {
-                                                                        },
-                                                                        'Themes': {
-                                                                        },
-                                                                        'Shell': {
-                                                                        },
-                                                                        '应用程序快捷方式': {
-                                                                        },
-                                                                    }
-                                                                },
-                                                            }
-                                                        },
-                                                        'Programs': {
-                                                            folder: {
-                                                                'Python': {
-                                                                    folder: {
-                                                                        'Python310': {
-                                                                            folder: {
-                                                                                'DLLs': {
-                                                                                },
-                                                                                'Doc': {
-                                                                                },
-                                                                                'include': {
-                                                                                },
-                                                                                'Lib': {
-                                                                                    folder: {
-                                                                                        'site-packages': {
-                                                                                        },
-                                                                                        'tkinter': {
-                                                                                        },
-                                                                                    }
-                                                                                },
-                                                                                'libs': {
-                                                                                },
-                                                                                'Script': {
-                                                                                },
-                                                                                'share': {
-                                                                                },
-                                                                                'tcl': {
-                                                                                },
-                                                                                'Tools': {
-                                                                                }
-                                                                            }, file: [
-                                                                                { name: 'python.exe', ico: 'icon/python.png', command: "openapp('python')" }
-                                                                            ]
-                                                                        }
-                                                                    },
-                                                                }
-                                                            }
-                                                        },
-                                                        'Temp': {
-                                                            folder: {
-                                                            }
-                                                        },
-                                                    }
-                                                },
-                                                'LocalLow': {
-                                                    folder: {
-                                                        'Microsoft': {
-                                                            folder: {
-                                                                'Windows': {
-                                                                },
-                                                            }
-                                                        },
-                                                    }
-                                                }, 'Roaming': {
-                                                    folder: {
-                                                        'Microsoft': {
-                                                            folder: {
-                                                                'Windows': {
-                                                                    folder: {
-                                                                        '「开始」菜单': {
-                                                                            folder: {
-                                                                                '程序': {
-                                                                                    folder: {
-
-                                                                                    }
-                                                                                },
-                                                                            }
-                                                                        },
-                                                                    }
-                                                                },
-                                                            }
-                                                        },
-                                                    }
-                                                },
-                                            }, file: []
-                                        }, '音乐': { folder: { '录音机': { folder: {}, file: [] } } }
-                                    }
-                                },
-                                '公用': {
-                                    folder: {
+                                        ]},
+                                        'AppData': { folder: {
+                                            'Local': {folder: {'Microsoft': {folder: {
+                                                            'Windows': {folder: {
+                                                                    'Fonts':{},'TaskManager':{},
+                                                                    'Themes': {},'Shell': {},
+                                                                    '应用程序快捷方式': {},
+                                                    }},}},
+                                                    'Programs': {folder: {'Python': {folder: {'Python310':{ 
+                                                                    folder: {'DLLs': {},
+                                                                        'Doc': {},'include': {},
+                                                                        'Lib': {folder: {
+                                                                                'site-packages': {},
+                                                                                'tkinter': {},
+                                                                            }},
+                                                                        'libs': {},'Script': {},'share': {},
+                                                                        'tcl': {},'Tools': {}
+                                                                }, file: [
+                                                                    { name: 'python.exe', ico: 'icon/python.png', command: "openapp('python')" }
+                                                                ] }}, 
+                                                    }}},
+                                                    'Temp': {folder: {}},
+                                            }},
+                                            'LocalLow': {folder: {
+                                                    'Microsoft': {folder: {
+                                                            'Windows': {},
+                                            }},}
+                                            },'Roaming': {folder: {
+                                                    'Microsoft': {folder: {
+                                                            'Windows': {folder: {
+                                                                    '「开始」菜单': {folder: {
+                                                                            '程序': {folder: {}
+                                            },}},}},}},}},
+                                        }, file: [] }, '音乐': { folder: { '录音机': { folder: {}, file: [] } } }
+                                }},
+                                '公用': {folder: {
                                         '公用文档': {
                                             folder: { 'IISExpress': { folder: {}, file: [] }, 'PowerToys': { folder: {}, file: [] } },
                                             file: []
@@ -2252,13 +2096,8 @@ E&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;5&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                             file: []
                                         },
                                         '公用音乐': { folder: { '录音机': { folder: {}, file: [] } } }
-                                    }
-                                }
-                            }
-                        }
-                    },
-                    file: [
-                    ]
+                    }}}}},
+                    file: []
                 },
                 'D:': {
                     folder: { 'Microsoft': { folder: {}, file: [] } },
@@ -2624,26 +2463,12 @@ Microsoft Windows [版本 12.0.39035.7324]
             var newD = document.createElement('div');
             newD.innerText = `C:\\Windows\\System32> ${command}`;
             elt.appendChild(newD);
-            if (command != '') {
-                try {
-                    if ($('.window.' + command)[0] && !$('.window.' + command)[0].classList.contains('configs')) {
-                        openapp(command);
-                    }
-                    else {
-                        var newD = document.createElement('div');
-                        newD.innerText = `"${command}"不是内部或外部命令,也不是可运行程序
-或批处理文件`;
-                        elt.appendChild(newD);
-                    }
-                }
-                catch {
-                    var newD = document.createElement('div');
-                    newD.innerText = `"${command}"不是内部或外部命令,也不是可运行程序
-或批处理文件`;
-                    elt.appendChild(newD);
-                }
+            if(!runcmd(command)){
+                var newD = document.createElement('div');
+                newD.innerText = `"${command}"不是内部或外部命令,也不是可运行程序
+            或批处理文件`;
+                elt.appendChild(newD);
             }
-
             input.val('');
 
             // 自动聚焦
@@ -2946,6 +2771,7 @@ let widgets = {
             };
             $.getJSON('https://assets.msn.cn/service/weatherfalcon/weather/overview?locale=zh-cn&ocid=msftweather').then(r => {
                 let inf = r.value[0].responses[0].weather[0].current;
+                // console.log(inf.icon,wic[inf.icon]);
                 $('.wg.weather>.content>.img').attr('src', `https://assets.msn.cn/weathermapdata/1/static/weather/Icons/taskbar_v10/Condition_Card/${wic[inf.icon]}.svg`);
                 $('.wg.weather>.content>.text>.temperature').text(`${inf.temp}℃`);
                 $('.wg.weather>.content>.text>.detail').text(`${inf.cap} 体感温度${inf.feels}℃`);
@@ -3995,7 +3821,7 @@ page.addEventListener('mousemove', (e) => {
 
 function setIcon() {
     if (Array.isArray(JSON.parse(localStorage.getItem('desktop')))) {
-        $('#desktop')[0].innerHTML = `<div ondblclick="openapp('explorer');" ontouchstart="openapp('explorer');" win12_title="显示连接到此计算机的驱动器和硬件。" oncontextmenu="return showcm(event,'desktop.icon',['explorer',-1]);" appname="explorer">
+        $('#desktop')[0].innerHTML = `<div ondblclick="openapp('explorer');" ontouchstart="openapp('explorer');" oncontextmenu="return showcm(event,'desktop.icon',['explorer',-1]);" appname="explorer">
         <img src="apps/icons/explorer/thispc.svg">
         <p>此电脑</p>
     </div>
@@ -4013,7 +3839,7 @@ function setIcon() {
     </div>
     <div class="b" ondblclick="shownotice('feedback');" ontouchstart="shownotice('feedback');;">
         <img src="icon/feedback.svg">
-        <p>发送反馈</p>
+        <p>反馈中心</p>
     </div>
     <span class="choose">
     </span>
@@ -4063,6 +3889,7 @@ document.getElementsByTagName('body')[0].onload = function nupd() {
         $(':root').css('--theme-2', localStorage.getItem('color2'));
     }
     setIcon();//加载桌面图标
+
     // 所以这个东西为啥要在开机的时候加载？
     // 不应该在python.init里面吗？
     //     (async function () {
@@ -4097,6 +3924,7 @@ document.getElementsByTagName('body')[0].onload = function nupd() {
             w.insertAdjacentHTML('afterbegin', `<div class="resize-knob ${n}" onmousedown="resizewin(this.parentElement.parentElement, '${n}', this)"></div>`);
         }
     });
+    // loadlang();
 };
 
 let autoUpdate = true;

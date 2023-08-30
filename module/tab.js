@@ -110,6 +110,7 @@ let m_tab={
         }, 200);
     },
     tab: (appn,c,load=true) => {
+        focwin(appn);
         app=apps[appn];
         app.now = c;
         app.tab(c,load);

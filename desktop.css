@@ -26,7 +26,7 @@
     --href:#2983cc;
     --bd:#8f8f8f30;
     --s3d:#99999947;
-    --mica: linear-gradient(140deg,#ffe7f6,#a9c3ff);
+    --mica: linear-gradient(215deg,#ffe7f6,#a9c3ff);
 }
 
 :root.dark {
@@ -37,8 +37,8 @@
     --bg70: #00000090;
     --sd: #000000a0;
     --card: #72727240;
-    --hover: #aaaaaa40;
-    --hover-half: #ffffff20;
+    --hover: #aaaaaa15;
+    --hover-half: #ffffff0a;
     --hover-b: #eeeeee0f;
     --bggrey: #444;
     --fill:#54545470;
@@ -51,8 +51,8 @@
     --unfoc:#202020;
     --msg:#303030d0;
     --bd:#ffffff06;
-    --s3d:#11111160;
-    --mica: linear-gradient(140deg,#2d161c,#102d53);
+    --s3d:#11111150;
+    --mica: linear-gradient(215deg,#2d161c,#102d53);
 }
 
 :root.nobr *,
@@ -193,7 +193,7 @@ list:not(.new)>a:active,
 .dock {
     border-radius: 8px;
     height: 100%;
-    background-color: var(--bg70);
+    background-color: var(--cm);
     backdrop-filter: blur(20px) saturate(1.5);
     -webkit-backdrop-filter: blur(20px) saturate(1.5);
     box-shadow: 0 1px 2px #44444460, 0px 3px 25px 1px var(--sd);
@@ -1300,7 +1300,7 @@ input-before {
     justify-content: center;
     gap: 10px;
     grid-template-columns: repeat(5, 83px);
-    grid-template-rows: repeat(auto-fill, 83px);
+    grid-template-rows: repeat(5, 83px);
     height: max-content;
     grid-auto-flow: row;
 }
