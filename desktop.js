@@ -645,13 +645,16 @@ function runcmd(cmd) {
         run_cmd = cmd;
         openapp('terminal');
         return true;
-    } else if (cmd in apps) {
+    }
+    else if (cmd in apps) {
         openapp(cmd);
         return true;
-    } else if (cmd.replace('.exe', '') in apps) {
+    }
+    else if (cmd.replace('.exe', '') in apps) {
         openapp(cmd.replace('.exe', ''))
         return true;
-    } else if (cmd.includes("shutdown")) {//关机指令
+    }
+    else if (cmd.includes("shutdown")) {//关机指令
         run_cmd = cmd
         var cmds = cmd.split(' ');
         if (cmds.includes("shutdown") || cmds.includes("shutdown.exe")) { //帮助
@@ -670,7 +673,8 @@ shutdown [-s] [-r] [-f] [-a] [-t time]
 请按任意键继续.&nbsp;.&nbsp;.<input type="text" onkeydown="hidewin('terminal')"></input></pre>`); //Q：为什么文字这么多呢？A：shutdown的帮助本来就多，为了能显示空格，就把空格用&nbsp;代替了
                 // 所以你是没事干吗？。。提示：github并不是以行数来计算贡献的哦   from @tjy-gitnub
                 $('#win-terminal>pre>input').focus()
-            } else if (cmds.includes("-s") || cmds.includes("/s")) {//关机
+            }
+            else if (cmds.includes("-s") || cmds.includes("/s")) {//关机
                 if ((cmds.indexOf("-t") != -1 && cmd.length/*判断是否-t后有其他参数*/ >= cmds.indexOf("-t") + 2/*先加一，获取当下标是从1开始的时候的下标索引；再加一，获取下一项。配合数组.length使用*/) || (cmds.indexOf("/t") != -1 && cmd.length/*判断是否-t后有其他参数*/ >= cmds.indexOf("/t") + 2)) {
                     str = "";
                     if (cmds.includes("-t")) { str = "-t"; }
@@ -691,7 +695,8 @@ shutdown [-s] [-r] [-f] [-a] [-t time]
                         }
                     }
                 }
-            } else if (cmds.includes("-r") || cmds.includes("/r")) {//重启
+            }
+            else if (cmds.includes("-r") || cmds.includes("/r")) {//重启
                 if ((cmds.indexOf("-t") != -1 && cmd.length >= cmds.indexOf("-t") + 2) || (cmds.indexOf("/t") != -1 && cmd.length >= cmds.indexOf("/t") + 2)) {/*详见上面的注释*/
                     str = "";
                     if (cmds.includes("-t")) { str = "-t"; }
@@ -712,7 +717,8 @@ shutdown [-s] [-r] [-f] [-a] [-t time]
                         }
                     }
                 }
-            } else if (cmds.includes("-a") || cmds.includes("/a")) {//取消电源操作
+            }
+            else if (cmds.includes("-a") || cmds.includes("/a")) {//取消电源操作
                 if (shutdown_task.length > 0) {
                     for (var i = 0; i < shutdown_task.length; i++) {
                         if (shutdown_task[i] != null) {
@@ -2008,32 +2014,20 @@ let apps = {
         },
         // 禁止奇奇怪怪的缩进！尽量压行，不要毫无意义地全部格式化和展开！
         path: {
-            folder: {
-                'C:': {
+            folder: {'C:': {
                     folder: {
                         'Program Files': {
                             folder: { 'WindowsApps': { folder: {}, file: [] }, 'Microsoft': { folder: {}, file: [] } },
                             file: [
                                 { name: 'about.exe', ico: 'icon/about.svg', command: "openapp('about')" },
                                 { name: 'setting.exe', ico: 'icon/setting.svg', command: "openapp('setting')" },
-                            ]
-                        },
-                        'Program Files (x86)': {
-                            folder: {
-                                'Microsoft': {
-                                    folder: {
-                                        'Edge': {
-                                            folder: {
+                        ]},
+                        'Program Files (x86)': {folder: {
+                                'Microsoft': {folder: {'Edge': {folder: {
                                                 'Application': {
-                                                    folder: { 'SetupMetrics': { folder: {}, file: [] } },
-                                                    file: [{ name: 'msedge.exe', ico: 'icon/edge.svg', command: "openapp('edge')" }]
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        },
+                                                    folder: {'SetupMetrics':{ folder: {}, file: [] }}, 
+                                                    file:[ { name: 'msedge.exe', ico: 'icon/edge.svg', command: "openapp('edge')" }]
+                        }}}}}}},
                         'Windows': {
                             folder: {
                                 'Boot': { folder: {}, file: [] }, 'System': { folder: {}, file: [] }, 'SysWOW64': { folder: {}, file: [] }, 'System32': {
@@ -2052,10 +2046,7 @@ let apps = {
                                 { name: 'py.exe', ico: 'icon/python.png', command: "openapp('python')" },
                             ]
                         },
-                        '用户': {
-                            folder: {
-                                'Administrator': {
-                                    folder: {
+                        '用户': {folder: {'Administrator': {folder: {
                                         '文档': {
                                             folder: { 'IISExpress': { folder: {}, file: [] }, 'PowerToys': { folder: {}, file: [] } },
                                             file: [
@@ -2067,83 +2058,42 @@ let apps = {
                                             file: [
                                                 { name: '瓶盖构造图.png', ico: 'icon/files/img.png', command: '' },
                                                 { name: '可口可乐瓶盖.jpg', ico: 'icon/files/img.png', command: '' },
-                                            ]
-                                        },
-                                        'AppData': {
-                                            folder: {
-                                                'Local': {
-                                                    folder: {
-                                                        'Microsoft': {
-                                                            folder: {
-                                                                'Windows': {
-                                                                    folder: {
-                                                                        'Fonts': {}, 'TaskManager': {},
-                                                                        'Themes': {}, 'Shell': {},
-                                                                        '应用程序快捷方式': {},
-                                                                    }
-                                                                },
-                                                            }
-                                                        },
-                                                        'Programs': {
-                                                            folder: {
-                                                                'Python': {
-                                                                    folder: {
-                                                                        'Python310': {
-                                                                            folder: {
-                                                                                'DLLs': {},
-                                                                                'Doc': {}, 'include': {},
-                                                                                'Lib': {
-                                                                                    folder: {
-                                                                                        'site-packages': {},
-                                                                                        'tkinter': {},
-                                                                                    }
-                                                                                },
-                                                                                'libs': {}, 'Script': {}, 'share': {},
-                                                                                'tcl': {}, 'Tools': {}
-                                                                            }, file: [
-                                                                                { name: 'python.exe', ico: 'icon/python.png', command: "openapp('python')" }
-                                                                            ]
-                                                                        }
-                                                                    },
-                                                                }
-                                                            }
-                                                        },
-                                                        'Temp': { folder: {} },
-                                                    }
-                                                },
-                                                'LocalLow': {
-                                                    folder: {
-                                                        'Microsoft': {
-                                                            folder: {
-                                                                'Windows': {},
-                                                            }
-                                                        },
-                                                    }
-                                                }, 'Roaming': {
-                                                    folder: {
-                                                        'Microsoft': {
-                                                            folder: {
-                                                                'Windows': {
-                                                                    folder: {
-                                                                        '「开始」菜单': {
-                                                                            folder: {
-                                                                                '程序': {
-                                                                                    folder: {}
-                                                                                },
-                                                                            }
-                                                                        },
-                                                                    }
-                                                                },
-                                                            }
-                                                        },
-                                                    }
-                                                },
-                                            }, file: []
-                                        }, '音乐': { folder: { '录音机': { folder: {}, file: [] } } }
-                                    }
-                                },
-                                '公用': {
-                                    folder: {
+                                        ]},
+                                        'AppData': { folder: {
+                                            'Local': {folder: {'Microsoft': {folder: {
+                                                            'Windows': {folder: {
+                                                                    'Fonts':{},'TaskManager':{},
+                                                                    'Themes': {},'Shell': {},
+                                                                    '应用程序快捷方式': {},
+                                                    }},}},
+                                                    'Programs': {folder: {'Python': {folder: {'Python310':{ 
+                                                                    folder: {'DLLs': {},
+                                                                        'Doc': {},'include': {},
+                                                                        'Lib': {folder: {
+                                                                                'site-packages': {},
+                                                                                'tkinter': {},
+                                                                            }},
+                                                                        'libs': {},'Script': {},'share': {},
+                                                                        'tcl': {},'Tools': {}
+                                                                }, file: [
+                                                                    { name: 'python.exe', ico: 'icon/python.png', command: "openapp('python')" }
+                                                                ] }}, 
+                                                    }}},
+                                                    'Temp': {folder: {}},
+                                            }},
+                                            'LocalLow': {folder: {
+                                                    'Microsoft': {folder: {
+                                                            'Windows': {},
+                                            }},}
+                                            },'Roaming': {folder: {
+                                                    'Microsoft': {folder: {
+                                                            'Windows': {folder: {
+                                                                    '「开始」菜单': {folder: {
+                                                                            '程序': {folder: {}
+                                            },}},}},}},}},
+                                        }, file: [] }, '音乐': { folder: { '录音机': { folder: {}, file: [] } } }
+                                }},
+                                '公用': {folder: {
                                         '公用文档': {
                                             folder: { 'IISExpress': { folder: {}, file: [] }, 'PowerToys': { folder: {}, file: [] } },
                                             file: []
@@ -2152,11 +2102,7 @@ let apps = {
                                             file: []
                                         },
                                         '公用音乐': { folder: { '录音机': { folder: {}, file: [] } } }
-                                    }
-                                }
-                            }
-                        }
-                    },
+                    }}}}},
                     file: []
                 },
                 'D:': {
