@@ -680,7 +680,7 @@ shutdown [-s] [-r] [-f] [-a] [-t time]
                         nts['shutdown'] = {
                             cnt: `
                             <p class="tit">即将注销你的登录</p>
-                            <p>Windows 将在 ` + calcTimeString(num) + ` 后关闭。</p>`,
+                            <p>Windows 将在 ` + calcTimeString(num) + ` 后关闭。</p>`, // 如果必须原生样式的，建议改为 num<60 ? 1 : Math.floor(num / 60) + ` 分钟后关闭。</p>`,
                             btn: [
                                 { type: 'main', text: '关闭', js: 'closenotice();' },
                             ]
@@ -701,7 +701,7 @@ shutdown [-s] [-r] [-f] [-a] [-t time]
                         nts['shutdown'] = {
                             cnt: `
                             <p class="tit">即将注销你的登录</p>
-                            <p>Windows 将在 ` + calcTimeString(num) + ` 后关闭。</p>`,
+                            <p>Windows 将在 ` + calcTimeString(num) + ` 后关闭。</p>`, // 如果必须原生样式的，建议改为 num<60 ? 1 : Math.floor(num / 60) + ` 分钟后关闭。</p>`,
                             btn: [
                                 { type: 'main', text: '关闭', js: 'closenotice();' },
                             ]
