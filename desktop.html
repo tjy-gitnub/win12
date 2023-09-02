@@ -2452,7 +2452,7 @@
 			<script> //让设置按钮到最底下
 				setInterval(()=>{
 					document.getElementById('set-seting-to-bottom').style.height = (document.getElementById('win-taskmgr').clientHeight-document.getElementById('tsk-setting').clientHeight*document.getElementById('tsk-pages').getElementsByTagName('a').length-10) + "px";
-				},10);
+				},1145);
 				var hide = false;
 				function fold(){
 					if(!hide){
@@ -2460,11 +2460,13 @@
 						$('.taskmgr>.content>.menu>.focs>a').width('18px')
 						$('.taskmgr>.content>.menu>.focs').width('18px')
 						$('.taskmgr>.content>.menu').width('18px')
+						$('.taskmgr>.content>.menu>.focs>.fold').html('<icon><i class="bi bi-chevron-right"></i></icon>')
 					} else {
 						$('.taskmgr>.content>.menu>.focs>a>p').show()
 						$('.taskmgr>.content>.menu>.focs>a').width('222px')
 						$('.taskmgr>.content>.menu>.focs').width('222px')
 						$('.taskmgr>.content>.menu').width('222px')
+						$('.taskmgr>.content>.menu>.focs>.fold').html('<icon><i class="bi bi-chevron-left"></i></icon>')
 					}
 					hide = !hide
 				}
@@ -2472,7 +2474,7 @@
 			</script>
 			<div class="menu" style="height:100%">
 				<list class="focs" id="tsk-pages" style="height:100%">
-					<a class="fold" onclick="fold()" style="width:33px;height:33px;margin:0px;" win12_title="折叠（目前还是个摆式）"><icon><i class="fa fa-bars" style="padding:0px;height:33px;width:33px;"></icon></i></a>
+					<a class="fold" onclick="fold()" style="width:33px;height:33px;margin:0px;" win12_title="折叠（目前还是个摆式）"><icon><i class="bi bi-chevron-right"></i></icon></a>
 					<a class="processes check" onclick="apps.taskmgr.page('processes')" win12_title="进程">
 						<svg xmlns="http://www.w3.org/2000/svg" width="18px" height="18px" viewBox="3.5 5.5 29 29">
 							<path d="M 5 11 L 5 29 C 5 32 6 33 9 33 L 14 33 C 17 33 18 32 18 29 L 18 7 L 9 7 C 6 7 5 8 5 11 M 18 7 L 27 7 C 30 7 31 8 31 11 L 31 16 C 31 19 30 20 27 20 L 5 20" stroke="var(--text)" stroke-width="1.5" fill="none"/>
@@ -2508,7 +2510,7 @@
 					</table>
 				</div>
 				<div class="cnt 404">
-					<div class="content" style="text-align: center;">
+					<div class="content" style="text-align: center;position:absolute;left:calc(50% - 25px);top:calc(50% - 35px);">
 						<p><b>无筛选结果</b><br />请尝试使用其他名称<span style="text-decoration:line-through" win12_title="你想让开发者秃头吗？QwQ！(双击隐藏此消息)" ondblclick="$(this).hide()">、发布者或 PID </span>键入以进行筛选。</p>
 						<br />
 						<a onclick="document.getElementById('tsk-search').value='';apps.taskmgr.generateProcesses()" style="cursor: pointer;color:var(--href);">重置筛选器</a>

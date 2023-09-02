@@ -60,13 +60,15 @@ window.onkeydown = function (event) {
     event = event || window.event;
     tab_back = tab;
     if (document.getElementById('background').style.display != '') {
-        if(event.keyCode==9){
-            tab ++;
-            foc=0;
-            tab = tab%2;
+        if (event.keyCode == 9) {
+            event.preventDefault();
+            tab++;
+            foc = 0;
+            tab = tab % 2;
             ChangePage();
         }
-        if(event.keyCode==121/*F10=退出*/){
+        if (event.keyCode == 121/*F10=退出*/) {
+            event.preventDefault();
             eval(document.getElementById('e1').getAttribute('click'));
         }
         if (event.keyCode == 39) {
