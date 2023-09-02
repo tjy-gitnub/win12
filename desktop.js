@@ -116,7 +116,7 @@ let cms = {
             if (arg[1] >= 0) {
                 return ['<i class="bi bi-trash3"></i> 删除', 'desktopItem.splice(' + (arg[1] - 1) + ', 1);saveDesktop();setIcon();addMenu();'];
             } else {
-                return ['<i class="bi bi-wrench-adjustable"></i> 属性', 'null'];
+                return 'null';
             }
         }
     ],
