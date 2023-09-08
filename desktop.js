@@ -3090,6 +3090,14 @@ let copilot = {
             $('#copilot>.chat').scrollTop($('#copilot>.chat')[0].scrollHeight);
             $('#copilot>.inputbox').removeClass('disable');
         });
+    },
+    store: {
+        init: () => {
+            return null;
+        },
+        load: () => {
+		
+	}
     }
 }
 // 日期、时间
