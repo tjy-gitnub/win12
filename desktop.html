@@ -337,7 +337,8 @@
 						<img src="icon/setting.svg">
 						<p>设置 </p>
 					</a>
-					<a class="a sm-app"><img src="icon/store.svg">
+					<a class="a sm-app enable store" onclick="openapp('store');hide_startmenu();">
+						<img src="icon/store.svg">
 						<p>Microsoft Store</p>
 					</a>
 					<a class="a sm-app enable edge" onclick="openapp('edge');hide_startmenu();"
@@ -2925,6 +2926,25 @@
 					</div>
 				</div>
 			</div>
+		</div>
+	</div>
+	<div class="window store">
+		<div class="resize-bar"></div>
+		<div class="titbar">
+			<img src="icon/store.svg" class="icon">
+			<p>Microsoft Store</p>
+			<div>
+				<a class="a wbtg red" onclick="hidewin('store')"><i class="bi bi-x-lg"></i></a>
+				<a class="a wbtg max" onclick="maxwin('store')"><i class="bi bi-app"></i></a>
+				<a class="a wbtg" onclick="minwin('store')"><i class="bi bi-dash-lg"></i></a>
+				<a class="a wbtg" onclick="apps.store.init()"><i class="bi bi-arrow-counterclockwise"></i></a>
+			</div>
+		</div>
+		<div class="loadback">
+			<img src="icon/logo.svg" class="icon">
+		</div>
+		<div class="content" id="win-win12">
+			<iframe style="height:100%; width:100%;object-fit:cover;" id="win12-window" frameborder="no"></iframe>
 		</div>
 	</div>
 	<script src="data/tasks.js"></script>
