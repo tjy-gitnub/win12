@@ -641,7 +641,7 @@ var shutdown_task = []; //关机任务，储存在这个数组里
 // 为什么要数组？
 // 运行的指令
 function runcmd(cmd) {
-    if (cmd == 'cmd' || cmd == 'cmd.exe') {
+    if (cmd.slice(0, 3) == "cmd") {
         run_cmd = cmd;
         openapp('terminal');
         return true;
