@@ -28,7 +28,7 @@ Windows 12 的明天在大家的努力下会更灿烂美好！
 
 ---
 
-> 🎉🎉项目在 GitHub 上突破✨1.4k✨stars✨啦！芜湖🎊🎈`o(^o^)o`
+> 🎉🎉项目在 GitHub 上突破✨3.1k✨stars✨啦！芜湖🎊🎈`o(^o^)o`
 > 向在座的各位的支持表示诚挚的感谢！
 
 ---
@@ -77,6 +77,9 @@ NB-group：
 ![image](https://github.com/tjy-gitnub/win12/assets/121747915/c4a7e71c-ac41-4ab5-ba87-967d188ca2cc)
 
 链接：https://afdian.net/a/qstudio?tab=feed
+
+## Star 趋势
+[![Stargazers over time](https://starchart.cc/tjy-gitnub/win12.svg)](https://starchart.cc/tjy-gitnub/win12)
 
 ## 前言
 
