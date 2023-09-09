@@ -2217,10 +2217,13 @@ let apps = {
             if (!($('#contri').length > 1)) apps.about.get();
             if (!($('#StarShow').html().includes('刷新'))) apps.about.get_star();
         },
-        get: () => {
-            $('#contri').html(`<loading><svg width="30px" height="30px" viewBox="0 0 16 16">
+        run_loading: (expr) => {
+            $(expr).html(`<loading><svg width="30px" height="30px" viewBox="0 0 16 16">
             <circle cx="8px" cy="8px" r="7px" style="stroke:#7f7f7f50;fill:none;stroke-width:3px;"></circle>
-            <circle cx="8px" cy="8px" r="7px" style="stroke:#2983cc;stroke-width:3px;"></circle></svg></loading>`)
+            <circle cx="8px" cy="8px" r="7px" style="stroke:#2983cc;stroke-width:3px;"></circle></svg></loading>`);
+        },
+        get: () => {
+            apps.about.run_loading('#contri');
             // 实时获取项目贡献者
             $.get('https://api.github.com/repos/tjy-gitnub/win12/contributors').then(cs => {
                 setTimeout(() => {
@@ -2233,9 +2236,7 @@ let apps = {
             });
         },
         get_star: () => {
-            $('StarShow').html(`<loading><svg width="30px" height="30px" viewBox="0 0 16 16">
-            <circle cx="8px" cy="8px" r="7px" style="stroke:#7f7f7f50;fill:none;stroke-width:3px;"></circle>
-            <circle cx="8px" cy="8px" r="7px" style="stroke:#2983cc;stroke-width:3px;"></circle></svg></loading>`)
+            apps.about.run_loading('#StarShow')
             const repoFullName = 'tjy-gitnub/win12';
             fetch(`https://api.github.com/repos/${repoFullName}`)
                 .then(response => response.json())
