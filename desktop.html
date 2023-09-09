@@ -1257,12 +1257,10 @@
 				<input type="text" class="input" placeholder="查找设置" style="padding-left: 30px;">
 				<input-before class="bi bi-search"></input-before>
 				<list class="focs">
-					<a class="enable system check" onclick="apps.setting.page('system')"><img
-							src="apps/icons/setting/system.png">系统</a>
-					<a><img src="apps/icons/setting/blueteeth.png">蓝牙和其他设备</a>
+					<a class="enable system check" onclick="apps.setting.page('system')"><img src="apps/icons/setting/system.png">系统</a>
+					<a class="enable blueteeth" onclick="apps.setting.page('blueteeth')"><img src="apps/icons/setting/blueteeth.png">蓝牙和其他设备</a>
 					<a><img src="apps/icons/setting/network.png">网络和 Internet</a>
-					<a class="enable appearance" onclick="apps.setting.page('appearance')"><img
-							src="apps/icons/setting/personal.png">个性化</a>
+					<a class="enable appearance" onclick="apps.setting.page('appearance')"><img src="apps/icons/setting/personal.png">个性化</a>
 					<a><img src="apps/icons/setting/apps.png">应用</a>
 					<a><img src="apps/icons/setting/user.png">账户</a>
 					<a><img src="apps/icons/setting/time.png">时间和语言</a>
@@ -1299,6 +1297,27 @@
 						<a><icon></icon><div><p>远程桌面</p><p>远程桌面用户、连接权限</p></div><i class="bi bi-chevron-right"></i></a>
 						<a><icon></icon><div><p>剪贴板</p><p>剪贴和复制历史记录、同步、清除</p></div><i class="bi bi-chevron-right"></i></a>
 						<a><icon></icon><div><p>关于</p><p>设备规格、重命名电脑、Windows 规格</p></div><i class="bi bi-chevron-right"></i></a>
+					</div>
+				</div>
+				<div class="cnt blueteeth">
+					<p class="title">蓝牙与设备</p>
+					<div style="display: flex;">
+						<p class="s-icon" style="font-size: 70px;margin: -8px 10px 0px 20px;"></p>
+						<div>
+							<p style="color: #7f7f7f;margin:-8px 0 -5px 0;">我的蓝牙名称</p>
+							<p style="font-size: 28px;text-overflow: ellipsis;white-space: nowrap;">Blueteeth-PingGai</p>
+							<p class="blueteeth-tips-text" style="color: #7f7f7f;margin:-8px 0 -5px 0;">这是您在其他设备的蓝牙列表中的名称</p>
+							<a style="color: var(--href);text-decoration: underline !important;;" class="a">重命名</a>
+						</div>
+					</div>
+					<div class="setting-list">
+						<a><icon></icon><div><p>连接</p><p>搜索新的蓝牙设备</p></div><i class="bi bi-chevron-right"></i></a>
+						<a><icon></icon><div><p>设备</p><p>蓝牙鼠标、键盘、其他蓝牙设备</p></div><i class="bi bi-chevron-right"></i></a>
+						<a><icon></icon><div><p>打印机与扫描仪</p><p>设置打印机、排除故障</p></div><i class="bi bi-chevron-right"></i></a>
+						<a><icon></icon><div><p>手机</p><p>访问Android设备的照片、文件等</p></div><i class="bi bi-chevron-right"></i></a>
+						<a><icon></icon><div><p>触控板</p><p>点击、滚动、缩放、手势</p></div><i class="bi bi-chevron-right"></i></a>
+						<a><icon></icon><div><p>触控笔与触摸</p><p>设置触控笔、设置触控屏幕</p></div><i class="bi bi-chevron-right"></i></a>
+						<a><icon></icon><div><p>USB设备</p><p>通过USB连接更多设备...</p></div><i class="bi bi-chevron-right"></i></a>
 					</div>
 				</div>
 				<div class="cnt appearance">
