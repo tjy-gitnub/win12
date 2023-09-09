@@ -1495,7 +1495,7 @@ let apps = {
         }
     },
     webapps: {
-        apps: ['vscode', 'bilibili', 'csgo'],
+        apps: ['vscode', 'bilibili'],
         init: () => {
             for (const app of apps.webapps.apps) {
                 apps[app].load();
@@ -1516,24 +1516,6 @@ let apps = {
         },
         load: () => {
             $('#win-bilibili')[0].insertAdjacentHTML('afterbegin', '<iframe src="https://bilibili.com/" frameborder="0" style="width: 100%; height: 100%;" loading="lazy"></iframe>')
-        }
-    },
-    csgo: {
-        init: () => {
-            return null;
-        },
-        load: () => {
-            $('#win-csgo')[0].insertAdjacentHTML('afterbegin', '<iframe src="https://play-cs.com/" frameborder="0" style="width: 100%; height: 100%;" loading="lazy"></iframe>')
-        },
-        download: async () => {
-            $("#download-csgo")[0].style.display = 'none';
-            $("#wait-csgo")[0].style.display = 'block'
-            await new Promise((resolve) => {
-                setTimeout(resolve, 2500);
-            });
-            $("#wait-csgo")[0].style.display = 'none';
-            $("#menu-csgo")[0].style.display = 'flex';
-            $("#open-csgo")[0].style.display = 'block';
         }
     },
     defender: {
@@ -2727,6 +2709,30 @@ Microsoft Windows [版本 12.0.39035.7324]
     store: {
         init: () => {
             return null;
+        },
+        load: () => {
+            $.get('https://api.github.com/repos/tjy-gitnub/win12-msstore/contents').then(json => {
+                json.forEach(c => {
+                    if (c.type == 'dir') {
+                        $.get(c.url).then(cnt => {
+                            cnt.forEach(cn => {
+                                if (cn.name == 'app.json') {
+                                    $.getJSON('https://tjy-gitnub.github.io/win12-msstore/' + cn.path).then(inf => {
+                                        apps[inf['name']] = {
+                                            init: () => {
+                                                return null;
+                                            },
+                                            load: () => {}
+                                        }
+                                        $('#msstore-apps')[0].innerHTML = $('#msstore-apps')[0].innerHTML + '<div class="card"><center><img src="icon/csgo.ico" width="82px" height="82px"/></center><center class="title">' + inf['name'] + '</center><center class="download" id="open" onclick="openapp(' + inf['name'] + ');"><span>打开</span></center></div>';
+                                        document.body.innerHTML = document.body.innerHTML + '<div class="window ' + inf['name'] + ' webapp"><div class="resize-bar"></div><div class="titbar"><p>' + inf['name'] + '</p><div><a class="a wbtg red" onclick="hidewin(' + inf['name'] + ')"><i class="bi bi-x-lg"></i></a><a class="a wbtg max" onclick="maxwin(' + inf['name'] + ')"><i class="bi bi-app"></i></a><a class="a wbtg" onclick="minwin(' + inf['name'] + ')"><i class="bi bi-dash-lg"></i></a></div></div><div class="loadback"></div><div class="content"><iframe src="' + inf['url'] + '" frameborder="0" style="width: 100%; height: 100%;" loading="lazy"></iframe></div></div>';
+                                    })
+                                }
+                            })
+                        })
+                    }
+                })
+            })
         }
     }
 }

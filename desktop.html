@@ -235,7 +235,7 @@
 					<img src="icon/bilibili.png">
 					<p>哔哩哔哩</p>
 				</a>
-				<a oncontextmenu="return showcm(event, 'smlapp', ['csgo', 'CS-GO'])" id="menu-csgo" style="display: none;"
+				<a oncontextmenu="return showcm(event, 'smlapp', ['csgo', 'CS-GO'])" id="menu-csgo"
 					onclick="openapp('csgo');hide_startmenu();">
 					<img src="icon/csgo.ico">
 					<p>CS: GO</p>
@@ -2479,14 +2479,8 @@
 			<img src="icon/store.svg" class="icon">
 		</div>
 		<div class="content" id="win-store" style="height: 100%;">
-			<div class="main">
-				<div class="card">
-					<center><img src="icon/csgo.ico" width="82px" height="82px"/></center>
-					<center class="title">CS: GO</center>
-					<center class="download" id="download-csgo" onclick="apps.csgo.download()"><span>下载</span></center>
-					<center class="download" id="wait-csgo" style="display: none;"><span><svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" style="color: #fff;" fill="currentColor" class="bi bi-arrow-clockwise" viewBox="0 0 16 16"><path transform="rotate(0)" fill-rule="evenodd" d="M8 3a5 5 0 1 0 4.546 2.914.5.5 0 0 1 .908-.417A6 6 0 1 1 8 2v1z"/><animateTransform attributeName="transform" attributeType="XML" type="rotate" form="0 0 0" to="360 0 0" begin="0s" dur="0.85s" repeatCount="indefinite"/></svg></span></center>
-					<center class="download" id="open-csgo" onclick="openapp('csgo');" style="display: none;"><span>打开</span></center>
-				</div>
+			<div class="main" id="msstore-apps">
+				
 			</div>
 		</div>
 	</div>
