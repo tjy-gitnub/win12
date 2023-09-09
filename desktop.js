@@ -1495,7 +1495,7 @@ let apps = {
         }
     },
     webapps: {
-        apps: ['vscode', 'bilibili'],
+        apps: ['vscode', 'bilibili', 'csgo'],
         init: () => {
             for (const app of apps.webapps.apps) {
                 apps[app].load();
@@ -1516,6 +1516,24 @@ let apps = {
         },
         load: () => {
             $('#win-bilibili')[0].insertAdjacentHTML('afterbegin', '<iframe src="https://bilibili.com/" frameborder="0" style="width: 100%; height: 100%;" loading="lazy"></iframe>')
+        }
+    },
+    csgo: {
+        init: () => {
+            return null;
+        },
+        load: () => {
+            $('#win-csgo')[0].insertAdjacentHTML('afterbegin', '<iframe src="https://play-cs.com/" frameborder="0" style="width: 100%; height: 100%;" loading="lazy"></iframe>')
+        },
+        download: async () => {
+            $("#download-csgo")[0].style.display = 'none';
+            $("#wait-csgo")[0].style.display = 'block'
+            await new Promise((resolve) => {
+                setTimeout(resolve, 2500);
+            });
+            $("#wait-csgo")[0].style.display = 'none';
+            $("#menu-csgo")[0].style.display = 'flex';
+            $("#open-csgo")[0].style.display = 'block';
         }
     },
     defender: {
@@ -2705,6 +2723,11 @@ Microsoft Windows [版本 12.0.39035.7324]
         init: () => {
             null
         }
+    },
+    store: {
+        init: () => {
+            return null;
+        }
     }
 }
 
@@ -3090,14 +3113,6 @@ let copilot = {
             $('#copilot>.chat').scrollTop($('#copilot>.chat')[0].scrollHeight);
             $('#copilot>.inputbox').removeClass('disable');
         });
-    },
-    store: {
-        init: () => {
-            return null;
-        },
-        load: () => {
-		
-	}
     }
 }
 // 日期、时间

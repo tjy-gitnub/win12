@@ -121,7 +121,7 @@ NB-group：![image](https://github.com/tjy-gitnub/win12/assets/121747915/9dad6ca
 - [x] 完善小组件，添加到桌面等功能
 - [x] 动态壁纸
 - [ ] 更多任务栏的自定义
-- [ ] 丰富应用生态，添加 Microsoft Store
+- [x] 丰富应用生态，添加 Microsoft Store
 - [ ] 完善设置及 Windows 更新
 
 下面是一些...呃......畅..想 `~o~)/`

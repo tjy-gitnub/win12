@@ -32,6 +32,7 @@
 	<link rel="stylesheet" href="apps/style/whiteboard.css">
 	<link rel="stylesheet" href="apps/style/defender.css">
 	<link rel="stylesheet" href="apps/style/taskmgr.css">
+	<link rel="stylesheet" href="apps/style/store.css">
 	<link rel="stylesheet" href="widgets.css">
 	<!-- 掌声欢迎 Copilot 的 css 引入(bs -->
 	<link rel="stylesheet" href="apps/style/copilot.css">
@@ -223,11 +224,21 @@
 					<img src="icon/defender.svg">
 					<p>Windows 安全中心</p>
 				</a>
+				<a oncontextmenu="return showcm(event, 'smlapp', ['store', 'Microsoft Store'])"
+					onclick="openapp('store');hide_startmenu();">
+					<img src="icon/store.svg">
+					<p>Microsoft Store</p>
+				</a>
 				<p class="text">Web 应用</p>
 				<a oncontextmenu="return showcm(event, 'smlapp', ['bilibili', '哔哩哔哩'])"
 					onclick="openapp('bilibili');hide_startmenu();">
 					<img src="icon/bilibili.png">
 					<p>哔哩哔哩</p>
+				</a>
+				<a oncontextmenu="return showcm(event, 'smlapp', ['csgo', 'CS-GO'])" id="menu-csgo" style="display: none;"
+					onclick="openapp('csgo');hide_startmenu();">
+					<img src="icon/csgo.ico">
+					<p>CS: GO</p>
 				</a>
 				<a oncontextmenu="return showcm(event, 'smlapp', ['vscode', 'Visual Studio Code'])"
 					onclick="openapp('vscode');hide_startmenu();">
@@ -2169,6 +2180,24 @@
 			<!-- <iframe src="https://bilibili.com/" frameborder="0" style="width: 100%; height: 100%;" loading="lazy"></iframe> -->
 		</div>
 	</div>
+	<div class="window csgo webapp">
+		<div class="resize-bar"></div>
+		<div class="titbar">
+			<img src="icon/csgo.ico" class="icon">
+			<p>CS-GO</p>
+			<div>
+				<a class="a wbtg red" onclick="hidewin('csgo')"><i class="bi bi-x-lg"></i></a>
+				<a class="a wbtg max" onclick="maxwin('csgo')"><i class="bi bi-app"></i></a>
+				<a class="a wbtg" onclick="minwin('csgo')"><i class="bi bi-dash-lg"></i></a>
+			</div>
+		</div>
+		<div class="loadback">
+			<img src="icon/csgo.ico" class="icon">
+		</div>
+		<div class="content" id="win-csgo">
+			<!-- <iframe src="https://play-cs.com/" frameborder="0" style="width: 100%; height: 100%;" loading="lazy"></iframe> -->
+		</div>
+	</div>
 	<div class="window wsa">
 		<div class="resize-bar"></div>
 		<div class="titbar">
@@ -2432,6 +2461,32 @@
 			<p ondblclick="$(this).hide()" class="a mesg">上面都是胡扯，切勿当真(双击隐藏此消息)</p>
 			<div class="buttons">
 				<a class="a submit act" onclick="hidewin('winver');">确定</a>
+			</div>
+		</div>
+	</div>
+	<div class="window store">
+		<div class="resize-bar"></div>
+		<div class="titbar">
+			<img src="icon/store.svg" class="icon">
+			<p style="font-size: 15px;margin-top: 9px;">Microsoft Store</p>
+			<div>
+				<a class="a wbtg red" onclick="hidewin('store')"><i class="bi bi-x-lg"></i></a>
+				<a class="a wbtg max" onclick="maxwin('store')"><i class="bi bi-app"></i></a>
+				<a class="a wbtg" onclick="minwin('store')"><i class="bi bi-dash-lg"></i></a>
+			</div>
+		</div>
+		<div class="loadback">
+			<img src="icon/store.svg" class="icon">
+		</div>
+		<div class="content" id="win-store" style="height: 100%;">
+			<div class="main">
+				<div class="card">
+					<center><img src="icon/csgo.ico" width="82px" height="82px"/></center>
+					<center class="title">CS: GO</center>
+					<center class="download" id="download-csgo" onclick="apps.csgo.download()"><span>下载</span></center>
+					<center class="download" id="wait-csgo" style="display: none;"><span><svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" style="color: #fff;" fill="currentColor" class="bi bi-arrow-clockwise" viewBox="0 0 16 16"><path transform="rotate(0)" fill-rule="evenodd" d="M8 3a5 5 0 1 0 4.546 2.914.5.5 0 0 1 .908-.417A6 6 0 1 1 8 2v1z"/><animateTransform attributeName="transform" attributeType="XML" type="rotate" form="0 0 0" to="360 0 0" begin="0s" dur="0.85s" repeatCount="indefinite"/></svg></span></center>
+					<center class="download" id="open-csgo" onclick="openapp('csgo');" style="display: none;"><span>打开</span></center>
+				</div>
 			</div>
 		</div>
 	</div>
@@ -2926,25 +2981,6 @@
 					</div>
 				</div>
 			</div>
-		</div>
-	</div>
-	<div class="window store">
-		<div class="resize-bar"></div>
-		<div class="titbar">
-			<img src="icon/store.svg" class="icon">
-			<p>Microsoft Store</p>
-			<div>
-				<a class="a wbtg red" onclick="hidewin('store')"><i class="bi bi-x-lg"></i></a>
-				<a class="a wbtg max" onclick="maxwin('store')"><i class="bi bi-app"></i></a>
-				<a class="a wbtg" onclick="minwin('store')"><i class="bi bi-dash-lg"></i></a>
-				<a class="a wbtg" onclick="apps.store.init()"><i class="bi bi-arrow-counterclockwise"></i></a>
-			</div>
-		</div>
-		<div class="loadback">
-			<img src="icon/store.svg" class="icon">
-		</div>
-		<div class="content">
-			
 		</div>
 	</div>
 	<script src="data/tasks.js"></script>

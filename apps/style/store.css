@@ -1,0 +1,49 @@
+#win-store {
+    display: flex;
+    flex-direction: column;
+}
+#win-store>.main>.card {
+    align-items: center;
+    height: 10rem;
+    width: 7rem;
+    margin: 10px;
+    border-radius: 8px;
+    background-color: var(--card);
+    padding: 4px;
+    box-shadow: 0 1px 2px 1px var(--s3d);
+}
+#win-store>.main>.card>.title {
+    padding: 6px 10px;
+}
+#win-store>.main>.card>.download {
+    /* width: 60px; */
+    height: 30px;
+    text-align: center;
+    transition: 40ms;
+    border-radius: 7px;
+    /* border: 1.5px solid #63636330; */
+    box-shadow: 0px 1px 1px 1px var(--s3d);
+    background: var(--card);
+    /* border: 1.5px solid var(--bd);
+    border-top: 2px solid var(--bd);
+    border-bottom: 1px solid var(--bd); */
+    /* border-color: var(--bd); */
+    transform-origin: bottom;
+    background-image: linear-gradient(120deg, var(--theme-1), var(--theme-2));
+    border: none;
+    color: #ddd;
+}
+
+#win-calc>.main>.card>.download:hover {
+    backdrop-filter: brightness(0.8);
+}
+
+#win-calc>.main>.card>.download:hover {
+    background-color: var(--hover);
+}
+
+#win-calc>.main>.card>.download:active {
+    opacity: 0.8;
+    transform: scale(0.96);
+    box-shadow: 0px 1px 1px var(--bd);
+}
