@@ -4,7 +4,7 @@ const server = 'http://win12server.freehk.svipss.top/';
 const pages = {
     'get-title': '', // 获取标题
 };
-//settings page list right hight light <span>       *Junchen Yi 
+//settings page list right hight light <span>       @Junchen Yi 
 document.querySelectorAll(`list.focs`).forEach(li => {
     li.addEventListener('click', e => {
         let _ = li.querySelector('span.focs'), la = li.querySelector('a.check'),
