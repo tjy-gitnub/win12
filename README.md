@@ -35,6 +35,7 @@ Windows 12 的明天在大家的努力下会更灿烂美好！
 
 - [Windows 12 网页版](#windows-12-网页版)
   - [前前言](#前前言)
+  - [Star 趋势](#Star-趋势)
   - [前言](#前言)
     - [特别感谢](#特别感谢)
   - [效果展示](#效果展示)
@@ -48,7 +49,7 @@ Windows 12 的明天在大家的努力下会更灿烂美好！
 
 最近（不久之前）看到有一些冒充我们的，在此做个声明：
 
-我们项目是由 tjy-gitnub（初三），NB-group（预备），782（初一），三位开发者共同开发的！
+我们项目是由 tjy-gitnub（初三），NB-group（预备），782（初一），lh11117（初一），四位开发者共同开发的！
 
 我们只在 GitHub、Bilibili 和爱发电上有官方账号！
 
@@ -69,6 +70,9 @@ NB-group：
 782：
 
 ![image](https://github.com/tjy-gitnub/win12/assets/121747915/e475890f-010d-4e47-9ac6-fd4abad26218)
+
+lh11117：
+暂时没有Bilibili账户
 
 爱发电：
 
@@ -98,6 +102,8 @@ NB-group：
 - CursoR_光标（<https://afdian.net/a/cursor>）
 
 在此对以上赞助者表示公开鸣谢！
+
+特别感谢Bilibili视频博主[@云影同学yunyuv](https://space.bilibili.com/15445514)的[介绍 Windows 12 网页版 的视频](https://www.bilibili.com/video/BV1EV4y1v7tN/?spm_id_from=333.337.search-card.all.click)，没有这条视频，就没有今天3.1k星星的Windows 12 网页版！
 
 ## 效果展示
 
