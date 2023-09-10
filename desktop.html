@@ -873,7 +873,7 @@
 		</div>
 	</div>
 	<div id="desktop">
-		<div class="b" ondblclick="openapp('explorer');" ontouchstart="openapp('explorer');" win12_title="显示连接到此计算机的驱动器和硬件。" oncontextmenu="return showcm(event,'desktop.icon',['explorer',-1]);" appname="explorer">
+		<div ondblclick="openapp('explorer');" ontouchstart="openapp('explorer');" win12_title="显示连接到此计算机的驱动器和硬件。" oncontextmenu="return showcm(event,'desktop.icon',['explorer',-1]);" appname="explorer">
 			<img src="apps/icons/explorer/thispc.svg">
 			<p>此电脑</p>
 		</div>
@@ -1258,8 +1258,8 @@
 				<input-before class="bi bi-search"></input-before>
 				<list class="focs"><!--压缩行数-->
 					<a class="enable system check" onclick="apps.setting.page('system')"><img src="apps/icons/setting/system.png">系统</a>
-					<a class="enable blueteeth" onclick="apps.setting.page('blueteeth')"><img src="apps/icons/setting/blueteeth.png">蓝牙和其他设备</a><!-- 蓝牙与设备  @Junchen Yi-->
-					<a><img src="apps/icons/setting/network.png">网络和 Internet</a>
+					<a class="enable blueteeth" onclick="apps.setting.page('blueteeth')"><img src="apps/icons/setting/blueteeth.png">蓝牙和其他设备</a><!-- 蓝牙与设备  @Junchen Yi 2023-9-9-->
+					<a class="enable network" onclick="apps.setting.page('network')"><img src="apps/icons/setting/network.png">网络和 Internet</a>
 					<a class="enable appearance" onclick="apps.setting.page('appearance')"><img src="apps/icons/setting/personal.png">个性化</a>
 					<a><img src="apps/icons/setting/apps.png">应用</a>
 					<a><img src="apps/icons/setting/user.png">账户</a>
@@ -1299,7 +1299,7 @@
 						<a><icon></icon><div><p>关于</p><p>设备规格、重命名电脑、Windows 规格</p></div><i class="bi bi-chevron-right"></i></a>
 					</div>
 				</div>
-				<!-- 蓝牙与设备  @Junchen Yi-->
+				<!-- 蓝牙与设备  @Junchen Yi 2023-9-9-->
 				<div class="cnt blueteeth">
 					<p class="title">蓝牙与设备</p>
 					<div style="display: flex;">
@@ -1321,6 +1321,30 @@
 						<a><icon></icon><div><p>USB设备</p><p>通过USB连接更多设备...</p></div><i class="bi bi-chevron-right"></i></a>
 					</div>
 				</div>
+				<!-- 蓝牙与设备 end -->
+				<!-- 网络和 Internet  @Junchen Yi 2023-9-10-->
+				<div class="cnt network">
+					<p class="title">网络和 Internet</p>
+					<div style="display: flex;">
+						<p class="s-icon" style="font-size: 70px;margin: -8px 15px 0px 20px;"></p>
+						<div>
+							<p style="color: #7f7f7f;margin:-8px 0 -5px 0;">Wifi 已连接</p>
+							<p style="font-size: 28px;text-overflow: ellipsis;white-space: nowrap;">PingGai - 5G</p>
+							<a style="color: var(--href);text-decoration: underline !important;;" class="a">断开</a>
+						</div>
+					</div>
+					<div class="setting-list">
+						<a><icon></icon><div><p>无线局域网</p><p>连接、管理已连接网络</p></div><i class="bi bi-chevron-right"></i></a>
+						<a><icon></icon><div><p>移动网络 未连接</p><p>通过移动网络访问互联网</p></div><i class="bi bi-chevron-right"></i></a>
+						<a><icon></icon><div><p>VPN</p><p>添加、连接、管理</p></div><i class="bi bi-chevron-right"></i></a>
+						<a><icon></icon><div><p>移动互联网</p><p>通过本机移动网络共享互联网</p></div><i class="bi bi-chevron-right"></i></a>
+						<a><icon></icon><div><p>飞行模式</p><p>暂停所有通讯与设备连接</p></div><i class="bi bi-chevron-right"></i></a>
+						<a><icon></icon><div><p>代理</p><p>用于 Wifi 和以太网的代理服务器</p></div><i class="bi bi-chevron-right"></i></a>
+						<a><icon></icon><div><p>拨号</p><p>通过 Wifi 网络拨打电话</p></div><i class="bi bi-chevron-right"></i></a>
+						<a><icon></icon><div><p>高级设置</p><p>查看所有网络适配器、网络重置</p></div><i class="bi bi-chevron-right"></i></a>
+					</div>
+				</div>
+				<!-- 网络和 Internet end  @Junchen Yi -->
 				<div class="cnt appearance">
 					<p class="title">个性化</p>
 					<div class="setting-list" style="margin-top: 10px;">
