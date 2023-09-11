@@ -1261,7 +1261,7 @@
 					<a class="enable blueteeth" onclick="apps.setting.page('blueteeth')"><img src="apps/icons/setting/blueteeth.png">蓝牙和其他设备</a><!-- 蓝牙与设备  @Junchen Yi 2023-9-9-->
 					<a class="enable network" onclick="apps.setting.page('network')"><img src="apps/icons/setting/network.png">网络和 Internet</a>
 					<a class="enable appearance" onclick="apps.setting.page('appearance')"><img src="apps/icons/setting/personal.png">个性化</a>
-					<a><img src="apps/icons/setting/apps.png">应用</a>
+					<a class="enable apps" onclick="apps.setting.page('apps')"><img src="apps/icons/setting/apps.png">应用</a>
 					<a><img src="apps/icons/setting/user.png">账户</a>
 					<a><img src="apps/icons/setting/time.png">时间和语言</a>
 					<a><img src="apps/icons/setting/game.png">游戏</a>
@@ -1422,6 +1422,18 @@
 							</div>
 						</div>
 					</div>
+				</div>
+				<div class="cnt apps">
+					<p class="title">应用</p>
+					<div class="setting-list">
+					<a><icon></icon><div><p>安装的应用</p><p>卸载和管理电脑上的应用</p></div><i class="bi bi-chevron-right"></i></a>
+					<a><icon></icon><div><p>默认应用</p><p>根据文件和链接种类设置的默认应用，其他默认应用</p></div><i class="bi bi-chevron-right"></i></a>
+					<a><icon></icon><div><p>离线地图</p><p>下载、存储位置、地图更新</p></div><i class="bi bi-chevron-right"></i></a>
+					<a><icon></icon><div><p>可选功能</p><p>你的设备的额外功能</p></div><i class="bi bi-chevron-right"></i></a>
+					<a><icon></icon><div><p>可打开网站的应用</p><p>可在应用而不是浏览器中打开的网站</p></div><i class="bi bi-chevron-right"></i></a>
+					<a><icon></icon><div><p>视频播放</p><p>视频调整、HDR 流式处理、电池选项</p></div><i class="bi bi-chevron-right"></i></a>
+					<a><icon></icon><div><p>启动</p><p>登录时自动启动的应用程序</p></div><i class="bi bi-chevron-right"></i></a>
+				</div>
 				</div>
 				<div class="cnt safe">
 					<p class="title">隐私和安全性</p>
