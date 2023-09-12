@@ -2693,19 +2693,33 @@ Microsoft Windows [版本 12.0.39035.7324]
             }
             else {
                 // 6
+                m_tab.rename('edge', u);
+                let src = u;
                 if (!/^(((ht|f)tps?):\/\/)?([^!@#$%^&*?.\s-]([^!@#$%^&*?.\s]{0,63}[^!@#$%^&*?.\s])?\.)+[a-z]{2,6}\/?/.test(u) && !u.match(/^mainpage.html$/)) {
                     // 启用必应搜索
-                    $('#win-edge>iframe.show').attr('src', 'https://bing.com/search?q=' + encodeURIComponent(u));
+                    src = 'https://bing.com/search?q=' + encodeURIComponent(u);
                     m_tab.rename('edge', u);
                 }
-                // 检测网址是否带有http头
+                // 检测网址是否带有https头
                 else if (!/^https?:\/\//.test(u) && !u.match(/^mainpage.html$/)) {
-                    $('#win-edge>iframe.show').attr('src', 'http://' + u);
-                    m_tab.rename('edge', 'http://' + u);
+                    src = 'https://' + u;
                 }
-                else {
-                    $('#win-edge>iframe.show').attr('src', u);
-                    m_tab.rename('edge', u.match(/^mainpage.html$/) ? '新建标签页' : u);
+                
+                if (u.match(/^mainpage.html$/)) {
+                    m_tab.rename('edge', '新建标签页');
+                } else {
+                    $('#win-edge>.tool>input.url').val(src);
+                    $('#win-edge>iframe.show').attr('src', src);
+                    (async () => {
+                        try {
+                            let content = await fetch(src);
+                            let text = await content.text();
+                            let title = new RegExp(/<title[\S\s]*?>([\S\s]*?)<\/title>/g).exec(text)[1];
+                            m_tab.rename('edge', title);
+                        } catch (e) {
+                            console.err(e);
+                        }
+                    })()
                 }
                 if (!$('.window.edge>.titbar>.tabs>.tab.' + apps.edge.tabs[apps.edge.now][0] + '>.reloading')[0]) {
                     $('.window.edge>.titbar>.tabs>.tab.' + apps.edge.tabs[apps.edge.now][0])[0].insertAdjacentHTML('afterbegin', apps.edge.reloadElt);
