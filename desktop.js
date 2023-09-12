@@ -2433,59 +2433,65 @@ Type "help", "copyright", "credits" or "license" for more information.
             if (apps.python.pyodide) {
                 const input = $('#win-python>pre>input');
                 const _code = input.val();
-                const elt = $('#win-python>pre.text-cmd')[0];
-                const lastChar = _code[_code.length - 1];
-                var newD = document.createElement('div');
-                newD.innerText = `${apps.python.prompt}${_code}`;
-                elt.appendChild(newD);
-                if (lastChar != ':' && lastChar != '\\' && ((!apps.python.indent || _code == ''))) {
-                    apps.python.prompt = '>>> ';
-                    apps.python.codeCache += _code;
-                    apps.python.indent = false;
-                    const code = apps.python.codeCache;
-                    apps.python.codeCache = '';
-                    apps.python.pyodide.runPython('sys.stdout = io.StringIO()');
-                    try {
-                        const result = String(apps.python.pyodide.runPython(code));
-                        if (apps.python.pyodide.runPython('sys.stdout.getvalue()')) {
-                            var newD = document.createElement('div');
-                            newD.innerText = `${apps.python.pyodide.runPython('sys.stdout.getvalue()')}`;
-                            elt.appendChild(newD);
-                        }
-                        if (result && result != 'undefined') {
-                            var newD = document.createElement('div');
-                            if (result == 'false') {
-                                newD.innerText = 'False';
-                            }
-                            else if (result == 'true') {
-                                newD.innerText = 'True';
-                            }
-                            else {
-                                newD.innerText = result;
-                            }
-                            elt.appendChild(newD);
-                        }
-                    }
-                    catch (err) {
-                        var newD = document.createElement('div');
-                        newD.innerText = `${err.message}`;
-                        elt.appendChild(newD);
-                    }
+                if (_code == "exit()") {
+                    hidewin('python');
+                    input.val('');
                 }
                 else {
-                    apps.python.prompt = '... ';
-                    if (lastChar == ':') {
-                        apps.python.indent = true;
+                    const elt = $('#win-python>pre.text-cmd')[0];
+                    const lastChar = _code[_code.length - 1];
+                    var newD = document.createElement('div');
+                    newD.innerText = `${apps.python.prompt}${_code}`;
+                    elt.appendChild(newD);
+                    if (lastChar != ':' && lastChar != '\\' && ((!apps.python.indent || _code == ''))) {
+                        apps.python.prompt = '>>> ';
+                        apps.python.codeCache += _code;
+                        apps.python.indent = false;
+                        const code = apps.python.codeCache;
+                        apps.python.codeCache = '';
+                        apps.python.pyodide.runPython('sys.stdout = io.StringIO()');
+                        try {
+                            const result = String(apps.python.pyodide.runPython(code));
+                            if (apps.python.pyodide.runPython('sys.stdout.getvalue()')) {
+                                var newD = document.createElement('div');
+                                newD.innerText = `${apps.python.pyodide.runPython('sys.stdout.getvalue()')}`;
+                                elt.appendChild(newD);
+                            }
+                            if (result && result != 'undefined') {
+                                var newD = document.createElement('div');
+                                if (result == 'false') {
+                                    newD.innerText = 'False';
+                                }
+                                else if (result == 'true') {
+                                    newD.innerText = 'True';
+                                }
+                                else {
+                                    newD.innerText = result;
+                                }
+                                elt.appendChild(newD);
+                            }
+                        }
+                        catch (err) {
+                            var newD = document.createElement('div');
+                            newD.innerText = `${err.message}`;
+                            elt.appendChild(newD);
+                        }
                     }
-                    apps.python.codeCache += _code + '\n';
+                    else {
+                        apps.python.prompt = '... ';
+                        if (lastChar == ':') {
+                            apps.python.indent = true;
+                        }
+                        apps.python.codeCache += _code + '\n';
+                    }
+                    input.val('');
+
+                    // 自动聚焦
+                    input.blur();
+                    input.focus();
+
+                    $('#win-python .prompt')[0].innerText = apps.python.prompt;
                 }
-                input.val('');
-
-                // 自动聚焦
-                input.blur();
-                input.focus();
-
-                $('#win-python .prompt')[0].innerText = apps.python.prompt;
             }
         }
     },
@@ -2506,17 +2512,24 @@ Microsoft Windows [版本 12.0.39035.7324]
             var newD = document.createElement('div');
             newD.innerText = `C:\\Windows\\System32> ${command}`;
             elt.appendChild(newD);
-            if (!runcmd(command)) {
-                var newD = document.createElement('div');
-                newD.innerText = `"${command}"不是内部或外部命令,也不是可运行程序
-            或批处理文件`;
-                elt.appendChild(newD);
+            if (command == 'exit') {
+                hidewin('terminal');
+                input.val('');
             }
-            input.val('');
-
-            // 自动聚焦
-            input.blur();
-            input.focus();
+            else {
+                if (!runcmd(command)) {
+                    var newD = document.createElement('div');
+                    newD.innerText = `"${command}"不是内部或外部命令,也不是可运行程序
+                或批处理文件`;
+                    elt.appendChild(newD);
+                }
+                input.val('');
+    
+                // 自动聚焦
+                input.blur();
+                input.focus();
+            }
+            
         }
     },
     search: {
