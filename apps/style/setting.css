@@ -413,3 +413,16 @@ div.app-color input[type=color] {
 .blueteeth-tips-text{
 	font-size:8px;
 }
+.setting-user-svg{
+	    width: 100px;
+	    height: 100px;
+	    background-color: var(--hover-b);
+	    /* box-shadow: 0 0 10px var(--sd); */
+	    width: 60px;
+	    min-width: 60px;
+	    height: 60px;
+	    border-radius: 50%;
+	    padding: 11px;
+	    margin-right: 15px;
+	    margin-bottom: 15px;
+}
