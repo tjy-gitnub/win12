@@ -28,7 +28,7 @@ Windows 12 的明天在大家的努力下会更灿烂美好！
 
 ---
 
-> 🎉🎉项目在 GitHub 上突破✨1.4k✨stars✨啦！芜湖🎊🎈`o(^o^)o`
+> 🎉🎉项目在 GitHub 上突破✨3.6k✨stars✨啦！芜湖🎊🎈`o(^o^)o`
 > 向在座的各位的支持表示诚挚的感谢！
 
 ---
@@ -78,6 +78,8 @@ NB-group：
 
 链接：https://afdian.net/a/qstudio?tab=feed
 
+**我们的项目及源代码绝对不进行强制收费！如果看到售卖本项目且没有注明原项目链接的，或违反EPL-2.0开源协议及本项目开源说明的，欢迎举报！**
+
 ## 前言
 
 最近（很久以前）看到 Windows 12 概念版（Powered by PowerPoint）后深受启发，决定做一个 Windows 12 网页版，就像 [Windows 11 网页版](https://win11.blueedge.me/) 一样。
@@ -93,6 +95,7 @@ NB-group：
 特别感谢以下赞助者:
 
 - CursoR_光标（<https://afdian.net/a/cursor>）
+- Baymax（<https://afdian.net/u/a131cd504dea11eeb6be5254001e7c00>）
 
 在此对以上赞助者表示公开鸣谢！
 
