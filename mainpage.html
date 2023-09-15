@@ -5,17 +5,21 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>优化后的文件标题</title> <!-- 优化：修改页面标题为描述性标题 -->
+    <title>Win12浏览器</title> <!-- 优化：修改页面标题为描述性标题 -->
     <style>
         * {
-            margin: 0;
-            padding: 0;
+            margin: 0px;
+            padding: 0px;
         }
 
         html,
         body {
             height: 100%;
             width: 100%;
+        }
+
+        * {
+            background: transparent;
         }
 
         body {
@@ -28,16 +32,17 @@
         body>div.input {
             display: flex;
             width: 50%;
-            height: 2em; /* 优化：修改高度单位为em */
+            /* height: 10%; */
+            height: 2em;
             font-size: 1.3em;
             border-radius: 25px;
             border: none;
             padding: 4px 25px 5px 25px;
             align-items: center;
             justify-content: space-between;
-            border: 2px solid rgba(111, 111, 111, 0.5); /* 优化：修改边框颜色 */
+            border: 2px solid #6f6f6f50;
             backdrop-filter: saturate(1.3);
-            box-shadow: 1px 3px 8px rgba(0, 0, 0, 0.45); /* 优化：修改阴影颜色 */
+            box-shadow: 1px 3px 8px #00000045;
         }
 
         body>div.input>input {
@@ -58,9 +63,9 @@
             background-image: url('./img/Bing.svg');
             background-size: contain;
             background-repeat: no-repeat;
-            background-position: center; /* 优化：居中背景图像 */
+            background-position: 50% 50%;
             margin-bottom: 30px;
-            margin-top: -150px; /* 优化：调整顶部外边距 */
+            margin-top:-150px;
         }
     </style>
 </head>
@@ -71,22 +76,22 @@
         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="#5F6368">
             <path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z" />
         </svg>
-        <input type="text" onkeyup="searchOrNavigate(event, this)" placeholder="在必应中搜索，或输入一个网址">
-    </div>
-    <script>
-        function searchOrNavigate(event, input) {
-            if (event.keyCode == 13) {
-                const value = input.value.trim();
-                if (!/^(((ht|f)tps?):\/\/)?([^!@#$%^&*?.\s-]([^!@#$%^&*?.\s]{0,63}[^!@#$%^&*?.\s])?\.)+[a-z]{2,6}\/?/.test(value)) {
-                    window.location.href = 'https://bing.com/search?q=' + encodeURIComponent(value);
-                } else if (!/^https?:\/\//.test(value)) {
-                    window.location.href = 'http://' + value;
-                } else {
-                    window.location.href = value;
-                }
-            }
+        <input type="text" onkeyup="if(event.keyCode==13){if (!/^(((ht|f)tps?):\/\/)?([^!@#$%^&*?.\s-]([^!@#$%^&*?.\s]{0,63}[^!@#$%^&*?.\s])?\.)+[a-z]{2,6}\/?/.test(this.value)) {
+            window.location='https://bing.com/search?q='+encodeURIComponent(this.value);  //encodeURIComponent 可以对搜索内容进行编码
+            //可能报错
+            apps.edge.rename(this.value);
         }
-    </script>
+        else if (!/^https?:\/\//.test(this.value)) {
+            window.location='http://' + this.value;
+            //可能报错
+            apps.edge.rename('http://' + this.value);
+        }
+        else {
+            window.location=this.value;
+            //可能报错
+            apps.edge.rename(this.value);
+        }}" placeholder="在必应中搜索，或输入一个网址">
+    </div>
 </body>
 
 </html>
