@@ -124,6 +124,11 @@
 
 #contri>.a>.name {
     font-size: 17px;
+    margin: 0px 6px;
+    /* border: 6px; */
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
 }
 
 #contri>.a>.cbs>.num {
