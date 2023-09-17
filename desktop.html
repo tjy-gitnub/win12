@@ -1303,7 +1303,7 @@ showcm(event,id,arg) 显示右键菜单，使用方法：oncontextmenu="return s
 					<a class="enable appearance" onclick="apps.setting.page('appearance')"><img src="apps/icons/setting/personal.png">个性化</a>
 					<a class="enable apps" onclick="apps.setting.page('apps')"><img src="apps/icons/setting/apps.png">应用</a><!-- 应用  @Junchen Yi 2023-9-11-->
 					<a class="enable user" onclick="apps.setting.page('user')"><img src="apps/icons/setting/user.png">账户</a><!-- 账户  @Junchen Yi 2023-9-11-->
-					<a><img src="apps/icons/setting/time.png">时间和语言</a>
+					<a class="enable time" onclick="apps.setting.page('time')"><img src="apps/icons/setting/time.png">时间和语言</a><!-- 时间  @Junchen Yi 2023-9-17-->
 					<a><img src="apps/icons/setting/game.png">游戏</a>
 					<a><img src="apps/icons/setting/help.png">辅助功能</a>
 					<a class="enable safe" onclick="apps.setting.page('safe')"><img src="apps/icons/setting/safe.png">隐私和安全性</a>
@@ -1501,6 +1501,45 @@ showcm(event,id,arg) 显示右键菜单，使用方法：oncontextmenu="return s
 					</div>
 				</div>
 				<!-- 账户 end -->
+				<!-- 时间  @Junchen Yi 2023-9-17-->
+				<div class="cnt time">
+					<p class="title">时间和语言</p>
+					<div class="settingTimeItem">
+						<p class="settingTimeTitle">当前设备时间：</p>
+						<span class="settingTime"></span>
+					</div>
+					<div class="setting-list">
+						<a><icon></icon><div><p>日期与时间</p><p>时区、自动时钟设置、日历显示</p></div><i class="bi bi-chevron-right"></i></a>
+						<a><icon></icon><div><p>语言和地区</p><p>Windows 和某些应用程序根据您所在的地区设置日期和时间的格式</p></div><i class="bi bi-chevron-right"></i></a>
+						<a><icon></icon><div><p>输入</p><p>触摸键盘、文本建议、首选项</p></div><i class="bi bi-chevron-right"></i></a>
+						<a><icon></icon><div><p>朗读与音频输入</p><p>语音语言、语音识别麦克风设置、声音</p></div><i class="bi bi-chevron-right"></i></a>
+						<a class="selectLanguageA"><icon></icon><div><p>Windows 显示语言</p><p>设置和文件资源管理器等 Windows 功能将以这种语言显示</p></div>
+							<select class="languageSelect bi-chevron-right">
+								<option value="en">English</option>
+								<option value="es">Español (Spanish)</option>
+								<option value="fr">Français (French)</option>
+								<option value="de">Deutsch (German)</option>
+								<option value="zh" selected>中文 (Chinese)</option>
+								<option value="ja">日本語 (Japanese)</option>
+								<option value="ko">한국어 (Korean)</option>
+								<option value="ar">العربية (Arabic)</option>
+								<option value="ru">Русский (Russian)</option>
+								<option value="pt">Português (Portuguese)</option>
+								<option value="it">Italiano (Italian)</option>
+								<option value="nl">Nederlands (Dutch)</option>
+								<option value="hi">हिन्दी (Hindi)</option>
+								<option value="sv">Svenska (Swedish)</option>
+								<option value="fi">Suomi (Finnish)</option>
+								<option value="da">Dansk (Danish)</option>
+								<option value="no">Norsk (Norwegian)</option>
+								<option value="tr">Türkçe (Turkish)</option>
+								<option value="pl">Polski (Polish)</option>
+								<option value="th">ภาษาไทย (Thai)</option>
+							</select>
+						</a>
+					</div>
+				</div>
+				<!-- 时间 end -->
 				<div class="cnt safe">
 					<p class="title">隐私和安全性</p>
 					<div class="setting-list">
@@ -2892,6 +2931,7 @@ showcm(event,id,arg) 显示右键菜单，使用方法：oncontextmenu="return s
 	<script src="data/tasks.js"></script>
 	<script src="desktop.js"></script>
 	<script src="module/tab.js"></script>
+	<script src="scripts/setting_getTime.js"></script><!-- 设置页面获取时间逻辑 @Junchen Yi 2023-9-17-->
 	<script src="https://fastly.jsdelivr.net/pyodide/v0.23.4/full/pyodide.js" async></script>
 	<!-- <link rel="stylesheet" href="https://pyscript.net/latest/pyscript.css" />
 	<script defer src="https://pyscript.net/latest/pyscript.js"></script> -->         <!-- PyScript, 已弃用 -->
