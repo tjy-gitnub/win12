@@ -1,0 +1,27 @@
+name: 提出建议
+description: 请向我们提出宝贵的建议
+title: 建议
+labels: bug
+body:
+
+- type: textarea
+  attributes:
+    label: 描述
+    description: >
+     请简要描述一下建议
+  validations:
+    required: true
+
+- type: textarea
+  attributes:
+    label: 方案
+    description: >
+     请在这里提出施行建议的方案或希望有的功能
+  validations:
+    required: true
+
+- type: textarea
+  attributes:
+    label: 其他
+    description: >
+     如果有其他的内容，请在这里进行补充

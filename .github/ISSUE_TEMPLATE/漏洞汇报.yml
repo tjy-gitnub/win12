@@ -1,0 +1,64 @@
+name: 漏洞汇报
+description: 请向我们汇报您在使用过程中发现的漏洞
+title: 漏洞
+labels: bug
+body:
+
+- type: textarea
+  attributes:
+    label: 描述
+    description: >
+     请描述一下这个漏洞是什么样的
+  validations:
+    required: true
+
+- type: textarea
+  attributes:
+    label: 重现
+    description: >
+     请用步骤的方式描述一下如何重新复现该漏洞
+  validations:
+    required: true
+
+
+- type: textarea
+  attributes:
+    label: 截图
+    description: >
+     如果有的话，请在上面的文本框附上相关的截图或视频
+
+- type: markdown
+  attributes:
+    value: |
+     # 测试环境
+
+- type: input
+  attributes:
+    label: 浏览器
+    description: >
+     请在这里填入使用的浏览器，如Edge, Chrome, Firefox, Safari, Opera等
+  validations:
+    required: true
+
+- type: input
+  attributes:
+    label: 浏览器版本
+    description: >
+     请在这里填入浏览器的版本
+  validations:
+    required: true
+
+- type: input
+  attributes:
+    label: 操作系统
+    description: >
+     请在这里填入使用的操作系统，如iOS 15, Windows 11, Android 13, Ubuntu 22.04.2 LTS等
+  validations:
+    required: true
+
+
+- type: textarea
+  attributes:
+    label: 其他
+    description: >
+     如果有其他的内容，请在这里进行补充
