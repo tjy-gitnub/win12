@@ -1,7 +1,6 @@
 name: 漏洞汇报
 description: 请向我们汇报您在使用过程中发现的漏洞
 title: 漏洞
-labels: bug
 body:
 
 - type: textarea
