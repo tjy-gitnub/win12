@@ -3224,10 +3224,10 @@ function pinapp(id, name, command) {
 let icon = {
     bilibili: 'bilibili.png',
     vscode: 'vscode.png',
-    python: 'python.png',
+    // python: 'python.png',
     winver: 'about.svg',
-    run: 'run.png',
-    whiteboard: 'whiteboard.png',
+    // run: 'run.png',
+    // whiteboard: 'whiteboard.png',
     taskmgr: 'taskmgr.png'
 }
 function geticon(name) {

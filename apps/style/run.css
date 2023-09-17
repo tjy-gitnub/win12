@@ -10,10 +10,11 @@
 
 #win-run>.top>.icon {
     min-width: 70px;
-    background-image: url('../../icon/run.png');
+    background-image: url('../../icon/run.svg');
     background-position: 50% 50%;
     background-repeat: no-repeat;
     background-size: contain;
+    margin-right: 10px;
 }
 
 #win-run>.open {
