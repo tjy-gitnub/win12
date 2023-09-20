@@ -39,9 +39,9 @@
     font-size: 16px;
 }
 
-.window.terminal-apps>.content * {
+/* .window.terminal-apps>.content * {
     white-space: break-spaces;
-}
+} */
 
 .window.terminal-apps>.content *::selection {
     background: #ddd;
