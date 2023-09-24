@@ -1,6 +1,6 @@
-.window.edge.max>#win-edge {
+/* .window.edge.max>#win-edge {
     padding-bottom: 55px;
-}
+} */
 
 #win-edge {
     display: flex;
