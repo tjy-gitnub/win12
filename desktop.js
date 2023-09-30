@@ -748,7 +748,7 @@ shutdown [-s] [-r] [-f] [-a] [-t time]
 let apps = {
     setting: {
         init: () => {
-            $('#win-setting>.menu>list>a.system')[0].click();
+            $('#win-setting>.menu>list>a.home')[0].click();
             $('#win-setting>.page>.cnt.update>.setting-list>div:last-child>.alr>a.checkbox')[localStorage.getItem('autoUpdate') == 'true' ? 'addClass' : 'removeClass']('checked');
             apps.setting.checkUpdate();
         },
