@@ -640,7 +640,7 @@ function closenotice() {
 var shutdown_task = []; //关机任务，储存在这个数组里
 // 为什么要数组？
 // 运行的指令
-function runcmd(cmd) {
+function runcmd(cmd, inTerminal=false) {
     if (cmd.slice(0, 3) == "cmd") {
         run_cmd = cmd;
         openapp('terminal');
@@ -659,9 +659,11 @@ function runcmd(cmd) {
         var cmds = cmd.split(' ');
         if (cmds.includes("shutdown") || cmds.includes("shutdown.exe")) { //帮助
             if (cmds.length == 1) {
-                openapp('terminal');
-                $('#win-terminal').html(`
-<pre>
+                if(!inTerminal){
+                    openapp('terminal');
+                    $('#win-terminal').html(`<pre class="text-cmd"></pre>`);
+                }
+                $('#win-terminal>.text-cmd').append(`
 shutdown [-s] [-r] [-f] [-a] [-t time]
 -s:关机
 -r:重启
@@ -669,8 +671,8 @@ shutdown [-s] [-r] [-f] [-a] [-t time]
 -a:取消之前的操作
 -t time:指定在 time秒 后操作
 
-其余不多做介绍了
-请按任意键继续.&nbsp;.&nbsp;.<input type="text" onkeydown="hidewin('terminal')"></input></pre>`); //Q：为什么文字这么多呢？A：shutdown的帮助本来就多，为了能显示空格，就把空格用&nbsp;代替了
+其余不多做介绍了` + (inTerminal?`` : `
+请按任意键继续.&nbsp;.&nbsp;.<input type="text" onkeydown="hidewin('terminal')"></input>`)); 
                 // 所以你是没事干吗？。。提示：github并不是以行数来计算贡献的哦   from @tjy-gitnub
                 $('#win-terminal>pre>input').focus()
             }
@@ -2517,7 +2519,7 @@ Microsoft Windows [版本 12.0.39035.7324]
                 input.val('');
             }
             else {
-                if (!runcmd(command)) {
+                if (!runcmd(command, inTerminal=true)) {
                     var newD = document.createElement('div');
                     newD.innerText = `"${command}"不是内部或外部命令,也不是可运行程序
                 或批处理文件`;
