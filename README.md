@@ -16,7 +16,7 @@ Windows 12 的明天在大家的努力下会更灿烂美好！
 
 ---
 
-> 作者今年初三了，不会做什么功能的更新了。维护和继续开发交给我们的 @User782Tec，详见 [公告](https://github.com/tjy-gitnub/win12/wiki/%E5%85%AC%E5%91%8A-Notices)。
+> 作者今年初三了，不会做什么功能的更新了。维护和继续开发交给我们的 @User782Tec @NB-Group，详见 [公告](https://github.com/tjy-gitnub/win12/wiki/%E5%85%AC%E5%91%8A-Notices)。
 
 ```
 寒窗苦读九春秋，一朝定乾坤。
@@ -28,7 +28,7 @@ Windows 12 的明天在大家的努力下会更灿烂美好！
 
 ---
 
-> 🎉🎉项目在 GitHub 上突破✨3.6k✨stars✨啦！芜湖🎊🎈`o(^o^)o`
+> 🎉🎉项目在 GitHub 上突破✨4.8k✨stars✨啦！芜湖🎊🎈`o(^o^)o`
 > 向在座的各位的支持表示诚挚的感谢！
 
 ---
