@@ -640,7 +640,7 @@ function closenotice() {
 var shutdown_task = []; //关机任务，储存在这个数组里
 // 为什么要数组？
 // 运行的指令
-function runcmd(cmd) {
+function runcmd(cmd, inTerminal=false) {
     if (cmd.slice(0, 3) == "cmd") {
         run_cmd = cmd;
         openapp('terminal');
@@ -657,11 +657,13 @@ function runcmd(cmd) {
     else if (cmd.includes("shutdown")) {//关机指令
         run_cmd = cmd
         var cmds = cmd.split(' ');
-        if (cmds.includes("shutdown") || cmds.includes("shutdown.exe")) { //帮助
+        if ((cmds[0] == "shutdown") || (cmds[0] == "shutdown.exe")) { //帮助
             if (cmds.length == 1) {
-                openapp('terminal');
-                $('#win-terminal').html(`
-<pre>
+                if(!inTerminal){
+                    openapp('terminal');
+                    $('#win-terminal').html(`<pre class="text-cmd"></pre>`);
+                }
+                $('#win-terminal>.text-cmd').append(`
 shutdown [-s] [-r] [-f] [-a] [-t time]
 -s:关机
 -r:重启
@@ -669,8 +671,8 @@ shutdown [-s] [-r] [-f] [-a] [-t time]
 -a:取消之前的操作
 -t time:指定在 time秒 后操作
 
-其余不多做介绍了
-请按任意键继续.&nbsp;.&nbsp;.<input type="text" onkeydown="hidewin('terminal')"></input></pre>`); //Q：为什么文字这么多呢？A：shutdown的帮助本来就多，为了能显示空格，就把空格用&nbsp;代替了
+其余不多做介绍了` + (inTerminal?`` : `
+请按任意键继续.&nbsp;.&nbsp;.<input type="text" onkeydown="hidewin('terminal')"></input>`)); 
                 // 所以你是没事干吗？。。提示：github并不是以行数来计算贡献的哦   from @tjy-gitnub
                 $('#win-terminal>pre>input').focus()
             }
@@ -748,7 +750,7 @@ shutdown [-s] [-r] [-f] [-a] [-t time]
 let apps = {
     setting: {
         init: () => {
-            $('#win-setting>.menu>list>a.system')[0].click();
+            $('#win-setting>.menu>list>a.home')[0].click();
             $('#win-setting>.page>.cnt.update>.setting-list>div:last-child>.alr>a.checkbox')[localStorage.getItem('autoUpdate') == 'true' ? 'addClass' : 'removeClass']('checked');
             apps.setting.checkUpdate();
         },
@@ -2012,145 +2014,8 @@ let apps = {
             }
             return false;
         },
-        // 禁止奇奇怪怪的缩进！尽量压行，不要毫无意义地全部格式化和展开！ // f*ck!这™的格式化工具，我*********
-        path: {
-            folder: {
-                'C:': {
-                    folder: {
-                        'Program Files': {
-                            folder: { 'WindowsApps': { folder: {}, file: [] }, 'Microsoft': { folder: {}, file: [] } },
-                            file: [
-                                { name: 'about.exe', ico: 'icon/about.svg', command: "openapp('about')" },
-                                { name: 'setting.exe', ico: 'icon/setting.svg', command: "openapp('setting')" },
-                            ]
-                        },
-                        'Program Files (x86)': {
-                            folder: {
-                                'Microsoft': {
-                                    folder: {
-                                        'Edge': {
-                                            folder: {
-                                                'Application': {
-                                                    folder: { 'SetupMetrics': { folder: {}, file: [] } },
-                                                    file: [{ name: 'msedge.exe', ico: 'icon/edge.svg', command: "openapp('edge')" }]
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        },
-                        'Windows': {
-                            folder: {
-                                'Boot': { folder: {}, file: [] }, 'System': { folder: {}, file: [] }, 'SysWOW64': { folder: {}, file: [] }, 'System32': {
-                                    folder: {}, file: [
-                                        { name: 'calc.exe', ico: 'icon/calc.svg', command: "openapp('calc')" },
-                                        { name: 'cmd.exe', ico: 'icon/terminal.svg', command: "openapp('terminal')" },
-                                        { name: 'notepad.exe', ico: 'icon/notepad.svg', command: "openapp('notepad')" },//system32也有一个notepad
-                                        { name: 'taskmgr.exe', ico: 'icon/taskmgr.png', command: "openapp('taskmgr')" },
-                                        { name: 'winver.exe', ico: 'icon/about.svg', command: "openapp('winver')" },
-                                    ]
-                                }
-                            },
-                            file: [
-                                { name: 'explorer.exe', ico: 'icon/explorer.svg', command: "apps.explorer.newtab()" },
-                                { name: 'notepad.exe', ico: 'icon/notepad.svg', command: "openapp('notepad')" },
-                                { name: 'py.exe', ico: 'icon/python.png', command: "openapp('python')" },
-                            ]
-                        },
-                        '用户': {
-                            folder: {
-                                'Administrator': {
-                                    folder: {
-                                        '文档': {
-                                            folder: { 'IISExpress': { folder: {}, file: [] }, 'PowerToys': { folder: {}, file: [] } },
-                                            file: [
-                                                { name: '瓶盖介绍.doc', ico: 'icon/files/word.png', command: '' },
-                                                { name: '瓶盖质量统计分析.xlsx', ico: 'icon/files/excel.png', command: '' },
-                                            ]
-                                        }, '图片': {
-                                            folder: { '本机照片': { folder: {}, file: [] }, '屏幕截图': { folder: {}, file: [] } },
-                                            file: [
-                                                { name: '瓶盖构造图.png', ico: 'icon/files/img.png', command: '' },
-                                                { name: '可口可乐瓶盖.jpg', ico: 'icon/files/img.png', command: '' },
-                                            ]
-                                        },
-                                        'AppData': {
-                                            folder: {
-                                                'Local': {
-                                                    folder: {
-                                                        'Microsoft': {
-                                                            folder: {
-                                                                'Windows': {
-                                                                    folder: {
-                                                                        'Fonts': {}, 'TaskManager': {},
-                                                                        'Themes': {}, 'Shell': {},
-                                                                        '应用程序快捷方式': {},
-                                                                    }
-                                                                },
-                                                            }
-                                                        },
-                                                        'Programs': {
-                                                            folder: {
-                                                                'Python': {
-                                                                    folder: {
-                                                                        'Python310': {
-                                                                            folder: {
-                                                                                'DLLs': {},
-                                                                                'Doc': {}, 'include': {},
-                                                                                'Lib': {
-                                                                                    folder: {
-                                                                                        'site-packages': {},
-                                                                                        'tkinter': {},
-                                                                                    }
-                                                                                },
-                                                                                'libs': {}, 'Script': {}, 'share': {},
-                                                                                'tcl': {}, 'Tools': {}
-                                                                            }, file: [
-                                                                                { name: 'python.exe', ico: 'icon/python.png', command: "openapp('python')" }
-                                                                            ]}}, }}},
-                                                        'Temp': { folder: {} },
-                                                    }
-                                                },
-                                                'LocalLow': {
-                                                    folder: {
-                                                        'Microsoft': {
-                                                            folder: {
-                                                                'Windows': {},
-                                                            }
-                                                        },
-                                                    }
-                                                }, 'Roaming': {
-                                                    folder: {
-                                                        'Microsoft': {
-                                                            folder: {
-                                                                'Windows': {
-                                                                    folder: {
-                                                                        '「开始」菜单': {
-                                                                            folder: {
-                                                                                '程序': {
-                                                                                    folder: {}
-                                                                                },} },}},}},}},}, file: []}, '音乐': { folder: { '录音机': { folder: {}, file: [] } } }}},
-                                '公用': {
-                                    folder: {
-                                        '公用文档': {
-                                            folder: { 'IISExpress': { folder: {}, file: [] }, 'PowerToys': { folder: {}, file: [] } },
-                                            file: []
-                                        }, '公用图片': {
-                                            folder: { '本机照片': { folder: {}, file: [] }, '屏幕截图': { folder: {}, file: [] } },
-                                            file: []
-                                        },
-                                        '公用音乐': { folder: { '录音机': { folder: {}, file: [] } } }
-                                    }}}}},
-                    file: []
-                },
-                'D:': {
-                    folder: { 'Microsoft': { folder: {}, file: [] } },
-                    file: [
-                        { name: '瓶盖结构说明.docx', ico: 'icon/files/word.png', command: '' },
-                        { name: '可口可乐瓶盖历史.pptx', ico: 'icon/files/ppt.png', command: '' },
-                    ]}}},
-
+        // 禁止奇奇怪怪的缩进！尽量压行，不要毫无意义地全部格式化和展开！ 
+        path: {folder:{'C:':{folder:{'Program Files':{folder:{'WindowsApps':{folder:{},file:[]},'Microsoft':{folder:{},file:[]}},file:[{name:'about.exe',ico:'icon/about.svg',command:"openapp('about')"},{name:'setting.exe',ico:'icon/setting.svg',command:"openapp('setting')"},]},'Program Files (x86)':{folder:{'Microsoft':{folder:{'Edge':{folder:{'Application':{folder:{'SetupMetrics':{folder:{},file:[]}},file:[{name:'msedge.exe',ico:'icon/edge.svg',command:"openapp('edge')"}]}}}}}}},'Windows':{folder:{'Boot':{folder:{},file:[]},'System':{folder:{},file:[]},'SysWOW64':{folder:{},file:[]},'System32':{folder:{},file:[{name:'calc.exe',ico:'icon/calc.svg',command:"openapp('calc')"},{name:'cmd.exe',ico:'icon/terminal.svg',command:"openapp('terminal')"},{name:'notepad.exe',ico:'icon/notepad.svg',command:"openapp('notepad')"},{name:'taskmgr.exe',ico:'icon/taskmgr.png',command:"openapp('taskmgr')"},{name:'winver.exe',ico:'icon/about.svg',command:"openapp('winver')"},]}},file:[{name:'explorer.exe',ico:'icon/explorer.svg',command:"apps.explorer.newtab()"},{name:'notepad.exe',ico:'icon/notepad.svg',command:"openapp('notepad')"},{name:'py.exe',ico:'icon/python.png',command:"openapp('python')"},]},'用户':{folder:{'Administrator':{folder:{'文档':{folder:{'IISExpress':{folder:{},file:[]},'PowerToys':{folder:{},file:[]}},file:[{name:'瓶盖介绍.doc',ico:'icon/files/word.png',command:''},{name:'瓶盖质量统计分析.xlsx',ico:'icon/files/excel.png',command:''},]},'图片':{folder:{'本机照片':{folder:{},file:[]},'屏幕截图':{folder:{},file:[]}},file:[{name:'瓶盖构造图.png',ico:'icon/files/img.png',command:''},{name:'可口可乐瓶盖.jpg',ico:'icon/files/img.png',command:''},]},'AppData':{folder:{'Local':{folder:{'Microsoft':{folder:{'Windows':{folder:{'Fonts':{},'TaskManager':{},'Themes':{},'Shell':{},'应用程序快捷方式':{},}},}},'Programs':{folder:{'Python':{folder:{'Python310':{folder:{'DLLs':{},'Doc':{},'include':{},'Lib':{folder:{'site-packages':{},'tkinter':{},}},'libs':{},'Script':{},'share':{},'tcl':{},'Tools':{}},file:[{name:'python.exe',ico:'icon/python.png',command:"openapp('python')"}]}},}}},'Temp':{folder:{}},}},'LocalLow':{folder:{'Microsoft':{folder:{'Windows':{},}},}},'Roaming':{folder:{'Microsoft':{folder:{'Windows':{folder:{'「开始」菜单':{folder:{'程序':{folder:{}},}},}},}},}},},file:[]},'音乐':{folder:{'录音机':{folder:{},file:[]}}}}},'公用':{folder:{'公用文档':{folder:{'IISExpress':{folder:{},file:[]},'PowerToys':{folder:{},file:[]}},file:[]},'公用图片':{folder:{'本机照片':{folder:{},file:[]},'屏幕截图':{folder:{},file:[]}},file:[]},'公用音乐':{folder:{'录音机':{folder:{},file:[]}}}}}}}},file:[]},'D:':{folder:{'Microsoft':{folder:{},file:[]}},file:[{name:'瓶盖结构说明.docx',ico:'icon/files/word.png',command:''},{name:'可口可乐瓶盖历史.pptx',ico:'icon/files/ppt.png',command:''},]}}},
         history: [],
         historypt: [],
         initHistory: (tab) => {
@@ -2517,7 +2382,7 @@ Microsoft Windows [版本 12.0.39035.7324]
                 input.val('');
             }
             else {
-                if (!runcmd(command)) {
+                if (!runcmd(command, inTerminal=true) && command!="") {
                     var newD = document.createElement('div');
                     newD.innerText = `"${command}"不是内部或外部命令,也不是可运行程序
                 或批处理文件`;

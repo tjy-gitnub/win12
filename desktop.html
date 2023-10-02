@@ -1297,14 +1297,15 @@ showcm(event,id,arg) 显示右键菜单，使用方法：oncontextmenu="return s
 				<input type="text" class="input" placeholder="查找设置" style="padding-left: 30px;">
 				<input-before class="bi bi-search"></input-before>
 				<list class="focs"><!--压缩行数-->
-					<a class="enable system check" onclick="apps.setting.page('system')"><img src="apps/icons/setting/system.png">系统</a>
+					<a class="enable home check" onclick="apps.setting.page('home')"><img src="apps/icons/setting/home.png">主页</a><!-- 主页  by lh11117 @github.com (20239/31~2023/10/1) -->
+					<a class="enable system" onclick="apps.setting.page('system')"><img src="apps/icons/setting/system.png">系统</a>
 					<a class="enable blueteeth" onclick="apps.setting.page('blueteeth')"><img src="apps/icons/setting/blueteeth.png">蓝牙和其他设备</a><!-- 蓝牙与设备  @Junchen Yi 2023-9-9-->
 					<a class="enable network" onclick="apps.setting.page('network')"><img src="apps/icons/setting/network.png">网络和 Internet</a><!-- 网络和 Internet  @Junchen Yi 2023-9-10-->
 					<a class="enable appearance" onclick="apps.setting.page('appearance')"><img src="apps/icons/setting/personal.png">个性化</a>
 					<a class="enable apps" onclick="apps.setting.page('apps')"><img src="apps/icons/setting/apps.png">应用</a><!-- 应用  @Junchen Yi 2023-9-11-->
 					<a class="enable user" onclick="apps.setting.page('user')"><img src="apps/icons/setting/user.png">账户</a><!-- 账户  @Junchen Yi 2023-9-11-->
 					<a class="enable time" onclick="apps.setting.page('time')"><img src="apps/icons/setting/time.png">时间和语言</a><!-- 时间  @Junchen Yi 2023-9-17-->
-					<a><img src="apps/icons/setting/game.png">游戏</a>
+					<a class="enable game" onclick="apps.setting.page('game')"><img src="apps/icons/setting/game.png">游戏</a>
 					<a><img src="apps/icons/setting/help.png">辅助功能</a>
 					<a class="enable safe" onclick="apps.setting.page('safe')"><img src="apps/icons/setting/safe.png">隐私和安全性</a>
 					<a class="enable update" onclick="apps.setting.page('update')"><img src="apps/icons/setting/update.png">Windows 更新</a>
@@ -1312,7 +1313,47 @@ showcm(event,id,arg) 显示右键菜单，使用方法：oncontextmenu="return s
 				</list>
 			</div>
 			<div class="page">
-				<div class="cnt system show">
+				<!-- 主页  begin -->
+				<div class="cnt home show">
+					<p class="title">主页</p>
+					<div style="display: flex;margin: 25px;">
+						<p class="s-icon" style="font-size: 70px;margin: -8px 10px 0px 20px;"></p>
+						<div>
+							<p style="font-size: 28px;text-overflow: ellipsis;white-space: nowrap;">Desktop-PingGai</p>
+							<p style="color: #7f7f7f;margin:-8px 0 -5px 0;">瓶盖</p>
+							<a style="color: var(--href);text-decoration: underline !important;;" class="a">重命名</a>
+						</div>
+					</div>
+					<div class="setting-card">
+						<p style="padding: 10px 15px;"><icon><img src="apps/icons/setting/ms.png"></icon><br>所有功能尽在 Microsoft 账户<br><span style="font-size: 14px;color:var(--text2)">登录后，即可在设备上使用你《最喜爱》的 Microsoft 应用和服务。可以备份设备、让设备更安全，并使用 Microsoft 365 应用版和云储存空间。</span><br><img src="apps/icons/setting/ms365.png"></p>
+						<div style="padding:  10px 15px;">
+							<a class="a button" onclick="window.location.href='./bluescreen.html?code=YOU_CAN_NOT_SIGN_IN_YOUR_MICROSOFT_ACCOUNT'" win12_title="BSOD is coming!">登录</a>
+						</div>
+					</div>
+					<div class="setting-card">
+						<p style="padding: 10px 15px;">推荐设置<br><span style="font-size: 14px;color:var(--text2)">最近使用的和常用的设置</span></p>
+						<div class="setting-list">
+							<a><icon><i class="bi bi-power"></i></icon><div><p>电源和电池</p><p></p></div><i class="bi bi-chevron-right"></i></a>
+							<a><icon><i class="bi bi-window-desktop"></i></icon><div><p>任务栏</p><p></p></div><i class="bi bi-chevron-right"></i></a>
+							<a><icon><i class="bi bi-camera"></i></icon><div><p>摄像头</p><p></p></div><i class="bi bi-chevron-right"></i></a>
+						</div>
+					</div>
+					<div class="setting-card">
+						<p style="padding: 10px 15px;">蓝牙设备<br><span style="font-size: 14px;color:var(--text2)">管理、添加和删除设备</span></p>
+						<div class="setting-list">
+							<a onclick="$('#win-setting>.menu>list>a.blueteeth')[0].click();"><icon></icon><div><p>蓝牙</p><p></p></div><i class="bi bi-chevron-right"></i></a>
+						</div>
+					</div>
+					<div class="setting-card">
+						<p style="padding: 10px 15px;">个性化设备</p>
+						<div class="setting-list">
+							<a onclick="$('#win-setting>.menu>list>a.appearance')[0].click();"><icon><i class="bi bi-palette"></i></icon><div><p>个性化</p><p></p></div><i class="bi bi-chevron-right"></i></a>
+						</div>
+					</div>
+					<div style="height: 60px;"></div>
+				</div>
+				<!-- 主页  end -->
+				<div class="cnt system">
 					<p class="title">系统</p>
 					<div style="display: flex;">
 						<p class="s-icon" style="font-size: 70px;margin: -8px 10px 0px 20px;"></p>
@@ -1540,6 +1581,16 @@ showcm(event,id,arg) 显示右键菜单，使用方法：oncontextmenu="return s
 					</div>
 				</div>
 				<!-- 时间 end -->
+				<!-- 游戏 begin -->
+				<div class="cnt game">
+					<p class="title">游戏</p>
+					<div class="setting-list">
+						<a><icon><i class="bi bi-xbox"></i></icon><div><p>Xbox Game Bar</p><p>控制器和键盘快捷方式</p></div><i class="bi bi-chevron-right"></i></a>
+						<a><icon><i class="bi bi-camera"></i></icon><div><p>摄像</p><p>保存位置，录制首选项</p></div><i class="bi bi-chevron-right"></i></a>
+						<a><icon><i class="bi bi-controller"></i></icon><div><p>游戏模式</p><p>优化电脑以便畅玩</p></div><i class="bi bi-chevron-right"></i></a>
+					</div>
+				</div>
+				<!-- 游戏 end -->
 				<div class="cnt safe">
 					<p class="title">隐私和安全性</p>
 					<div class="setting-list">
