@@ -426,3 +426,46 @@ div.app-color input[type=color] {
 	    margin-right: 15px;
 	    margin-bottom: 15px;
 }
+/* 时间 必须样式 @Junchen Yi 2023-9-16 */
+.selectLanguageA{
+    min-height: 67px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+	filter: opacity(1);
+}
+
+.languageSelect {
+    width: 130px;
+        height: 30px;
+        text-align: left;
+        border-radius: 12px;
+        background: var(--card);
+        color: var(--text);
+		position: absolute;
+		    right: 40px;
+			margin-right: -20px;
+}
+.languageSelect option {
+    /* 添加样式，例如设置字体颜色和背景颜色 */
+	color: var(--text);
+    background-color: #fff;
+    padding: 5px;
+}
+.settingTimeItem{
+    margin-left: 30px;
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-content: center;
+    justify-content: flex-start;
+    align-items: center;
+}
+.settingTimeTitle{
+	
+}
+.settingTime{
+	font-size: 28px;
+}
+/* 时间 必须样式 end @Junchen Yi 2023-9-16 */

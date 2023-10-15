@@ -28,6 +28,8 @@
 
 ## 提交代码
 
+注意：请严格按照下面的，以及desktop.html开头的开发规范编辑代码，否则不予合并
+
 1. 请尽量一次Commit提交全部内容。可以追加Commits，但尽量不要超过5个Commits。
 
 2. 请尽量使用Git命令行、Github Desktop、[https://github.dev](https://github.dev/tjy-gitnub/win12)等方式进行提交。请不要直接在浏览器中上传文件来提交。
@@ -42,7 +44,7 @@
 
 5. 格式化要求:
 
-   - 请尽量不要使用格式化工具格式化HTML文件
+   - 请不要使用格式化工具格式化HTML文件
 
    - 对于JavaScript和CSS文件，可以使用Visual Studio Code自带的格式化工具格式化
 

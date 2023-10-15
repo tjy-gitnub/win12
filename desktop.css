@@ -2548,3 +2548,14 @@ list>span.focs.cl {
 .save-item:hover {
     background-color: #aaa;
 }
+
+
+.setting-card {
+    background: var(--card);
+    border-radius: 10px;
+    margin-bottom: 10px;
+}
+
+.setting-card>.setting-list {
+    padding-bottom: 5px;
+}

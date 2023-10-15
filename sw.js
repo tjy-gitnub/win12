@@ -76,7 +76,8 @@ function update(force = false) {
 
 this.addEventListener('message', function (e) {
   if (e.data.head == 'update') {
-    update(true);
+    if(e.data.force)update(true);
+    else update();
   }
 });
 
