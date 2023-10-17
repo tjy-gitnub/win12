@@ -4,6 +4,9 @@
 
 如果您喜欢本项目，欢迎给这个项目点一颗Star、给我们赞助一下或为我们做出一些重要的贡献qwq~
 
+请不要提交无意义的PR哦~这里点名批评：
+<img width="673" alt="image" src="https://github.com/tjy-gitnub/win12/assets/121747915/2da6f2d8-369a-4ef7-a87e-7ac4ecacd78b">
+
 ## 漏洞汇报
 
 1. 请使用最新版本，以确认该漏洞是否已经被修复。
