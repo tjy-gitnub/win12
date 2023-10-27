@@ -80,9 +80,7 @@ this.addEventListener('message', function (e) {
     else update();
   }
 });
-
 this.addEventListener('activate', update);
-
 
 // let dongtai=[
 //   'api.github.com',
