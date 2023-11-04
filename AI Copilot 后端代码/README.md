@@ -1,4 +1,4 @@
-本文档来自 github@NB-Group
+本AI及文档来自 github@NB-Group
 # AI Copilot 后端介绍
 ## 介绍
 AI Copilot 是一个基于 AI 的文本生成工具，其基于 LLAMA 模型，可以生成文本。
