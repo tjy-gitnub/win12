@@ -198,4 +198,4 @@ NB-group：
 
 ## AI Copilot 实现
 
-详情请见 [AI Copilot 实现](./AI%20Copilot%20%E5%90%8E%E7%AB%AF%E4%BB%A3%E7%A0%81/README.md)
+详情请见 [AI Copilot 实现](./scripts/AI%20Copilot%20service/README.md)
