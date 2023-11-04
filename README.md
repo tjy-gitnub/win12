@@ -43,6 +43,7 @@ Windows 12 的明天在大家的努力下会更灿烂美好！
   - [前景规划](#前景规划)
   - [开源说明](#开源说明)
   - [贡献须知](#贡献须知)
+  - [AI Copilot 实现](#ai-copilot-实现)
 
 ## 前前言
 
@@ -194,3 +195,7 @@ NB-group：
 ## 贡献须知
 
 详情请见 [贡献指南](./CONTRIBUTING.md)。
+
+## AI Copilot 实现
+
+详情请见 [AI Copilot 实现](./AI%20Copilot%20%E5%90%8E%E7%AB%AF%E4%BB%A3%E7%A0%81/README.md)

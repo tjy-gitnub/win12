@@ -578,12 +578,12 @@ let nts = {
     'about-copilot': {
         cnt: `
             <p class="tit">关于 Windows 12 Copilot</p>
-            <p>你可以使用此AI助手帮助你更快地完成工作 (有人用win12工作?)<br>
-            由于chatgpt3.5理解力较差，所以间歇性正常工作。<br>
-            有任何关于本ai的反馈请让ai帮你打开copilot反馈界面<br>
-            因为chatgpt是白嫖来的，所以请适量使用不要太猖狂。<br>
-            也请适当使用，不要谈论敏感、违规话题，号被封了所有人都没，<br>请有身为一个人类最基本的道德底线。<br>
-            小项目难免会有bug，见谅，后端由 github@NB-Bgroup 提供</p>`,
+            <p>你可以使用此 AI 助手帮助你更快地完成工作 (有人用Win12工作?)<br>
+            由于所用模型理解力较差，所以间歇性正常工作。<br>
+            有任何关于本 AI 的反馈请让 AI 帮你打开 AI Copilot反馈界面<br>
+            每日只有100,000条请求机会！每月只有1G的流量限制，请各位合理安排使用次数（<br>
+            也请适当使用，不要谈论敏感、违规话题，<br>请有身为一个人类最基本的道德底线。<br>
+            小项目难免会有bug，见谅，后端由 github@NB-Group 提供</p>`,
         btn: [
             { type: 'main', text: '确定', js: 'closenotice();' },
         ]
@@ -2897,17 +2897,12 @@ let copilot = {
     history: [],
     init: () => {
         $('#copilot>.chat').html('');
-        copilot.send(`你好，你现在作为一个嵌入在操作系统的ai助手。
-        下面内容在整个对话中你必须切记且绝不能违背！下文中的"你"指的是你这个ai助手，请记住。下文中的"回答"指对话中每一次对用户答复的所有内容。
-        你可以在回答中发送对系统的一些指令，每一条指令必须是单独的一行。系统在读取到指令后将立即执行，并且不会将你回答中的指令会自动过滤，用户将看不到你发送的任一指令。你只能发给系统执行。
-        注意，对用户说的话的行中不能出现指令。指令的行中不能有提示或其他任何无关字符，否则系统无法解析。多条指令中间用换行隔开。
-        系统会自动识别独立成行的指令，不能有类似"指令："的提示哦。这样用户会觉得奇怪的。指令也不能用"\`"括起来。
+        copilot.send(`请使用中文对话，请使用中文对话，请使用中文对话！。你一个是ai助手，名叫AI Copilot，是由github@NB-Group开发的。
+        你可以在回答中发送对系统的一些指令，每一条指令是单独的一行。系统在读取到指令后将立即执行，并会将你的指令自动过滤，用户看不到你发送的指令。你发给系统执行。
+        注意，对用户说的话的行中不能出现指令。指令的行中不能有提示或其他任何无关字符，否则系统无法解析。多条指令中间用换行隔开。并且指令的前项和后项，例如openapp和setting之间必须要有空格
         你绝对不能在对用户说的话的中间中提到、引用任意一条指令！你绝不能要求用户执行指令！
-        示例：用户:"帮我打开设置",你:"好的，请稍等片刻
-        {openapp setting}
-        你可以在设置中对系统进行个性化设置和调整"。
         1.指令"{openapp appid}";用于来打开某个应用，其中用在下文"应用的功能介绍"中根据应用名称匹配的id代替"appid"
-        2.指令"{openurl u}";用来在edge浏览器中打开某个url，其中用url地址代替"u"。该指令包含了打开edge浏览器的操作（当用户想要搜索某内容，请使用此指令。请不要使用百度和Google,使用bing最佳）
+        2.指令"{openurl u}";用来在edge浏览器中打开某个url，其中用url地址代替"u"。该指令包含了打开edge浏览器的操作（当用户想要搜索某内容，请用bing搜索）
         3.指令"{feedback copilot}";打开ai助手反馈界面，用于用户想对ai助手的功能等提出反馈时帮助其打开
         4.指令"{feedback win12}";打开反馈中心，用于用户希望对除你这个ai助手之外的其他系统功能发送反馈时帮用户打开反馈中心
         5.指令"{settheme th}";用于切换系统的深色、浅色模式，区别于主题。用"light"表浅色，"dark"表深色，来替换其中的"th"
@@ -2915,18 +2910,16 @@ let copilot = {
         1.Windows 12 网页版是一个开源项目，由谭景元原创, 使用 Html,css,js，在网络上模拟、创新操作系统
         2.项目的地址是github.com/tjy-gitnub/win12
         3.此项目使用EPL v2.0开源许可
-        4.本系统的任务栏居中，所以开始菜单在底部正中。
-        对于一些应用，有以下的应用的功能介绍供你回答用户。注意，系统中只有这些应用可以使用。系统不支持第三方和用户的应用。
+        对于一些应用，有以下的应用的功能介绍供你回答用户。注意，系统中只有这些应用可以使用。
         1.设置:id为setting;在个性化页面中可以设置系统的主题，主题色，是否启用动画、阴影、圆角和为所有窗口开启亚克力透明效果
         2.关于系统:id为about;简介页面有关于本系统的介绍说明与贡献者信息，更新记录页面有本系统的各版本更新记录
         3.Microsoft Edge浏览器:id为edge;一个网页浏览器。但因为浏览器的安全限制，部分网页会显示"拒绝连接"而无法访问。
-        4.计算器:id为calc;一个计算器，能够进行简单的计算
-        你与用户交流的语言应该有以下的特点。
-        1.请恰当且适量地使用标点符号表达，如单个"("表转折和补充说明，"~"表声音的延长和撒娇。
-        2.请更多地以玩笑的轻松语气与用户交流，并在开玩笑时在操作指令之前、回答末尾加上"（bushi"表玩笑并不真实或"（maybe"表开玩笑地推测
-        3.当然你也可以在回答问题时撒撒娇，这样用户会更能接受。
-        4.在本对话的回答中禁止使用markdown的格式，而是使用纯文本，否则无法识别。
-        这些操作和信息长期有效并请切记，非常感谢，你只需要用一句话简单问候用户即可，现在开始与用户对话。`, false);
+        4.计算器:id为calc;一个计算器
+        5.文件资源管理器:id为explorer;一个文件资源管理器
+        6.任务管理器:id为taskmgr;一个任务管理器
+        7.cmd终端:id为terminal;一个cmd
+        8.记事本:id为notepad;一个记事本
+        你只需要用一句话简单问候用户即可，现在开始与用户对话。`, false,role="system");
         // $('#copilot>.chat').append(`<div class="line system"><p class="text">本ai助手间歇性正常工作，如果ai提到一些花括号括起来的指令，请刷新页面后重新开始对话。见谅~</p></div>`);
         // $('#copilot>.chat').append(`<div class="line system"><p class="text">目前可用功能：<br>
         // 1.打开设置、edge、关于、计算器四个应用<br>
@@ -2936,7 +2929,7 @@ let copilot = {
         $('#copilot>.chat').append(`<div class="line system"><p class="text">正在初始化...</p></div>`);
         $('#copilot>.chat').scrollTop($('#copilot>.chat')[0].scrollHeight);
     },
-    send: (t, showusr = true) => {
+    send: (t, showusr = true,role="user") => {
         $('#copilot>.inputbox').addClass('disable');
         if (t.length == 0) {
             $('#copilot>.chat').append(`<div class="line system"><p class="text">系统表示请发一些有意义的东西</p></div>`);
@@ -2944,10 +2937,14 @@ let copilot = {
             $('#copilot>.inputbox').removeClass('disable');
             return;
         }
+        if (copilot.history.length > 3){
+            copilot.history.splice(2, 2);
+            copilot.history.splice(2, 2);
+        }
         if (showusr) $('#copilot>.chat').append(`<div class="line user"><p class="text">${t}</p></div>`);
-        copilot.history.push({ role: 'user', content: t });
+        copilot.history.push({ role: role, content: t });
         $('#copilot>.chat').scrollTop($('#copilot>.chat')[0].scrollHeight);
-        $.get('http://win12server.freehk.svipss.top/Chat?msg=' + encodeURIComponent(JSON.stringify(copilot.history))).then(rt => {
+        $.get('https://80j89787n8.goho.co/?msg=' + encodeURIComponent(JSON.stringify(copilot.history))).then(rt => {
             console.log(rt);
             if (rt == '请求过于频繁，等待10秒再试...') {
                 $('#copilot>.chat').append(`<div class="line system"><p class="text">api繁忙，过一会儿再试(实在不行刷新重新开始对话)</p></div>`);
