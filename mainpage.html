@@ -80,35 +80,47 @@
     </div>
     <script>
         function handleKeyPress(event) {
+            // 如果按下的是回车键
             if (event.keyCode === 13) {
+                // 获取输入框的值
                 var inputValue = event.target.value;
+                // 判断是否为搜索查询
                 if (isSearchQuery(inputValue)) {
+                    // 在Bing中搜索
                     searchInBing(inputValue);
                 } else {
+                    // 导航到指定URL
                     navigateToURL(inputValue);
                 }
             }
         }
     
         function isSearchQuery(value) {
+            // 正则用来验证大部分常见的URL格式，包括以"http://"、"https://"或"ftp://"开头的URL
             var urlPattern = /^(((ht|f)tps?):\/\/)?([^!@#$%^&*?.\s-]([^!@#$%^&*?.\s]{0,63}[^!@#$%^&*?.\s])?\.)+[a-z]{2,6}\/?/;
+            // 判断是否为URL
             return !urlPattern.test(value);
         }
     
         function searchInBing(query) {
+            // 对查询进行编码
             var encodedQuery = encodeURIComponent(query);
+            // 在新标签页中打开Bing搜索
             window.location = 'https://bing.com/search?q=' + encodedQuery;
             // 可能报错
             apps.edge.rename(query);
         }
     
         function navigateToURL(url) {
+            // 如果URL不包含协议前缀
             if (!/^https?:\/\//.test(url)) {
+                // 添加默认的HTTP协议前缀
                 url = 'http://' + url;
             }
+            // 导航到指定URL
             window.location = url;
             // 可能报错
-            apps.edge.rename(url);
+            apps.edge.rename(url); 
         }
     </script>
 </body>
