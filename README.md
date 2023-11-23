@@ -47,7 +47,7 @@ Windows 12 的明天在大家的努力下会更灿烂美好！
 
 ## 公告
 无偿恳请各位有能力的用户为我们制作宣传片！
-详情请见[宣传片公告]("https://github.com/tjy-gitnub/win12/wiki/%E5%AE%A3%E4%BC%A0%E7%89%87%E5%85%AC%E5%91%8A")
+详情请见[宣传片公告](https://github.com/tjy-gitnub/win12/wiki/%E5%AE%A3%E4%BC%A0%E7%89%87%E5%85%AC%E5%91%8A)
 
 ## 前前言
 
