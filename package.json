@@ -1,0 +1,15 @@
+{
+  "page": "desktop.html",
+  "form": {
+    "parent": {
+      "exmode": "toolwindow"
+    },
+    "exmode": "none",
+    "mode": "popup",
+    "border": "none",
+    "maximize": 1,
+    "topmost": 1
+  },
+  "clearAppData": true,
+  "pageShow": true
+}

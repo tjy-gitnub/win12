@@ -69,6 +69,9 @@
                 document.getElementById('ld').style.display = 'none';
                 document.getElementById('ldt').style.display = 'none';
                 document.body.style.background = '#000';
+                window.Sys && new Sys().then(sys => {
+                    sys.ws.call('run', ['G.killAll()'])
+                })
             }, 3000);
         }
     </script>
