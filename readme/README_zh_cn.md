@@ -1,17 +1,11 @@
 # Windows 12 网页版
 
-## 公告
-### 重要！
-无偿恳请各位有能力的用户为我们制作宣传片！
-详情请见[宣传片公告](https://github.com/tjy-gitnub/win12/wiki/%E5%AE%A3%E4%BC%A0%E7%89%87%E5%85%AC%E5%91%8A)
-
-### 一些其它的公告
 > **🎉🎉Windows 12 网页版一周岁生日快乐！`o(^o^)o`**
 > **向在座的各位的支持表示诚挚的感谢！**
 
 ## Language selection 语言选择
-- [English](readme/README_en_us.md)
-- [简体中文](readme/README_zh_cn.md)
+- [English](README_en_us.md)
+- [简体中文](README_zh_cn.md)
 
 ```
 千古有冬夏，一载经春秋。破浪长风扶摇起，夜深星源起处。
@@ -38,7 +32,7 @@ Windows 12 的明天在大家的努力下会更灿烂美好！
 
 ---
 
-> 🎉🎉项目在 GitHub 上突破✨5.4k✨stars✨啦！芜湖，哦耶！哦耶！🎊🎈`o(^o^)o`
+> 🎉🎉项目在 GitHub 上突破✨4.8k✨stars✨啦！芜湖🎊🎈`o(^o^)o`
 > 向在座的各位的支持表示诚挚的感谢！
 
 ---
@@ -53,9 +47,6 @@ Windows 12 的明天在大家的努力下会更灿烂美好！
   - [前景规划](#前景规划)
   - [开源说明](#开源说明)
   - [贡献须知](#贡献须知)
-  - [AI Copilot 实现](#ai-copilot-实现)
-
-
 
 ## 前前言
 
@@ -75,15 +66,15 @@ Bilibili：
 
 tjy-gitnub：
 
-[![image](https://github.com/tjy-gitnub/win12/assets/121747915/6b13f81a-2a33-4265-abee-44c3796c2817)](https://space.bilibili.com/2010692096/)
+![image](https://github.com/tjy-gitnub/win12/assets/121747915/6b13f81a-2a33-4265-abee-44c3796c2817)
 
 NB-group：
 
-[![image](https://github.com/tjy-gitnub/win12/assets/121747915/9dad6cac-e0e7-44b3-975e-41eaf33520dd)](https://space.bilibili.com/1570243738/)
+![image](https://github.com/tjy-gitnub/win12/assets/121747915/9dad6cac-e0e7-44b3-975e-41eaf33520dd)
 
 782：
 
-[![image](https://github.com/tjy-gitnub/win12/assets/121747915/e475890f-010d-4e47-9ac6-fd4abad26218)](https://space.bilibili.com/1046361194/)
+![image](https://github.com/tjy-gitnub/win12/assets/121747915/e475890f-010d-4e47-9ac6-fd4abad26218)
 
 爱发电：
 
@@ -207,7 +198,3 @@ NB-group：
 ## 贡献须知
 
 详情请见 [贡献指南](./CONTRIBUTING.md)。
-
-## AI Copilot 实现
-
-详情请见 [AI Copilot 实现](./scripts/AI%20Copilot%20service/README.md)
