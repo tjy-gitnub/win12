@@ -5,7 +5,7 @@
 
 ## Language selection 语言选择
 - [English](README_en_us.md)
-- [简体中文](README_zh-cn.md)
+- [简体中文](README_zh_cn.md)
 
 ```
 千古有冬夏，一载经春秋。破浪长风扶摇起，夜深星源起处。
