@@ -4,8 +4,8 @@
 > **Sincere thanks for your support！**
 
 ## Language selection 语言选择
-- [English](readme/README_en_us.md)
-- [简体中文](readme/README_zn-cn.md)
+- [English](README_en_us.md)
+- [简体中文](README_zn-cn.md)
 
 ```
 千古有冬夏，一载经春秋。破浪长风扶摇起，夜深星源起处。
