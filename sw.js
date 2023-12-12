@@ -5,6 +5,8 @@ let dymanic = [
   'assets.msn.cn'
 ]
 this.addEventListener('fetch', function (event) {
+  if (!/^https?:$/.test(new URL(event.request.url).protocol)) return
+
   event.respondWith(
     caches.match(event.request).then(res => {
       let fl = false;
@@ -21,7 +23,6 @@ this.addEventListener('fetch', function (event) {
       return res ||
         fetch(event.request)
           .then(responese => {
-            // console.log(event.request);
             const responeseClone = responese.clone();
             caches.open('def').then(cache => {
               console.log('下载数据', responeseClone.url);
