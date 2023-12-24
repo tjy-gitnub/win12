@@ -6,6 +6,7 @@
 ## Language selection 语言选择
 - [English](README_en_us.md)
 - [简体中文](README_zh_cn.md)
+- [Français](README_fr_fr.md)
 
 ```
 千古有冬夏，一载经春秋。破浪长风扶摇起，夜深星源起处。
@@ -32,7 +33,7 @@ Windows 12 的明天在大家的努力下会更灿烂美好！
 
 ---
 
-> 🎉🎉Project breaks ✨4.8k✨stars✨ on GitHub now! WOW🎊🎈`o(^o^)o`
+> 🎉🎉Project breaks ✨5.6k✨stars✨ on GitHub now! WOW🎊🎈`o(^o^)o`
 > Sincere thanks for your support！
 
 ---

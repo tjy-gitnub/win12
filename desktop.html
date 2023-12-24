@@ -2288,10 +2288,19 @@ showcm(event,id,arg) 显示右键菜单，使用方法：oncontextmenu="return s
 					<i class="bi bi-code-slash"></i>
 				</a>
 		    </div>
-			<div id="save-bar" style="margin:10px;margin-top: 3px;">
+			<div id="save-bar" style="margin:10px;margin-top: 3px;white-space: nowrap;overflow-x: scroll;">
 				<!--收藏夹-->
 				<a onclick="apps.edge.goto('https://tjy-gitnub.github.io/')" win12_title="https://tjy-gitnub.github.io/" class="save-item"><i class="bi bi-file-earmark"></i>星源</a>
 				<a onclick="apps.edge.goto('https://www.bing.com')" win12_title="https://www.bing.com" class="save-item"><i class="bi bi-file-earmark"></i>Bing</a>
+				<style>
+					#save-bar{
+						scrollbar-width: none; /* Firefox */
+						-ms-overflow-style: none; /* IE 10+ */
+					}
+					#save-bar::-webkit-scrollbar {
+					  display: none; /* Chrome Safari */
+					}
+				</style>
 			</div>
 			<iframe frameborder="0" class="0 show" onmousemove="if(apps.edge.fuls){$('.edge>.titbar').hide();$('.edge>.content>.tool').hide()}">
 			</iframe>
