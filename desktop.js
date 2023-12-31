@@ -2700,7 +2700,7 @@ let widgets = {
         remove: (arg) => {
             $(`.wg.${arg}.menu,.wg.${arg}.toolbar,.wg.${arg}.desktop`).remove();
             widgets[arg].remove();
-        },
+        }, 
         addToToolbar: (arg) => {
             widgets.widgets.remove(arg);
             if ($('.wg.toolbar.' + arg).length != 0) {
@@ -2900,17 +2900,17 @@ let copilot = {
         copilot.send(`请使用中文对话，请使用中文对话，请使用中文对话！。你一个是ai助手，名叫AI Copilot，是由github@NB-Group开发的。
         你可以在回答中发送对系统的一些指令，每一条指令是单独的一行。系统读取指令后立即执行，你的指令自动过滤。
         注意，对用户说的话那几行中不能出现指令。指令的行中不能有提示或其他任何无关字符，否则系统无法解析。多条指令中间用换行隔开。并且指令的前项和后项，例如openapp和setting之间必须要有空格
-        你绝对不能在对用户说的话的中间中提到、引用任意一条指令！你绝不能要求用户执行指令！如果用户让你展示功能，你绝对不能之间输出指令！
+        你绝对不能在对用户说的话的中间中提到、引用任意一条指令！你绝不能要求用户执行指令！如果用户让你展示功能，你绝对不能直接输出指令！
         1.指令"{openapp appid}";用于来打开某个应用，其中用在下文"应用的功能介绍"中根据应用名称匹配的id代替"appid"
         2.指令"{openurl u}";用来在edge浏览器中打开某个url，其中用url地址代替"u"。该指令包含了打开edge浏览器的操作（当用户想要搜索某内容，请用bing搜索）
         3.指令"{feedback copilot}";打开ai助手反馈界面，用于用户想对ai助手的功能等提出反馈时帮助其打开
         4.指令"{feedback win12}";打开反馈中心，用于用户希望对除你这个ai助手之外的其他系统功能发送反馈时帮用户打开反馈中心
         5.指令"{settheme th}";用于切换系统的深色、浅色模式，区别于主题。用"light"表浅色，"dark"表深色，来替换其中的"th"
-        有且仅有以下信息供你使用来回答用户的问题。绝不能使用下面没有列出的信息。
+        仅有以下信息供你使用来回答用户的问题。
         1.Windows 12 网页版是一个开源项目，由谭景元原创, 使用 Html,css,js，在网络上模拟、创新操作系统
         2.项目的地址是github.com/tjy-gitnub/win12
         3.此项目使用EPL v2.0开源许可
-        对于一些应用，有以下的应用的功能介绍供你回答用户。注意，系统中只有这些应用可以使用。
+        有以下的应用供你回答用户。只有这些应用可以使用。
         1.设置:id为setting;在个性化页面中可以设置系统的主题，主题色，是否启用动画、阴影、圆角和为所有窗口开启亚克力透明效果
         2.关于系统:id为about;简介页面有关于本系统的介绍说明与贡献者信息，更新记录页面有本系统的各版本更新记录
         3.Microsoft Edge浏览器:id为edge;一个网页浏览器。但因为浏览器的安全限制，部分网页会显示"拒绝连接"而无法访问。
@@ -2937,14 +2937,18 @@ let copilot = {
             $('#copilot>.inputbox').removeClass('disable');
             return;
         }
-        if (copilot.history.length > 3){
+        if (copilot.history.length > 5){
             copilot.history.splice(2, 2);
             copilot.history.splice(2, 2);
         }
         if (showusr) $('#copilot>.chat').append(`<div class="line user"><p class="text">${t}</p></div>`);
         copilot.history.push({ role: role, content: t });
         $('#copilot>.chat').scrollTop($('#copilot>.chat')[0].scrollHeight);
-        $.get('https://80j89787n8.goho.co/?msg=' + encodeURIComponent(JSON.stringify(copilot.history))).then(rt => {
+        $.post({
+            url: 'https://upgraded-space-enigma-446ggg6xjj5hvr7-5000.app.github.dev/',
+            contentType: 'application/json',
+            data: JSON.stringify({ msg: copilot.history }),
+        }).then(rt => {
             console.log(rt);
             if (rt == '请求过于频繁，等待10秒再试...') {
                 $('#copilot>.chat').append(`<div class="line system"><p class="text">api繁忙，过一会儿再试(实在不行刷新重新开始对话)</p></div>`);
