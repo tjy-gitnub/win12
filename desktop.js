@@ -2945,7 +2945,7 @@ let copilot = {
         copilot.history.push({ role: role, content: t });
         $('#copilot>.chat').scrollTop($('#copilot>.chat')[0].scrollHeight);
         $.post({
-            url: 'https://upgraded-space-enigma-446ggg6xjj5hvr7-5000.app.github.dev/',
+            url: 'https://nbgroup.pythonanywhere.com/',
             contentType: 'application/json',
             data: JSON.stringify({ msg: copilot.history }),
         }).then(rt => {
