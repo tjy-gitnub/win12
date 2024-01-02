@@ -2937,7 +2937,7 @@ let copilot = {
             $('#copilot>.inputbox').removeClass('disable');
             return;
         }
-        if (copilot.history.length > 5){
+        if (copilot.history.length > 4){
             copilot.history.splice(2, 2);
             copilot.history.splice(2, 2);
         }
