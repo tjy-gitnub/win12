@@ -56,8 +56,9 @@ var run_cmd = '';
 let nomax = { 'calc': 0 /* 其实，计算器是可以最大化的...*/, 'notepad-fonts': 0, 'camera-notice': 0, 'winver': 0, 'run': 0, 'wsa': 0 };
 let nomin = { 'notepad-fonts': 0, 'camera-notice': 0, 'run': 0 };
 var topmost = [];
-var sys_setting = [1, 1, 1, 0, 0, 1];
+var sys_setting = [1, 1, 1, 0, 0, 1, 1];
 var use_music = true;
+var use_mic_voice = true;
 let cms = {
     'titbar': [
         function (arg) {
@@ -3783,6 +3784,9 @@ function setIcon() {
                 if (i == 5) {
                     use_music = sys_setting[i] ? true : false;
                 }
+                if (i == 6) {
+                    use_mic_voice = sys_setting[i] ? true : false;
+                }
             }
         }
     }
@@ -3855,6 +3859,7 @@ document.getElementsByTagName('body')[0].onload = function nupd() {
             }
         }
     })
+    document.querySelector('.rainbow-container-main').setAttribute('style', 'display:' + (use_mic_voice ? 'block' : 'none')+ ';');
     // loadlang();
 };
 
