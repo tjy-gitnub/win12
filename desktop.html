@@ -2291,7 +2291,8 @@ showcm(event,id,arg) 显示右键菜单，使用方法：oncontextmenu="return s
 					if(t.length>7){
 						t = t.substring(0,7) + '...';
 					}
-					document.getElementById('save-bar').innerHTML += "<a onclick='apps.edge.goto(`" + document.getElementById('edge-path').value +  "`)' win12_title='" + document.getElementById('edge-path').value + "' class='save-item'><i class='bi bi-file-earmark'></i>" + t + "</a>";
+          var className = 'save_' + Math.random().toString(36).substr(2);
+					document.getElementById('save-bar').innerHTML += "<a class='save-item " + className + "' " + `oncontextmenu="return showcm(event,'save-bar', '${className}');"` + "  onclick='apps.edge.goto(`" + document.getElementById('edge-path').value +  "`)' win12_title='" + document.getElementById('edge-path').value + "' class='save-item'><i class='bi bi-file-earmark'></i>" + t + "</a>";
 				}
 				</script>
 				<a class="a" style="filter: contrast(0.2);" onclick="add_save()">

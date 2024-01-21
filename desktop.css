@@ -2547,6 +2547,8 @@ list>span.focs.cl {
 
 .save-item:hover {
     background-color: #aaa;
+    cursor: pointer;
+    transition: .3s;
 }
 
 

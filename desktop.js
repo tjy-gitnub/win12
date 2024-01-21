@@ -60,6 +60,11 @@ var sys_setting = [1, 1, 1, 0, 0, 1, 1];
 var use_music = true;
 var use_mic_voice = true;
 let cms = {
+    'save-bar':[
+      function (arg) {
+        return ['<i class="bi bi-window-x"></i> 移除', `removeEdgeSaveUrl('${arg}')`];
+      }
+    ],
     'titbar': [
         function (arg) {
             if (arg in nomax) {
@@ -3156,6 +3161,9 @@ function hidewin(name, arg = 'window') {
     else {
         $('#dock-box').removeClass('hide')
     }
+}
+function removeEdgeSaveUrl(classname) {
+  $('.' + classname).remove()
 }
 function maxwin(name, trigger = true) {
     if ($('.window.' + name).hasClass('max')) {
