@@ -1608,6 +1608,11 @@ showcm(event,id,arg) 显示右键菜单，使用方法：oncontextmenu="return s
 								<a class="a checkbox checked" id="sys_setting_6" onclick="sys_setting[5]=1-sys_setting[5];document.getElementById('sys_setting_6').setAttribute('class', 'a checkbox' + (sys_setting[5]?' checked':''));saveDesktop();"></a>
 							</div>
 						</div>
+            <div class="border-radius"><icon><i class="bi bi-mic-fill"></i></icon><div><p>语音输入球</p><p>是否启用语音输入球</p></div>
+							<div class="alr">
+								<a class="a checkbox checked" id="sys_setting_7" onclick="sys_setting[6]=1-sys_setting[6];document.querySelector('.rainbow-container-main').setAttribute('style', 'display:' + (sys_setting[6] ? 'block' : 'none')+ ';');document.getElementById('sys_setting_7').setAttribute('class', 'a checkbox' + (sys_setting[6]?' checked':''));saveDesktop();"></a>
+							</div>
+						</div>
 					</div>
 				</div>
 				<!-- 应用  @Junchen Yi 2023-9-11-->
