@@ -36,14 +36,12 @@ $('input,textarea,*[contenteditable=true]').on('contextmenu', (e) => {
 function addMenu() {
     var parentDiv = document.getElementById('desktop');
     var childDivs = parentDiv.getElementsByTagName('div');
-
-    for (var i = 0; i < childDivs.length; i++) {
+    for (let i = 0; i < childDivs.length; i++) {
         if (i <= 4) {//win12内置的5个图标不添加
             continue;
         }
-        var div = childDivs[i];
+        let div = childDivs[i];
         div.setAttribute('iconIndex', i - 5);
-        console.log(i - 5, div.getAttribute('appname'))
         div.addEventListener('contextmenu', (event) => {
             if (div.getAttribute('appname') != undefined) {
                 return showcm(event, 'desktop.icon', [div.getAttribute('appname'), div.getAttribute('iconIndex')]);
@@ -120,7 +118,7 @@ let cms = {
         },
         function (arg) {
             if (arg[1] >= 0) {
-                return ['<i class="bi bi-trash3"></i> 删除', 'desktopItem.splice(' + (arg[1] - 1) + ', 1);saveDesktop();setIcon();addMenu();'];
+                return ['<i class="bi bi-trash3"></i> 删除', 'desktopItem.splice(' + (arg[1]) + ', 1);saveDesktop();setIcon();addMenu();'];
             } else {
                 return 'null';
             }
@@ -3788,7 +3786,7 @@ function setIcon() {
         if (/^(1|0)+$/.test(sys_setting_back.join(''))/* 只含有0和1 */) {
             sys_setting = sys_setting_back;
             for (var i = 0; i < sys_setting.length; i++) {
-                document.getElementById('sys_setting_' + (i + 1)).setAttribute("class", 'a checkbox' + (sys_setting[i] ? ' checked' : '')); //设置class属性
+                document.getElementById('sys_setting_' + (i + 1))?.setAttribute("class", 'a checkbox' + (sys_setting[i] ? ' checked' : '')); //设置class属性
                 if (i == 5) {
                     use_music = sys_setting[i] ? true : false;
                 }
