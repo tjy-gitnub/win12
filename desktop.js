@@ -3438,11 +3438,24 @@ function controlStatus(name) {
         if (name == 'wifi') {
             wifiStatus = false;
         }
+        if (name == 'fly') {
+            flyStatus = false
+        }
     }
     else if (!this.classList.contains('active')) {
         this.classList.add('active');
         if (name == 'wifi') {
             wifiStatus = true;
+        }
+        if (name == 'fly') {
+          flyStatus = true
+          var hiddenList = ['btn1', 'btn2', 'btn5']
+          hiddenList.forEach(item => {
+            let dom = $(`#control .${item} .icon`)
+            if (dom.hasClass('active')) {
+              dom.removeClass('active')
+            }
+          })
         }
     }
     if (name == 'dark') {
@@ -3527,6 +3540,8 @@ window.setInterval(() => {
 }, 1000);
 
 var wifiStatus = true;
+// 飞行模式
+var flyStatus = false;
 
 // 选择框
 let chstX, chstY;
