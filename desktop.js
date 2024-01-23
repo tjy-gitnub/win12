@@ -3431,7 +3431,7 @@ function hide_widgets() {
     $('#widgets-btn').removeClass('show');
     setTimeout(() => { $('#widgets').removeClass('show-begin'); }, 200);
 }
-
+const FLY_HIDDEN_LIST_KEY = 'control_status_fly_hidden_list'
 function controlStatus(name) {
     if (this.classList.contains('active')) {
         this.classList.remove('active');
@@ -3440,6 +3440,17 @@ function controlStatus(name) {
         }
         if (name == 'fly') {
             flyStatus = false
+            if (localStorage.getItem(FLY_HIDDEN_LIST_KEY)) {
+              const flyHiddenData = JSON.parse(localStorage.getItem(FLY_HIDDEN_LIST_KEY))
+              const flyHiddenList = Array.isArray(flyHiddenData) ? flyHiddenData : []
+              flyHiddenList.forEach(item => {
+                const dom = $(`#control .${item} .icon`)
+                if (!dom.hasClass('active')) {
+                  dom.addClass('active')
+                }
+              })
+              localStorage.removeItem(FLY_HIDDEN_LIST_KEY)
+            }
         }
     }
     else if (!this.classList.contains('active')) {
@@ -3449,13 +3460,16 @@ function controlStatus(name) {
         }
         if (name == 'fly') {
           flyStatus = true
-          var hiddenList = ['btn1', 'btn2', 'btn5']
+          const hiddenList = ['btn1', 'btn2', 'btn5']
+          const hiddenDiffList = []
           hiddenList.forEach(item => {
-            let dom = $(`#control .${item} .icon`)
+            const dom = $(`#control .${item} .icon`)
             if (dom.hasClass('active')) {
               dom.removeClass('active')
+              hiddenDiffList.push(item)
             }
           })
+          localStorage.setItem(FLY_HIDDEN_LIST_KEY, JSON.stringify(hiddenDiffList))
         }
     }
     if (name == 'dark') {
