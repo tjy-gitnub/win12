@@ -658,6 +658,21 @@ function closenotice() {
         $('#notice-back').removeClass('show');
     }, 200);
 }
+
+function closeVideo() {
+  var video = apps.camera.video
+  if (video) {
+    try {
+      var stream = video.srcObject;
+      var tracks = stream.getTracks();
+      tracks.forEach(function (track) {
+        track.stop();
+      });
+      video.srcObject = null;
+    } catch (error) {}
+  }
+}
+
 var shutdown_task = []; //关机任务，储存在这个数组里
 // 为什么要数组？
 // 运行的指令
@@ -3126,6 +3141,10 @@ function hidewin(name, arg = 'window') {
     $('.window.' + name).removeClass('notrans');
     $('.window.' + name).removeClass('max');
     $('.window.' + name).removeClass('show');
+    if (name == 'camera') {
+      // 相机关闭后统一清理 tracks
+      closeVideo()
+    }
     if (arg == 'window') {
         $('#taskbar').attr('count', Number($('#taskbar').attr('count')) - 1)
         $('#taskbar>.' + name).remove();
