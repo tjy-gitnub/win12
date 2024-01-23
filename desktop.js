@@ -3448,6 +3448,9 @@ function controlStatus(name) {
             wifiStatus = true;
         }
     }
+    if (name == 'dark') {
+      toggletheme()
+    }
 }
 // 控制面板 亮度调整
 function dragBrightness(e) {
@@ -3555,15 +3558,18 @@ let isDark = false;
 // 主题
 function toggletheme() {
     $('.dock.theme').toggleClass('dk');
+    var darkControl = $(`#control .btn4 .icon`)
     $(':root').toggleClass('dark');
     if ($(':root').hasClass('dark')) {
         $('.window.whiteboard>.titbar>p').text('Blackboard');
         setData('theme', 'dark');
         isDark = true;
+        darkControl.addClass('active')
     } else {
         $('.window.whiteboard>.titbar>p').text('Whiteboard');
         setData('theme', 'light');
         isDark = false;
+        darkControl.removeClass('active')
     }
 }
 
