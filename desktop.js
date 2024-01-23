@@ -2578,7 +2578,7 @@ Microsoft Windows [版本 12.0.39035.7324]
         },
         reload: () => {
             if (wifiStatus == false) {
-                $('#win-edge>iframe.show').attr('src', './disconnected' + (isDrak ? '_dark' : '') + '.html');
+                $('#win-edge>iframe.show').attr('src', './disconnected' + (isDark ? '_dark' : '') + '.html');
             }
             else {
                 $('#win-edge>iframe.show').attr('src', $('#win-edge>iframe.show').attr('src'));
@@ -2602,7 +2602,7 @@ Microsoft Windows [版本 12.0.39035.7324]
         goto: (u, clear = true) => {
             if (wifiStatus == false) {
                 m_tab.rename('edge', u);
-                $('#win-edge>iframe.show').attr('src', './disconnected' + (isDrak ? '_dark' : '') + '.html');
+                $('#win-edge>iframe.show').attr('src', './disconnected' + (isDark ? '_dark' : '') + '.html');
                 $('#win-edge>.tool>input.url').val(u);
             }
             else {
@@ -3550,7 +3550,7 @@ window.addEventListener('mouseup', e => {
     $('#desktop>.choose').css('width', 0);
     $('#desktop>.choose').css('height', 0);
 })
-let isDrak = false;
+let isDark = false;
 
 // 主题
 function toggletheme() {
@@ -3559,11 +3559,11 @@ function toggletheme() {
     if ($(':root').hasClass('dark')) {
         $('.window.whiteboard>.titbar>p').text('Blackboard');
         setData('theme', 'dark');
-        isDrak = true;
+        isDark = true;
     } else {
         $('.window.whiteboard>.titbar>p').text('Whiteboard');
         setData('theme', 'light');
-        isDrak = false;
+        isDark = false;
     }
 }
 
@@ -3573,7 +3573,7 @@ if (isDarkTheme.matches) { //是深色
     $(':root').toggleClass('dark');
     $('.window.whiteboard>.titbar>p').text('Blackboard');
     localStorage.setItem('theme', 'dark');
-    isDrak = true;
+    isDark = true;
 } else { // 不是深色
     $('.window.whiteboard>.titbar>p').text('Whiteboard');
     localStorage.setItem('theme', 'light');
@@ -3816,7 +3816,7 @@ function setIcon() {
         }
     }
     if (localStorage.getItem('root_class')) {
-        $(':root')[0].className = localStorage.getItem('root_class');
+        $(':root')[0].className = localStorage.getItem('root_class') + ' ' + (isDark ? 'dark' : '');
     }
 }
 
