@@ -2910,7 +2910,7 @@ function widgetsMove(elt, e) {
 }
 function decodeHtml(s) {
     $('#translater').text(s);
-    return $('#translater').html().replace('\n', '<br>').replace(' ', '&nbsp;');
+    return $('#translater').html().replace(/\n/g, '<br>').replace(/ /g, '&nbsp;');
 }
 let copilot = {
     history: [],
