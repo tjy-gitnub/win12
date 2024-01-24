@@ -51,6 +51,22 @@
 
    - 对于JavaScript和CSS文件，可以使用Visual Studio Code自带的格式化工具格式化
 
+6. 署名要求:
+   - 请您在您添加的代码块开始处添加您的信息，并以 end/结束 结尾
+   - 结尾处的署名信息不强制要求除 **该代码标题之外** 和 **结尾标识** 的内容
+   ```html
+   <!-- @[Your name or something else that identifies you] [date(yyyy-mm-dd)] [A summary of what the code does] [mark of start or end]-->
+   比如：<!-- @Junchen YI 2024-1-23 添加contributing内容 end-->
+   ```
+   
+   ```css
+   //@Jucnhen YI 2024-1-23 edit contributing file start
+   body{
+	   color:#ffffff;
+   }
+   // edit contributing file end
+   ```
+
 ### 提交信息要求
 
    1. 若更新具有一定重要性或量级时，请按照以下格式：
