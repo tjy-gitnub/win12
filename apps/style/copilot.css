@@ -82,7 +82,7 @@
     border-radius: 10px;
     box-shadow: 0 1px 6px var(--sd);
     max-width: calc(100% - 40px);
-    word-break:break-all;
+    word-break:break-word;
     animation: msg 400ms cubic-bezier(0,0,0,1);
     user-select:text;
 }
