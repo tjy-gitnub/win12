@@ -3431,49 +3431,52 @@ function hide_widgets() {
     $('#widgets-btn').removeClass('show');
     setTimeout(() => { $('#widgets').removeClass('show-begin'); }, 200);
 }
-const FLY_HIDDEN_LIST_KEY = 'control_status_fly_hidden_list'
+const FLY_HIDDEN_LIST_KEY = 'control_status_fly_hidden_list';
 function controlStatus(name) {
+    if (name === 'dark') {
+        toggletheme();
+        return;
+    }
     if (this.classList.contains('active')) {
         this.classList.remove('active');
-        if (name == 'wifi') {
+        if (name === 'wifi') {
             wifiStatus = false;
         }
-        if (name == 'fly') {
-            flyStatus = false
-            if (localStorage.getItem(FLY_HIDDEN_LIST_KEY)) {
-              const flyHiddenData = JSON.parse(localStorage.getItem(FLY_HIDDEN_LIST_KEY))
-              const flyHiddenList = Array.isArray(flyHiddenData) ? flyHiddenData : []
-              flyHiddenList.forEach(item => {
-                const dom = $(`#control .${item} .icon`)
-                if (!dom.hasClass('active')) {
-                  dom.addClass('active')
-                }
-              })
-              localStorage.removeItem(FLY_HIDDEN_LIST_KEY)
+        if (name === 'fly') {
+            flyStatus = false;
+            if (localStorage.getItem(FLY_HIDDEN_LIST_KEY) != null) {
+                const flyHiddenData = JSON.parse(localStorage.getItem(FLY_HIDDEN_LIST_KEY));
+                const flyHiddenList = Array.isArray(flyHiddenData) ? flyHiddenData : [];
+                flyHiddenList.forEach(item => {
+                    const dom = $(`#control .${item} .icon`)
+                    if (!dom.hasClass('active')) {
+                        dom.addClass('active');
+                    }
+                })
+                localStorage.removeItem(FLY_HIDDEN_LIST_KEY);
             }
         }
-    }
-    else if (!this.classList.contains('active')) {
+    } else {
+        if (flyStatus && ['wifi', 'bluetooth', 'AP'].includes(name)){
+            return;
+        }
         this.classList.add('active');
         if (name == 'wifi') {
             wifiStatus = true;
         }
         if (name == 'fly') {
-          flyStatus = true
-          const hiddenList = ['btn1', 'btn2', 'btn5']
-          const hiddenDiffList = []
-          hiddenList.forEach(item => {
-            const dom = $(`#control .${item} .icon`)
-            if (dom.hasClass('active')) {
-              dom.removeClass('active')
-              hiddenDiffList.push(item)
-            }
-          })
-          localStorage.setItem(FLY_HIDDEN_LIST_KEY, JSON.stringify(hiddenDiffList))
+            flyStatus = true;
+            const hiddenList = ['btn1', 'btn2', 'btn5'];
+            const hiddenDiffList = [];
+            hiddenList.forEach(item => {
+                const dom = $(`#control .${item} .icon`);
+                if (dom.hasClass('active')) {
+                    dom.removeClass('active');
+                    hiddenDiffList.push(item);
+                }
+            })
+            localStorage.setItem(FLY_HIDDEN_LIST_KEY, JSON.stringify(hiddenDiffList));
         }
-    }
-    if (name == 'dark') {
-      toggletheme()
     }
 }
 // 控制面板 亮度调整
@@ -3553,9 +3556,10 @@ window.setInterval(() => {
     localStorage.setItem('cpuRunningTime', apps.taskmgr.cpuRunningTime);
 }, 1000);
 
-var wifiStatus = true;
+// wifi状态
+let wifiStatus = true;
 // 飞行模式
-var flyStatus = false;
+let flyStatus = false;
 
 // 选择框
 let chstX, chstY;
