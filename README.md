@@ -1,4 +1,33 @@
-# Windows 12 网页版
+<p align="center">
+    <img src="./icon/windows12.svg" width="100" height="100">
+</p>
+<h1 align="center">Windows 12 网页版</h1>
+<p align="center" class="shields">
+  <a href="https://github.com/tjy-gitnub/win12/issues" style="text-decoration:none">
+    <img src="https://img.shields.io/github/issues/tjy-gitnub/win12.svg" alt="GitHub issues"/>
+  </a>
+  <a href="https://github.com/tjy-gitnub/win12/stargazers" style="text-decoration:none">
+    <img src="https://img.shields.io/github/stars/tjy-gitnub/win12.svg" alt="GitHub stars"/>
+  </a>
+  <a href="https://github.com/tjy-gitnub/win12/network" style="text-decoration:none">
+    <img src="https://img.shields.io/github/forks/tjy-gitnub/win12.svg" alt="GitHub forks"/>
+  </a>
+  </a>
+  <a href="https://github.com/tjy-gitnub/win12/blob/master/LICENSE" style="text-decoration:none">
+    <img src="https://img.shields.io/github/license/tjy-gitnub/win12" alt="GitHub License"/>
+  </a>
+</p>
+<p align="center" class="language" title="Language selection 语言选择">
+  <a href="readme/README_en_us.md">English</a> | 
+  <a href="readme/README_zh_cn.md">简体中文</a> | 
+  <a href="readme/README_fr_fr.md">Français</a>
+</p>
+<details align="center">
+  <summary>Star History</summary>
+  <a href="https://star-history.com/#tjy-gitnub/win12&Date" style="text-decoration:none">
+    <img src="https://api.star-history.com/svg?repos=tjy-gitnub/win12&type=Date" alt="Star History Chart">
+  </a>
+</details>
 
 ## 公告
 ### 重要！
@@ -9,10 +38,6 @@
 > **🎉🎉Windows 12 网页版一周岁生日快乐！`o(^o^)o`**
 > **向在座的各位的支持表示诚挚的感谢！**
 
-## Language selection 语言选择
-- [English](readme/README_en_us.md)
-- [简体中文](readme/README_zh_cn.md)
-- [Français](readme/README_fr_fr.md)
 
 ```
 千古有冬夏，一载经春秋。破浪长风扶摇起，夜深星源起处。
@@ -92,7 +117,7 @@ NB-group：
 
 ![image](https://github.com/tjy-gitnub/win12/assets/121747915/c4a7e71c-ac41-4ab5-ba87-967d188ca2cc)
 
-链接：https://afdian.net/a/qstudio?tab=feed
+链接：<https://afdian.net/a/qstudio>
 
 **我们的项目及源代码绝对不进行强制收费！如果看到售卖本项目且没有注明原项目链接的，或违反EPL-2.0开源协议及本项目开源说明的，欢迎举报！**
 
@@ -143,7 +168,7 @@ NB-group：
 
 ## 安装和使用
 
-下载代码，无需安装，打开 desktop.html 即可。
+下载代码，无需安装，打开 `desktop.html` 即可。
 
 ## 前景规划
 
@@ -176,7 +201,7 @@ NB-group：
 - [ ] 去除多余系统功能，封装成独立的操作系统
 - [ ] 将项目更名为 "Doswin 1.0"
 - [ ] 适配量子计算机
-- [x] 接入chatgpt
+- [x] 接入ChatGPT
 - [ ] 将项目更名为 "550W"
 
 ## 开源说明
