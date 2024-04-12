@@ -1,12 +1,43 @@
-# Windows 12 Web Edition
+<p align="center">
+    <img src="./../icon/windows12.svg" width="100" height="100">
+</p>
+<h1 align="center">Windows 12 Web Edition</h1>
+<p align="center" class="shields">
+  <a href="https://github.com/tjy-gitnub/win12/issues" style="text-decoration:none">
+    <img src="https://img.shields.io/github/issues/tjy-gitnub/win12.svg" alt="GitHub issues"/>
+  </a>
+  <a href="https://github.com/tjy-gitnub/win12/stargazers" style="text-decoration:none">
+    <img src="https://img.shields.io/github/stars/tjy-gitnub/win12.svg" alt="GitHub stars"/>
+  </a>
+  <a href="https://github.com/tjy-gitnub/win12/network" style="text-decoration:none">
+    <img src="https://img.shields.io/github/forks/tjy-gitnub/win12.svg" alt="GitHub forks"/>
+  </a>
+  </a>
+  <a href="https://github.com/tjy-gitnub/win12/blob/master/LICENSE" style="text-decoration:none">
+    <img src="https://img.shields.io/github/license/tjy-gitnub/win12" alt="GitHub License"/>
+  </a>
+</p>
+<p align="center" class="language" title="Language selection 语言选择">
+  <a href="README_en_us.md">English</a> | 
+  <a href="README_zh_cn.md">简体中文</a> | 
+  <a href="README_fr_fr.md">Français</a>
+</p>
+<details align="center">
+  <summary>Star History</summary>
+  <a href="https://star-history.com/#tjy-gitnub/win12&Date" style="text-decoration:none">
+    <img src="https://api.star-history.com/svg?repos=tjy-gitnub/win12&type=Date" alt="Star History Chart">
+  </a>
+</details>
 
+## Annonces
+### C’est important !
+Gratuitement, nous demandons sincèrement à tous les utilisateurs compétents de réaliser des vidéos promotionnelles pour nous !
+Pour plus de détails, reportez-vous à [Annonce vidéo promotionnelle(chinois)](https://github.com/tjy-gitnub/win12/wiki/%E5%AE%A3%E4%BC%A0%E7%89%87%E5%85%AC%E5%91%8A)
+
+### Quelques autres annonces
 > **🎉🎉Joyeux premier anniversaire pour Windows 12!`o(^o^)o`**
 > **Un grand merci à vous tous ici présents pour votre soutien!**
 
-## Language selection 语言选择
-- [English](README_en_us.md)
-- [简体中文](README_zh_cn.md)
-- [Français](README_fr_fr.md)
 
 ```
 千古有冬夏，一载经春秋。破浪长风扶摇起，夜深星源起处。
@@ -21,7 +52,7 @@ Windows 12 的明天在大家的努力下会更灿烂美好！
 
 ---
 
->L'auteur a commencé l'année trois et ne fera pas de mises à jour sur les fonctionnalités. Maintenance et poursuite du développement du [@ user782tec] qui nous a été confié ( https://github.com/user782tec ) [@ Groupe - NB] ( https://github.com/nb-group ), pour plus de détails [Bulletin (chinois)] ( https://github.com/tjy-gitnub/win12/wiki/%e5%85%ac%e5%91%8a - notices)。
+> L’auteur est dans la troisième année de la nouvelle année, et il ne fera aucune mise à jour des fonctionnalités. Maintenir et poursuivre le développement du [@User782Tec](https://github.com/User782Tec) [@NB-Groupe](https://github.com/NB-Group) qui nous a été confié, comme détaillé dans [Annonce(chinois)](https://github.com/tjy-gitnub/win12/wiki/%E5%85%AC%E5%91%8A-Notices).
 
 ```
 寒窗苦读九春秋，一朝定乾坤。
@@ -83,7 +114,7 @@ Le seul compte officiel au monde où vous pouvez faire un don ! Ouvrez bien vos 
 
 ![image](https://github.com/tjy-gitnub/win12/assets/121747915/c4a7e71c-ac41-4ab5-ba87-967d188ca2cc)
 
-URL：https://afdian.net/a/qstudio?tab=feed
+URL：<https://afdian.net/a/qstudio>
 
 **Notre projet et notre code source ne sont absolument pas soumis à des frais obligatoires ! Si vous voyez que ce projet est vendu sans mentionner le lien vers le projet d'origine, ou s'il enfreint la licence open source EPL-2.0 et les instructions open source de ce projet, n'hésitez pas à le signaler !**
 
@@ -134,7 +165,7 @@ Cela peut être un peu lent, veuillez patienter~
 
 ## installation et utilisation
 
-Téléchargez le code, aucune installation requise, ouvrez desktop.html.
+Téléchargez le code, aucune installation requise, ouvrez `desktop.html`.
 
 ## planification des perspectives
 
@@ -200,4 +231,4 @@ En raison d'une utilisation abusive constatée récemment, des dispositions supp
 
 Veuillez consulter [Guide de contribution(chinois)](./CONTRIBUTING.md)pour plus de détails.
 
-### Traduit par [@Junchen Yi](https://github.com/Jimmy-Effe)
+> Traduit par [@Junchen Yi](https://github.com/Jimmy-Effe)

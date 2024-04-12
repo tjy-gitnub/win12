@@ -1,0 +1,9 @@
+{
+    "workbench.iconTheme": "symbols",
+    "python.analysis.extraPaths": [
+        "c:\\Users\\seewo\\.vscode\\extensions\\continue.continue-0.0.412-win32-x64"
+    ],
+    "python.autoComplete.extraPaths": [
+        "c:\\Users\\seewo\\.vscode\\extensions\\continue.continue-0.0.412-win32-x64"
+    ]
+}
