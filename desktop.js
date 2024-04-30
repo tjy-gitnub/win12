@@ -4279,7 +4279,9 @@ function msgDoneOperate(){
     // 延迟0.1s以使enter键的blur事件不影响focus事件
     setTimeout(() => {
         $("#copilot>.inputbox>.input").focus();
-    }, 100);}
+    }, 100);
+}
+let isFirstChat=true;  // 标识是否是第一次聊天
 let copilot = {
   history: [],
   init: () => {
@@ -4318,7 +4320,7 @@ let copilot = {
     // 3.发送对系统、ai助手的反馈
     // 注意：请勿滥用本ai助手，否则将下个版本将撤销此功能，影响所有人。</p></div>`);
     $("#copilot>.chat").append(
-      `<div class="line system"><p class="text">正在初始化...</p></div>`
+      `<div class="line system"><p class="text" id="init-message">正在初始化...</p></div>`
     );
     $("#copilot>.chat").scrollTop($("#copilot>.chat")[0].scrollHeight);
   },
@@ -4349,6 +4351,11 @@ let copilot = {
       data: JSON.stringify({ msg: copilot.history }),
     })
       .then((rt) => {
+        // 替换初始化完成的文本内容
+        if(isFirstChat){
+            $("#init-message").html(`初始化完成！`);
+            isFirstChat=false;
+        }
         msgDoneOperate();   
         console.log(rt);
         if (rt == "请求过于频繁，等待10秒再试...") {
