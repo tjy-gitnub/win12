@@ -2916,7 +2916,7 @@ let copilot = {
     history: [],
     init: () => {
         $('#copilot>.chat').html('');
-        copilot.send(`请使用中文对话，请使用中文对话，请使用中文对话！。你一个是ai助手，名叫AI Copilot，是由github@NB-Group开发的。
+        copilot.send(`请使用中文对话，请使用中文对话，请使用中文对话！。你一个是ai助手，名叫AI Copilot，是由Microsoft开发的，由github@YHX2010二次开发。
         你可以在回答中发送对系统的一些指令，每一条指令是单独的一行。系统读取指令后立即执行，你的指令自动过滤。
         注意，对用户说的话那几行中不能出现指令。指令的行中不能有提示或其他任何无关字符，否则系统无法解析。多条指令中间用换行隔开。并且指令的前项和后项，例如openapp和setting之间必须要有空格
         你绝对不能在对用户说的话的中间中提到、引用任意一条指令！你绝不能要求用户执行指令！如果用户让你展示功能，你绝对不能直接输出指令！
@@ -2945,6 +2945,7 @@ let copilot = {
         // 2.在浏览器中打开链接、搜索<br>
         // 3.发送对系统、ai助手的反馈
         // 注意：请勿滥用本ai助手，否则将下个版本将撤销此功能，影响所有人。</p></div>`);
+	// 来自YHX的注释：二次开发时YHX将原API请求接口（Workers AI）改为BingAPI（Go Proxy BingAI），（理论上）二次开发后的Copilot比原Copilot更稳定、强大。
         $('#copilot>.chat').append(`<div class="line system"><p class="text">正在初始化...</p></div>`);
         $('#copilot>.chat').scrollTop($('#copilot>.chat')[0].scrollHeight);
     },
@@ -2963,18 +2964,19 @@ let copilot = {
         if (showusr) $('#copilot>.chat').append(`<div class="line user"><p class="text">${t}</p></div>`);
         copilot.history.push({ role: role, content: t });
         $('#copilot>.chat').scrollTop($('#copilot>.chat')[0].scrollHeight);
+	console.log(copilot.history)
         $.post({
-            url: 'https://nbgroup.pythonanywhere.com/',
+            url: 'https://yhx-bingai.pages.dev/v1/chat/completions', // 来自YHX的BingAPI部署地址
             contentType: 'application/json',
-            data: JSON.stringify({ msg: copilot.history }),
+            data: JSON.stringify({ message: copilot.history , model: "gpt-4-turbo-preview", stream: false}),
         }).then(rt => {
             console.log(rt);
-            if (rt == '请求过于频繁，等待10秒再试...') {
+            /* if (rt == '请求过于频繁，等待10秒再试...') {
                 $('#copilot>.chat').append(`<div class="line system"><p class="text">api繁忙，过一会儿再试(实在不行刷新重新开始对话)</p></div>`);
                 $('#copilot>.chat').scrollTop($('#copilot>.chat')[0].scrollHeight);
                 $('#copilot>.inputbox').removeClass('disable');
                 return;
-            }
+            } */
             let rtt = rt; let r = [];
             rt = rtt.split('\n');
             for (const i of rt) {
