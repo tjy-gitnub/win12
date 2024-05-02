@@ -2966,7 +2966,7 @@ let copilot = {
         $('#copilot>.chat').scrollTop($('#copilot>.chat')[0].scrollHeight);
 	console.log(copilot.history)
         $.post({
-            url: 'https://nbgroup.pythonanywhere.com/'
+            url: 'https://nbgroup.pythonanywhere.com/',
             contentType: 'application/json',
             data: JSON.stringify({ msg: copilot.history }),
         }).then(rt => {
