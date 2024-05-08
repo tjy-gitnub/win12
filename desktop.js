@@ -2912,6 +2912,13 @@ function decodeHtml(s) {
     $('#translater').text(s);
     return $('#translater').html().replace(/\n/g, '<br>').replace(/ /g, '&nbsp;');
 }
+function msgDoneOperate(){
+    $("#copilot>.inputbox").removeClass("disable");
+    setTimeout(() => {
+        $("#copilot>.inputbox>.input").focus();
+    }, 100); // 延迟0.1s以避免与blur方法冲突
+}
+let isFirstChat=true;   // 标记是否是刚进来时服务端返回的消息
 let copilot = {
     history: [],
     init: () => {
@@ -2945,7 +2952,7 @@ let copilot = {
         // 2.在浏览器中打开链接、搜索<br>
         // 3.发送对系统、ai助手的反馈
         // 注意：请勿滥用本ai助手，否则将下个版本将撤销此功能，影响所有人。</p></div>`);
-        $('#copilot>.chat').append(`<div class="line system"><p class="text">正在初始化...</p></div>`);
+        $('#copilot>.chat').append(`<div class="line system"><p class="text" id="init-message">正在初始化...</p></div>`);
         $('#copilot>.chat').scrollTop($('#copilot>.chat')[0].scrollHeight);
     },
     send: (t, showusr = true,role="user") => {
@@ -2953,7 +2960,7 @@ let copilot = {
         if (t.length == 0) {
             $('#copilot>.chat').append(`<div class="line system"><p class="text">系统表示请发一些有意义的东西</p></div>`);
             $('#copilot>.chat').scrollTop($('#copilot>.chat')[0].scrollHeight);
-            $('#copilot>.inputbox').removeClass('disable');
+            msgDoneOperate();
             return;
         }
         if (copilot.history.length > 3){ // 万年代码，千万不要改
@@ -2968,11 +2975,17 @@ let copilot = {
             contentType: 'application/json',
             data: JSON.stringify({ msg: copilot.history }),
         }).then(rt => {
+            msgDoneOperate();
+            // 替换初始化完成的文本内容
+            if (isFirstChat) {
+            $("#init-message").html(`初始化完成！`);
+            isFirstChat = false;
+            }
             console.log(rt);
             if (rt == '请求过于频繁，等待10秒再试...') {
                 $('#copilot>.chat').append(`<div class="line system"><p class="text">api繁忙，过一会儿再试(实在不行刷新重新开始对话)</p></div>`);
                 $('#copilot>.chat').scrollTop($('#copilot>.chat')[0].scrollHeight);
-                $('#copilot>.inputbox').removeClass('disable');
+                msgDoneOperate();
                 return;
             }
             let rtt = rt; let r = [];
@@ -3014,12 +3027,12 @@ let copilot = {
             }
             copilot.history.push({ role: 'assistant', content: rtt });
             $('#copilot>.chat').scrollTop($('#copilot>.chat')[0].scrollHeight);
-            $('#copilot>.inputbox').removeClass('disable');
+            msgDoneOperate();
         }).fail(r => {
             console.log(r);
             $('#copilot>.chat').append(`<div class="line system"><p class="text">发生错误，请查看控制台输出或重试</p></div>`);
             $('#copilot>.chat').scrollTop($('#copilot>.chat')[0].scrollHeight);
-            $('#copilot>.inputbox').removeClass('disable');
+            msgDoneOperate();
         });
     }
 }
