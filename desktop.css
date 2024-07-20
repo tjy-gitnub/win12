@@ -1299,9 +1299,9 @@ input-before {
     display: grid;
     justify-content: center;
     gap: 10px;
-    grid-template-columns: repeat(5, 83px);
-    grid-template-rows: repeat(5, 83px);
-    height: max-content;
+    grid-template-columns: repeat(auto-fill, 83px);
+    grid-template-rows: repeat(auto-fill, 83px);
+    height: 100%;
     grid-auto-flow: row;
 }
 
@@ -2309,13 +2309,14 @@ list>span.focs.cl {
 .window>.loadback>.icon {
     height: 90px;
     width: 90px;
-    top: calc(50% - 45px);
-    left: calc(50% - 45px);
-    position: absolute;
+    margin: 30px;
 }
 
 .window.load>.loadback {
-    display: block;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
 }
 
 .window.load>.content {

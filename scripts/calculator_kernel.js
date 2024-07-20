@@ -15,8 +15,8 @@ class Calculator {
     number_key(key) {
         // key:按下的数字键，int
         // id:显示区的id
-        if (this.elt.value == "0" || this.preview) {
-            this.elt.value = "";
+        if (this.elt.value == '0' || this.preview) {
+            this.elt.value = '';
             this.preview = false;
         }
         this.elt.value += key;
@@ -63,11 +63,11 @@ class Calculator {
     }
 
     point() {
-        if (this.elt.value == "") {
-            this.elt.value = "0";
+        if (this.elt.value == '') {
+            this.elt.value = '0';
         }
         if (!(this.elt.value.includes('.'))) {
-            this.elt.value += ".";
+            this.elt.value += '.';
         }
     }
 
@@ -83,14 +83,14 @@ class Calculator {
         if (this.elt.value.length > 0) {
             this.elt.value = this.elt.value.substring(0, this.elt.value.length - 1);
         }
-        if (this.elt.value == "") {
-            this.elt.value = "0";
+        if (this.elt.value == '') {
+            this.elt.value = '0';
         }
     }
 
 
     clear_num() {
-        this.elt.value = "0";
+        this.elt.value = '0';
         this.num1 = null, this.num2 = null, this.operator = 0;
         this.uncheck();
     }
@@ -112,14 +112,14 @@ class Calculator {
 
     _calc(n1, n2, c) {
         switch (c) {
-            case 1:
-                return n1.plus(n2).toString();
-            case 2:
-                return n1.minus(n2).toString();
-            case 3:
-                return n1.times(n2).toString();
-            case 4:
-                return (n2 != 0) ? this.num1.div(this.num2).toString() : null;
+        case 1:
+            return n1.plus(n2).toString();
+        case 2:
+            return n1.minus(n2).toString();
+        case 3:
+            return n1.times(n2).toString();
+        case 4:
+            return (n2 != 0) ? this.num1.div(this.num2).toString() : null;
         }
     }
 }

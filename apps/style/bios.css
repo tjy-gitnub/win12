@@ -25,14 +25,12 @@ body {
     -o-user-select: none;
     user-select: none;
     scrollbar-width: none;
-    /* Firefox */
     -ms-overflow-style: none;
-    /* IE 10+ */
+    box-sizing: border-box;
 }
 
 ::-webkit-scrollbar {
     display: none;
-    /* Chrome Safari */
 }
 
 .tit {
@@ -58,24 +56,37 @@ a {
     text-decoration: none;
 }
 
-.page {
+.tab {
     font-size: 110%;
-    color: #0100a2;
-    background-color: #aaaaaa;
+    color: #aaaaaa;
+    background-color: #0100a2;
     margin: 5px;
     padding: 5px;
+}
+
+.tab.foc {
+    color: #ffffff !important;
+}
+
+.tab.show {
+    color: #0100a2;
+    background-color: #aaaaaa;
 }
 
 .option {
     border: none;
 }
 
-#mainPage,
-#exitPage {
+.page {
     margin: 20px;
     padding: 20px;
     border: 3.5px solid #000;
     height: 100%;
+    display: none;
+}
+
+.page.show {
+    display: block !important;
 }
 
 .exit {
@@ -83,16 +94,51 @@ a {
     padding: 5px;
 }
 
-/*.exit:hover{
-    color: #fff;
-}*/
-
 .confirm-button {
-    background-color: #fff;
-    color: #000;
+    background-color: #ffffff;
+    color: #000000;
 }
 
-/*.confirm-button:hover{
-    background-color: #000;
-    color: #fff;
-}*/
+#mainPage>.table {
+    display: grid;
+    grid-template-columns: auto auto;
+    grid-template-rows: auto auto;
+    gap: 10px;
+    width: fit-content;
+}
+
+#confirmContainer {
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    display: none;
+    justify-content: center;
+    align-items: center;
+}
+
+#exit_confirm {
+    width: calc(30% + 50px);
+    height: calc(15% + 70px);
+    background-color: #ffffff;
+    padding: 20px 10px;
+    box-shadow: rgb(0, 0, 0) 8px 16px 0px 0px;
+}
+
+#confirm {
+    border: 3.5px solid #000;
+    height: 100%;
+    padding: 20px 10px;
+    text-align: center;
+    display: grid;
+    grid-template-rows: auto auto;
+}
+
+#confirm>*:first-child {
+    align-self: flex-start;
+}
+
+#confirm>*:last-child {
+    align-self: flex-end;
+}

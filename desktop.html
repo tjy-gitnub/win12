@@ -34,6 +34,7 @@
 	<link rel="stylesheet" href="apps/style/whiteboard.css">
 	<link rel="stylesheet" href="apps/style/defender.css">
 	<link rel="stylesheet" href="apps/style/taskmgr.css">
+	<link rel="stylesheet" href="apps/style/msstore.css">
 	<link rel="stylesheet" href="widgets.css">
 	<!-- 掌声欢迎 Copilot 的 css 引入(bs -->
 	<link rel="stylesheet" href="apps/style/copilot.css">
@@ -83,10 +84,16 @@ list 列表>
 .input 输入框
 
 有以下函数可用：
-setData(k,v) 本地存储信息，永久可用
+setData(k, v) 本地存储信息，永久可用
 localStorage.getItem(k) 与前者配合使用
-stop(event) 停止事件向父级传递
-showcm(event,id,arg) 显示右键菜单，使用方法：oncontextmenu="return showcm(event,'标识',arg);"
+stop(event) 停止事件向父级传递（停止冒泡）
+showcm(event, id, arg) 显示右键菜单，使用方法：oncontextmenu="return showcm(event,'标识',arg);"
+openapp(name) 打开窗口，用法：openapp('程序（窗口）名称')，注意：程序（窗口）名称就是想要显示的窗口.window的另一个类名，必须要有apps[程序（窗口）名称]对象和init方法
+shownotice(name) 打开提示窗口，用法：shownotice('提示内容标识符')，注意：需要提前在let nts对象中定义提示内容及其标识符
+closenotice() 关闭提示窗口
+showwin(name) 显示窗口，除特殊用途外不建议使用，用法：showwin('窗口名称')，注意：窗口名称就是想要显示的窗口.window的另一个类名
+hidewin(name) 关闭窗口，用法：hidewin('程序（窗口）名称')，注意：程序（窗口）名称就是想要显示的窗口.window的另一个类名
+toggletheme() 切换主题
 
 欢迎补充~
 -->
@@ -134,8 +141,8 @@ showcm(event,id,arg) 显示右键菜单，使用方法：oncontextmenu="return s
 		</loading>
 		<script>
 			setTimeout(() => {
-				document.getElementById('loadbacksvg').style.opacity = 1;
-				document.getElementById('loadbackloading').style.opacity = 1;
+				$('#loadbacksvg')[0].style.opacity = 1;
+				$('#loadbackloading')[0].style.opacity = 1;
 			}, 100);
 		</script>
 	</div>
@@ -180,7 +187,7 @@ showcm(event,id,arg) 显示右键菜单，使用方法：oncontextmenu="return s
 		</a>
 	</div>
 	<!-- <img src="https://bing.com/th?id=OHR.Trossachs_ZH-CN9299955040_UHD.jpg&qlt=100" alt=""> -->
-	<script src="./jq.min.js"></script>
+	<script src="./scripts/jq.min.js"></script>
 	<div id="draggableBtn" class="draggable no-drag" style="top: 80%;left: 80%;">
         <link rel="stylesheet" href="./style.css">
 
@@ -299,94 +306,76 @@ showcm(event,id,arg) 显示右键菜单，使用方法：oncontextmenu="return s
 			<input-before class="bi bi-search"></input-before>
 			<list>
 				<p class="text">可用</p>
-				<a oncontextmenu="return showcm(event, 'smlapp', ['setting', '设置'])"
-					onclick="openapp('setting');hide_startmenu();">
+				<a oncontextmenu="return showcm(event, 'smlapp', ['setting', '设置'])" onclick="openapp('setting');hide_startmenu();">
 					<img src="icon/setting.svg">
 					<p>设置</p>
 				</a>
-				<a oncontextmenu="return showcm(event, 'smlapp', ['explorer', '文件资源管理器'])"
-					onclick="openapp('explorer');hide_startmenu();">
+				<a oncontextmenu="return showcm(event, 'smlapp', ['explorer', '文件资源管理器'])" onclick="openapp('explorer');hide_startmenu();">
 					<img src="icon/explorer.svg">
 					<p>文件资源管理器</p>
 				</a>
-				<a oncontextmenu="return showcm(event, 'smlapp', ['calc', '计算器'])"
-					onclick="openapp('calc');hide_startmenu();">
+				<a oncontextmenu="return showcm(event, 'smlapp', ['calc', '计算器'])" onclick="openapp('calc');hide_startmenu();">
 					<img src="icon/calc.svg">
 					<p>计算器</p>
 				</a>
-				<a oncontextmenu="return showcm(event, 'smlapp', ['run', '运行'])"
-					onclick="openapp('run');hide_startmenu();">
+				<a oncontextmenu="return showcm(event, 'smlapp', ['run', '运行'])" onclick="openapp('run');hide_startmenu();">
 					<img src="icon/run.svg">
 					<p>运行</p>
 				</a>
-				<a oncontextmenu="return showcm(event, 'smlapp', ['about', '关于Win12网页版'])"
-					onclick="openapp('about');hide_startmenu();">
+				<a oncontextmenu="return showcm(event, 'smlapp', ['about', '关于Win12网页版'])" onclick="openapp('about');hide_startmenu();">
 					<img src="icon/about.svg">
 					<p>关于Win12网页版</p>
 				</a>
-				<a oncontextmenu="return showcm(event, 'smlapp', ['taskmgr', '任务管理器'])"
-					onclick="openapp('taskmgr');hide_startmenu();">
+				<a oncontextmenu="return showcm(event, 'smlapp', ['taskmgr', '任务管理器'])" onclick="openapp('taskmgr');hide_startmenu();">
 					<img src="icon/taskmgr.png">
 					<p>任务管理器</p>
 				</a>
-				<a oncontextmenu="return showcm(event, 'smlapp', ['notepad', '记事本'])"
-					onclick="openapp('notepad');hide_startmenu();">
+				<a oncontextmenu="return showcm(event, 'smlapp', ['notepad', '记事本'])" onclick="openapp('notepad');hide_startmenu();">
 					<img src="icon/notepad.svg">
 					<p>记事本</p>
 				</a>
-				<a oncontextmenu="return showcm(event, 'smlapp', ['edge', 'Microsoft Edge'])"
-					onclick="openapp('edge');hide_startmenu();">
+				<a oncontextmenu="return showcm(event, 'smlapp', ['edge', 'Microsoft Edge'])" onclick="openapp('edge');hide_startmenu();">
 					<img src="icon/edge.svg">
 					<p>Microsoft Edge</p>
 				</a>
-				<a oncontextmenu="return showcm(event, 'smlapp', ['camera', '相机'])"
-					onclick="apps.camera.notice();hide_startmenu()">
+				<a oncontextmenu="return showcm(event, 'smlapp', ['camera', '相机'])" onclick="apps.camera.notice();hide_startmenu()">
 					<img src="icon/camera.svg">
 					<p>相机</p>
 				</a>
-				<a oncontextmenu="return showcm(event, 'smlapp', ['pythonEditor', 'Python Editor'])"
-					onclick="openapp('pythonEditor');hide_startmenu()">
+				<a oncontextmenu="return showcm(event, 'smlapp', ['pythonEditor', 'Python Editor'])" onclick="openapp('pythonEditor');hide_startmenu()">
 					<img src="icon/pythonEditor.svg">
 					<p>Python Editor</p>
 				</a>
-				<a oncontextmenu="return showcm(event, 'smlapp', ['python', 'Python 3.10.2'])"
-					onclick="openapp('python');hide_startmenu()">
+				<a oncontextmenu="return showcm(event, 'smlapp', ['python', 'Python 3.10.2'])" onclick="openapp('python');hide_startmenu()">
 					<img src="icon/python.svg">
 					<p>Python 3.10.2</p>
 				</a>
-				<a oncontextmenu="return showcm(event, 'smlapp', ['terminal', '终端'])"
-					onclick="openapp('terminal');hide_startmenu();">
+				<a oncontextmenu="return showcm(event, 'smlapp', ['terminal', '终端'])" onclick="openapp('terminal');hide_startmenu();">
 					<img src="icon/terminal.svg">
 					<p>终端</p>
 				</a>
-				<a oncontextmenu="return showcm(event, 'smlapp', ['whiteboard', 'Whiteboard'])"
-					onclick="openapp('whiteboard');hide_startmenu();">
+				<a oncontextmenu="return showcm(event, 'smlapp', ['whiteboard', 'Whiteboard'])" onclick="openapp('whiteboard');hide_startmenu();">
 					<img src="icon/whiteboard.svg">
 					<p>Whiteboard</p>
 				</a>
-				<a oncontextmenu="return showcm(event, 'smlapp', ['defender', 'Windows 安全中心'])"
-					onclick="openapp('defender');hide_startmenu();">
+				<a oncontextmenu="return showcm(event, 'smlapp', ['defender', 'Windows 安全中心'])" onclick="openapp('defender');hide_startmenu();">
 					<img src="icon/defender.svg">
 					<p>Windows 安全中心</p>
 				</a>
 				<p class="text">Web 应用</p>
-				<a oncontextmenu="return showcm(event, 'smlapp', ['bilibili', '哔哩哔哩'])"
-					onclick="openapp('bilibili');hide_startmenu();">
+				<a oncontextmenu="return showcm(event, 'smlapp', ['bilibili', '哔哩哔哩'])" onclick="openapp('bilibili');hide_startmenu();">
 					<img src="icon/bilibili.png">
 					<p>哔哩哔哩</p>
 				</a>
-				<a oncontextmenu="return showcm(event, 'smlapp', ['vscode', 'Visual Studio Code'])"
-					onclick="openapp('vscode');hide_startmenu();">
+				<a oncontextmenu="return showcm(event, 'smlapp', ['vscode', 'Visual Studio Code'])" onclick="openapp('vscode');hide_startmenu();">
 					<img src="icon/vscode.png">
 					<p>Visual Studio Code</p>
 				</a>
-				<a oncontextmenu="return showcm(event, 'smlapp', ['wsa', '适用于 Android™️ 的 Windows 子系统'])"
-					onclick="openapp('wsa');hide_startmenu();">
+				<a oncontextmenu="return showcm(event, 'smlapp', ['wsa', '适用于 Android™️ 的 Windows 子系统'])" onclick="openapp('wsa');hide_startmenu();">
 					<img src="icon/wsa.png">
 					<p>适用于 Android™️ 的 Windows 子系统</p>
 				</a>
-				<a oncontextmenu="return showcm(event, 'smlapp', ['windows12', 'Windows 12'])"
-					onclick="openapp('windows12');hide_startmenu();">
+				<a oncontextmenu="return showcm(event, 'smlapp', ['windows12', 'Windows 12'])" onclick="openapp('windows12');hide_startmenu();">
 					<img src="icon/logo.svg">
 					<p>Windows 12</p>
 				</a>
@@ -444,13 +433,11 @@ showcm(event,id,arg) 显示右键菜单，使用方法：oncontextmenu="return s
 					</div>
 				</div>
 				<div class="apps">
-					<a class="a sm-app enable calc" onclick="openapp('calc');hide_startmenu();"
-						oncontextmenu="return showcm(event,'smapp',['calc','计算器'])">
+					<a class="a sm-app enable calc" onclick="openapp('calc');hide_startmenu();" oncontextmenu="return showcm(event,'smapp',['calc','计算器'])">
 						<img src="icon/calc.svg">
 						<p>计算器</p>
 					</a>
-					<a class="a sm-app enable camera" onclick="apps.camera.notice();hide_startmenu();"
-						oncontextmenu="return showcm(event,'smapp',['camera', '相机'])">
+					<a class="a sm-app enable camera" onclick="apps.camera.notice();hide_startmenu();" oncontextmenu="return showcm(event,'smapp',['camera', '相机'])">
 						<img src="icon/camera.svg">
 						<p>相机</p>
 					</a>
@@ -458,46 +445,39 @@ showcm(event,id,arg) 显示右键菜单，使用方法：oncontextmenu="return s
 						<img src="icon/feedback.svg">
 						<p>反馈中心</p>
 					</a>
-					<a class="a sm-app enable defender" onclick="openapp('defender');hide_startmenu();"
-						oncontextmenu="return showcm(event,'smapp',['defender','Windows 安全中心'])">
+					<a class="a sm-app enable defender" onclick="openapp('defender');hide_startmenu();" oncontextmenu="return showcm(event,'smapp',['defender','Windows 安全中心'])">
 						<img src="icon/defender.svg">
 						<p>Windows 安全中心</p>
 					</a>
-					<a class="a sm-app enable about" onclick="openapp('about');hide_startmenu();"
-						oncontextmenu="return showcm(event,'smapp',['about','关于 Win12 网页版'])">
+					<a class="a sm-app enable about" onclick="openapp('about');hide_startmenu();" oncontextmenu="return showcm(event,'smapp',['about','关于 Win12 网页版'])">
 						<img src="icon/about.svg">
 						<p>关于Win12网页版</p>
 					</a>
-					<a class="a sm-app enable explorer" onclick="openapp('explorer');hide_startmenu();"
-						oncontextmenu="return showcm(event,'smapp',['explorer','文件资源管理器'])">
+					<a class="a sm-app enable explorer" onclick="openapp('explorer');hide_startmenu();" oncontextmenu="return showcm(event,'smapp',['explorer','文件资源管理器'])">
 						<img src="icon/explorer.svg">
 						<p>文件资源管理器</p>
 					</a>
-					<a class="a sm-app enable notepad" onclick="openapp('notepad');hide_startmenu();"
-						oncontextmenu="return showcm(event,'smapp',['notepad','记事本'])">
+					<a class="a sm-app enable notepad" onclick="openapp('notepad');hide_startmenu();" oncontextmenu="return showcm(event,'smapp',['notepad','记事本'])">
 						<img src="icon/notepad.svg">
 						<p>记事本</p>
 					</a>
-					<a class="a sm-app enable setting" onclick="openapp('setting');hide_startmenu();"
-						oncontextmenu="return showcm(event,'smapp',['setting','设置'])">
+					<a class="a sm-app enable setting" onclick="openapp('setting');hide_startmenu();" oncontextmenu="return showcm(event,'smapp',['setting','设置'])">
 						<img src="icon/setting.svg">
 						<p>设置 </p>
 					</a>
-					<a class="a sm-app"><img src="icon/store.svg">
+					<a class="a sm-app enable msstore" onclick="openapp('msstore');hide_startmenu();" oncontextmenu="return showcm(event, 'smapp', ['msstore', 'Microsoft Store'])">
+						<img src="icon/msstore.svg">
 						<p>Microsoft Store</p>
 					</a>
-					<a class="a sm-app enable edge" onclick="openapp('edge');hide_startmenu();"
-						oncontextmenu="return showcm(event,'smapp',['edge','Microsoft Edge'])">
+					<a class="a sm-app enable edge" onclick="openapp('edge');hide_startmenu();" oncontextmenu="return showcm(event,'smapp',['edge','Microsoft Edge'])">
 						<img src="icon/edge.svg">
 						<p>Microsoft Edge</p>
 					</a>
-					<a class="a sm-app enable" onclick="openapp('windows12');hide_startmenu();"
-						oncontextmenu="return showcm(event,'smapp',['windows12','Windows 12'])">
+					<a class="a sm-app enable windows12" onclick="openapp('windows12');hide_startmenu();" oncontextmenu="return showcm(event,'smapp',['windows12','Windows 12'])">
 						<img src="icon/logo.svg">
 						<p>Windows 12</p>
 					</a>
-					<a class="a sm-app enable terminal" onclick="openapp('terminal');hide_startmenu();"
-						oncontextmenu="return showcm(event,'smapp',['terminal','终端'])">
+					<a class="a sm-app enable terminal" onclick="openapp('terminal');hide_startmenu();" oncontextmenu="return showcm(event,'smapp',['terminal','终端'])">
 						<img src="icon/terminal.svg">
 						<p>终端</p>
 					</a>
@@ -588,9 +568,9 @@ showcm(event,id,arg) 显示右键菜单，使用方法：oncontextmenu="return s
 									<a win12_title="打开应用" class="a img openapp" onclick="$('.wg.calc>.titbar>.menu').removeClass('show');hide_widgets();openapp('calc')" onmouseenter="showdescp(event)" onmouseleave="hidedescp(event)">
 										<img src="icon/calc.svg">
 									</a>
-									<a class="a move" win12_title="移动" onmouseenter="showdescp(event)" onclick="if (!edit_mode) { editMode(); }" onmouseleave="hidedescp(event)"><i class="bi bi-arrows-move"></i></a>
-									<a class="a addtodt" win12_title="添加到桌面" onmouseenter="showdescp(event)" onclick="widgets.widgets.addToDesktop('calc')" onmouseleave="hidedescp(event)"><i class="bi bi-box-arrow-in-right"></i></a>
-									<a class="a delete" win12_title="删除" onmouseenter="showdescp(event)" onmouseleave="hidedescp(event)" onclick="$('.wg.calc>.titbar>.menu').removeClass('show');widgets.widgets.remove('calc');hidedescp(event);"><i class="bi bi-trash"></i></a>
+									<a class="a move" win12_title="移动" onmouseenter="showdescp(event)" onclick=" hidedescp(event); if (!edit_mode) { editMode(); }" onmouseleave="hidedescp(event)"><i class="bi bi-arrows-move"></i></a>
+									<a class="a addtodt" win12_title="添加到桌面" onmouseenter="showdescp(event)" onclick="hidedescp(event); widgets.widgets.addToDesktop('calc');" onmouseleave="hidedescp(event)"><i class="bi bi-box-arrow-in-right"></i></a>
+									<a class="a delete" win12_title="删除" onmouseenter="showdescp(event)" onmouseleave="hidedescp(event)" onclick="hidedescp(event); $('.wg.calc>.titbar>.menu').removeClass('show'); widgets.widgets.remove('calc');"><i class="bi bi-trash"></i></a>
 								</div>
 							</div>
 							<div class="content" onmousedown="widgetsMove(this.parentElement, event);" ontouchstart="widgetsMove(this.parentElement, event);">
@@ -659,10 +639,10 @@ showcm(event,id,arg) 显示右键菜单，使用方法：oncontextmenu="return s
 							<div class="titbar">
 								<a win12_title="更多" onmouseenter="showdescp(event)" onmouseleave="hidedescp(event)" class="a more notip" onclick="$('.wg.weather>.titbar>.menu').toggleClass('show')"><i class="bi bi-three-dots"></i></a>
 								<div class="menu">
-									<a class="a move" win12_title="移动" onmouseenter="showdescp(event)" onmouseleave="hidedescp(event)" onclick="if (!edit_mode) { editMode() }"><i class="bi bi-arrows-move"></i></a>
-									<a class="a addtotb" win12_title="添加到任务栏" onmouseenter="showdescp(event)" onmouseleave="hidedescp(event)" onclick="widgets.widgets.addToToolbar('weather')"><i class="bi bi-menu-app"></i></a>
-									<a class="a addtodt" win12_title="添加到桌面" onmouseenter="showdescp(event)" onclick="widgets.widgets.addToDesktop('weather')" onmouseleave="hidedescp(event)"><i class="bi bi-box-arrow-in-right"></i></a>
-									<a class="a delete" win12_title="删除" onmouseenter="showdescp(event)" onmouseleave="hidedescp(event)" onclick="$('.wg.weather>.titbar>.menu').removeClass('show');widgets.widgets.remove('weather');hidedescp(event);"><i class="bi bi-trash"></i></a>
+									<a class="a move" win12_title="移动" onmouseenter="showdescp(event)" onmouseleave="hidedescp(event)" onclick="hidedescp(event); if (!edit_mode) { editMode() }; "><i class="bi bi-arrows-move"></i></a>
+									<a class="a addtotb" win12_title="添加到任务栏" onmouseenter="showdescp(event)" onmouseleave="hidedescp(event)" onclick="hidedescp(event); widgets.widgets.addToToolbar('weather'); "><i class="bi bi-menu-app"></i></a>
+									<a class="a addtodt" win12_title="添加到桌面" onmouseenter="showdescp(event)" onclick="hidedescp(event); widgets.widgets.addToDesktop('weather'); " onmouseleave="hidedescp(event)"><i class="bi bi-box-arrow-in-right"></i></a>
+									<a class="a delete" win12_title="删除" onmouseenter="showdescp(event)" onmouseleave="hidedescp(event)" onclick="hidedescp(event); $('.wg.weather>.titbar>.menu').removeClass('show'); widgets.widgets.remove('weather'); "><i class="bi bi-trash"></i></a>
 								</div>
 							</div>
 							<div class="content" onmousedown="widgetsMove(this.parentElement, event);" ontouchstart="widgetsMove(this.parentElement, event);">
@@ -679,11 +659,14 @@ showcm(event,id,arg) 显示右键菜单，使用方法：oncontextmenu="return s
 							<div class="titbar">
 								<a win12_title="更多" onmouseenter="showdescp(event)" onmouseleave="hidedescp(event)" class="a more notip" onclick="$('.wg.monitor>.titbar>.menu').toggleClass('show')"><i class="bi bi-three-dots"></i></a>
 								<div class="menu">
-									<a class="a chose" win12_title="切换监视器类型" onmouseenter="showdescp(event)" onmouseleave="hidedescp(event)" onclick="shownotice('widgets.monitor')"><i class="bi bi-arrow-left-right"></i></a>
-									<a class="a move" win12_title="移动" onmouseenter="showdescp(event)" onmouseleave="hidedescp(event)" onclick="if (!edit_mode) { editMode(); }"><i class="bi bi-arrows-move"></i></a>
-									<a class="a addtotb" win12_title="添加到任务栏" onmouseenter="showdescp(event)" onmouseleave="hidedescp(event)" onclick="widgets.widgets.addToToolbar('monitor')"><i class="bi bi-menu-app"></i></a>
-									<a class="a addtodt" win12_title="添加到桌面" onmouseenter="showdescp(event)" onclick="widgets.widgets.addToDesktop('monitor')" onmouseleave="hidedescp(event)"><i class="bi bi-box-arrow-in-right"></i></a>
-									<a class="a delete" win12_title="删除" onmouseenter="showdescp(event)" onmouseleave="hidedescp(event)" onclick="$('.wg.monitor>.titbar>.menu').removeClass('show');widgets.widgets.remove('monitor');hidedescp(event);"><i class="bi bi-trash"></i></a>
+									<a win12_title="打开应用" class="a img openapp" onclick="$('.wg.calc>.titbar>.menu').removeClass('show');hide_widgets();openapp('taskmgr')" onmouseenter="showdescp(event)" onmouseleave="hidedescp(event)">
+										<img src="icon/taskmgr.png">
+									</a>
+									<a class="a chose" win12_title="切换监视器类型" onmouseenter="showdescp(event)" onmouseleave="hidedescp(event)" onclick="showdescp(event); shownotice('widgets.monitor'); "><i class="bi bi-arrow-left-right"></i></a>
+									<a class="a move" win12_title="移动" onmouseenter="showdescp(event)" onmouseleave="hidedescp(event)" onclick="showdescp(event); if (!edit_mode) { editMode(); } "><i class="bi bi-arrows-move"></i></a>
+									<a class="a addtotb" win12_title="添加到任务栏" onmouseenter="showdescp(event)" onmouseleave="hidedescp(event)" onclick="showdescp(event); widgets.widgets.addToToolbar('monitor'); "><i class="bi bi-menu-app"></i></a>
+									<a class="a addtodt" win12_title="添加到桌面" onmouseenter="showdescp(event)" onclick="showdescp(event); widgets.widgets.addToDesktop('monitor'); " onmouseleave="hidedescp(event)"><i class="bi bi-box-arrow-in-right"></i></a>
+									<a class="a delete" win12_title="删除" onmouseenter="showdescp(event)" onmouseleave="hidedescp(event)" onclick="showdescp(event); $('.wg.monitor>.titbar>.menu').removeClass('show'); widgets.widgets.remove('monitor'); "><i class="bi bi-trash"></i></a>
 								</div>
 							</div>
 							<div class="content" onmousedown="widgetsMove(this.parentElement, event);" ontouchstart="widgetsMove(this.parentElement, event);">
@@ -717,7 +700,7 @@ showcm(event,id,arg) 显示右键菜单，使用方法：oncontextmenu="return s
 			</div>
 			<div class="content">
 				<div class="card" style="grid-column: 1/6;grid-row: 1/3;color: #fff;background: var(--bgul);background-position:0 -278px;background-size: 100%;">
-					<p class="tit" style="font-size: 20px;margin: 90px 0 0 30px;text-shadow: 0 0 8px #000;">Windows12 v6.0 发布</p>
+					<p class="tit" style="font-size: 20px;margin: 90px 0 0 30px;text-shadow: 0 0 8px #000;">Windows12 v7.0 发布</p>
 					<a class="a" style="margin: 5px 0 0 50px;font-size: 17px;color: #9dd0fb;text-shadow: 0 0 3px #000;" onclick="hide_widgets();
 					openapp('about');if($('.window.about').hasClass('min'))minwin('about');
 					$('#win-about>.about').removeClass('show');$('#win-about>.update').addClass('show');
@@ -1302,81 +1285,148 @@ showcm(event,id,arg) 显示右键菜单，使用方法：oncontextmenu="return s
 					</div>
 				</div>
 			</div>
-			<script src='https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.js'></script>
-
-			<script>
-				var chart = document.getElementById('chart').getContext('2d'),
-					gradient = chart.createLinearGradient(0, 0, 0, 450);
-				gradient.addColorStop(0, 'rgba(0, 199, 214, 0.32)');
-				gradient.addColorStop(0.3, 'rgba(0, 199, 214, 0.1)');
-				gradient.addColorStop(1, 'rgba(0, 199, 214, 0)');
-				var data = {
-					labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
-					datasets: [{
-						label: '病毒攻击次数',
-						backgroundColor: gradient,
-						pointBackgroundColor: '#00c7d6',
-						borderWidth: 1,
-						borderColor: '#0e1a2f',
-						data: [60, 45, 80, 30, 35, 55, 25, 80, 40, 50, 80, 50]
-					}]
-				};
-				var options = {
-					responsive: true,
-					maintainAspectRatio: true,
-					animation: {
-						easing: 'easeInOutQuad',
-						duration: 520
-					},
-					scales: {
-						yAxes: [{
-							ticks: {
-								fontColor: '#5e6a81'
-							},
-							gridLines: {
-								color: 'rgba(200, 200, 200, 0.08)',
-								lineWidth: 1
-							}
-						}],
-						xAxes: [{
-							ticks: {
-								fontColor: '#5e6a81'
-							}
-						}]
-					},
-					elements: {
-						line: {
-							tension: 0.4
-						}
-					},
-					legend: {
-						display: false
-					},
-					point: {
-						backgroundColor: '#00c7d6'
-					},
-					tooltips: {
-						titleFontFamily: 'Poppins',
-						backgroundColor: 'rgba(0,0,0,0.4)',
-						titleFontColor: 'white',
-						caretSize: 5,
-						cornerRadius: 2,
-						xPadding: 10,
-						yPadding: 10
-					}
-				};
-				var chartInstance = new Chart(chart, {
-					type: 'line',
-					data: data,
-					options: options
-				});
-			</script>
 		</div>
-		<!-- partial -->
-		<script src='https://cdns.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.js'></script>
-		<script src="https://unpkg.com/big.js@5.2.2/big.min.js"></script>
 	</div>
 	<div id="window-fill"></div>
+	<!-- Microsoft Store @User782Tec (2023/10/3) -->
+	<div class="window msstore">
+		<div class="resize-bar"></div>
+		<div class="titbar">
+			<img src="icon/msstore.svg" class="icon">
+			<p>Microsoft Store</p>
+			<div>
+				<a class="a wbtg red" onclick="hidewin('msstore');"><i class="bi bi-x-lg"></i></a>
+				<a class="a wbtg max" onclick="maxwin('msstore')"><i class="bi bi-app"></i></a>
+				<a class="a wbtg" onclick="minwin('msstore')"><i class="bi bi-dash-lg"></i></a>
+			</div>
+		</div>
+		<div class="loadback" data-delay="3500">
+			<img src="icon/msstore.svg" class="icon">
+            <loading style="position: static; ">
+                <svg width="40px" height="40px" viewBox="0 0 16 16">
+                    <!-- <circle cx="8px" cy="8px" r="7px" style="stroke:#7f7f7f50;fill:none;stroke-width:3px;"></circle> -->
+                    <circle cx="8px" cy="8px" r="7px" style="stroke:#2983cc;stroke-width:3px;"></circle>
+                </svg>
+            </loading>
+		</div>
+
+		<div class="content" id="win-msstore">
+			<div class="menu">
+				<list class="focs">
+					<a class="home check" onclick="apps.msstore.page('home');"><icon></icon><span class="t2">首页</span></a>
+					<a class="apps" onclick="apps.msstore.page('apps');"><icon></icon><span class="t2">应用</span></a>
+					<a class="game" onclick="apps.msstore.page('game');"><icon></icon><span class="t2">游戏</span></a>
+					<a class="down" onclick="apps.msstore.page('down');"><icon></icon><span class="t2">下载</span></a>
+					<span class="focs"></span>
+				</list>
+			</div>
+			<div class="page">
+				<div class="cnt home show">
+					<div class="container">
+						<div class="cards"></div>
+						<div class="apps">
+							<div class="tit">热门免费应用 ></div>
+							<div class="app-cards">
+								<div class="card1">
+									<div class="left"></div>
+									<div class="right">
+										<div class="tit">
+											<div class="up">
+												<div class="name">Visual Studio Code</div>
+												<div class="type">免费下载</div>
+											</div>
+											<div class="down">
+												<div class="rating"></div>
+												<div class="cate">开发</div>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="card2">
+									<div class="left"></div>
+									<div class="right">
+										<div class="tit">
+											<div class="up">
+												<div class="name">原神</div>
+												<div class="type">免费下载</div>
+											</div>
+											<div class="down">
+												<div class="rating"></div>
+												<div class="cate">游戏</div>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="card3">
+									<div class="left"></div>
+									<div class="right">
+										<div class="tit">
+											<div class="up">
+												<div class="name">我的世界</div>
+												<div class="type">免费下载</div>
+											</div>
+											<div class="down">
+												<div class="rating"></div>
+												<div class="cate">游戏</div>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="card4">
+									<div class="left"></div>
+									<div class="right">
+										<div class="tit">
+											<div class="up">
+												<div class="name">Krita</div>
+												<div class="type">免费下载</div>
+											</div>
+											<div class="down">
+												<div class="rating"></div>
+												<div class="cate">设计</div>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="card5">
+									<div class="left"></div>
+									<div class="right">
+										<div class="tit">
+											<div class="up">
+												<div class="name">VirtualBox</div>
+												<div class="type">免费下载</div>
+											</div>
+											<div class="down">
+												<div class="rating"></div>
+												<div class="cate">工具</div>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="card6">
+									<div class="left"></div>
+									<div class="right">
+										<div class="tit">
+											<div class="up">
+												<div class="name">LibreOffice</div>
+												<div class="type">免费下载</div>
+											</div>
+											<div class="down">
+												<div class="rating"></div>
+												<div class="cate">办公</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="cnt apps"></div>
+				<div class="cnt game"></div>
+				<div class="cnt down"></div>
+			</div>
+		</div>
+	</div>
 	<div class="window setting">
 		<div class="resize-bar"></div>
 		<div class="titbar">
@@ -1403,7 +1453,7 @@ showcm(event,id,arg) 显示右键菜单，使用方法：oncontextmenu="return s
 				<input type="text" class="input" placeholder="查找设置" style="padding-left: 30px;">
 				<input-before class="bi bi-search"></input-before>
 				<list class="focs"><!--压缩行数-->
-					<a class="enable home check" onclick="apps.setting.page('home')"><img src="apps/icons/setting/home.png">主页</a><!-- 主页  by lh11117 @github.com (20239/31~2023/10/1) -->
+					<a class="enable home check" onclick="apps.setting.page('home')"><img src="apps/icons/setting/home.png">主页</a><!-- 主页  @lh11117 (2023/9/31~2023/10/1) -->
 					<a class="enable system" onclick="apps.setting.page('system')"><img src="apps/icons/setting/system.png">系统</a>
 					<a class="enable blueteeth" onclick="apps.setting.page('blueteeth')"><img src="apps/icons/setting/blueteeth.png">蓝牙和其他设备</a><!-- 蓝牙与设备  @Junchen Yi 2023-9-9-->
 					<a class="enable network" onclick="apps.setting.page('network')"><img src="apps/icons/setting/network.png">网络和 Internet</a><!-- 网络和 Internet  @Junchen Yi 2023-9-10-->
@@ -1431,8 +1481,8 @@ showcm(event,id,arg) 显示右键菜单，使用方法：oncontextmenu="return s
 						</div>
 					</div>
 					<div class="setting-card">
-						<p style="padding: 10px 15px;"><icon><img src="apps/icons/setting/ms.png"></icon><br>所有功能尽在 Microsoft 账户<br><span style="font-size: 14px;color:var(--text2)">登录后，即可在设备上使用你《最喜爱》的 Microsoft 应用和服务。可以备份设备、让设备更安全，并使用 Microsoft 365 应用版和云储存空间。</span><br><img src="apps/icons/setting/ms365.png"></p>
-						<div style="padding:  10px 15px;">
+						<p style="padding: 10px 15px 0px 15px;"><icon><img src="apps/icons/setting/ms.png" style="width: 35px; height: 35px;"></icon><br>所有功能尽在 Microsoft 账户<br><span style="font-size: 14px;color:var(--text2)">登录后，即可在设备上使用你最喜爱的 Microsoft 应用和服务。可以备份设备、让设备更安全，并使用 Microsoft 365 应用版和云储存空间。</span><br><img src="apps/icons/setting/ms365.png"></p>
+						<div style="padding:  3px 15px 15px 15px">
 							<a class="a button" onclick="window.location.href='./bluescreen.html?code=YOU_CAN_NOT_SIGN_IN_YOUR_MICROSOFT_ACCOUNT'" win12_title="BSOD is coming!">登录</a>
 						</div>
 					</div>
@@ -1705,13 +1755,36 @@ showcm(event,id,arg) 显示右键菜单，使用方法：oncontextmenu="return s
 				<div class="cnt safe">
 					<p class="title">隐私和安全性</p>
 					<div class="setting-list">
-						<a onclick="localStorage.setItem('desktop','[]');setIcon();"><icon><i class="bi bi-trash3"></i></icon><div><p>清除桌面图标</p><p>这将清除用户自定义的所有图标</p></div><i class="bi bi-chevron-right"></i></a>
+						<a onclick="localStorage.setItem('desktop','[]');setIcon();">
+							<icon><i class="bi bi-trash3"></i></icon>
+							<div>
+								<p>清除桌面图标</p>
+								<p>这将清除用户自定义的所有图标</p>
+							</div><i class="bi bi-chevron-right"></i>
+						</a>
+						<a onclick="$('.dp.access-token').toggleClass('show')" class="dp access-token">
+							<icon><i class="bi bi-key"></i></icon>
+							<div>
+								<p>Token 管理</p>
+								<p>添加或删除 GitHub Access Token</p>
+							</div>
+							<i class="bi bi-chevron-down"></i>
+						</a>
+						<div class="dp access-token">
+							<input type="text" class="token input">
+							<div class="container" style="display: flex; align-items: center; gap: 10px; justify-content: space-evenly; margin-top: 6px;">
+								<div class="button" onclick="localStorage.setItem('token', $('.dp.access-token>input.token').val());">保存 Token</div>
+								<div class="button" onclick="localStorage.setItem('token', '');">清除 Token</div>
+								<div class="button" onclick="$('.dp.access-token>input.token').val(localStorage.getItem('token'));">查看 Token</div>
+							</div>
+							<div class="detail" style="font-size: 0.8em; color: var(--text2);">您可以在这里填入您的Github Access Token来提高Github API限制访问次数，即可以更好地使用 Windows 更新、主题等功能。您的 Token 仅会存放在本地浏览器中，该数据不会传输至服务端，也更不会外泄，但请您妥善保管好自己的 Token。</div>
+						</div>
 					</div>
 				</div>
 				<div class="cnt update">
 					<p class="title">Windows 更新</p>
 					<div class="lo">
-						<svg viewBox="0 0 65 65"version="1.1" id="svg5" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg"><defs id="defs2"><linearGradient id="linearGradient12966"><stop style="stop-color:#1946ff;stop-opacity:1;"offset="0"id="stop12962"/><stop style="stop-color:#3eddff;stop-opacity:1;"offset="1"id="stop12964"/></linearGradient><linearGradient id="linearGradient10659"><stop style="stop-color:#6c00e8;stop-opacity:1;"offset="0"id="stop10655"/><stop style="stop-color:#d05ed6;stop-opacity:1;"offset="1"id="stop10657"/></linearGradient><linearGradient xlink:href="#linearGradient10659"id="linearGradient10661"x1="40.558044"y1="64.876854"x2="103.16348"y2="64.876854"gradientUnits="userSpaceOnUse"/><linearGradient xlink:href="#linearGradient10659"id="linearGradient12869"gradientUnits="userSpaceOnUse"x1="40.558044"y1="64.876854"x2="103.16348"y2="64.876854"/><linearGradient xlink:href="#linearGradient10659"id="linearGradient12871"gradientUnits="userSpaceOnUse"x1="40.558044"y1="64.876854"x2="103.16348"y2="64.876854"/><linearGradient xlink:href="#linearGradient12966"id="linearGradient12968"x1="40.558044"y1="64.876854"x2="103.16348"y2="64.876854"gradientUnits="userSpaceOnUse"/><linearGradient xlink:href="#linearGradient12966"id="linearGradient13788"gradientUnits="userSpaceOnUse"x1="40.558044"y1="64.876854"x2="103.16348"y2="64.876854"/><linearGradient xlink:href="#linearGradient12966"id="linearGradient13790"gradientUnits="userSpaceOnUse"x1="40.558044"y1="64.876854"x2="103.16348"y2="64.876854"/></defs><g id="layer1"><g id="g8420"transform="rotate(-173.25016,50.599831,57.584909)"style="stroke:url(#linearGradient10661)"><path style="fill:none;stroke:url(#linearGradient12869);stroke-width:5;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none"id="path234-2"d="M 43.058046,79.121117 A 28.487005,28.487005 0 0 1 66.602472,51.066164 28.487005,28.487005 0 0 1 98.316952,69.38588"/><path style="fill:none;stroke:url(#linearGradient12871);stroke-width:5;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none"d="M 85.756154,73.849626 100.66351,72.185133 98.999027,57.27777"id="path1617-6"/></g><g id="g8420-2"transform="rotate(6.74984,459.81282,-281.39813)"style="stroke:url(#linearGradient12968);stroke-opacity:1"><path style="fill:none;stroke:url(#linearGradient13788);stroke-width:5;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1"id="path234-2-2"d="M 43.058046,79.121117 A 28.487005,28.487005 0 0 1 66.602472,51.066164 28.487005,28.487005 0 0 1 98.316952,69.38588"/><path style="fill:none;stroke:url(#linearGradient13790);stroke-width:5;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1"d="M 85.756154,73.849626 100.66351,72.185133 98.999027,57.27777"id="path1617-6-0"/></g></g></svg>
+						<svg viewBox="0 0 65 65" version="1.1" id="svg5" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg"><defs id="defs2"><linearGradient id="linearGradient12966"><stop style="stop-color:#1946ff;stop-opacity:1;"offset="0"id="stop12962"/><stop style="stop-color:#3eddff;stop-opacity:1;"offset="1"id="stop12964"/></linearGradient><linearGradient id="linearGradient10659"><stop style="stop-color:#6c00e8;stop-opacity:1;"offset="0"id="stop10655"/><stop style="stop-color:#d05ed6;stop-opacity:1;"offset="1"id="stop10657"/></linearGradient><linearGradient xlink:href="#linearGradient10659"id="linearGradient10661"x1="40.558044"y1="64.876854"x2="103.16348"y2="64.876854"gradientUnits="userSpaceOnUse"/><linearGradient xlink:href="#linearGradient10659"id="linearGradient12869"gradientUnits="userSpaceOnUse"x1="40.558044"y1="64.876854"x2="103.16348"y2="64.876854"/><linearGradient xlink:href="#linearGradient10659"id="linearGradient12871"gradientUnits="userSpaceOnUse"x1="40.558044"y1="64.876854"x2="103.16348"y2="64.876854"/><linearGradient xlink:href="#linearGradient12966"id="linearGradient12968"x1="40.558044"y1="64.876854"x2="103.16348"y2="64.876854"gradientUnits="userSpaceOnUse"/><linearGradient xlink:href="#linearGradient12966"id="linearGradient13788"gradientUnits="userSpaceOnUse"x1="40.558044"y1="64.876854"x2="103.16348"y2="64.876854"/><linearGradient xlink:href="#linearGradient12966"id="linearGradient13790"gradientUnits="userSpaceOnUse"x1="40.558044"y1="64.876854"x2="103.16348"y2="64.876854"/></defs><g id="layer1"><g id="g8420"transform="rotate(-173.25016,50.599831,57.584909)"style="stroke:url(#linearGradient10661)"><path style="fill:none;stroke:url(#linearGradient12869);stroke-width:5;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none"id="path234-2"d="M 43.058046,79.121117 A 28.487005,28.487005 0 0 1 66.602472,51.066164 28.487005,28.487005 0 0 1 98.316952,69.38588"/><path style="fill:none;stroke:url(#linearGradient12871);stroke-width:5;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none"d="M 85.756154,73.849626 100.66351,72.185133 98.999027,57.27777"id="path1617-6"/></g><g id="g8420-2"transform="rotate(6.74984,459.81282,-281.39813)"style="stroke:url(#linearGradient12968);stroke-opacity:1"><path style="fill:none;stroke:url(#linearGradient13788);stroke-width:5;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1"id="path234-2-2"d="M 43.058046,79.121117 A 28.487005,28.487005 0 0 1 66.602472,51.066164 28.487005,28.487005 0 0 1 98.316952,69.38588"/><path style="fill:none;stroke:url(#linearGradient13790);stroke-width:5;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1"d="M 85.756154,73.849626 100.66351,72.185133 98.999027,57.27777"id="path1617-6-0"/></g></g></svg>
 						<div class="update-main">
 							<div class="part">
 								<p class="notice">正在检查更新...</p>
@@ -1723,7 +1796,7 @@ showcm(event,id,arg) 显示右键菜单，使用方法：oncontextmenu="return s
 					<div class="setting-list">
 						<div class="update-now"><icon>&#xE794;</icon><div><p>正在检查更新...</p><p></p></div><div class="alr"><a class="a button" style="font-size: 16px;margin-top: -7.5px;" onclick="sendToSw({ head: 'update' }); localStorage.setItem('update', true); shownotice('setting.update')">更新</a></div></div>
 						<a onclick="openapp('about');$('#win-about>.update').addClass('show');$('#win-about>.about').removeClass('show');"><icon>&#xE946;</icon><div><p>历史版本</p><p>查看历史版本功能</p></div><i class="bi bi-chevron-right"></i></a>
-						<a onclick="sendToSw({ head: 'update',force:true })"><icon>&#xE896;</icon><div><p>下载完整内容</p><p>当更新或系统出现问题，使用此项下载最新完整内容</p></div><i class="bi bi-chevron-right"></i></a>
+						<a onclick="sendToSw({ head: 'update',force:true }); shownotice('setting.down')"><icon>&#xE896;</icon><div><p>下载完整内容</p><p>当更新或系统出现问题，使用此项下载最新完整内容</p></div><i class="bi bi-chevron-right"></i></a>
 						<div><icon></icon><div><p>自动更新</p><p>设置是否启用自动更新</p></div>
 							<div class="alr">
 								<a class="checkbox checked a" onclick="$(this).toggleClass('checked'); autoUpdate = !autoUpdate; localStorage.setItem('autoUpdate', autoUpdate)"></a>
@@ -1995,10 +2068,17 @@ showcm(event,id,arg) 显示右键菜单，使用方法：oncontextmenu="return s
 						&emsp;&emsp;细节优化</p>
 					</details>
 					<details><summary><span>v7.3.2</span> 细节更改</summary><p>
-						&emsp;&emsp;没有新增内容 (各位可以抽时间去看看readme.md，一些特殊情况</p>
+						&emsp;&emsp;(更新来自 @tjy-gitnub )<br />
+						&emsp;&emsp;-新增了部分本地化语言功能<br />
+						&emsp;&emsp;-更新壁纸<br />
+						&emsp;&emsp;-优化样式<br />
+						&emsp;&emsp;-优化shutdown命令<br />
+						&emsp;&emsp;-其他更新与优化<br />
+						&emsp;&emsp;-修复了点击标签页无法切换焦点的问题<br />
+						&emsp;&emsp;-各位可以抽时间去看看README.md，一些特殊情况</p>
 					</details>
 					<details><summary><span>v7.3.1</span> Bug修复与细节优化</summary><p>
-						&emsp;&emsp;-删除update.md中重复的字(更新来自 @ZigaoWang )<br />
+						&emsp;&emsp;-删除changelog.md中重复的字(更新来自 @ZigaoWang )<br />
 						&emsp;&emsp;-修复BIOS无法正确访问的问题(更新来自 @ludonghengsb )</p>
 					</details>
 					<details><summary><span>v7.3.0</span> 桌面小组件、Dock自动隐藏、计算器完善和Windows 更新</summary><p>
@@ -2080,7 +2160,7 @@ showcm(event,id,arg) 显示右键菜单，使用方法：oncontextmenu="return s
 							&emsp;&emsp;-细节优化和修复</p>
 					</details>
 					<!-- 全部列出来那这个更多意义何在？ -->
-					<a onclick="window.open('update.md','_blank');" win12_title="update.md" class="a jump" style="text-align: center;">更多</a>
+					<a onclick="window.open('changelog.md','_blank');" win12_title="changelog.md" class="a jump" style="text-align: center;">更多</a>
 				</div>
 			</div>
 		</div>
@@ -2635,9 +2715,9 @@ showcm(event,id,arg) 显示右键菜单，使用方法：oncontextmenu="return s
 		<div class="resize-bar"></div>
 		<div class="titbar">
 			<img src="icon/taskmgr.png" class="icon">
-			<span style="font-size: 15px;margin-top: 9px;">任务管理器</span><!--这里不能用p，否则会有神奇的特性（bug）发生-->
+			<span style="font-size: 15px;margin-top: 9px;">任务管理器</span>
 			<div style="flex-grow: 1;display: flex;align-items: center;justify-content: center;">
-			    <input type="text" class="input" style="width: 75%;" placeholder="键入要搜索的名称" id="tsk-search" oninput="apps.taskmgr.generateProcesses()" value=""></input>
+				<input type="text" class="input" style="width: 75%;" placeholder="键入要搜索的名称" id="tsk-search" oninput="apps.taskmgr.generateProcesses()" value=""></input>
 			</div>
 			<div>
 				<a class="a wbtg red" onclick="hidewin('taskmgr')"><i class="bi bi-x-lg"></i></a>
@@ -2649,43 +2729,13 @@ showcm(event,id,arg) 显示右键菜单，使用方法：oncontextmenu="return s
 			<img src="icon/taskmgr.png" class="icon">
 		</div>
 		<div class="content" id="win-taskmgr" style="height:100%">
-			<script> //让设置按钮到最底下
-				setInterval(()=>{
-					document.getElementById('set-seting-to-bottom').style.height = (document.getElementById('win-taskmgr').clientHeight-document.getElementById('tsk-setting').clientHeight*document.getElementById('tsk-pages').getElementsByTagName('a').length-10) + "px";
-				},1145);
-				var hide = false;
-				function fold(){
-					if(!hide){
-						$('.taskmgr>.content>.menu>.focs>a>p').hide()
-						$('.taskmgr>.content>.menu>.focs>a').width('18px')
-						$('.taskmgr>.content>.menu>.focs').width('18px')
-						$('.taskmgr>.content>.menu').width('18px')
-						$('.taskmgr>.content>.menu>.focs>.fold').html('<icon><i class="bi bi-chevron-right"></i></icon>')
-					} else {
-						$('.taskmgr>.content>.menu>.focs>a>p').show()
-						$('.taskmgr>.content>.menu>.focs>a').width('222px')
-						$('.taskmgr>.content>.menu>.focs').width('222px')
-						$('.taskmgr>.content>.menu').width('222px')
-						$('.taskmgr>.content>.menu>.focs>.fold').html('<icon><i class="bi bi-chevron-left"></i></icon>')
-					}
-					hide = !hide
-				}
-				fold();//别问我这里为什么要执行一次，问就是有bug
-			</script>
-			<div class="menu" style="height:100%">
-				<list class="focs" id="tsk-pages" style="height:100%">
-					<a class="fold" onclick="fold()" style="width:33px;height:33px;margin:0px;" win12_title="折叠（目前还是个摆式）"><icon><i class="bi bi-chevron-right"></i></icon></a>
-					<a class="processes check" onclick="apps.taskmgr.page('processes')" win12_title="进程">
-						<svg xmlns="http://www.w3.org/2000/svg" width="18px" height="18px" viewBox="3.5 5.5 29 29">
-							<path d="M 5 11 L 5 29 C 5 32 6 33 9 33 L 14 33 C 17 33 18 32 18 29 L 18 7 L 9 7 C 6 7 5 8 5 11 M 18 7 L 27 7 C 30 7 31 8 31 11 L 31 16 C 31 19 30 20 27 20 L 5 20" stroke="var(--text)" stroke-width="1.5" fill="none"/>
-						</svg>
-						<p>进程</p>
-					</a>
-					<a class="performance" onclick="apps.taskmgr.page('performance')" win12_title="性能"><icon class="s-icon"></icon><p>性能</p></a>
-					<!--添加新的分页请在这条注释前面添加-->
-					<div id="set-seting-to-bottom"></div>
-					<a class="setting" onclick="apps.taskmgr.page('setting')" id="tsk-setting" style="position: relative;bottom:0px;left:0px;" win12_title="设置"><i class="bi bi-gear"></i><p>设置</p></a>
-					<span class="focs" style="top: -445px; left: 0px;"></span>
+			<div class="menu" style="height:100%; display: flex; flex-direction: column;">
+				<a class="fold" onclick="apps.taskmgr.fold()" win12_title="折叠"><i class="bi bi-list"></i></a>
+				<list class="focs">
+					<a class="processes check" onclick="apps.taskmgr.page('processes')" win12_title="进程"><icon class="t-icon"></icon><p><span>进程</span></p></a>
+					<a class="performance" onclick="apps.taskmgr.page('performance')" win12_title="性能"><icon class="s-icon"></icon><p><span>性能</span></p></a>
+					<a class="setting" onclick="apps.taskmgr.page('setting')" style="position: absolute; bottom: 0px;" win12_title="设置"><i class="bi bi-gear"></i><p><span>设置</span></p></a>
+					<span class="focs" data-type="abs" style="position: absolute;top: -445px; left: 0px;"></span>
 				</list>
 			</div>
 			<div class="main">
@@ -2710,10 +2760,10 @@ showcm(event,id,arg) 显示右键菜单，使用方法：oncontextmenu="return s
 					</table>
 				</div>
 				<div class="cnt 404">
-					<div class="content" style="text-align: center;position:absolute;left:calc(50% - 25px);top:calc(50% - 35px);">
-						<p><b>无筛选结果</b><br />请尝试使用其他名称<span style="text-decoration:line-through" win12_title="你想让开发者秃头吗？QwQ！(双击隐藏此消息)" ondblclick="$(this).hide()">、发布者或 PID </span>键入以进行筛选。</p>
+					<div class="content" style="display: flex; justify-content: center; align-items: center; height: 100%; width: 100%; flex-direction: column; text-align: center">
+						<p><b>无筛选结果</b><br />请尝试使用其他名称、发布者或 PID 键入以进行筛选。</p>
 						<br />
-						<a onclick="document.getElementById('tsk-search').value='';apps.taskmgr.generateProcesses()" style="cursor: pointer;color:var(--href);">重置筛选器</a>
+						<a onclick="$('#tsk-search').val('');apps.taskmgr.generateProcesses()" style="cursor: pointer;color:var(--href);">重置筛选器</a>
 					</div>
 				</div>
 				<div class="cnt performance">
@@ -2725,7 +2775,7 @@ showcm(event,id,arg) 显示右键菜单，使用方法：oncontextmenu="return s
 						<div class="select-menu">
 							<div onclick="apps.taskmgr.graph('graph-cpu')" class="graph-cpu check">
 								<div class="left">
-									<div class="graph-view-cpu"></div>
+									<svg class="graph-view-cpu" viewBox="0 0 6000 1000" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg"></svg>
 								</div>
 								<div class="right">
 									<div class="tit">CPU</div>
@@ -2737,7 +2787,7 @@ showcm(event,id,arg) 显示右键菜单，使用方法：oncontextmenu="return s
 							</div>
 							<div onclick="apps.taskmgr.graph('graph-memory');" class="graph-memory">
 								<div class="left">
-									<div class="graph-view-memory"></div>
+									<svg class="graph-view-memory" viewBox="0 0 6000 1000" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg"></svg>
 								</div>
 								<div class="right">
 									<div class="tit">内存</div>
@@ -2749,7 +2799,7 @@ showcm(event,id,arg) 显示右键菜单，使用方法：oncontextmenu="return s
 							</div>
 							<div onclick="apps.taskmgr.graph('graph-disk');" class="graph-disk">
 								<div class="left">
-									<div class="graph-view-disk"></div>
+									<svg class="graph-view-disk" viewBox="0 0 6000 1000" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg"></svg>
 								</div>
 								<div class="right">
 									<div class="tit">磁盘</div>
@@ -2761,7 +2811,7 @@ showcm(event,id,arg) 显示右键菜单，使用方法：oncontextmenu="return s
 							</div>
 							<div onclick="apps.taskmgr.graph('graph-wifi');" class="graph-wifi">
 								<div class="left">
-									<div class="graph-view-wifi"></div>
+									<svg class="graph-view-wifi" viewBox="0 0 6000 1000" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg"></svg>
 								</div>
 								<div class="right">
 									<div class="tit">Wi-Fi</div>
@@ -2773,7 +2823,7 @@ showcm(event,id,arg) 显示右键菜单，使用方法：oncontextmenu="return s
 							</div>
 							<div onclick="apps.taskmgr.graph('graph-gpu');" class="graph-gpu">
 								<div class="left">
-									<div class="graph-view-gpu"></div>
+									<svg class="graph-view-gpu" viewBox="0 0 6000 1000" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg"></svg>
 								</div>
 								<div class="right">
 									<div class="tit">GPU 0</div>
@@ -2795,8 +2845,8 @@ showcm(event,id,arg) 显示右键菜单，使用方法：oncontextmenu="return s
 									<div class="right">100%</div>
 								</div>
 								<div class="graph" win12_title="CPU活动">
-									<canvas class="bg" width="1920" height="1080"></canvas>
-									<canvas class="chart" width="1920" height="1080"></canvas>
+									<svg viewBox="0 0 6000 1000" preserveAspectRatio="none" class="bg" xmlns="http://www.w3.org/2000/svg"></svg>
+									<svg viewBox="0 0 6000 1000" preserveAspectRatio="none" class="chart" xmlns="http://www.w3.org/2000/svg"></svg>
 								</div>
 								<div class="graph-msg bottom">
 									<div class="left">60 秒</div>
@@ -2837,8 +2887,8 @@ showcm(event,id,arg) 显示右键菜单，使用方法：oncontextmenu="return s
 									<div class="right">100GB</div>
 								</div>
 								<div class="graph" win12_title="使用中">
-									<canvas class="bg" width="1920" height="1080"></canvas>
-									<canvas class="chart" width="1920" height="1080"></canvas>
+									<svg viewBox="0 0 6000 1000" preserveAspectRatio="none" class="bg" xmlns="http://www.w3.org/2000/svg"></svg>
+									<svg viewBox="0 0 6000 1000" preserveAspectRatio="none" class="chart" xmlns="http://www.w3.org/2000/svg"></svg>
 								</div>
 								<div class="graph-msg bottom">
 									<div class="left">60 秒</div>
@@ -2847,8 +2897,8 @@ showcm(event,id,arg) 显示右键菜单，使用方法：oncontextmenu="return s
 								<div class="graph-msg top">
 									<div class="left">内存组合</div>
 								</div>
-								<div class="graph memory2 minor" style="margin-bottom: 10px; border: 1px #660099 solid; height: 35px !important">
-									<canvas class="chart2" width="1280" height="35"></canvas>
+								<div class="graph2 minor" style="margin-bottom: 10px; border: 1px #660099 solid; height: 35px !important">
+									<div class="chart" style="background-color: #66009922;"></div>
 								</div>
 								<div class="information">
 									<div class="left">
@@ -2881,8 +2931,8 @@ showcm(event,id,arg) 显示右键菜单，使用方法：oncontextmenu="return s
 									<div class="right">100%</div>
 								</div>
 								<div class="graph" win12_title="磁盘处理读取或写入请求的时间百分比">
-									<canvas class="bg" width="1920" height="1080"></canvas>
-									<canvas class="chart" width="1920" height="1080"></canvas>
+									<svg viewBox="0 0 6000 1000" preserveAspectRatio="none" class="bg" xmlns="http://www.w3.org/2000/svg"></svg>
+									<svg viewBox="0 0 6000 1000" preserveAspectRatio="none" class="chart" xmlns="http://www.w3.org/2000/svg"></svg>
 								</div>
 								<div class="graph-msg bottom">
 									<div class="left">60 秒</div>
@@ -2892,9 +2942,9 @@ showcm(event,id,arg) 显示右键菜单，使用方法：oncontextmenu="return s
 									<div class="left">磁盘传输速率</div>
 									<div class="right">100 MB/秒</div>
 								</div>
-								<div class="graph disk2 minor" style="margin-bottom: 10px; height: 70px !important; min-height: 70px !important;">
-									<canvas class="chart2" width="1920" height="280"></canvas>
-									<canvas class="bg2" width="1920" height="280"></canvas>
+								<div class="graph2 minor" style="margin-bottom: 10px; height: 70px !important; min-height: 70px !important;">
+									<svg viewBox="0 0 6000 1000" preserveAspectRatio="none" class="chart" xmlns="http://www.w3.org/2000/svg" style="width: 100% !important; height: 100% !important"></svg>
+									<svg viewBox="0 0 6000 1000" preserveAspectRatio="none" class="bg" xmlns="http://www.w3.org/2000/svg"></svg>
 								</div>
 								<div class="information">
 									<div class="left">
@@ -2916,7 +2966,7 @@ showcm(event,id,arg) 显示右键菜单，使用方法：oncontextmenu="return s
 									</div>
 								</div>
 							</div>
-							<div class="graph-wifi show">
+							<div class="graph-wifi">
 								<div class="tit">
 									<div class="left-name">Wi-Fi</div>
 									<div class="right-message">NB Wireless LAN 802.11ac</div>
@@ -2926,8 +2976,8 @@ showcm(event,id,arg) 显示右键菜单，使用方法：oncontextmenu="return s
 									<div class="right">100 Mbps</div>
 								</div>
 								<div class="graph" win12_title="此网络上的发送和接收活动">
-									<canvas class="bg" width="1920" height="1080"></canvas>
-									<canvas class="chart" width="1920" height="1080"></canvas>
+									<svg viewBox="0 0 6000 1000" preserveAspectRatio="none" class="bg" xmlns="http://www.w3.org/2000/svg"></svg>
+									<svg viewBox="0 0 6000 1000" preserveAspectRatio="none" class="chart" xmlns="http://www.w3.org/2000/svg"></svg>
 								</div>
 								<div class="graph-msg bottom">
 									<div class="left">60 秒</div>
@@ -2955,7 +3005,7 @@ showcm(event,id,arg) 显示右键菜单，使用方法：oncontextmenu="return s
 												</tr>
 												<tr>
 													<td>IPv4地址: </td>
-													<td>114.514.19.810</td>
+													<td>114.514.19.81</td>
 												</tr>
 												<tr>
 													<td>IPv6地址: </td>
@@ -2977,36 +3027,36 @@ showcm(event,id,arg) 显示右键菜单，使用方法：oncontextmenu="return s
 							<div class="graph-gpu">
 								<div class="tit">
 									<div class="left-name">GPU</div>
-									<div class="right-message">NBidia GeForce RTX 4090Ti</div>
+									<div class="right-message">NBidia GeForce RTX 9090Ti</div>
 								</div>
 								<div class="graphs">
-									<canvas class="usage" width="1920" height="1080" style="display: none;"></canvas>
+									<svg viewBox="0 0 6000 1000" preserveAspectRatio="none" class="usage" style="display: none;" xmlns="http://www.w3.org/2000/svg"></svg>
 									<div class="graph1">
 										<div class="title-gpu">3D</div>
 										<div class="chart">
-											<canvas class="bg" width="1920" height="1080"></canvas>
-											<canvas class="chart" width="1920" height="1080"></canvas>
+											<svg viewBox="0 0 6000 1000" preserveAspectRatio="none" class="bg" xmlns="http://www.w3.org/2000/svg"></svg>
+											<svg viewBox="0 0 6000 1000" preserveAspectRatio="none" class="chart" xmlns="http://www.w3.org/2000/svg"></svg>
 										</div>
 									</div>
 									<div class="graph2">
 										<div class="title-gpu">Copy</div>
 										<div class="chart">
-											<canvas class="bg" width="1920" height="1080"></canvas>
-											<canvas class="chart" width="1920" height="1080"></canvas>
+											<svg viewBox="0 0 6000 1000" preserveAspectRatio="none" class="bg" xmlns="http://www.w3.org/2000/svg"></svg>
+											<svg viewBox="0 0 6000 1000" preserveAspectRatio="none" class="chart" xmlns="http://www.w3.org/2000/svg"></svg>
 										</div>
 									</div>
 									<div class="graph3">
 										<div class="title-gpu">Video Decode</div>
 										<div class="chart">
-											<canvas class="bg" width="1920" height="1080"></canvas>
-											<canvas class="chart" width="1920" height="1080"></canvas>
+											<svg viewBox="0 0 6000 1000" preserveAspectRatio="none" class="bg" xmlns="http://www.w3.org/2000/svg"></svg>
+											<svg viewBox="0 0 6000 1000" preserveAspectRatio="none" class="chart" xmlns="http://www.w3.org/2000/svg"></svg>
 										</div>
 									</div>
 									<div class="graph4">
 										<div class="title-gpu">Video Processing</div>
 										<div class="chart">
-											<canvas class="bg" width="1920" height="1080"></canvas>
-											<canvas class="chart" width="1920" height="1080"></canvas>
+											<svg viewBox="0 0 6000 1000" preserveAspectRatio="none" class="bg" xmlns="http://www.w3.org/2000/svg"></svg>
+											<svg viewBox="0 0 6000 1000" preserveAspectRatio="none" class="chart" xmlns="http://www.w3.org/2000/svg"></svg>
 										</div>
 									</div>
 								</div>
@@ -3015,16 +3065,16 @@ showcm(event,id,arg) 显示右键菜单，使用方法：oncontextmenu="return s
 									<div class="right">16 GB</div>
 								</div>
 								<div class="graph gpu2-1 minor" style="height: 70px !important; min-height: 70px !important;" win12_title="专用 GPU 内存利用率">
-									<canvas class="chart2" width="1920" height="280"></canvas>
-									<canvas class="bg2" width="1920" height="280"></canvas>
+									<svg viewBox="0 0 6000 1000" preserveAspectRatio="none" class="chart" xmlns="http://www.w3.org/2000/svg"></svg>
+									<svg viewBox="0 0 6000 1000" preserveAspectRatio="none" class="bg" xmlns="http://www.w3.org/2000/svg"></svg>
 								</div>
 								<div class="graph-msg top">
 									<div class="left">共享 GPU 内存利用率</div>
 									<div class="right">32 GB</div>
 								</div>
 								<div class="graph gpu2-2 minor" style="height: 70px !important; min-height: 70px !important; margin-bottom: 10px" win12_title="共享 GPU 内存利用率">
-									<canvas class="chart2" width="1920" height="280"></canvas>
-									<canvas class="bg2" width="1920" height="280"></canvas>
+									<svg viewBox="0 0 6000 1000" preserveAspectRatio="none" class="chart" xmlns="http://www.w3.org/2000/svg"></svg>
+									<svg viewBox="0 0 6000 1000" preserveAspectRatio="none" class="bg" xmlns="http://www.w3.org/2000/svg"></svg>
 								</div>
 								<div class="information">
 									<div class="left">
@@ -3061,82 +3111,30 @@ showcm(event,id,arg) 显示右键菜单，使用方法：oncontextmenu="return s
 					</div>
 				</div>
 				<div class="cnt setting">
-					<style>
-						/* 隐藏原始复选框 */
-						input[type="checkbox"] {
-							display: none;
-						}
-
-						/* 自定义复选框的外观 */
-						label {
-							display: inline-block;
-							position: relative;
-							padding-left: 25px;
-							margin-right: 10px;
-							cursor: pointer;
-						}
-
-						/* 复选框的外观 */
-						label:before {
-							content: "";
-							display: inline-block;
-							width: 18px;
-							height: 18px;
-							border: 1px solid #ccc;
-							border-radius: 3px;
-							background-color: #fff;
-							position: absolute;
-							left: 0;
-							top: 1px;
-						}
-
-						/* 复选框被选中时的外观 */
-						input[type="checkbox"]:checked + label:before {
-							background-color: #46afe4;
-						}
-
-						/* 复选框的勾选图标 */
-						label:after {
-							content: "\2713";
-							font-size: 14px;
-							color: #fff;
-							position: absolute;
-							left: 4px;
-							top: 0;
-							line-height: 18px;
-							display: none;
-						}
-
-						/* 复选框被选中时的勾选图标 */
-						input[type="checkbox"]:checked + label:after {
-							display: block;
-						}
-					</style>
 					<div class="tit">
 						<p>设置</p>
 						<hr>
 					</div>
 					<div>
 						<h3>窗口管理</h3>
-						<input type="checkbox" id="tsk-setting-topmost" name="tsk-setting-topmost" style="height: 15px;width:15px;color:#fff;" onclick="if(checked){topmost[topmost.length]='taskmgr'}else{topmost.splice(topmost.indexOf('taskmgr',1))};hidewin('taskmgr');apps.taskmgr.page('processes');$('#win-taskmgr>.menu>list.focs>a')[0].click();saveDesktop();document.getElementById('tsk-search').value='';setTimeout('openapp(`taskmgr`);apps.taskmgr.generateProcesses();',300);"/><label for="tsk-setting-topmost" style="font-size: 15px;">置于顶层</label>
+						<input type="checkbox" id="tsk-setting-topmost" name="tsk-setting-topmost" style="height: 15px;width:15px;color:#fff;" onclick="if(checked){topmost[topmost.length]='taskmgr'}else{topmost.splice(topmost.indexOf('taskmgr',1))};hidewin('taskmgr');apps.taskmgr.page('processes');$('#win-taskmgr>.menu>list.focs>a')[0].click();saveDesktop();$('#tsk-search').val('');setTimeout('openapp(`taskmgr`);apps.taskmgr.generateProcesses();',300);"/><label for="tsk-setting-topmost" style="font-size: 15px;">置于顶层</label>
 					</div>
 				</div>
 			</div>
 		</div>
 	</div>
 	<script src="data/tasks.js"></script>
+	<script src="scripts/utils.js"></script>
 	<script src="desktop.js"></script>
 	<script src="module/tab.js"></script>
 	<script src="scripts/setting_getTime.js"></script><!-- 设置页面获取时间逻辑 @Junchen Yi 2023-9-17-->
 	<script src="https://fastly.jsdelivr.net/pyodide/v0.23.4/full/pyodide.js" async></script>
-	<!-- <link rel="stylesheet" href="https://pyscript.net/latest/pyscript.css" />
-	<script defer src="https://pyscript.net/latest/pyscript.js"></script> -->         <!-- PyScript, 已弃用 -->
 	<script src="https://cdn.staticfile.org/ace/1.23.0/ace.min.js"></script>
 	<script src="https://cdn.staticfile.org/ace/1.23.0/ext-language_tools.min.js"></script>
 	<script src="https://cdn.staticfile.org/ace/1.23.0/ext-error_marker.min.js"></script>
 	<script src='https://cdn.staticfile.org/big.js/6.2.1/big.min.js'></script>
 	<script src="./scripts/calculator_kernel.js"></script>
-	<script src='https://cdns.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.js'></script>
+	<script src='https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.js'></script>
 </body>
 
 </html>

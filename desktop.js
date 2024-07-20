@@ -1,21 +1,67 @@
+'use strict';
+
+console.log('%cWindows 12 网页版(GitHub: tjy-gitnub/win12)', 'background-image: linear-gradient(to right, #ad6eca, #3b91d8); border-radius: 10px; font-size: 1.5em; padding: 10px; color: #fff; ');
+// console.log("%c开源项目链接：https://github.com/tjy-gitnub/win12 \n原作者：tjy-gitnub", "font-size: 1.5em")
+
 // 后端服务器
 // loadlang();
 const server = 'http://win12server.freehk.svipss.top/';
 const pages = {
     'get-title': '', // 获取标题
 };
-//settings page list right hight light <span>       @Junchen Yi 
-document.querySelectorAll(`list.focs`).forEach(li => {
-    li.addEventListener('click', e => {
-        let _ = li.querySelector('span.focs'), la = li.querySelector('a.check'),
-            las = li.querySelectorAll('a');
-        $(_).addClass('cl');
-        $(_).css('top', la.offsetTop - las[las.length - 1].offsetTop);
-        $(_).css('left', la.offsetLeft - li.offsetLeft);
-        setTimeout(() => {
-            $(_).removeClass('cl');
-        }, 500);
-    })
+const page = $('html')[0];
+
+function disableIframes() {
+    $('iframe:not(.nochanges)').css('pointer-events', 'none');
+    $('iframe:not(.nochanges)').css('touch-action', 'none');
+}
+
+function enableIframes() {
+    $('iframe:not(.nochanges)').css('pointer-events', 'auto');
+    $('iframe:not(.nochanges)').css('touch-action', 'auto');
+}
+
+async function api(index) {
+    const token = localStorage.getItem('token');
+    if (token) {
+        const headers = new Headers();
+        headers.append('Authorization', token);
+        const res = await fetch('https://api.github.com/' + index, {headers: headers});
+        return res;
+    }
+    else {
+        const res = await fetch('https://api.github.com/' + index);
+        return res;
+    }
+}
+
+page.addEventListener('mousedown', disableIframes);
+page.addEventListener('touchstart', disableIframes);
+page.addEventListener('mouseup', enableIframes);
+page.addEventListener('touchend', enableIframes);
+page.addEventListener('touchcancel', enableIframes);
+
+
+document.querySelectorAll('list.focs').forEach(li => {
+    li.addEventListener('click', () => {
+        let _ = li.$$('span.focs')[0], la = li.$$('a.check')[0],
+            las = li.$$('a');
+        if (_.dataset.type == 'abs') {
+            $(_).addClass('cl');
+            $(_).css('top', (la.getBoundingClientRect().top - li.parentElement.getBoundingClientRect().top) + 'px');
+            setTimeout(() => {
+                $(_).removeClass('cl');
+            }, 500);
+        }
+        else {
+            $(_).addClass('cl');
+            $(_).css('top', la.offsetTop - las[las.length - 1].offsetTop);
+            $(_).css('left', la.offsetLeft - li.offsetLeft);
+            setTimeout(() => {
+                $(_).removeClass('cl');
+            }, 500);
+        }
+    });
 });
 // 禁止拖拽图片
 $('img').on('dragstart', () => {
@@ -34,9 +80,10 @@ $('input,textarea,*[contenteditable=true]').on('contextmenu', (e) => {
     return true;
 });
 function addMenu() {
-    var parentDiv = document.getElementById('desktop');
-    var childDivs = parentDiv.getElementsByTagName('div');
-    for (let i = 0; i < childDivs.length; i++) {
+    var parentDiv = $('#desktop')[0];
+    var childDivs = parentDiv.$$('#div');
+
+    for (var i = 0; i < childDivs.length; i++) {
         if (i <= 4) {//win12内置的5个图标不添加
             continue;
         }
@@ -51,7 +98,7 @@ function addMenu() {
     }
 }
 var run_cmd = '';
-let nomax = { 'calc': 0 /* 其实，计算器是可以最大化的...*/, 'notepad-fonts': 0, 'camera-notice': 0, 'winver': 0, 'run': 0, 'wsa': 0 };
+let nomax = { 'calc': 0 , 'notepad-fonts': 0, 'camera-notice': 0, 'winver': 0, 'run': 0, 'wsa': 0 };
 let nomin = { 'notepad-fonts': 0, 'camera-notice': 0, 'run': 0 };
 var topmost = [];
 var sys_setting = [1, 1, 1, 0, 0, 1, 1];
@@ -68,7 +115,7 @@ let cms = {
             if (arg in nomax) {
                 return 'null';
             }
-            if ($('.window.' + arg).hasClass("max")) {
+            if ($('.window.' + arg).hasClass('max')) {
                 return ['<i class="bi bi-window-stack"></i> 还原', `maxwin('${arg}')`];
             }
             else {
@@ -98,9 +145,9 @@ let cms = {
         }
     ],
     'desktop': [
-        ['<i class="bi bi-arrow-clockwise"></i> 刷新', `$('#desktop').css('opacity','0');setTimeout(()=>{$('#desktop').css('opacity','1');},100);setIcon();`],
+        ['<i class="bi bi-arrow-clockwise"></i> 刷新', '$(\'#desktop\').css(\'opacity\',\'0\');setTimeout(()=>{$(\'#desktop\').css(\'opacity\',\'1\');},100);setIcon();'],
         ['<i class="bi bi-circle-square"></i> 切换主题', 'toggletheme()'],
-        `<a onmousedown="window.open('https://github.com/tjy-gitnub/win12','_blank');" win12_title="https://github.com/tjy-gitnub/win12" onmouseenter="showdescp(event)" onmouseleave="hidedescp(event)"><i class="bi bi-github"></i> 在 Github 中查看此项目</a>`,
+        '<a onmousedown="window.open(\'https://github.com/tjy-gitnub/win12\',\'_blank\');" win12_title="https://github.com/tjy-gitnub/win12" onmouseenter="showdescp(event)" onmouseleave="hidedescp(event)"><i class="bi bi-github"></i> 在 Github 中查看此项目</a>',
         function (arg) {
             if (edit_mode) {
                 return ['<i class="bi bi-pencil"></i> 退出编辑模式', 'editMode();'];
@@ -109,12 +156,12 @@ let cms = {
                 return ['<i class="bi bi-pencil"></i> 进入编辑模式', 'editMode();'];
             }
         },
-        ['<i class="bi bi-info-circle"></i> 关于 Win12 网页版', `$('#win-about>.about').addClass('show');$('#win-about>.update').removeClass('show');openapp('about');if($('.window.about').hasClass('min'))minwin('about');`],
-        ['<i class="bi bi-brush"></i> 个性化', `openapp('setting');$('#win-setting > div.menu > list > a.enable.appearance')[0].click()`]
+        ['<i class="bi bi-info-circle"></i> 关于 Win12 网页版', '$(\'#win-about>.about\').addClass(\'show\');$(\'#win-about>.update\').removeClass(\'show\');openapp(\'about\');if($(\'.window.about\').hasClass(\'min\'))minwin(\'about\');'],
+        ['<i class="bi bi-brush"></i> 个性化', 'openapp(\'setting\');$(\'#win-setting > div.menu > list > a.enable.appearance\')[0].click()']
     ],
     'desktop.icon': [
         function (arg) {
-            return ['<i class="bi bi-folder2-open"></i> 打开', 'openapp(`' + arg[0] + '`)']
+            return ['<i class="bi bi-folder2-open"></i> 打开', 'openapp(`' + arg[0] + '`)'];
         },
         function (arg) {
             if (arg[1] >= 0) {
@@ -126,8 +173,8 @@ let cms = {
     ],
     'winx': [
         function (arg) {
-            if ($('#start-menu').hasClass("show")) {
-                return ['<i class="bi bi-box-arrow-in-down"></i> 关闭开始菜单', `hide_startmenu()`];
+            if ($('#start-menu').hasClass('show')) {
+                return ['<i class="bi bi-box-arrow-in-down"></i> 关闭开始菜单', 'hide_startmenu()'];
             }
             else {
                 return ['<i class="bi bi-box-arrow-in-up"></i> 打开开始菜单', `$('#start-btn').addClass('show');
@@ -138,22 +185,22 @@ let cms = {
             }
         },
         '<hr>',
-        ['<i class="bi bi-gear"></i> 设置', `openapp('setting')`],
-        ['<i class="bi bi-terminal"></i> 运行', `openapp('run')`],
-        ['<i class="bi bi-folder2-open"></i> 文件资源管理器', `openapp('explorer')`],
+        ['<i class="bi bi-gear"></i> 设置', 'openapp(\'setting\')'],
+        ['<i class="bi bi-terminal"></i> 运行', 'openapp(\'run\')'],
+        ['<i class="bi bi-folder2-open"></i> 文件资源管理器', 'openapp(\'explorer\')'],
         ['<i class="bi bi-search"></i> 搜索', `$('#search-btn').addClass('show');hide_startmenu();
         $('#search-win').addClass('show-begin');setTimeout(() => {$('#search-win').addClass('show');
         $('#search-input').focus();}, 0);`],
         '<hr>',
-        ['<i class="bi bi-power"></i> 关机', `window.location='shutdown.html'`],
-        ['<i class="bi bi-arrow-counterclockwise"></i> 重启', `window.location='reload.html'`],
+        ['<i class="bi bi-power"></i> 关机', 'window.location=\'shutdown.html\''],
+        ['<i class="bi bi-arrow-counterclockwise"></i> 重启', 'window.location=\'reload.html\''],
     ],
     'smapp': [
         function (arg) {
             return ['<i class="bi bi-window"></i> 打开', `openapp('${arg[0]}');hide_startmenu();`];
         },
         function (arg) {
-            return ['<i class="bi bi-link-45deg"></i> 在桌面创建链接', "var s=`<div class='b' ondblclick=openapp('" + arg[0] + "')  ontouchstart=openapp('" + arg[0] + "') appname='" + arg[0] + "'><img src='icon/" + geticon(arg[0]) + "'><p>" + arg[1] + "</p></div>`;$('#desktop').append(s);desktopItem[desktopItem.length]=s;addMenu();saveDesktop();"];
+            return ['<i class="bi bi-link-45deg"></i> 在桌面创建链接', 'var s=`<div class=\'b\' ondblclick=openapp(\'' + arg[0] + '\')  ontouchstart=openapp(\'' + arg[0] + '\') appname=\'' + arg[0] + '\'><img src=\'icon/' + geticon(arg[0]) + '\'><p>' + arg[1] + '</p></div>`;$(\'#desktop\').append(s);desktopItem[desktopItem.length]=s;addMenu();saveDesktop();'];
         },
         function (arg) {
             return ['<i class="bi bi-x"></i> 取消固定', `$('#s-m-r>.pinned>.apps>.sm-app.${arg[0]}').remove()`];
@@ -164,17 +211,17 @@ let cms = {
             return ['<i class="bi bi-window"></i> 打开', `openapp('${arg[0]}');hide_startmenu();`];
         },
         function (arg) {
-            return ['<i class="bi bi-link-45deg"></i> 在桌面创建链接', "var s=`<div class='b' ondblclick=openapp('" + arg[0] + "')  ontouchstart=openapp('" + arg[0] + "') appname='" + arg[0] + "'><img src='icon/" + geticon(arg[0]) + "'><p>" + arg[1] + "</p></div>`;$('#desktop').append(s);desktopItem[desktopItem.length]=s;addMenu();saveDesktop();"];
+            return ['<i class="bi bi-link-45deg"></i> 在桌面创建链接', 'var s=`<div class=\'b\' ondblclick=openapp(\'' + arg[0] + '\')  ontouchstart=openapp(\'' + arg[0] + '\') appname=\'' + arg[0] + '\'><img src=\'icon/' + geticon(arg[0]) + '\'><p>' + arg[1] + '</p></div>`;$(\'#desktop\').append(s);desktopItem[desktopItem.length]=s;addMenu();saveDesktop();'];
         },
         function (arg) {
-            return ['<i class="bi bi-pin-angle"></i> 固定到开始菜单', "pinapp('" + arg[0] + "', '" + arg[1] + "', 'openapp(&quot;" + arg[0] + "&quot;);hide_startmenu();')"];
+            return ['<i class="bi bi-pin-angle"></i> 固定到开始菜单', 'pinapp(\'' + arg[0] + '\', \'' + arg[1] + '\', \'openapp(&quot;' + arg[0] + '&quot;);hide_startmenu();\')'];
         }
     ],
     'msgupdate': [
         ['<i class="bi bi-layout-text-window-reverse"></i> 查看详细', `openapp('about');if($('.window.about').hasClass('min'))
         minwin('about');$('#win-about>.about').removeClass('show');$('#win-about>.update').addClass('show');
         $('#win-about>.update>div>details:first-child').attr('open','open')`],
-        ['<i class="bi bi-box-arrow-right"></i> 关闭', `$('.msg.update').removeClass('show')`]
+        ['<i class="bi bi-box-arrow-right"></i> 关闭', '$(\'.msg.update\').removeClass(\'show\')']
     ],
     'explorer.folder': [
         arg => {
@@ -206,7 +253,7 @@ let cms = {
     ],
     'explorer.file': [
         arg => {
-            return ['<i class="bi bi-folder2-open"></i> 打开（目前毛用没有）', ``];
+            return ['<i class="bi bi-folder2-open"></i> 打开（目前毛用没有）', ''];
         },
         arg => {
             if ($('#win-explorer>.path>.tit>.path>div.text').length > 1)
@@ -214,7 +261,7 @@ let cms = {
             return 'null';
         },
         arg => {
-            if ($('#win-explorer>.path>.tit>.path>div.text')[0].innerHTML != "此电脑")
+            if ($('#win-explorer>.path>.tit>.path>div.text')[0].innerHTML != '此电脑')
                 return ['<i class="bi bi-files"></i> 复制', `apps.explorer.copy_or_cut('${arg}','copy')`];
             return 'null';
         },
@@ -231,23 +278,23 @@ let cms = {
     'explorer.content': [
         arg => {
             if ($('#win-explorer>.path>.tit>.path>div.text').length > 1)
-                return ['<i class="bi bi-file-earmark-plus"></i> 新建文件', `apps.explorer.add($('#win-explorer>.path>.tit')[0].dataset.path,'新建文本文档.txt')`];
+                return ['<i class="bi bi-file-earmark-plus"></i> 新建文件', 'apps.explorer.add($(\'#win-explorer>.path>.tit\')[0].dataset.path,\'新建文本文档.txt\')'];
             return 'null';
         },
         arg => {
             if ($('#win-explorer>.path>.tit>.path>div.text').length > 1)
-                return ['<i class="bi bi-folder-plus"></i> 新建文件夹', `apps.explorer.add($('#win-explorer>.path>.tit')[0].dataset.path,'新建文件夹',type='files')`];
+                return ['<i class="bi bi-folder-plus"></i> 新建文件夹', 'apps.explorer.add($(\'#win-explorer>.path>.tit\')[0].dataset.path,\'新建文件夹\',type=\'files\')'];
             return 'null';
         },
         arg => {
             if ($('#win-explorer>.path>.tit>.path>div.text').length > 1)
-                return ['<i class="bi bi-file-earmark-arrow-down"></i> 粘贴', `apps.explorer.paste($('#win-explorer>.path>.tit')[0].dataset.path,'新建文件夹',type='files')`];
+                return ['<i class="bi bi-file-earmark-arrow-down"></i> 粘贴', 'apps.explorer.paste($(\'#win-explorer>.path>.tit\')[0].dataset.path,\'新建文件夹\',type=\'files\')'];
             return 'null';
         },
         arg => {
             if ($('#win-explorer>.path>.tit>.path>div.text').length > 1)
-                return ['<i class="bi bi-arrow-clockwise"></i> 刷新', `apps.explorer.goto($('#win-explorer>.path>.tit')[0].dataset.path, false)`];
-            return ['<i class="bi bi-arrow-clockwise"></i> 刷新', `apps.explorer.reset()`];
+                return ['<i class="bi bi-arrow-clockwise"></i> 刷新', 'apps.explorer.goto($(\'#win-explorer>.path>.tit\')[0].dataset.path, false)'];
+            return ['<i class="bi bi-arrow-clockwise"></i> 刷新', 'apps.explorer.reset()'];
         }
     ],
     'explorer.tab': [
@@ -265,16 +312,16 @@ let cms = {
     ],
     'taskmgr.processes': [
         arg => {
-            return ['<i class="bi bi-x"></i> 结束任务', `apps.taskmgr.taskkill('${arg}')`]
+            return ['<i class="bi bi-x"></i> 结束任务', `apps.taskmgr.taskkill('${arg}')`];
         }
     ]
-}
+};
 window.onkeydown = function (event) {
     if (event.keyCode == 116/*F5被按下(刷新)*/) {
         event.preventDefault();/*取消默认刷新行为*/
         $('#desktop').css('opacity', '0'); setTimeout(() => { $('#desktop').css('opacity', '1'); }, 100); setIcon();
     }
-}
+};
 
 function showcm(e, cl, arg) {
     if ($('#cm').hasClass('show-begin')) {
@@ -295,7 +342,7 @@ function showcm(e, cl, arg) {
                 else {
                     h += `<a class="a" onmousedown="${item[1]}">${item[0]}</a>\n`;
                 }
-            })
+            });
             $('#cm>list')[0].innerHTML = h;
             $('#cm').addClass('show-begin');
             $('#cm>.foc').focus();
@@ -321,8 +368,7 @@ function showcm(e, cl, arg) {
     let h = '';
     cms[cl].forEach(item => {
         if (typeof (item) == 'function') {
-            ret = item(arg);
-            console.log(arg, ret);
+            let ret = item(arg);
             if (ret == 'null') {
                 return true;
             }
@@ -332,7 +378,7 @@ function showcm(e, cl, arg) {
         } else {
             h += `<a class="a" onmousedown="${item[1]}">${item[0]}</a>\n`;
         }
-    })
+    });
     $('#cm>list')[0].innerHTML = h;
     $('#cm').addClass('show-begin');
     $('#cm>.foc').focus();
@@ -358,18 +404,18 @@ $('#cm>.foc').blur(() => {
 let font_window = false;
 
 // 下拉菜单
-dps = {
+let dps = {
     'notepad.file': [
         ['<i class="bi bi-file-earmark-plus"></i> 新建', `hidedp(true);$('#win-notepad>.text-box').addClass('down');
         setTimeout(()=>{$('#win-notepad>.text-box').val('');$('#win-notepad>.text-box').removeClass('down')},200);`],
         ['<i class="bi bi-box-arrow-right"></i> 另存为', `hidedp(true);$('#win-notepad>.save').attr('href', window.URL.createObjectURL(new Blob([$('#win-notepad>.text-box').html()])));
         $('#win-notepad>.save')[0].click();`],
         '<hr>',
-        ['<i class="bi bi-x"></i> 退出', `isOnDp=false;hidedp(true);hidewin('notepad')`],
+        ['<i class="bi bi-x"></i> 退出', 'isOnDp=false;hidedp(true);hidewin(\'notepad\')'],
     ],
     'notepad.edit': [
         ['<i class="bi bi-files"></i> 复制 <info>Ctrl+C</info>', 'document.execCommand(\'copy\')'],
-        ['<i class="bi bi-clipboard"></i> 粘贴 <info>Ctrl+V</info>', `document.execCommand(\'paste\')`],
+        ['<i class="bi bi-clipboard"></i> 粘贴 <info>Ctrl+V</info>', 'document.execCommand(\'paste\')'],
         ['<i class="bi bi-scissors"></i> 剪切 <info>Ctrl+X</info>', 'document.execCommand(\'cut\')'],
         '<hr>',
         ['<i class="bi bi-arrow-return-left"></i> 撤销 <info>Ctrl+Z</info>', 'document.execCommand(\'undo\')'],
@@ -387,16 +433,16 @@ dps = {
         '<hr>',
         ['<i class="bi bi-fonts"></i> 字体', 'font_window=true;hidedp(true);showwin(\'notepad-fonts\');apps.notepadFonts.reset();'],
     ]
-}
+};
 
 function playWindowsBackground() {
-    var audio = new Audio("./media/Windows Background.wav")
-    audio.play()
+    var audio = new Audio('./media/Windows Background.wav');
+    audio.play();
 }
 
 let dpt = null, isOnDp = false;
-$('#dp')[0].onmouseover = () => { isOnDp = true };
-$('#dp')[0].onmouseleave = () => { isOnDp = false; hidedp() };
+$('#dp')[0].onmouseover = () => { isOnDp = true; };
+$('#dp')[0].onmouseleave = () => { isOnDp = false; hidedp(); };
 function showdp(e, cl, arg) {
     if ($('#dp').hasClass('show-begin')) {
         $('#dp').removeClass('show');
@@ -417,7 +463,7 @@ function showdp(e, cl, arg) {
     let h = '';
     dps[cl].forEach(item => {
         if (typeof (item) == 'function') {
-            ret = item(arg);
+            let ret = item(arg);
             if (ret == 'null') {
                 return true;
             }
@@ -427,7 +473,7 @@ function showdp(e, cl, arg) {
         } else {
             h += `<a class="a" onclick="${item[1]}">${item[0]}</a>\n`;
         }
-    })
+    });
     $('#dp>list')[0].innerHTML = h;
     $('#dp').addClass('show-begin');
     setTimeout(() => {
@@ -457,7 +503,7 @@ function hidedp(force = false) {
 document.querySelectorAll('*[win12_title]:not(.notip)').forEach(a => {
     a.addEventListener('mouseenter', showdescp);
     a.addEventListener('mouseleave', hidedescp);
-})
+});
 function showdescp(e) {
     $(e.target).attr('data-descp', 'waiting');
     setTimeout(() => {
@@ -502,7 +548,7 @@ let nts = {
             本项目中谷歌、Android和其他示范产品是谷歌公司的商标</p>`,
         btn: [
             { type: 'main', text: '关闭', js: 'closenotice();' },
-            { type: 'detail', text: '更多', js: "closenotice();openapp('about');if($('.window.about').hasClass('min'))minwin('about');$('.dock.about').removeClass('show')" },
+            { type: 'detail', text: '更多', js: 'closenotice();openapp(\'about\');if($(\'.window.about\').hasClass(\'min\'))minwin(\'about\');$(\'.dock.about\').removeClass(\'show\')' },
         ]
     },
     'feedback': {
@@ -537,8 +583,8 @@ let nts = {
         ]
     },
     'Can-not-open-file': {
-        cnt: `<p class="tit">` + run_cmd + `</p>
-        <p>Windows 找不到文件 '` + run_cmd + `'。请确定文件名是否正确后，再试一次。</p> `,
+        cnt: '<p class="tit">' + run_cmd + `</p>
+        <p>Windows 找不到文件 '` + run_cmd + '\'。请确定文件名是否正确后，再试一次。</p> ',
         btn: [
             { type: 'main', text: '确定', js: 'closenotice();' },
             { type: 'detail', text: '在 Micrsoft Edge 中搜索', js: 'closenotice();openapp(\'edge\');window.setTimeout(() => {apps.edge.newtab();apps.edge.goto(' + run_cmd + ');}, 300);' }
@@ -638,13 +684,22 @@ let nts = {
         btn: [
             { type: 'main', text: '确定', js: 'closenotice();' },
         ]
+    },
+    'setting.down': {
+        cnt: `
+        <p class="tit">下载完毕</p>
+        <p>请立即重新启动以应用更改</p>
+        `,
+        btn: [
+            { type: 'main', text: '重新启动', js: 'closenotice(); setTimeout(() => {window.location=`reload.html`;},200);' }
+        ]
     }
-}
+};
 function shownotice(name) {
     $('#notice>.cnt').html(nts[name].cnt);
     let tmp = '';
     nts[name].btn.forEach(btn => {
-        tmp += `<a class="a btn ${btn.type}" onclick="${btn.js}">${btn.text}</a>`
+        tmp += `<a class="a btn ${btn.type}" onclick="${btn.js}">${btn.text}</a>`;
     });
     $('#notice>.btns').html(tmp);
     $('#notice-back').addClass('show');
@@ -677,7 +732,7 @@ var shutdown_task = []; //关机任务，储存在这个数组里
 // 为什么要数组？
 // 运行的指令
 function runcmd(cmd, inTerminal=false) {
-    if (cmd.slice(0, 3) == "cmd") {
+    if (cmd.slice(0, 3) == 'cmd') {
         run_cmd = cmd;
         openapp('terminal');
         return true;
@@ -687,17 +742,17 @@ function runcmd(cmd, inTerminal=false) {
         return true;
     }
     else if (cmd.replace('.exe', '') in apps) {
-        openapp(cmd.replace('.exe', ''))
+        openapp(cmd.replace('.exe', ''));
         return true;
     }
-    else if (cmd.includes("shutdown")) {//关机指令
-        run_cmd = cmd
+    else if (cmd.includes('shutdown')) {//关机指令
+        run_cmd = cmd;
         var cmds = cmd.split(' ');
-        if ((cmds[0] == "shutdown") || (cmds[0] == "shutdown.exe")) { //帮助
+        if ((cmds[0] == 'shutdown') || (cmds[0] == 'shutdown.exe')) { //帮助
             if (cmds.length == 1) {
                 if(!inTerminal){
                     openapp('terminal');
-                    $('#win-terminal').html(`<pre class="text-cmd"></pre>`);
+                    $('#win-terminal').html('<pre class="text-cmd"></pre>');
                 }
                 $('#win-terminal>.text-cmd').append(`
 shutdown [-s] [-r] [-f] [-a] [-t time]
@@ -707,56 +762,56 @@ shutdown [-s] [-r] [-f] [-a] [-t time]
 -a:取消之前的操作
 -t time:指定在 time秒 后操作
 
-其余不多做介绍了` + (inTerminal?`` : `
-请按任意键继续.&nbsp;.&nbsp;.<input type="text" onkeydown="hidewin('terminal')"></input>`)); 
+其余不多做介绍了` + (inTerminal?'' : `
+请按任意键继续.&nbsp;.&nbsp;.<input type="text" onkeydown="hidewin('terminal')"></input>`));
                 // 所以你是没事干吗？。。提示：github并不是以行数来计算贡献的哦   from @tjy-gitnub
-                $('#win-terminal>pre>input').focus()
+                $('#win-terminal>pre>input').focus();
             }
-            else if (cmds.includes("-s") || cmds.includes("/s")) {//关机
-                if ((cmds.indexOf("-t") != -1 && cmd.length/*判断是否-t后有其他参数*/ >= cmds.indexOf("-t") + 2/*先加一，获取当下标是从1开始的时候的下标索引；再加一，获取下一项。配合数组.length使用*/) || (cmds.indexOf("/t") != -1 && cmd.length/*判断是否-t后有其他参数*/ >= cmds.indexOf("/t") + 2)) {
-                    str = "";
-                    if (cmds.includes("-t")) { str = "-t"; }
-                    if (cmds.includes("/t")) { str = "/t"; }
+            else if (cmds.includes('-s') || cmds.includes('/s')) {//关机
+                if ((cmds.indexOf('-t') != -1 && cmd.length/*判断是否-t后有其他参数*/ >= cmds.indexOf('-t') + 2/*先加一，获取当下标是从1开始的时候的下标索引；再加一，获取下一项。配合数组.length使用*/) || (cmds.indexOf('/t') != -1 && cmd.length/*判断是否-t后有其他参数*/ >= cmds.indexOf('/t') + 2)) {
+                    str = '';
+                    if (cmds.includes('-t')) { str = '-t'; }
+                    if (cmds.includes('/t')) { str = '/t'; }
                     if (!isNaN(cmds[cmds.indexOf(str) + 1]/*这里只加一是因为下标是从0开始的*/)) {
-                        num = parseInt(cmds[cmds.indexOf(str) + 1])
+                        num = parseInt(cmds[cmds.indexOf(str) + 1]);
                         nts['shutdown'] = {
                             cnt: `
                             <p class="tit">即将注销你的登录</p>
-                            <p>Windows 将在 ` + calcTimeString(num) + ` 后关闭。</p>`, // 如果必须原生样式的，建议改为 num<60 ? 1 : Math.floor(num / 60) + ` 分钟后关闭。</p>`,
+                            <p>Windows 将在 ` + calcTimeString(num) + ' 后关闭。</p>', // 如果必须原生样式的，建议改为 num<60 ? 1 : Math.floor(num / 60) + ` 分钟后关闭。</p>`,
                             btn: [
                                 { type: 'main', text: '关闭', js: 'closenotice();' },
                             ]
                         };
-                        shutdown_task[shutdown_task.length] = setTimeout("window.location.href = './shutdown.html'", num * 1000);
-                        if (!(cmds.includes("/f") || cmds.includes("-f"))) {
+                        shutdown_task[shutdown_task.length] = setTimeout('window.location.href = \'./shutdown.html\'', num * 1000);
+                        if (!(cmds.includes('/f') || cmds.includes('-f'))) {
                             shownotice('shutdown');
                         }
                     }
                 }
             }
-            else if (cmds.includes("-r") || cmds.includes("/r")) {//重启
-                if ((cmds.indexOf("-t") != -1 && cmd.length >= cmds.indexOf("-t") + 2) || (cmds.indexOf("/t") != -1 && cmd.length >= cmds.indexOf("/t") + 2)) {/*详见上面的注释*/
-                    str = "";
-                    if (cmds.includes("-t")) { str = "-t"; }
-                    if (cmds.includes("/t")) { str = "/t"; }
+            else if (cmds.includes('-r') || cmds.includes('/r')) {//重启
+                if ((cmds.indexOf('-t') != -1 && cmd.length >= cmds.indexOf('-t') + 2) || (cmds.indexOf('/t') != -1 && cmd.length >= cmds.indexOf('/t') + 2)) {/*详见上面的注释*/
+                    str = '';
+                    if (cmds.includes('-t')) { str = '-t'; }
+                    if (cmds.includes('/t')) { str = '/t'; }
                     if (!isNaN(cmds[cmds.indexOf(str) + 1])) {
-                        num = parseInt(cmds[cmds.indexOf(str) + 1])
+                        num = parseInt(cmds[cmds.indexOf(str) + 1]);
                         nts['shutdown'] = {
                             cnt: `
                             <p class="tit">即将注销你的登录</p>
-                            <p>Windows 将在 ` + calcTimeString(num) + ` 后关闭。</p>`, // 如果必须原生样式的，建议改为 num<60 ? 1 : Math.floor(num / 60) + ` 分钟后关闭。</p>`,
+                            <p>Windows 将在 ` + calcTimeString(num) + ' 后关闭。</p>', // 如果必须原生样式的，建议改为 num<60 ? 1 : Math.floor(num / 60) + ` 分钟后关闭。</p>`,
                             btn: [
                                 { type: 'main', text: '关闭', js: 'closenotice();' },
                             ]
                         };
-                        shutdown_task[shutdown_task.length] = setTimeout("window.location.href = './reload.html'", num * 1000);
-                        if (!(cmds.includes("/f") || cmds.includes("-f"))) {
+                        shutdown_task[shutdown_task.length] = setTimeout('window.location.href = \'./reload.html\'', num * 1000);
+                        if (!(cmds.includes('/f') || cmds.includes('-f'))) {
                             shownotice('shutdown');
                         }
                     }
                 }
             }
-            else if (cmds.includes("-a") || cmds.includes("/a")) {//取消电源操作
+            else if (cmds.includes('-a') || cmds.includes('/a')) {//取消电源操作
                 if (shutdown_task.length > 0) {
                     for (var i = 0; i < shutdown_task.length; i++) {
                         if (shutdown_task[i] != null) {
@@ -800,7 +855,7 @@ let apps = {
         theme_get: () => {
             $('#set-theme').html(`<loading><svg width="30px" height="30px" viewBox="0 0 16 16">
             <circle cx="8px" cy="8px" r="7px" style="stroke:#7f7f7f50;fill:none;stroke-width:3px;"></circle>
-            <circle cx="8px" cy="8px" r="7px" style="stroke:#2983cc;stroke-width:3px;"></circle></svg></loading>`)
+            <circle cx="8px" cy="8px" r="7px" style="stroke:#2983cc;stroke-width:3px;"></circle></svg></loading>`);
             // 实时获取主题
             $.get('https://api.github.com/repos/tjy-gitnub/win12-theme/contents').then(cs => {
                 cs.forEach(c => {
@@ -814,10 +869,10 @@ let apps = {
                                         if ($('#set-theme>loading').length)
                                             $('#set-theme').html('');
                                         $('#set-theme').append(`<a class="a act" onclick="apps.setting.theme_set('${c.name}')" style="background-image:url('https://tjy-gitnub.github.io/win12-theme/${c.name}/view.jpg')">${c.name}</a>`);
-                                    })
+                                    });
                                 }
-                            })
-                        })
+                            });
+                        });
                     }
                 });
             });
@@ -838,11 +893,11 @@ let apps = {
                                     $(':root').css('--href', infjs.href);
                                     // $('#set-theme').append(`<a class="a act" onclick="apps.setting.theme_set(\`(${inf})\`)" style="background-image:url('https://tjy-gitnub.github.io/win12-theme/${fbg.path}')">${c.name}</a>`);
                                 }
-                            })
-                        })
+                            });
+                        });
                     }
-                })
-            })
+                });
+            });
         },
         checkUpdate: () => {
             $('#win-setting>.page>.cnt.update>.lo>.update-main .notice')[0].innerText = '正在检查更新...';
@@ -851,7 +906,7 @@ let apps = {
             $('#win-setting>.page>.cnt.update>.setting-list>.update-now>div>p:first-child')[0].innerText = '正在检查更新...';
             $('#win-setting>.page>.cnt.update>.setting-list>.update-now>div>p:last-child')[0].innerHTML = '&nbsp;';
             $('#win-setting>.page>.cnt.update>.lo>.update-main>div:last-child').addClass('disabled');
-            fetch('https://api.github.com/repos/tjy-gitnub/win12/commits').then(res => {
+            api('repos/tjy-gitnub/win12/commits').then(res => {
                 res.json().then(json => {
                     const sha = localStorage.getItem('sha');
                     if (sha != json[0].sha) {
@@ -871,15 +926,27 @@ let apps = {
                             window.setTimeout(() => {
                                 let da = new Date();
                                 $('#win-setting>.page>.cnt.update>.lo>.update-main .notice')[0].innerText = 'Windows 12 目前是最新版本';
-                                $('#win-setting>.page>.cnt.update>.lo>.update-main .detail')[0].innerText = `上次检查时间: ${da.getFullYear()}年${da.getMonth() + 1}月${da.getDate()}日，${da.getHours()}: ${da.getMinutes()}`;
+                                $('#win-setting>.page>.cnt.update>.lo>.update-main .detail')[0].innerText = `上次检查时间: ${da.toLocaleDateString()}，${da.toLocaleTimeString()}`;
                                 $('#win-setting>.page>.cnt.update>.lo>.update-main>div:last-child').removeClass('disabled');
                                 $('#win-setting>.page>.cnt.update>.setting-list>.update-now>div>p:first-child')[0].innerText = '无更新可用';
                                 $('#win-setting>.page>.cnt.update>.setting-list>.update-now>div>p:last-child')[0].innerText = 'Windows 12 目前是最新版本';
-                            }, 6000)
+                            }, 6000);
                         }
                     }
                 });
             });
+        }
+    },
+    msstore: {
+        init: () => {
+            $('#win-msstore>.menu>list>a.home')[0].click();
+        },
+        page: (name) => {
+            $('#win-msstore>.page>.cnt.' + name).scrollTop(0);
+            $('#win-msstore>.page>.cnt.show').removeClass('show');
+            $('#win-msstore>.page>.cnt.' + name).addClass('show');
+            $('#win-msstore>.menu>list>a.check').removeClass('check');
+            $('#win-msstore>.menu>list>a.' + name).addClass('check');
         }
     },
     run: {
@@ -899,7 +966,7 @@ let apps = {
                         let tmp = apps.explorer.path;
                         let valid = true;
                         pathl.forEach(name => {
-                            if (tmp['folder'].hasOwnProperty(name)) {
+                            if (Object.prototype.hasOwnProperty.call(tmp['folder'], name)) {
                                 tmp = tmp['folder'][name];
                             }
                             else {
@@ -916,25 +983,25 @@ let apps = {
                         }
                         else {
                             nts['Can-not-open-file'] = {
-                                cnt: `<p class="tit">` + cmd + `</p>
-                                <p>Windows 找不到文件 '` + cmd + `'。请确定文件名是否正确后，再试一次。</p> `,
+                                cnt: '<p class="tit">' + cmd + `</p>
+                                <p>Windows 找不到文件 '` + cmd + '\'。请确定文件名是否正确后，再试一次。</p> ',
                                 btn: [
-                                    { type: 'main', text: '确定', js: "closenotice();showwin('run');$('#win-run>.open>input').select();" },
-                                    { type: 'cancel', text: '在 Micrsoft Edge 中搜索', js: "closenotice();openapp(\'edge\');window.setTimeout(() => {apps.edge.newtab();apps.edge.goto('https://www.bing.com/search?q=" + encodeURIComponent(cmd) + "');}, 300);" }
+                                    { type: 'main', text: '确定', js: 'closenotice();showwin(\'run\');$(\'#win-run>.open>input\').select();' },
+                                    { type: 'cancel', text: '在 Micrsoft Edge 中搜索', js: 'closenotice();openapp(\'edge\');window.setTimeout(() => {apps.edge.newtab();apps.edge.goto(\'https://www.bing.com/search?q=' + encodeURIComponent(cmd) + '\');}, 300);' }
                                 ]
-                            }
+                            };
                             shownotice('Can-not-open-file');
                         }
                     }
                     catch {
                         nts['Can-not-open-file'] = {
-                            cnt: `<p class="tit">` + cmd + `</p>
-                            <p>Windows 找不到文件 '` + cmd + `'。请确定文件名是否正确后，再试一次。</p> `,
+                            cnt: '<p class="tit">' + cmd + `</p>
+                            <p>Windows 找不到文件 '` + cmd + '\'。请确定文件名是否正确后，再试一次。</p> ',
                             btn: [
-                                { type: 'main', text: '确定', js: "closenotice();showwin('run');$('#win-run>.open>input').select();" },
-                                { type: 'cancel', text: '在 Micrsoft Edge 中搜索', js: "closenotice();openapp(\'edge\');window.setTimeout(() => {apps.edge.newtab();apps.edge.goto('https://www.bing.com/search?q=" + encodeURIComponent(cmd) + "');}, 300);" }
+                                { type: 'main', text: '确定', js: 'closenotice();showwin(\'run\');$(\'#win-run>.open>input\').select();' },
+                                { type: 'cancel', text: '在 Micrsoft Edge 中搜索', js: 'closenotice();openapp(\'edge\');window.setTimeout(() => {apps.edge.newtab();apps.edge.goto(\'https://www.bing.com/search?q=' + encodeURIComponent(cmd) + '\');}, 300);' }
                             ]
-                        }
+                        };
                         shownotice('Can-not-open-file');
                     }
                 }
@@ -946,44 +1013,28 @@ let apps = {
         sortOrder: 'up-down',
         tasks: structuredClone(taskmgrTasks),
         cpu: 0,
-        cpuCtx: null,
-        cpuCanvas: null,
-        cpuLastPos: [0, 0],
-        cpuBgCanvas: null,
-        cpuBgCtx: null,
-        cpuRunningTime: 0,
+        cpuChart: null,
+        cpuBg: null,
         memory: 0,
-        memoryCtx: null,
-        memoryCanvas: null,
-        memoryLastPos: [0, 0],
-        memoryBgCanvas: null,
-        memoryBgCtx: null,
-        memoryCanvas2: null,
-        memoryCtx2: null,
+        memoryChart: null,
+        memoryBg: null,
+        memory2Elt: null,
+        cpuRunningTime: 0,
         disk: 0,
+        diskChart: null,
+        diskBg: null,
+        disk2Chart: null,
+        disk2Bg: null,
         diskSpeed: {
             read: 0,
             write: 0
         },
-        diskCanvas: null,
-        diskCtx: null,
-        diskLastPos: [0, 0],
-        diskBgCanvas: null,
-        diskBgCtx: null,
-        diskCanvas2: null,
-        diskCtx2: null,
-        diskBgCanvas2: null,
-        diskBgCtx2: null,
-        diskLastPos2: {
-            read: [0, 0],
-            write: [0, 0]
+        wifi: {
+            receive: 0,
+            send: 0
         },
-        wifi: [0, 0],
-        wifiCanvas: null,
-        wifiCtx: null,
-        wifiLastPos: [[0, 0], [0, 0]],
-        wifiBgCanvas: null,
-        wifiBgCtx: null,
+        wifiChart: null,
+        wifiBg: null,
         gpu: {
             d3: 0,
             copy: 0,
@@ -991,101 +1042,97 @@ let apps = {
             videop: 0,
             usage: 0
         },
+        gpuChart: [null, null, null, null],
+        gpuBg: [null, null, null, null],
+        gpu2Chart: [null, null],
+        gpu2Bg: [null, null],
         gpuMemory: {
             private: 0,
             public: 0
         },
-        gpuCtx: [null, null, null, null],
-        gpuCanvas: [null, null, null, null],
-        gpuLastPos: [[0, 0], [0, 0], [0, 0], [0, 0]],
-        gpuBgCanvas: [null, null, null, null],
-        gpuBgCtx: [null, null, null, null],
-        gpuCanvas2: [null, null],
-        gpuCtx2: [null, null],
-        gpuLastPos2: [[0, 0], [0, 0]],
-        gpuBgCanvas2: [null, null],
-        gpuBgCtx2: [null, null],
-        gpuCanvas3: null,
-        gpuCtx3: null,
-        gpuLastPos3: [0, 0],
+        gpu3Chart: null,
         processList: [],
         handle: 0,
+        foldHide: false,
+        delay: 0,
+        remove: () => {
+            apps.taskmgr.loaded = false;
+            window.clearInterval(apps.taskmgr.handle);
+            if (apps.taskmgr.preLoaded == true) {
+                apps.taskmgr.preLoaded = false;
+                apps.taskmgr.load(false);
+            }
+            else {
+                apps.taskmgr.preLoaded = false;
+            }
+        },
         init: () => {
-            $('#win-taskmgr>.menu>list.focs>a')[0].click();
+            window.setTimeout(() => {
+                $('#win-taskmgr>.menu>list.focs>a')[0].click();
+            }, 200);
+        },
+        fold: () => {
+            if (!apps.taskmgr.foldHide) {
+                window.setTimeout(() => {
+                    $('#win-taskmgr>.menu>.focs>a>p').hide();
+                }, 50);
+                $('#win-taskmgr')[0].style.gridTemplateColumns = '78px auto';
+            }
+            else {
+                window.setTimeout(() => {
+                    $('#win-taskmgr>.menu>.focs>a>p').show();
+                }, 100);
+                $('#win-taskmgr')[0].style.gridTemplateColumns = '320px auto';
+            }
+            apps.taskmgr.foldHide = !apps.taskmgr.foldHide;
         },
         load: (init_all = true) => {
             if (init_all == true) {
-                $('#win-taskmgr>.main>.cnt.performance>.content>.performance-graph>.graph-cpu>.information>.left>div:nth-child(3)>.value')[0].innerText = apps.taskmgr.tasks.length;
+                const performance = $('#win-taskmgr>.main>.cnt.performance>.content>.performance-graph')[0];
+                performance.$$('.graph-cpu>.information>.left>div:nth-child(3)>.value')[0].innerText = apps.taskmgr.tasks.length;
 
-                apps.taskmgr.cpuCanvas = $('#win-taskmgr>.main>.cnt.performance>.content>.performance-graph>.graph-cpu canvas.chart')[0];
-                apps.taskmgr.cpuBgCanvas = $('#win-taskmgr>.main>.cnt.performance>.content>.performance-graph>.graph-cpu canvas.bg')[0];
-                apps.taskmgr.initgraph('cpu', '#2983cc');
+                apps.taskmgr.cpuChart = performance.$$('.graph-cpu>.graph>.chart')[0];
+                apps.taskmgr.cpuBg = performance.$$('.graph-cpu>.graph>.bg')[0];
+                apps.taskmgr.cpuBg.innerHTML = '<g class="col"></g><g class="row"></g>';
+                apps.taskmgr.cpuChart.innerHTML = '<path d="M 6000 1000" stroke="#2983cc" stroke-width="3px" fill="#2983cc22" />';
 
-                apps.taskmgr.memoryCanvas = $('#win-taskmgr>.main>.cnt.performance>.content>.performance-graph>.graph-memory canvas.chart')[0];
-                apps.taskmgr.memoryBgCanvas = $('#win-taskmgr>.main>.cnt.performance>.content>.performance-graph>.graph-memory canvas.bg')[0];
-                apps.taskmgr.initgraph('memory', '#660099');
-                apps.taskmgr.memoryCanvas2 = $('#win-taskmgr>.main>.cnt.performance>.content>.performance-graph>.graph-memory canvas.chart2')[0];
-                apps.taskmgr.memoryCtx2 = apps.taskmgr.memoryCanvas2.getContext('2d');
-                apps.taskmgr.memoryCtx2.fillStyle = '#66009922';
-                apps.taskmgr.memoryCtx.lineWidth = 4;
+                apps.taskmgr.memoryChart = performance.$$('.graph-memory>.graph>.chart')[0];
+                apps.taskmgr.memoryBg = performance.$$('.graph-memory>.graph>.bg')[0];
+                apps.taskmgr.memoryBg.innerHTML = '<g class="col"></g><g class="row"></g>';
+                apps.taskmgr.memoryChart.innerHTML = '<path d="M 6000 1000" stroke="#660099" stroke-width="3px" fill="#66009922" />';
 
-                apps.taskmgr.diskCanvas = $('#win-taskmgr>.main>.cnt.performance>.content>.performance-graph>.graph-disk canvas.chart')[0];
-                apps.taskmgr.diskBgCanvas = $('#win-taskmgr>.main>.cnt.performance>.content>.performance-graph>.graph-disk canvas.bg')[0];
-                apps.taskmgr.initgraph('disk', '#008000');
-                apps.taskmgr.diskCanvas2 = $('#win-taskmgr>.main>.cnt.performance>.content>.performance-graph>.graph-disk canvas.chart2')[0];
-                apps.taskmgr.diskLastPos2 = {
-                    read: [apps.taskmgr.diskCanvas2.width, apps.taskmgr.diskCanvas2.height],
-                    write: [apps.taskmgr.diskCanvas2.width, apps.taskmgr.diskCanvas2.height]
+                apps.taskmgr.memory2Elt = performance.$$('.graph-memory>.graph2>.chart')[0];
+
+                apps.taskmgr.diskChart = performance.$$('.graph-disk>.graph>.chart')[0];
+                apps.taskmgr.diskBg = performance.$$('.graph-disk>.graph>.bg')[0];
+                apps.taskmgr.diskBg.innerHTML = '<g class="col"></g><g class="row"></g>';
+                apps.taskmgr.diskChart.innerHTML = '<path d="M 6000 1000" stroke="#008000" stroke-width="3px" fill="#00800022" />';
+
+                apps.taskmgr.disk2Chart = performance.$$('.graph-disk>.graph2>.chart')[0];
+                apps.taskmgr.disk2Bg = performance.$$('.graph-disk>.graph2>.bg')[0];
+                apps.taskmgr.disk2Bg.innerHTML = '<g class="col"></g><g class="row"></g>';
+                apps.taskmgr.disk2Chart.innerHTML = '<path d="M 6000 1000" stroke="#008000" stroke-width="3px" fill="#00800022" /><path d="M 6000 1000" stroke="#008000" stroke-width="3px" fill="none" stroke-dasharray="15, 15" />';
+
+                apps.taskmgr.wifiChart = performance.$$('.graph-wifi>.graph>.chart')[0];
+                apps.taskmgr.wifiBg = performance.$$('.graph-wifi>.graph>.bg')[0];
+                apps.taskmgr.wifiChart.innerHTML = '<path d="M 6000 1000" stroke="#8e5829" stroke-width="3px" fill="#8e582922" /><path d="M 6000 1000" stroke="#8e5829" stroke-width="3px" fill="none" stroke-dasharray="10, 10" />';
+                apps.taskmgr.wifiBg.innerHTML = '<g class="col"></g><g class="row"></g>';
+
+                apps.taskmgr.gpu3Chart = performance.$$('.graph-gpu>.graphs>svg')[0];
+                apps.taskmgr.gpu3Chart.innerHTML = '<path d="M 6000 1000" stroke="#2983cc" stroke-width="3px" fill="#2983cc22" />';
+
+                for (var i = 1; i <= 4; i++) {
+                    apps.taskmgr.gpuChart[i-1] = performance.$$('.graph-gpu>.graphs>.graph' + i + '>.chart>.chart')[0];
+                    apps.taskmgr.gpuChart[i-1].innerHTML = '<path d="M 6000 1000" stroke-width="3px" stroke="#2983cc" fill="#2983cc22" />';
+                    apps.taskmgr.gpuBg[i-1] = performance.$$('.graph-gpu>.graphs>.graph' + i + '>.chart>.bg')[0];
+                    apps.taskmgr.gpuBg[i-1].innerHTML = '<g class="col"></g><g class="row"></g>';
                 }
-                apps.taskmgr.diskCtx2 = apps.taskmgr.diskCanvas2.getContext('2d');
-                apps.taskmgr.diskCtx2.strokeStyle = '#008000';
-                apps.taskmgr.diskCtx2.fillStyle = '#00800022';
-                apps.taskmgr.diskCtx2.lineWidth = 3;
-                apps.taskmgr.diskBgCanvas2 = $('#win-taskmgr>.main>.cnt.performance>.content>.performance-graph>.graph-disk canvas.bg2')[0];
-                apps.taskmgr.diskBgCtx2 = apps.taskmgr.diskBgCanvas2.getContext('2d');
-                apps.taskmgr.diskBgCtx2.strokeStyle = '#aeaeae';
-                apps.taskmgr.diskBgCtx2.lineWidth = 1;
-
-                for (var i = 0; i < 4; i++) {
-                    apps.taskmgr.gpuCanvas[i] = $('#win-taskmgr>.main>.cnt.performance>.content>.performance-graph>.graph-gpu>.graphs>.graph' + (i + 1) + '>.chart>canvas.chart')[0];
-                    apps.taskmgr.gpuBgCanvas[i] = $('#win-taskmgr>.main>.cnt.performance>.content>.performance-graph>.graph-gpu>.graphs>.graph' + (i + 1) + '>.chart>canvas.bg')[0];
-                    apps.taskmgr.gpuCtx[i] = apps.taskmgr.gpuCanvas[i].getContext('2d');
-                    apps.taskmgr.gpuBgCtx[i] = apps.taskmgr.gpuBgCanvas[i].getContext('2d');
-                    apps.taskmgr.gpuCtx[i].strokeStyle = '#2983cc';
-                    apps.taskmgr.gpuCtx[i].fillStyle = '#2983cc22';
-                    apps.taskmgr.gpuCtx[i].lineWidth = 4;
-                    apps.taskmgr.gpuLastPos[i] = [apps.taskmgr.gpuCanvas[i].width, apps.taskmgr.gpuCanvas[i].height];
-                    apps.taskmgr.gpuBgCtx[i].strokeStyle = '#aeaeae';
-                    apps.taskmgr.gpuBgCtx[i].lineWidth = 3;
-                    apps.taskmgr.initgrids(apps.taskmgr.gpuBgCtx[i]);
+                for (var i = 1; i <= 2; i++) {
+                    apps.taskmgr.gpu2Chart[i-1] = performance.$$('.graph-gpu>.gpu2-' + i + '>.chart')[0];
+                    apps.taskmgr.gpu2Bg[i-1] = performance.$$('.graph-gpu>.gpu2-' + i + '>.bg')[0];
+                    apps.taskmgr.gpu2Bg[i-1].innerHTML = '<g class="col"></g><g class="row"></g>';
+                    apps.taskmgr.gpu2Chart[i-1].innerHTML = '<path d="M 6000 1000" stroke-width="3px" stroke="#2983cc" fill="#2983cc22" />';
                 }
-                for (var i = 0; i < 2; i++) {
-                    apps.taskmgr.gpuCanvas2[i] = $('#win-taskmgr>.main>.cnt.performance>.content>.performance-graph>.graph-gpu>.gpu2-' + (i + 1) + '>canvas.chart2')[0];
-                    apps.taskmgr.gpuBgCanvas2[i] = $('#win-taskmgr>.main>.cnt.performance>.content>.performance-graph>.graph-gpu>.gpu2-' + (i + 1) + '>canvas.bg2')[0];
-                    apps.taskmgr.gpuCtx2[i] = apps.taskmgr.gpuCanvas2[i].getContext('2d');
-                    apps.taskmgr.gpuBgCtx2[i] = apps.taskmgr.gpuBgCanvas2[i].getContext('2d');
-                    apps.taskmgr.gpuCtx2[i].strokeStyle = '#2983cc';
-                    apps.taskmgr.gpuCtx2[i].fillStyle = '#2983cc22';
-                    apps.taskmgr.gpuCtx2[i].lineWidth = 3;
-                    apps.taskmgr.gpuLastPos2[i] = [apps.taskmgr.gpuCanvas2[i].width, apps.taskmgr.gpuCanvas2[i].height];
-                    apps.taskmgr.gpuBgCtx2[i].strokeStyle = '#aeaeae';
-                    apps.taskmgr.gpuBgCtx2[i].lineWidth = 1;
-                    apps.taskmgr.initgrids(apps.taskmgr.gpuBgCtx2[i]);
-                }
-                apps.taskmgr.gpuCanvas3 = $('#win-taskmgr>.main>.cnt.performance>.content>.performance-graph>.graph-gpu>.graphs>canvas.usage')[0];
-                apps.taskmgr.gpuCtx3 = apps.taskmgr.gpuCanvas3.getContext('2d');
-                apps.taskmgr.gpuCtx3.strokeStyle = '#2983cc';
-                apps.taskmgr.gpuCtx3.fillStyle = '#2983cc22';
-                apps.taskmgr.gpuCtx3.lineWidth = 4;
-                apps.taskmgr.gpuLastPos3 = [apps.taskmgr.gpuCanvas3.width, apps.taskmgr.gpuCanvas3.height];
-
-                apps.taskmgr.wifiCanvas = $('#win-taskmgr>.main>.cnt.performance>.content>.performance-graph>.graph-wifi canvas.chart')[0];
-                apps.taskmgr.wifiBgCanvas = $('#win-taskmgr>.main>.cnt.performance>.content>.performance-graph>.graph-wifi canvas.bg')[0];
-                apps.taskmgr.initgraph('wifi', '#8e5829', false);
-                apps.taskmgr.wifiLastPos = [
-                    [apps.taskmgr.wifiCanvas.width, apps.taskmgr.wifiCanvas.height],
-                    [apps.taskmgr.wifiCanvas.width, apps.taskmgr.wifiCanvas.height]
-                ]
             }
 
             if (apps.taskmgr.preLoaded != true && apps.taskmgr.loaded != true) {
@@ -1098,27 +1145,25 @@ let apps = {
             }
 
             if (init_all == true) {
+                apps.taskmgr.gpuMemory.private = Number((Math.random() * 4).toFixed(2));
+                apps.taskmgr.gpuMemory.public = Number((Math.random() * 4).toFixed(2));
                 apps.taskmgr.loadProcesses();
                 apps.taskmgr.generateProcesses();
                 apps.taskmgr.sort();
                 apps.taskmgr.performanceLoad();
-                apps.taskmgr.graphLoad();
-                apps.taskmgr.initgrids(apps.taskmgr.cpuBgCtx);
-                apps.taskmgr.initgrids(apps.taskmgr.memoryBgCtx);
-                apps.taskmgr.initgrids(apps.taskmgr.diskBgCtx);
-                apps.taskmgr.initgrids(apps.taskmgr.diskBgCtx2);
-                apps.taskmgr.initgrids(apps.taskmgr.wifiBgCtx);
-                window.setInterval(() => {
+                apps.taskmgr.drawGrids();
+                apps.taskmgr.handle = window.setInterval(() => {
                     apps.taskmgr.loadProcesses();
                     apps.taskmgr.generateProcesses();
                     apps.taskmgr.sort();
                     apps.taskmgr.performanceLoad();
-                    apps.taskmgr.graphLoad();
+                    apps.taskmgr.loadGraph();
                     apps.taskmgr.gridLine();
+                    apps.taskmgr.memory2Elt.style.width = apps.taskmgr.memory + '%';
                 }, 1000);
             }
             else if (apps.taskmgr.loaded != true && apps.taskmgr.preLoaded != true) {
-                window.setInterval(() => {
+                apps.taskmgr.handle = window.setInterval(() => {
                     apps.taskmgr.loadProcesses();
                     apps.taskmgr.generateProcesses();
                     apps.taskmgr.sort();
@@ -1149,7 +1194,7 @@ let apps = {
             let processList = [];
             let max = 100 / apps.taskmgr.tasks.length;
             let cpusum = 0, memorysum = 0, disksum = 0, diskUsing = Number(Math.random()) > 0.7/*, color = window.getComputedStyle(page, null).getPropertyValue('--href')*/;
-            var Search_length = 0;
+            var search_len = 0;
             for (const elt of apps.taskmgr.tasks) {
                 let cpu = Number((Math.random() * max).toFixed(1)),
                     memory = apps.taskmgr.memory != 0 ? apps.taskmgr.memory / apps.taskmgr.tasks.length + Number(((Math.random() - 0.5) / 5).toFixed(1)) : Number((Math.random() * max).toFixed(1)),
@@ -1157,8 +1202,8 @@ let apps = {
                 cpusum = Number((cpusum + cpu).toFixed(1));
                 memorysum = Number((memorysum + memory).toFixed(1));
                 disksum = Number((disksum + disk).toFixed(1));
-                if (document.getElementById('tsk-search').value != '' && document.getElementById('tsk-search').style.display == '' && (!elt.name.toLowerCase().includes(document.getElementById('tsk-search').value.toLowerCase()/* 搜索时转换成小写 */))) {
-                    continue //搜索
+                if (document.getElementById('tsk-search').value != '' && document.getElementById('tsk-search').style.display == '' && (!elt.name.toLowerCase().includes(document.getElementById('tsk-search').value.toLowerCase()))) {
+                    continue;
                 }
                 processList.splice(processList.length, 0, {
                     name: elt.name,
@@ -1168,13 +1213,14 @@ let apps = {
                     memory: memory,
                     disk: disk
                 });
-                Search_length++;
+                search_len++;
             }
-            if (Search_length == 0) {
-                apps.taskmgr.page('404')
-            } else {
-                if (document.getElementById('tsk-search').value != '' && document.getElementById('tsk-search').style.display == '') {
-                    apps.taskmgr.page('processes')
+            if (search_len == 0) {
+                apps.taskmgr.page('404');
+            }
+            else {
+                if ($('#tsk-search').val() != '' && $('#tsk-search')[0].style.display == '') {
+                    apps.taskmgr.page('processes');
                 }
             }
             apps.taskmgr.cpu = cpusum;
@@ -1203,10 +1249,10 @@ let apps = {
                 processContainer.appendChild(newElt);
                 newElt.onclick = function () {
                     apps.taskmgr.selectProcess(this);
-                }
+                };
                 newElt.oncontextmenu = function (e) {
                     return showcm(e, 'taskmgr.processes', elt.name);
-                }
+                };
                 window.setTimeout(() => {
                     newElt.classList.remove('notrans');
                 }, 100);
@@ -1265,66 +1311,74 @@ let apps = {
             apps.taskmgr.gpu.videod = Number((Math.random() * 15).toFixed(2));
             apps.taskmgr.gpu.usage = Number(((apps.taskmgr.gpu.d3 + apps.taskmgr.gpu.copy + apps.taskmgr.gpu.videop + apps.taskmgr.gpu.videod) / 4).toFixed(1));
 
-            apps.taskmgr.wifi[0] = Number((Math.random() * 100).toFixed(2));
-            apps.taskmgr.wifi[1] = Number((Math.random() * 100).toFixed(2));
-            $('#win-taskmgr>.main>.cnt.performance>.content>.performance-graph>.graph-wifi>.information>.left>div:nth-child(1)>.value')[0].innerText = `${apps.taskmgr.wifi[1].toFixed(2)} Mbps`;
-            $('#win-taskmgr>.main>.cnt.performance>.content>.performance-graph>.graph-wifi>.information>.left>div:nth-child(2)>.value')[0].innerText = `${apps.taskmgr.wifi[0].toFixed(2)} Mbps`;
-            $('#win-taskmgr>.main>.cnt.performance>.content>.select-menu>.graph-wifi>.right>.data>.value2')[0].innerText = `发送: ${apps.taskmgr.wifi[1]} 接收: ${apps.taskmgr.wifi[0]} Mbps`;
+            apps.taskmgr.wifi.receive = Number((Math.random() * 100).toFixed(2));
+            apps.taskmgr.wifi.send = Number((Math.random() * 100).toFixed(2));
+            $('#win-taskmgr>.main>.cnt.performance>.content>.performance-graph>.graph-wifi>.information>.left>div:nth-child(1)>.value')[0].innerText = `${apps.taskmgr.wifi.send.toFixed(2)} Mbps`;
+            $('#win-taskmgr>.main>.cnt.performance>.content>.performance-graph>.graph-wifi>.information>.left>div:nth-child(2)>.value')[0].innerText = `${apps.taskmgr.wifi.receive.toFixed(2)} Mbps`;
+            $('#win-taskmgr>.main>.cnt.performance>.content>.select-menu>.graph-wifi>.right>.data>.value2')[0].innerText = `发送: ${apps.taskmgr.wifi.send} 接收: ${apps.taskmgr.wifi.receive} Mbps`;
         },
-        graphLoad: () => {
-            $('#win-taskmgr>.main>.cnt.performance>.content>.select-menu>*>.left>.graph-view-cpu')[0].style.backgroundImage = `url("${apps.taskmgr.drawgraph(apps.taskmgr.cpuCtx, 'cpuLastPos', apps.taskmgr.cpu)}")`;
-            $('#win-taskmgr>.main>.cnt.performance>.content>.select-menu>*>.left>.graph-view-memory')[0].style.backgroundImage = `url("${apps.taskmgr.drawgraph(apps.taskmgr.memoryCtx, 'memoryLastPos', apps.taskmgr.memory)}")`;
-            w = apps.taskmgr.memoryCanvas2.width;
-            h = apps.taskmgr.memoryCanvas2.height;
-            apps.taskmgr.memoryCtx2.clearRect(0, 0, w, h);
-            apps.taskmgr.memoryCtx2.fillRect(0, 0, w / 100 * apps.taskmgr.memory, h);
-            $('#win-taskmgr>.main>.cnt.performance>.content>.select-menu>*>.left>.graph-view-disk')[0].style.backgroundImage = `url("${apps.taskmgr.drawgraph(apps.taskmgr.diskCtx, 'diskLastPos', apps.taskmgr.disk)}")`;
-            // 绘制磁盘传输速率
-            w = apps.taskmgr.diskCanvas2.width;
-            h = apps.taskmgr.diskCanvas2.height;
-            data = apps.taskmgr.diskCtx2.getImageData(w / 60, 0, w - w / 60, h);
-            apps.taskmgr.diskCtx2.clearRect(0, 0, w, h);
-            apps.taskmgr.diskCtx2.putImageData(data, 0, 0);
-            // 读取速度
-            apps.taskmgr.diskCtx2.fillStyle = '#00800022';
-            apps.taskmgr.diskCtx2.setLineDash([]);
-            apps.taskmgr.drawgraph(apps.taskmgr.diskCtx2, apps.taskmgr.diskLastPos2.read, apps.taskmgr.diskSpeed.read, false, false);
-            apps.taskmgr.diskLastPos2.read = [w - w / 60, h / 100 * (100 - apps.taskmgr.diskSpeed.read)];
-            // 写入速度
-            apps.taskmgr.diskCtx2.fillStyle = '#00000000';
-            apps.taskmgr.diskCtx2.setLineDash([4, 4]);
-            apps.taskmgr.drawgraph(apps.taskmgr.diskCtx2, apps.taskmgr.diskLastPos2.write, apps.taskmgr.diskSpeed.write, false, false);
-            apps.taskmgr.diskLastPos2.write = [w - w / 60, h / 100 * (100 - apps.taskmgr.diskSpeed.write)];
-            // 绘制网络
-            w = apps.taskmgr.wifiCanvas.width;
-            h = apps.taskmgr.wifiCanvas.height;
-            data = apps.taskmgr.wifiCtx.getImageData(w / 60, 0, w - w / 60, h);
-            apps.taskmgr.wifiCtx.clearRect(0, 0, w, h);
-            apps.taskmgr.wifiCtx.putImageData(data, 0, 0);
-            // 接收
-            apps.taskmgr.wifiCtx.fillStyle = '#8e582922';
-            apps.taskmgr.wifiCtx.setLineDash([]);
-            apps.taskmgr.drawgraph(apps.taskmgr.wifiCtx, apps.taskmgr.wifiLastPos[0], apps.taskmgr.wifi[0], false, false);
-            apps.taskmgr.wifiLastPos[0] = [w - w / 60, h / 100 * (100 - apps.taskmgr.wifi[0])];
-            // 发送
-            apps.taskmgr.wifiCtx.fillStyle = '#8e582900';
-            apps.taskmgr.wifiCtx.setLineDash([4, 4]);
-            $('#win-taskmgr>.main>.cnt.performance>.content>.select-menu>*>.left>.graph-view-wifi')[0].style.backgroundImage = `url("${apps.taskmgr.drawgraph(apps.taskmgr.wifiCtx, apps.taskmgr.wifiLastPos[1], apps.taskmgr.wifi[1], false, false)}")`;
-            apps.taskmgr.wifiLastPos[1] = [w - w / 60, h / 100 * (100 - apps.taskmgr.wifi[1])];
-            // 绘制显卡
+        drawGraph: (chart, data, nth = 0) => {
+            var path = $(chart.querySelectorAll('path')[nth]).attr('d');
+            path = path.replace(/ L 6000 1000$/, '');
+            var pathl = path.split(' ');
+            var newPath = '';
+            var sum = 0, head = 0;
+            for (var i = 0; i < pathl.length; i += 3) {
+                const arg = pathl[i];
+                if (arg == 'M' && Number(pathl[i + 1]) > 0) {
+                    pathl[i + 1] = Number(pathl[i + 1]) - 100;
+                    pathl[i + 2] = pathl[i + 2];
+                }
+                else if (arg == 'M' && Number(pathl[i + 1]) <= 0) {
+                    pathl[i + 1] = 0;
+                    pathl[i + 2] = 1000;
+                }
+                else if (arg == 'L') {
+                    if (sum == 0) {
+                        head = i;
+                    }
+                    else if (sum >= 60) {
+                        pathl.splice(head, 3);
+                        sum--;
+                        i -= 3;
+                    }
+                    pathl[i + 1] = Number(pathl[i + 1]) - 100;
+                    sum++;
+                }
+            }
+            pathl.push('L', '6000', 1000 - data, 'L', '6000', '1000');
+            window.setTimeout(() => {
+                $(chart.querySelectorAll('path')[nth]).attr('d', '');
+                for (const arg of pathl) {
+                    if (!(arg === '')) {
+                        newPath += arg + ' ';
+                    }
+                }
+                newPath = newPath.substring(0, newPath.length - 1);
+                $(chart.querySelectorAll('path')[nth]).attr('d', newPath);
+            }, apps.taskmgr.delay);
+        },
+        loadGraph: () => {
+            apps.taskmgr.drawGraph(apps.taskmgr.cpuChart, apps.taskmgr.cpu * 10);
+            apps.taskmgr.drawGraph(apps.taskmgr.memoryChart, apps.taskmgr.memory * 10);
+            apps.taskmgr.drawGraph(apps.taskmgr.diskChart, apps.taskmgr.disk * 10);
+            apps.taskmgr.drawGraph(apps.taskmgr.disk2Chart, apps.taskmgr.diskSpeed.read * 10, 0);
+            apps.taskmgr.drawGraph(apps.taskmgr.disk2Chart, apps.taskmgr.diskSpeed.write * 10, 1);
+            apps.taskmgr.drawGraph(apps.taskmgr.wifiChart, apps.taskmgr.wifi.receive * 10, 0);
+            apps.taskmgr.drawGraph(apps.taskmgr.wifiChart, apps.taskmgr.wifi.send * 10, 1);
             for (var i = 0; i < 4; i++) {
-                w = apps.taskmgr.gpuCanvas[i].width;
-                h = apps.taskmgr.gpuCanvas[i].height;
-                apps.taskmgr.drawgraph(apps.taskmgr.gpuCtx[i], apps.taskmgr.gpuLastPos[i], apps.taskmgr.gpu[['d3', 'copy', 'videod', 'videop'][i]], false);
-                apps.taskmgr.gpuLastPos[i] = [w - w / 60, h / 100 * (100 - apps.taskmgr.gpu[['d3', 'copy', 'videod', 'videop'][i]])];
+                apps.taskmgr.drawGraph(apps.taskmgr.gpuChart[i], apps.taskmgr.gpu[['d3', 'copy', 'videop', 'videod'][i]] * 10);
             }
             for (var i = 0; i < 2; i++) {
-                w = apps.taskmgr.gpuCanvas2[i].width;
-                h = apps.taskmgr.gpuCanvas2[i].height;
-                apps.taskmgr.drawgraph(apps.taskmgr.gpuCtx2[i], apps.taskmgr.gpuLastPos2[i], apps.taskmgr.gpuMemory[['private', 'public'][i]], setPos = false, move = true, max = [16, 32][i]);
-                apps.taskmgr.gpuLastPos2[i] = [w - w / 60, h / [16, 32][i] * ([16, 32][i] - apps.taskmgr.gpuMemory[['private', 'public'][i]])];
+                apps.taskmgr.drawGraph(apps.taskmgr.gpu2Chart[i], apps.taskmgr.gpuMemory[['private', 'public'][i]] * (i == 1 ? (1000 / 32) : (1000 / 16)));
             }
-            $('#win-taskmgr>.main>.cnt.performance>.content>.select-menu>*>.left>.graph-view-gpu')[0].style.backgroundImage = `url("${apps.taskmgr.drawgraph(apps.taskmgr.gpuCtx3, 'gpuLastPos3', apps.taskmgr.gpu.usage)}")`
+            apps.taskmgr.drawGraph(apps.taskmgr.gpu3Chart, apps.taskmgr.gpu.usage * 10);
+            const menu = $('#win-taskmgr>.main>.cnt.performance>.content>.select-menu')[0];
+            menu.$$('.graph-cpu svg')[0].innerHTML = apps.taskmgr.cpuChart.innerHTML;
+            menu.$$('.graph-memory svg')[0].innerHTML = apps.taskmgr.memoryChart.innerHTML;
+            menu.$$('.graph-disk svg')[0].innerHTML = apps.taskmgr.diskChart.innerHTML;
+            menu.$$('.graph-wifi svg')[0].innerHTML = apps.taskmgr.wifiChart.innerHTML;
+            menu.$$('.graph-gpu svg')[0].innerHTML = apps.taskmgr.gpu3Chart.innerHTML;
         },
         changeSort: (elt, type) => {
             for (const _elt of $('#win-taskmgr>.main>.cnt.processes thead>tr>th>i')) {
@@ -1343,16 +1397,16 @@ let apps = {
             }
         },
         gridLine: () => {
-            apps.taskmgr.changeGrids(apps.taskmgr.memoryBgCtx);
-            apps.taskmgr.changeGrids(apps.taskmgr.cpuBgCtx);
-            apps.taskmgr.changeGrids(apps.taskmgr.diskBgCtx);
-            apps.taskmgr.changeGrids(apps.taskmgr.diskBgCtx2);
-            apps.taskmgr.changeGrids(apps.taskmgr.wifiBgCtx);
-            apps.taskmgr.gpuBgCtx.forEach(function (ctx) {
-                apps.taskmgr.changeGrids(ctx);
+            apps.taskmgr.changeGrids(apps.taskmgr.memoryBg);
+            apps.taskmgr.changeGrids(apps.taskmgr.cpuBg);
+            apps.taskmgr.changeGrids(apps.taskmgr.diskBg);
+            apps.taskmgr.changeGrids(apps.taskmgr.disk2Bg);
+            apps.taskmgr.changeGrids(apps.taskmgr.wifiBg);
+            apps.taskmgr.gpuBg.forEach(function (chart) {
+                apps.taskmgr.changeGrids(chart);
             });
-            apps.taskmgr.gpuBgCtx2.forEach(function (ctx) {
-                apps.taskmgr.changeGrids(ctx);
+            apps.taskmgr.gpu2Bg.forEach(function (chart) {
+                apps.taskmgr.changeGrids(chart);
             });
         },
         selectProcess: (elt) => {
@@ -1370,67 +1424,50 @@ let apps = {
                 }
             }
         },
-        initgraph: (prefix, color, setPos = true) => {
-            if (setPos == true) {
-                apps.taskmgr[prefix + 'LastPos'] = [apps.taskmgr[prefix + 'Canvas'].width, apps.taskmgr[prefix + 'Canvas'].height];
-            }
-
-            apps.taskmgr[prefix + 'Ctx'] = apps.taskmgr[prefix + 'Canvas'].getContext('2d');
-            apps.taskmgr[prefix + 'BgCtx'] = apps.taskmgr[prefix + 'BgCanvas'].getContext('2d');
-            apps.taskmgr[prefix + 'Ctx'].strokeStyle = color;
-            console.log(color, color + '22', prefix)
-            apps.taskmgr[prefix + 'Ctx'].fillStyle = color + '22';
-            console.log(apps.taskmgr[prefix + 'Ctx'].fillStyle)
-            apps.taskmgr[prefix + 'Ctx'].lineWidth = 4;
-            apps.taskmgr[prefix + 'BgCtx'].strokeStyle = '#aeaeae';
-            apps.taskmgr[prefix + 'BgCtx'].lineWidth = 3;
-        },
-        initgrids: (ctx) => {
-            for (var i = 0; i <= 10; i++) {
-                ctx.beginPath();
-                ctx.moveTo(0, ctx.canvas.height / 10 * i);
-                ctx.lineTo(ctx.canvas.width, ctx.canvas.height / 10 * i);
-                ctx.stroke();
-                ctx.closePath();
-            }
+        initgrids: (chart) => {
+            const column = chart.querySelector('g.col'), row = chart.querySelector('g.row');
             for (var i = 0; i <= 20; i++) {
-                ctx.beginPath();
-                ctx.moveTo(ctx.canvas.width / 20 * i, 0);
-                ctx.lineTo(ctx.canvas.width / 20 * i, ctx.canvas.height);
-                ctx.stroke();
-                ctx.closePath();
+                column.innerHTML += `<path d="M ${i * 300} 0 L ${i * 300} 1000 Z" stroke="#aeaeae" fill="none" />`;
+            }
+            for (var i = 0; i <= 10; i++) {
+                row.innerHTML += `<path d="M 0 ${i * 100} L 6000 ${i * 100} Z" stroke="#aeaeae" fill="none" />`;
             }
         },
-        drawgraph(ctx, lastPos, num, setPos = true, move = true, max = 100) {
-            let w = ctx.canvas.width, h = ctx.canvas.height;
-            if (move == true) {
-                data = ctx.getImageData(w / 60, 0, w - w / 60, h);
-                ctx.clearRect(0, 0, w, h);
-                ctx.putImageData(data, 0, 0);
+        drawGrids: () => {
+            apps.taskmgr.initgrids(apps.taskmgr.cpuBg);
+            apps.taskmgr.initgrids(apps.taskmgr.diskBg);
+            apps.taskmgr.initgrids(apps.taskmgr.memoryBg);
+            apps.taskmgr.initgrids(apps.taskmgr.disk2Bg);
+            apps.taskmgr.initgrids(apps.taskmgr.wifiBg);
+            for (var i = 0; i < 4; i++) {
+                apps.taskmgr.initgrids(apps.taskmgr.gpuBg[i]);
             }
-            ctx.beginPath();
-            if (setPos == true) {
-                ctx.moveTo(apps.taskmgr[lastPos][0], apps.taskmgr[lastPos][1]);
+            for (var i = 0; i < 2; i++) {
+                apps.taskmgr.initgrids(apps.taskmgr.gpu2Bg[i]);
             }
-            else {
-                ctx.moveTo(lastPos[0], lastPos[1]);
-            }
-            ctx.lineTo(w, h / max * (max - num));
-            ctx.stroke();
-            ctx.lineTo(w, h);
-            ctx.lineTo(w - w / 60, h);
-            ctx.fill();
-            if (setPos == true) {
-                apps.taskmgr[lastPos] = [w - w / 60, h / max * (max - num)];
-            }
-            return ctx.canvas.toDataURL();
         },
-        changeGrids: (ctx) => {
-            let left = ctx.getImageData(0, 0, ctx.canvas.width / 30 * 29, ctx.canvas.height);
-            let right = ctx.getImageData(ctx.canvas.width / 30 * 29, 0, ctx.canvas.width / 30, ctx.canvas.height);
-            ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
-            ctx.putImageData(left, ctx.canvas.width / 30, 0);
-            ctx.putImageData(right, 0, 0);
+        changeGrids: (chart) => {
+            const grid = chart.querySelectorAll('g.col>path');
+            for (const elt of grid) {
+                let path = $(elt).attr('d').split(' ');
+                for (var i = 0; i < path.length; i++) {
+                    if (path[i] == 'M' || path[i] == 'L') {
+                        var cur = Number(path[i+1]);
+                        cur -= 100;
+                        if (cur < 0) {
+                            cur = (300 - (-cur)) + 6000;
+                        }
+                        path[i+1] = String(cur);
+                    }
+                }
+                $(elt).attr('d', '');
+                let tmp = '';
+                for (const comp of path) {
+                    tmp += comp + ' ';
+                }
+                $(elt).attr('d', tmp);
+                console.log($(elt).attr('d'));
+            }
         }
     },
     whiteboard: {
@@ -1545,7 +1582,7 @@ let apps = {
             return null;
         },
         load: () => {
-            $('#win-vscode')[0].insertAdjacentHTML('afterbegin', '<iframe src="https://github1s.com/" frameborder="0" style="width: 100%; height: 100%;" loading="lazy"></iframe>')
+            $('#win-vscode')[0].insertAdjacentHTML('afterbegin', '<iframe src="https://github1s.com/" frameborder="0" style="width: 100%; height: 100%;" loading="lazy"></iframe>');
         }
     },
     bilibili: {
@@ -1553,19 +1590,86 @@ let apps = {
             return null;
         },
         load: () => {
-            $('#win-bilibili')[0].insertAdjacentHTML('afterbegin', '<iframe src="https://bilibili.com/" frameborder="0" style="width: 100%; height: 100%;" loading="lazy"></iframe>')
+            $('#win-bilibili')[0].insertAdjacentHTML('afterbegin', '<iframe src="https://bilibili.com/" frameborder="0" style="width: 100%; height: 100%;" loading="lazy"></iframe>');
         }
     },
     defender: {
         init: () => {
-
+            return null;
+        },
+        load: () => {
+            var chart = $('#chart')[0].getContext('2d'),
+                gradient = chart.createLinearGradient(0, 0, 0, 450);
+            gradient.addColorStop(0, 'rgba(0, 199, 214, 0.32)');
+            gradient.addColorStop(0.3, 'rgba(0, 199, 214, 0.1)');
+            gradient.addColorStop(1, 'rgba(0, 199, 214, 0)');
+            var data = {
+                labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+                datasets: [{
+                    label: '病毒攻击次数',
+                    backgroundColor: gradient,
+                    pointBackgroundColor: '#00c7d6',
+                    borderWidth: 1,
+                    borderColor: '#0e1a2f',
+                    data: [60, 45, 80, 30, 35, 55, 25, 80, 40, 50, 80, 50]
+                }]
+            };
+            var options = {
+                responsive: true,
+                maintainAspectRatio: true,
+                animation: {
+                    easing: 'easeInOutQuad',
+                    duration: 520
+                },
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            fontColor: '#5e6a81'
+                        },
+                        gridLines: {
+                            color: 'rgba(200, 200, 200, 0.08)',
+                            lineWidth: 1
+                        }
+                    }],
+                    xAxes: [{
+                        ticks: {
+                            fontColor: '#5e6a81'
+                        }
+                    }]
+                },
+                elements: {
+                    line: {
+                        tension: 0.4
+                    }
+                },
+                legend: {
+                    display: false
+                },
+                point: {
+                    backgroundColor: '#00c7d6'
+                },
+                tooltips: {
+                    titleFontFamily: 'Poppins',
+                    backgroundColor: 'rgba(0,0,0,0.4)',
+                    titleFontColor: 'white',
+                    caretSize: 5,
+                    cornerRadius: 2,
+                    xPadding: 10,
+                    yPadding: 10
+                }
+            };
+            var chartInstance = new Chart(chart, {
+                type: 'line',
+                data: data,
+                options: options
+            });
         }
     },
     camera: {
         init: () => {
             if (!localStorage.getItem('camera')) {
                 showwin('camera-notice');
-                return;
+                return null;
             }
             if (localStorage.getItem('camera')) {
                 apps.camera.streaming = false;
@@ -1604,7 +1708,7 @@ let apps = {
         takePhoto: () => {
             apps.camera.context.drawImage(apps.camera.video, 0, 0, apps.camera.canvas.width, apps.camera.canvas.height);
             apps.camera.downloadLink.href = apps.camera.canvas.toDataURL('image/png');
-            apps.camera.downloadLink.download = "photo.png";
+            apps.camera.downloadLink.download = 'photo.png';
             apps.camera.downloadLink.click();
         },
         notice: () => {
@@ -1620,16 +1724,22 @@ let apps = {
                 h = $('#win-camera')[0].offsetHeight;
             if (w / apps.camera.aspectRatio <= h) {
                 if (!$('#win-camera').hasClass('v')) {
-                    $('#win-camera').removeClass('h')
+                    $('#win-camera').removeClass('h');
                     $('#win-camera').addClass('v');
                 }
             }
             else if (w / apps.camera.aspectRatio >= h) {
                 if (!$('#win-camera').hasClass('h')) {
-                    $('#win-camera').removeClass('v')
+                    $('#win-camera').removeClass('v');
                     $('#win-camera').addClass('h');
                 }
             }
+        },
+        remove: () => {
+            apps.camera.video.srcObject.getTracks().forEach((t) => {
+                t.stop();
+            });
+            apps.camera.video.srcObject = null;
         }
     },
     explorer: {
@@ -1638,13 +1748,13 @@ let apps = {
             apps.explorer.len = 0;
             apps.explorer.newtab();
             // apps.explorer.reset();
-            apps.explorer.Process_Of_Select = "";
+            apps.explorer.Process_Of_Select = '';
             apps.explorer.is_use = 0;//千万不要删除它，它依托bug运行
             apps.explorer.is_use2 = 0;//千万不要删除它，它依托bug运行
-            apps.explorer.old_name = "";
+            apps.explorer.old_name = '';
             apps.explorer.clipboard = null;
             document.addEventListener('keydown', function (event) {
-                if (event.key === 'Delete' && $('.window.foc')[0].classList[1] == "explorer") {
+                if (event.key === 'Delete' && $('.window.foc')[0].classList[1] == 'explorer') {
                     apps.explorer.del(apps.explorer.Process_Of_Select);
                 }
             });
@@ -1666,7 +1776,7 @@ let apps = {
             // }
         },
         settab: (t, i) => {
-            return `<div class="tab ${t[0]}" onclick="m_tab.tab('explorer',${i})" oncontextmenu="showcm(event,'explorer.tab',${i});stop(event);return false" onmousedown="m_tab.moving('explorer',this,event,${i});stop(event);" ontouchstart="m_tab.moving('exploer',this,event,${i});stop(event);"><p>${t[1]}</p><span class="clbtn bi bi-x" onclick="m_tab.close('explorer',${i});stop(event);"></span></div>`;
+            return `<div class="tab ${t[0]}" onclick="m_tab.tab('explorer',${i})" oncontextmenu="showcm(event,'explorer.tab',${i});stop(event);return false" onmousedown="m_tab.moving('explorer',this,event,${i});stop(event);disableIframes();" ontouchstart="m_tab.moving('exploer',this,event,${i});stop(event);disableIframes();"><p>${t[1]}</p><span class="clbtn bi bi-x" onclick="m_tab.close('explorer',${i});stop(event);"></span></div>`;
         },
         tab: (c, load = true) => {
             if (load) {
@@ -1728,17 +1838,17 @@ let apps = {
                 tmp = tmp['folder'][name];
             });
 
-            if (Object.keys(tmp["folder"]).includes(name)) {
-                apps.explorer.clipboard = ["folder", [name], tmp["folder"][name]];
-                if (operate == "cut")
-                    delete tmp["folder"][name];
+            if (Object.keys(tmp['folder']).includes(name)) {
+                apps.explorer.clipboard = ['folder', [name], tmp['folder'][name]];
+                if (operate == 'cut')
+                    delete tmp['folder'][name];
             }
             else {
-                for (var i = 0; i < tmp["file"].length; i++) {
-                    if (tmp["file"][i]["name"] == name) {
-                        apps.explorer.clipboard = ["file", tmp["file"][i]];
-                        if (operate == "cut")
-                            delete tmp["file"][i];
+                for (var i = 0; i < tmp['file'].length; i++) {
+                    if (tmp['file'][i]['name'] == name) {
+                        apps.explorer.clipboard = ['file', tmp['file'][i]];
+                        if (operate == 'cut')
+                            delete tmp['file'][i];
                     }
                 }
             }
@@ -1763,26 +1873,26 @@ let apps = {
             pathl.forEach(name => {
                 thisPath += name + '/';
                 tmp = tmp['folder'][name];
-                $('#win-explorer>.path>.tit>.path')[0].insertAdjacentHTML('beforeend', `<div class="text" onmousedown="apps.explorer.goto('${thisPath.substring(0, thisPath.length - 1)}');stop(event);">${name}</div> <div class="arrow">></div> `)
+                $('#win-explorer>.path>.tit>.path')[0].insertAdjacentHTML('beforeend', `<div class="text" onmousedown="apps.explorer.goto('${thisPath.substring(0, thisPath.length - 1)}');stop(event);">${name}</div> <div class="arrow">></div> `);
             });
             var clipboard = apps.explorer.clipboard;
 
             if (apps.explorer.traverseDirectory(tmp, clipboard[1][0]) || apps.explorer.traverseDirectory(tmp, clipboard[1]['name'])) {
-                shownotice("duplication file name");
+                shownotice('duplication file name');
                 return;
             }
             if (apps.explorer.traverseDirectory(tmp, clipboard[1][0]))
-                // {
-                //     clipboard[1][0] += " - 副本";
-                // }
-                // if (apps.explorer.traverseDirectory(tmp,clipboard[1]['name']))
-                // {
-                //     clipboard[1][0] += " - 副本";
-                // }
-                // 这段注释了的代码可以调试一下，会有神奇的bug。
+            // {
+            //     clipboard[1][0] += " - 副本";
+            // }
+            // if (apps.explorer.traverseDirectory(tmp,clipboard[1]['name']))
+            // {
+            //     clipboard[1][0] += " - 副本";
+            // }
+            // 这段注释了的代码可以调试一下，会有神奇的bug。
 
-                if (clipboard[0] == "file") {
-                    tmp["file"].push(clipboard[1]);
+                if (clipboard[0] == 'file') {
+                    tmp['file'].push(clipboard[1]);
                 }
                 else {
                     tmp['folder'][clipboard[1][0]] = clipboard[2];
@@ -1797,10 +1907,11 @@ let apps = {
             var elements = document.querySelectorAll('#win-explorer>.page>.main>.content>.view>.change');
             console.log(elements);
             for (var i = 0; i < elements.length; i++) {
+                var name_1, icon_;
                 elements[i].classList.remove('change');
                 let aTag = elements[i];
                 var on = apps.explorer.old_name;
-                let inputTag = aTag.querySelector("#new_name");
+                let inputTag = aTag.querySelector('#new_name');
                 var pathl = $('#win-explorer>.path>.tit')[0].dataset.path.split('/');
                 let tmp = apps.explorer.path;
                 pathl.forEach(name => {
@@ -1808,57 +1919,56 @@ let apps = {
                 });
                 if (inputTag.value == '' || apps.explorer.traverseDirectory(tmp, inputTag.value) || on == inputTag.value) {
                     if (apps.explorer.traverseDirectory(tmp, inputTag.value) && on != inputTag.value) {
-                        shownotice("duplication file name");
+                        shownotice('duplication file name');
                     }
-                    var element = document.getElementById("new_name");
+                    var element = document.getElementById('new_name');
                     element.parentNode.removeChild(element);
                     aTag.innerHTML += on;
                     continue;
                 }
-                name_1 = inputTag.value.split(".");
+                name_1 = inputTag.value.split('.');
                 if (name_1[0].indexOf('/') > -1) alert('恭喜你发现了这个bug,但是太懒了不想修qwq');
                 console.log(name_1);
-                if (name_1[1] == "txt") {
-                    icon_ = "icon/files/txt.png";
+                if (name_1[1] == 'txt') {
+                    icon_ = 'icon/files/txt.png';
                 }
-                else if (name_1[1] == "png" || name_1[1] == "jpg" | name_1[1] == "bmp") {
-                    icon_ = "icon/files/picture.png";
+                else if (name_1[1] == 'png' || name_1[1] == 'jpg' | name_1[1] == 'bmp') {
+                    icon_ = 'icon/files/picture.png';
                 }
                 else {
-                    icon_ = "icon/files/none.png";
+                    icon_ = 'icon/files/none.png';
                 }
                 //这边可以适配更多的文件类型
 
                 aTag.innerHTML += inputTag.value;
-                for (var i = 0; i < tmp["file"].length; i++) {
-                    if (tmp["file"][i]['name'] == on) {
-                        tmp["file"][i]['name'] = inputTag.value;
-                        tmp["file"][i]['ico'] = icon_;
+                for (var j = 0; j < tmp['file'].length; j++) {
+                    if (tmp['file'][j]['name'] == on) {
+                        tmp['file'][j]['name'] = inputTag.value;
+                        tmp['file'][j]['ico'] = icon_;
                     }
                 }
-                const keys = Object.keys(tmp["folder"]);
+                const keys = Object.keys(tmp['folder']);
                 for (var i = 0; i < keys.length; i++) {
                     if (keys[i] == on) {
                         keys[i] = inputTag.value;
-                        tmp["folder"][inputTag.value] = tmp["folder"][on];
-                        delete tmp["folder"][on];
+                        tmp['folder'][inputTag.value] = tmp['folder'][on];
+                        delete tmp['folder'][on];
                     }
                 }
-                var element = document.getElementById("new_name");
+                element = document.getElementById('new_name');
                 element.parentNode.removeChild(element);
                 apps.explorer.goto($('#win-explorer>.path>.tit')[0].dataset.path, false);
 
             }
-            delete elements;
             apps.explorer.is_use2 = apps.explorer.is_use;
-            var elements = document.querySelectorAll('#win-explorer>.page>.main>.content>.view>.select');
+            elements = document.querySelectorAll('#win-explorer>.page>.main>.content>.view>.select');
             for (var i = 0; i < elements.length; i++) {
                 elements[i].classList.remove('select');
             }
-            apps.explorer.Process_Of_Select = "";
+            apps.explorer.Process_Of_Select = '';
         },
         goto: (path, clear = true) => {
-            apps.explorer.Process_Of_Select = "";
+            apps.explorer.Process_Of_Select = '';
             $('#win-explorer>.page>.main>.content>.view')[0].innerHTML = '';
             var pathl = path.split('/');
             var pathqwq = '';
@@ -1893,8 +2003,8 @@ let apps = {
                 tmp = tmp['folder'][name];
                 pathqwq += '/';
             });
-            var path_ = path
-            if (Object.keys(tmp["folder"]) == 0 && tmp["file"].length == 0) {
+            var path_ = path;
+            if (Object.keys(tmp['folder']) == 0 && tmp['file'].length == 0) {
                 $('#win-explorer>.page>.main>.content>.view')[0].innerHTML = '<p class="info">此文件夹为空。</p>';
             }
             else {
@@ -1927,9 +2037,9 @@ let apps = {
 
             // $('#win-explorer>.path>.tit')[0].innerHTML = path;
         },
-        add: (path, name_, type = "file", command = "", icon = "") => { //type为文件类型，只有文件夹files和文件file
+        add: (path, name_, type = 'file', command = '', icon = '') => { //type为文件类型，只有文件夹files和文件file
             var pathl = path.split('/');
-            var icon_ = "";
+            var icon_ = '';
             let tmp = apps.explorer.path;
             pathl.forEach(name => {
                 tmp = tmp['folder'][name];
@@ -1938,25 +2048,25 @@ let apps = {
                 tmp = { folder: {}, file: [] };
             }
             if (apps.explorer.traverseDirectory(tmp, name_)) {
-                shownotice("duplication file name");
+                shownotice('duplication file name');
                 return;
             }
-            name_1 = name_.split(".");
+            name_1 = name_.split('.');
 
-            if (type == "file") {
-                if (name_1[1] == "txt") {
-                    icon_ = "icon/files/txt.png";
-                    if (command == "")
-                        command = "openapp('notepad')";
+            if (type == 'file') {
+                if (name_1[1] == 'txt') {
+                    icon_ = 'icon/files/txt.png';
+                    if (command == '')
+                        command = 'openapp(\'notepad\')';
                 }
-                else if (name_1[1] == "png" || name_1[1] == "jpg" | name_1[1] == "bmp") {
-                    icon_ = "icon/files/picture.png";
+                else if (name_1[1] == 'png' || name_1[1] == 'jpg' | name_1[1] == 'bmp') {
+                    icon_ = 'icon/files/picture.png';
                 }
                 else {
-                    icon_ = "icon/files/none.png";
+                    icon_ = 'icon/files/none.png';
                 }
                 //这边可以适配更多的文件类型
-                if (icon != "") {
+                if (icon != '') {
                     icon_ = icon;
                 }
                 try {
@@ -1971,7 +2081,7 @@ let apps = {
                 tmp.folder[name_] = { folder: {}, file: [] };
             }
             apps.explorer.goto(path);
-            apps.explorer.rename(path + "/" + name_);
+            apps.explorer.rename(path + '/' + name_);
         },
         rename: (path) => {
             var pathl = path.split('/');
@@ -1983,27 +2093,27 @@ let apps = {
                 tmp = tmp['folder'][name];
             });
             let element = document.querySelector('#' + apps.explorer.get_file_id(name));
-            let img = element.querySelector("img").outerHTML;
+            let img = element.querySelector('img').outerHTML;
             element.innerHTML = img;
-            let input = document.createElement("input");
+            let input = document.createElement('input');
             // input.style.cssText = '';
-            input.id = "new_name";
-            input.className = "input";
+            input.id = 'new_name';
+            input.className = 'input';
             input.value = apps.explorer.old_name;
             element.appendChild(input);
-            setTimeout(() => { $("#new_name").focus(); $("#new_name").select(); }, 200);
+            setTimeout(() => { $('#new_name').focus(); $('#new_name').select(); }, 200);
 
-            element.classList.add("change");
-            var input_ = document.getElementById("new_name");
-            input_.addEventListener("keyup", function (event) {
-                if (event.key === "Enter") {
+            element.classList.add('change');
+            var input_ = document.getElementById('new_name');
+            input_.addEventListener('keyup', function (event) {
+                if (event.key === 'Enter') {
                     event.preventDefault();
                     apps.explorer.del_select();
                 }
             });
         },
         get_file_id: (name) => {  //只能找到已经打开了的文件夹的元素id
-            var elements = document.getElementsByClassName("item");
+            var elements = document.getElementsByClassName('item');
             for (var i = 0; i < elements.length; i++) {
                 var element = elements[i];
                 if (element.innerText == name) {
@@ -2027,7 +2137,7 @@ let apps = {
             }
             tmp_files = tmp['folder'];
             delete tmp_files[name];
-            apps.explorer.goto(pathl.join("/"));
+            apps.explorer.goto(pathl.join('/'));
             apps.explorer.history.forEach(item => {
                 while (item.includes(path)) {
                     item.splice(item.findIndex(elt => { return elt == path; }), 1);
@@ -2035,14 +2145,14 @@ let apps = {
             });
         },
         traverseDirectory(dir, name) {
-            if (dir["file"] == null && dir["folder"] == null)
+            if (dir['file'] == null && dir['folder'] == null)
                 return false;
-            for (var i = 0; i < dir["file"].length; i++) {
-                if (dir["file"][i]['name'] == name) {
+            for (var i = 0; i < dir['file'].length; i++) {
+                if (dir['file'][i]['name'] == name) {
                     return true;
                 }
             }
-            const keys = Object.keys(dir["folder"]);
+            const keys = Object.keys(dir['folder']);
             for (var i = 0; i < keys.length; i++) {
                 if (keys[i] == name) {
                     return true;
@@ -2051,7 +2161,7 @@ let apps = {
             return false;
         },
         // 禁止奇奇怪怪的缩进！尽量压行，不要毫无意义地全部格式化和展开！ 
-        path: {folder:{'C:':{folder:{'Program Files':{folder:{'WindowsApps':{folder:{},file:[]},'Microsoft':{folder:{},file:[]}},file:[{name:'about.exe',ico:'icon/about.svg',command:"openapp('about')"},{name:'setting.exe',ico:'icon/setting.svg',command:"openapp('setting')"},]},'Program Files (x86)':{folder:{'Microsoft':{folder:{'Edge':{folder:{'Application':{folder:{'SetupMetrics':{folder:{},file:[]}},file:[{name:'msedge.exe',ico:'icon/edge.svg',command:"openapp('edge')"}]}}}}}}},'Windows':{folder:{'Boot':{folder:{},file:[]},'System':{folder:{},file:[]},'SysWOW64':{folder:{},file:[]},'System32':{folder:{},file:[{name:'calc.exe',ico:'icon/calc.svg',command:"openapp('calc')"},{name:'cmd.exe',ico:'icon/terminal.svg',command:"openapp('terminal')"},{name:'notepad.exe',ico:'icon/notepad.svg',command:"openapp('notepad')"},{name:'taskmgr.exe',ico:'icon/taskmgr.png',command:"openapp('taskmgr')"},{name:'winver.exe',ico:'icon/about.svg',command:"openapp('winver')"},]}},file:[{name:'explorer.exe',ico:'icon/explorer.svg',command:"apps.explorer.newtab()"},{name:'notepad.exe',ico:'icon/notepad.svg',command:"openapp('notepad')"},{name:'py.exe',ico:'icon/python.png',command:"openapp('python')"},]},'用户':{folder:{'Administrator':{folder:{'文档':{folder:{'IISExpress':{folder:{},file:[]},'PowerToys':{folder:{},file:[]}},file:[{name:'瓶盖介绍.doc',ico:'icon/files/word.png',command:''},{name:'瓶盖质量统计分析.xlsx',ico:'icon/files/excel.png',command:''},]},'图片':{folder:{'本机照片':{folder:{},file:[]},'屏幕截图':{folder:{},file:[]}},file:[{name:'瓶盖构造图.png',ico:'icon/files/img.png',command:''},{name:'可口可乐瓶盖.jpg',ico:'icon/files/img.png',command:''},]},'AppData':{folder:{'Local':{folder:{'Microsoft':{folder:{'Windows':{folder:{'Fonts':{},'TaskManager':{},'Themes':{},'Shell':{},'应用程序快捷方式':{},}},}},'Programs':{folder:{'Python':{folder:{'Python310':{folder:{'DLLs':{},'Doc':{},'include':{},'Lib':{folder:{'site-packages':{},'tkinter':{},}},'libs':{},'Script':{},'share':{},'tcl':{},'Tools':{}},file:[{name:'python.exe',ico:'icon/python.png',command:"openapp('python')"}]}},}}},'Temp':{folder:{}},}},'LocalLow':{folder:{'Microsoft':{folder:{'Windows':{},}},}},'Roaming':{folder:{'Microsoft':{folder:{'Windows':{folder:{'「开始」菜单':{folder:{'程序':{folder:{}},}},}},}},}},},file:[]},'音乐':{folder:{'录音机':{folder:{},file:[]}}}}},'公用':{folder:{'公用文档':{folder:{'IISExpress':{folder:{},file:[]},'PowerToys':{folder:{},file:[]}},file:[]},'公用图片':{folder:{'本机照片':{folder:{},file:[]},'屏幕截图':{folder:{},file:[]}},file:[]},'公用音乐':{folder:{'录音机':{folder:{},file:[]}}}}}}}},file:[]},'D:':{folder:{'Microsoft':{folder:{},file:[]}},file:[{name:'瓶盖结构说明.docx',ico:'icon/files/word.png',command:''},{name:'可口可乐瓶盖历史.pptx',ico:'icon/files/ppt.png',command:''},]}}},
+        path: {folder:{'C:':{folder:{'Program Files':{folder:{'WindowsApps':{folder:{},file:[]},'Microsoft':{folder:{},file:[]}},file:[{name:'about.exe',ico:'icon/about.svg',command:'openapp(\'about\')'},{name:'setting.exe',ico:'icon/setting.svg',command:'openapp(\'setting\')'},]},'Program Files (x86)':{folder:{'Microsoft':{folder:{'Edge':{folder:{'Application':{folder:{'SetupMetrics':{folder:{},file:[]}},file:[{name:'msedge.exe',ico:'icon/edge.svg',command:'openapp(\'edge\')'}]}}}}}}},'Windows':{folder:{'Boot':{folder:{},file:[]},'System':{folder:{},file:[]},'SysWOW64':{folder:{},file:[]},'System32':{folder:{},file:[{name:'calc.exe',ico:'icon/calc.svg',command:'openapp(\'calc\')'},{name:'cmd.exe',ico:'icon/terminal.svg',command:'openapp(\'terminal\')'},{name:'notepad.exe',ico:'icon/notepad.svg',command:'openapp(\'notepad\')'},{name:'taskmgr.exe',ico:'icon/taskmgr.png',command:'openapp(\'taskmgr\')'},{name:'winver.exe',ico:'icon/about.svg',command:'openapp(\'winver\')'},]}},file:[{name:'explorer.exe',ico:'icon/explorer.svg',command:'apps.explorer.newtab()'},{name:'notepad.exe',ico:'icon/notepad.svg',command:'openapp(\'notepad\')'},{name:'py.exe',ico:'icon/python.png',command:'openapp(\'python\')'},]},'用户':{folder:{'Administrator':{folder:{'文档':{folder:{'IISExpress':{folder:{},file:[]},'PowerToys':{folder:{},file:[]}},file:[{name:'瓶盖介绍.doc',ico:'icon/files/word.png',command:''},{name:'瓶盖质量统计分析.xlsx',ico:'icon/files/excel.png',command:''},]},'图片':{folder:{'本机照片':{folder:{},file:[]},'屏幕截图':{folder:{},file:[]}},file:[{name:'瓶盖构造图.png',ico:'icon/files/img.png',command:''},{name:'可口可乐瓶盖.jpg',ico:'icon/files/img.png',command:''},]},'AppData':{folder:{'Local':{folder:{'Microsoft':{folder:{'Windows':{folder:{'Fonts':{},'TaskManager':{},'Themes':{},'Shell':{},'应用程序快捷方式':{},}},}},'Programs':{folder:{'Python':{folder:{'Python310':{folder:{'DLLs':{},'Doc':{},'include':{},'Lib':{folder:{'site-packages':{},'tkinter':{},}},'libs':{},'Script':{},'share':{},'tcl':{},'Tools':{}},file:[{name:'python.exe',ico:'icon/python.png',command:'openapp(\'python\')'}]}},}}},'Temp':{folder:{}},}},'LocalLow':{folder:{'Microsoft':{folder:{'Windows':{},}},}},'Roaming':{folder:{'Microsoft':{folder:{'Windows':{folder:{'「开始」菜单':{folder:{'程序':{folder:{}},}},}},}},}},},file:[]},'音乐':{folder:{'录音机':{folder:{},file:[]}}}}},'公用':{folder:{'公用文档':{folder:{'IISExpress':{folder:{},file:[]},'PowerToys':{folder:{},file:[]}},file:[]},'公用图片':{folder:{'本机照片':{folder:{},file:[]},'屏幕截图':{folder:{},file:[]}},file:[]},'公用音乐':{folder:{'录音机':{folder:{},file:[]}}}}}}}},file:[]},'D:':{folder:{'Microsoft':{folder:{},file:[]}},file:[{name:'瓶盖结构说明.docx',ico:'icon/files/word.png',command:''},{name:'可口可乐瓶盖历史.pptx',ico:'icon/files/ppt.png',command:''},]}}},
         history: [],
         historypt: [],
         initHistory: (tab) => {
@@ -2108,7 +2218,7 @@ let apps = {
     },
     calc: {
         init: () => {
-            document.getElementById('calc-input').innerHTML = "0";
+            document.getElementById('calc-input').innerHTML = '0';
         }
     },
     about: {
@@ -2130,26 +2240,26 @@ let apps = {
                 setTimeout(() => {
                     $('#contri').html('');
                     cs.forEach(c => {
-                        $('#contri').append(`<a class="a" onclick="window.open('${c['html_url']}','_blank');"><p class="name">${c['login']}</p><p class="cbs">贡献：<span class="num">${c['contributions']}</span></p></a>`)
+                        $('#contri').append(`<a class="a" onclick="window.open('${c['html_url']}','_blank');"><p class="name">${c['login']}</p><p class="cbs">贡献：<span class="num">${c['contributions']}</span></p></a>`);
                     });
-                    $('#contri').append(`<a class="button" onclick="apps.about.get()"><i class="bi bi-arrow-clockwise"></i> 刷新</a>`)
+                    $('#contri').append('<a class="button" onclick="apps.about.get()"><i class="bi bi-arrow-clockwise"></i> 刷新</a>');
                 }, 200);
             });
         },
         get_star: () => {
-            apps.about.run_loading('#StarShow')
+            apps.about.run_loading('#StarShow');
             const repoFullName = 'tjy-gitnub/win12';
             fetch(`https://api.github.com/repos/${repoFullName}`)
                 .then(response => response.json())
                 .then(data => {
                     setTimeout(() => {
                         const starCount = data.stargazers_count;
-                        $('#StarShow').html('<div style="display: flex;"><p>&emsp;&emsp;Star 数量：' + starCount + ' (实时数据)</p>&emsp;<a class="button" onclick="apps.about.get_star()"><i class="bi bi-arrow-clockwise"></i> 刷新</a></div>')
+                        $('#StarShow').html('<div style="display: flex;"><p>&emsp;&emsp;Star 数量：' + starCount + ' (实时数据)</p>&emsp;<a class="button" onclick="apps.about.get_star()"><i class="bi bi-arrow-clockwise"></i> 刷新</a></div>');
                     }, 200);
                 })
                 .catch(error => {
                     console.error('获取star数量时出错：', error);
-                    $('#StarShow').html('<div style="display: flex;"><p>&emsp;&emsp;哎呀！出错了！</p>&emsp;<a class="button" onclick="apps.about.get_star()"><i class="bi bi-arrow-clockwise"></i> 重试</a></div>')
+                    $('#StarShow').html('<div style="display: flex;"><p>&emsp;&emsp;哎呀！出错了！</p>&emsp;<a class="button" onclick="apps.about.get_star()"><i class="bi bi-arrow-clockwise"></i> 重试</a></div>');
                 });
         }
     },
@@ -2158,7 +2268,7 @@ let apps = {
             $('#win-notepad>.text-box').addClass('down');
             setTimeout(() => {
                 $('#win-notepad>.text-box').val('');
-                $('#win-notepad>.text-box').removeClass('down')
+                $('#win-notepad>.text-box').removeClass('down');
             }, 200);
         }
     },
@@ -2169,7 +2279,7 @@ let apps = {
         },
         run: () => {
             let result;
-            let output = document.getElementById("output");
+            let output = document.getElementById('output');
             try {
                 if (apps.python.pyodide) {
                     let code = apps.pythonEditor.editor.getValue();
@@ -2188,10 +2298,10 @@ let apps = {
                 apps.python.loaded = true;
                 apps.python.load();
             }
-            ace.require("ace/ext/language_tools");
-            apps.pythonEditor.editor = ace.edit("win-python-ace-editor");
-            apps.pythonEditor.editor.session.setMode("ace/mode/python");
-            apps.pythonEditor.editor.setTheme("ace/theme/vibrant_ink");
+            ace.require('ace/ext/language_tools');
+            apps.pythonEditor.editor = ace.edit('win-python-ace-editor');
+            apps.pythonEditor.editor.session.setMode('ace/mode/python');
+            apps.pythonEditor.editor.setTheme('ace/theme/vibrant_ink');
             apps.pythonEditor.editor.setOptions({
                 enableBasicAutocompletion: true,
                 enableSnippets: true,
@@ -2235,27 +2345,27 @@ let apps = {
                 elt.onclick = function () {
                     apps.notepadFonts.typeinput.value = this.innerText;
                     apps.notepadFonts.preview();
-                }
-                elt.setAttribute('style', `font-family: ${elt.innerText};`)
+                };
+                elt.setAttribute('style', `font-family: ${elt.innerText};`);
             }
 
             for (const elt of apps.notepadFonts.sizevalues) {
                 elt.onclick = function () {
                     apps.notepadFonts.sizeinput.value = this.innerText;
                     apps.notepadFonts.preview();
-                }
+                };
             }
 
             for (const elt of apps.notepadFonts.stylevalues) {
                 elt.onclick = function () {
                     apps.notepadFonts.styleinput.value = this.innerText;
                     apps.notepadFonts.preview();
-                }
+                };
                 elt.setAttribute('style', apps.notepadFonts.styles[elt.innerText]);
             }
 
-            apps.notepadFonts.sizeinput.addEventListener("keyup", apps.notepadFonts.preview);
-            apps.notepadFonts.typeinput.addEventListener("keyup", apps.notepadFonts.preview);
+            apps.notepadFonts.sizeinput.addEventListener('keyup', apps.notepadFonts.preview);
+            apps.notepadFonts.typeinput.addEventListener('keyup', apps.notepadFonts.preview);
         },
         preview: () => {
             var fontsize = 0;
@@ -2334,7 +2444,7 @@ Type "help", "copyright", "credits" or "license" for more information.
             if (apps.python.pyodide) {
                 const input = $('#win-python>pre>input');
                 const _code = input.val();
-                if (_code == "exit()") {
+                if (_code == 'exit()') {
                     hidewin('python');
                     input.val('');
                 }
@@ -2397,14 +2507,18 @@ Type "help", "copyright", "credits" or "license" for more information.
         }
     },
     terminal: {
+        historyList: [],
+        historypt: 0,
+        historyTemp: '',
+        isViewingHistory: false,
         init: () => {
             $('#win-terminal').html(`<pre>
 Microsoft Windows [版本 12.0.39035.7324]
 (c) Microsoft Corporation。保留所有权利。
         </pre>
         <pre class="text-cmd"></pre>
-        <pre style="display: flex"><span class="prompt">C:\\Windows\\System32> </span><input type="text" onkeyup="if (event.keyCode == 13) { apps.terminal.run(); }"></pre>`)
-            $('#win-terminal>pre>input').focus()
+        <pre style="display: flex"><span class="prompt">C:\\Windows\\System32> </span><input type="text" onkeyup="if (event.keyCode == 13) { apps.terminal.run(); }"></pre>`);
+            $('#win-terminal>pre>input').focus();
         },
         run: () => {
             const elt = $('#win-terminal>pre.text-cmd')[0];
@@ -2418,7 +2532,7 @@ Microsoft Windows [版本 12.0.39035.7324]
                 input.val('');
             }
             else {
-                if (!runcmd(command, inTerminal=true) && command!="") {
+                if (!runcmd(command, inTerminal=true) && command!='') {
                     var newD = document.createElement('div');
                     newD.innerText = `"${command}"不是内部或外部命令,也不是可运行程序
                 或批处理文件`;
@@ -2430,18 +2544,42 @@ Microsoft Windows [版本 12.0.39035.7324]
                 input.blur();
                 input.focus();
             }
-            
+        },
+        historyIsEmpty: () => {
+            return historypt <= 0;
+        },
+        historyIsFull: () => {
+            return historypt >= apps.terminal.historyList.length - 1;
+        },
+        checkHistory: () => {
+            return !(apps.terminal.historyIsEmpty() && apps.terminal.historyIsFull());
+        },
+        pushHistory: (cmd) => {
+            historypt = apps.terminal.historyList.length;
+            apps.terminal.historyList[historypt++] = cmd;
+        },
+        popHistory: () => {
+            return apps.terminal.historyList[--historypt];
+        },
+        incHistory: () => {
+            return apps.taskmgr.historyList[++historypt];
+        },
+        history: (type) => {
+            if (!apps.terminal.isViewingHistory) {
+                apps.terminal.isViewingHistory = true;
+                apps.terminal.historyTemp = $('#win-terminal input').val();
+            }
         }
     },
     search: {
         rand: [{ name: '农夫山泉瓶盖简介.txt', bi: 'text', ty: '文本文档' },
-        { name: '瓶盖构造图.png', bi: 'image', ty: 'PNG 文件' },
-        { name: '瓶盖结构说明.docx', bi: 'richtext', ty: 'Microsoft Word 文档' },
-        { name: '可口可乐瓶盖.jpg', bi: 'image', ty: 'JPG 文件' },
-        { name: '可口可乐瓶盖历史.pptx', bi: 'slides', ty: 'Microsoft Powerpoint 演示文稿' },
-        { name: '瓶盖质量统计分析.xlsx', bi: 'ruled', ty: 'Microsoft Excel 工作表' },
-        { name: '农夫山泉瓶盖.svg', bi: 'image', ty: 'SVG 文件' },
-        { name: '瓶盖介绍.doc', bi: 'richtext', ty: 'Microsoft Word 文档' }],
+            { name: '瓶盖构造图.png', bi: 'image', ty: 'PNG 文件' },
+            { name: '瓶盖结构说明.docx', bi: 'richtext', ty: 'Microsoft Word 文档' },
+            { name: '可口可乐瓶盖.jpg', bi: 'image', ty: 'JPG 文件' },
+            { name: '可口可乐瓶盖历史.pptx', bi: 'slides', ty: 'Microsoft Powerpoint 演示文稿' },
+            { name: '瓶盖质量统计分析.xlsx', bi: 'ruled', ty: 'Microsoft Excel 工作表' },
+            { name: '农夫山泉瓶盖.svg', bi: 'image', ty: 'SVG 文件' },
+            { name: '瓶盖介绍.doc', bi: 'richtext', ty: 'Microsoft Word 文档' }],
         search: le => {
             if (le > 0) {
                 $('#search-win>.ans>.list>list').html(
@@ -2496,17 +2634,17 @@ Microsoft Windows [版本 12.0.39035.7324]
             apps.edge.pushHistory(apps.edge.tabs[apps.edge.tabs.length - 1][0], 'mainpage.html');
             $('#win-edge').append(`<iframe src="mainpage.html" frameborder="0" class="${apps.edge.tabs[apps.edge.tabs.length - 1][0]}">`);
             $('#win-edge>.tool>input.url').focus();
-            $("#win-edge>iframe")[apps.edge.tabs.length - 1].onload = function () {
+            $('#win-edge>iframe')[apps.edge.tabs.length - 1].onload = function () {
                 this.contentDocument.querySelector('input').onkeyup = function (e) {
                     if (e.keyCode == 13 && $(this).val() != '') {
                         apps.edge.goto($(this).val());
                     }
-                }
+                };
                 this.contentDocument.querySelector('svg').onclick = () => {
                     if ($(this.contentDocument.querySelector('input')).val() != '') {
-                        apps.edge.goto($(this.contentDocument.querySelector('input')).val())
+                        apps.edge.goto($(this.contentDocument.querySelector('input')).val());
                     }
-                }
+                };
             };
             m_tab.tab('edge', apps.edge.tabs.length - 1);
             apps.edge.checkHistory(apps.edge.tabs[apps.edge.now][0]);
@@ -2520,8 +2658,8 @@ Microsoft Windows [版本 12.0.39035.7324]
             document.getElementById('edge-max').style.display = 'none';
             document.getElementById('fuls-edge-exit').style.display = '';
             document.getElementById('over-bar').style.display = '';
-            $('.edge>.titbar').hide()
-            $('.edge>.content>.tool').hide()
+            $('.edge>.titbar').hide();
+            $('.edge>.content>.tool').hide();
             apps.edge.fuls = !apps.edge.fuls;
         },
         exitfullscreen: () => {
@@ -2532,8 +2670,8 @@ Microsoft Windows [版本 12.0.39035.7324]
             document.getElementById('edge-max').style.display = '';
             document.getElementById('fuls-edge-exit').style.display = 'none';
             document.getElementById('over-bar').style.display = 'none';
-            $('.edge>.titbar').show()
-            $('.edge>.content>.tool').show()
+            $('.edge>.titbar').show();
+            $('.edge>.content>.tool').show();
             apps.edge.fuls = !apps.edge.fuls;
         },
         in_div(id,event) {
@@ -2555,10 +2693,10 @@ Microsoft Windows [版本 12.0.39035.7324]
         },
         settab: (t, i) => {
             if ($('.window.edge>.titbar>.tabs>.tab.' + t[0] + '>.reloading')[0]) {
-                return `<div class="tab ${t[0]}" onclick="m_tab.tab('edge',${i})" oncontextmenu="showcm(event,'edge.tab',${i});stop(event);return false" onmousedown="m_tab.moving('edge',this,event,${i});stop(event);" ontouchstart="m_tab.moving('edge',this,event,${i});stop(event);">${apps.edge.reloadElt}<p>${t[1]}</p><span class="clbtn bi bi-x" onclick="m_tab.close('edge',${i})"></span></div>`;
+                return `<div class="tab ${t[0]}" onclick="m_tab.tab('edge',${i})" oncontextmenu="showcm(event,'edge.tab',${i});stop(event);return false" onmousedown="m_tab.moving('edge',this,event,${i});stop(event);disableIframes();" ontouchstart="m_tab.moving('edge',this,event,${i});stop(event);disableIframes();">${apps.edge.reloadElt}<p>${t[1]}</p><span class="clbtn bi bi-x" onclick="m_tab.close('edge',${i})"></span></div>`;
             }
             else {
-                return `<div class="tab ${t[0]}" onclick="m_tab.tab('edge',${i})" oncontextmenu="showcm(event,'edge.tab',${i});stop(event);return false" onmousedown="m_tab.moving('edge',this,event,${i});stop(event);" ontouchstart="m_tab.moving('edge',this,event,${i});stop(event);"><p>${t[1]}</p><span class="clbtn bi bi-x" onclick="m_tab.close('edge',${i})"></span></div>`;
+                return `<div class="tab ${t[0]}" onclick="m_tab.tab('edge',${i})" oncontextmenu="showcm(event,'edge.tab',${i});stop(event);return false" onmousedown="m_tab.moving('edge',this,event,${i});stop(event);disableIframes();" ontouchstart="m_tab.moving('edge',this,event,${i});stop(event);disableIframes();"><p>${t[1]}</p><span class="clbtn bi bi-x" onclick="m_tab.close('edge',${i})"></span></div>`;
             }
         },
         tab: (c) => {
@@ -2586,7 +2724,7 @@ Microsoft Windows [版本 12.0.39035.7324]
                     $('.window.edge>.titbar>.tabs>.tab.' + apps.edge.tabs[apps.edge.now][0])[0].insertAdjacentHTML('afterbegin', apps.edge.reloadElt);
                     $('#win-edge>iframe.' + apps.edge.tabs[apps.edge.now][0])[0].onload = function () {
                         $('.window.edge>.titbar>.tabs>.tab.' + this.classList[0])[0].removeChild($('.window.edge>.titbar>.tabs>.tab.' + this.classList[0] + '>.reloading')[0]);
-                    }
+                    };
                 }
             }
         },
@@ -2626,7 +2764,7 @@ Microsoft Windows [版本 12.0.39035.7324]
                 }
                 $('#win-edge>iframe.' + apps.edge.tabs[apps.edge.now][0])[0].onload = function () {
                     $('.window.edge>.titbar>.tabs>.tab.' + this.classList[0])[0].removeChild($('.window.edge>.titbar>.tabs>.tab.' + this.classList[0] + '>.reloading')[0]);
-                }
+                };
                 apps.edge.getTitle($('#win-edge>iframe.show').attr('src'), apps.edge.now);
                 if (clear) {
                     apps.edge.delHistory(apps.edge.tabs[apps.edge.now][0]);
@@ -2694,15 +2832,15 @@ Microsoft Windows [版本 12.0.39035.7324]
     },
     windows12: {
         init: () => {
-            document.getElementById('win12-window').src = "./boot.html";
+            document.getElementById('win12-window').src = './boot.html';
         }
     },
     wsa: {
         init: () => {
-            null
+            null;
         }
     }
-}
+};
 
 // 小组件
 let widgets = {
@@ -2741,10 +2879,10 @@ let widgets = {
     },
     calc: {
         init: () => {
-            widgetCalculator = new Calculator($('*:not(.template)>*>.wg.calc>.content>.container>#calc-input-widgets')[0], $('*:not(.template)>*>.wg.calc>.content')[0])
+            widgetCalculator = new Calculator($('*:not(.template)>*>.wg.calc>.content>.container>#calc-input-widgets')[0], $('*:not(.template)>*>.wg.calc>.content')[0]);
         },
         remove: () => {
-            $('#calc-input-widgets')[0].value = "0";
+            $('#calc-input-widgets')[0].value = '0';
         }
     },
     weather: {
@@ -2757,19 +2895,19 @@ let widgets = {
         },
         update: () => {
             let wic = {
-                23: "HeavyDrizzle", 40: "HeavyDrizzle", 26: "SnowShowersDayV2", 6: "BlowingHailV2",
-                5: "CloudyV3", 20: "LightSnowV2", 91: "WindyV2", 27: "ThunderstormsV2", 10: "FreezingRainV2",
-                77: "RainSnowV2", 12: "Haze", 13: "HeavyDrizzle", 39: "Fair", 24: "RainSnowV2",
-                78: "RainSnowShowersNightV2", 9: "FogV2", 3: "PartlyCloudyDayV3", 43: "IcePelletsV2",
-                16: "IcePellets", 8: "LightRainV2", 15: "HeavySnowV2", 28: "ClearNightV3",
-                30: "PartlyCloudyNightV2", 14: "ModerateRainV2", 1: "SunnyDayV3", 7: "BlowingSnowV2",
-                50: "RainShowersNightV2", 82: "LightSnowShowersNight", 81: "LightSnowShowersDay",
-                2: "MostlySunnyDay", 29: "MostlyClearNight", 4: "MostlyCloudyDayV2",
-                31: "MostlyCloudyNightV2", 19: "LightRainV3", 17: "LightRainShowerDay", 53: "N422Snow",
-                52: "Snow", 25: "Snow", 44: "LightRainShowerNight", 65: "HailDayV2", 73: "HailDayV2",
-                74: "HailNightV2", 79: "RainShowersDayV2", 89: "HazySmokeV2", 90: "HazeSmokeNightV2_106",
-                66: "HailNightV2", 59: "WindyV2", 56: "ThunderstormsV2", 58: "FogV2", 54: "HazySmokeV2",
-                55: "Dust1", 57: "Haze"
+                23: 'HeavyDrizzle', 40: 'HeavyDrizzle', 26: 'SnowShowersDayV2', 6: 'BlowingHailV2',
+                5: 'CloudyV3', 20: 'LightSnowV2', 91: 'WindyV2', 27: 'ThunderstormsV2', 10: 'FreezingRainV2',
+                77: 'RainSnowV2', 12: 'Haze', 13: 'HeavyDrizzle', 39: 'Fair', 24: 'RainSnowV2',
+                78: 'RainSnowShowersNightV2', 9: 'FogV2', 3: 'PartlyCloudyDayV3', 43: 'IcePelletsV2',
+                16: 'IcePellets', 8: 'LightRainV2', 15: 'HeavySnowV2', 28: 'ClearNightV3',
+                30: 'PartlyCloudyNightV2', 14: 'ModerateRainV2', 1: 'SunnyDayV3', 7: 'BlowingSnowV2',
+                50: 'RainShowersNightV2', 82: 'LightSnowShowersNight', 81: 'LightSnowShowersDay',
+                2: 'MostlySunnyDay', 29: 'MostlyClearNight', 4: 'MostlyCloudyDayV2',
+                31: 'MostlyCloudyNightV2', 19: 'LightRainV3', 17: 'LightRainShowerDay', 53: 'N422Snow',
+                52: 'Snow', 25: 'Snow', 44: 'LightRainShowerNight', 65: 'HailDayV2', 73: 'HailDayV2',
+                74: 'HailNightV2', 79: 'RainShowersDayV2', 89: 'HazySmokeV2', 90: 'HazeSmokeNightV2_106',
+                66: 'HailNightV2', 59: 'WindyV2', 56: 'ThunderstormsV2', 58: 'FogV2', 54: 'HazySmokeV2',
+                55: 'Dust1', 57: 'Haze'
             };
             $.getJSON('https://assets.msn.cn/service/weatherfalcon/weather/overview?locale=zh-cn&ocid=msftweather').then(r => {
                 let inf = r.value[0].responses[0].weather[0].current;
@@ -2777,7 +2915,7 @@ let widgets = {
                 $('.wg.weather>.content>.img').attr('src', `https://assets.msn.cn/weathermapdata/1/static/weather/Icons/taskbar_v10/Condition_Card/${wic[inf.icon]}.svg`);
                 $('.wg.weather>.content>.text>.temperature').text(`${inf.temp}℃`);
                 $('.wg.weather>.content>.text>.detail').text(`${inf.cap} 体感温度${inf.feels}℃`);
-            })
+            });
         },
     },
     monitor: {
@@ -2792,13 +2930,13 @@ let widgets = {
             }
             if (apps.taskmgr.preLoaded != true && apps.taskmgr.loaded != true) {
                 apps.taskmgr.load(false);
-                apps.taskmgr.preLoaded = true;
             }
+            apps.taskmgr.preLoaded = true;
             widgets.monitor.update();
             widgets.monitor.handle = window.setInterval(widgets.monitor.update, 1000);
         },
         update: () => {
-            $('*:not(.template)>*>.wg.monitor>.content>.container>svg>circle:last-child').css('stroke-dasharray', `${widgets.monitor.type != 'gpu' ? widgets.monitor.type.match('wifi') ? widgets.monitor.type == 'wifi-send' ? apps.taskmgr.wifi[1] / 100 * (Math.PI * $('*:not(.template)>*>.wg.monitor>.content>.container>svg>circle:last-child')[0].r.baseVal.value * 2) : apps.taskmgr.wifi[0] / 100 * (Math.PI * $('*:not(.template)>*>.wg.monitor>.content>.container>svg>circle:last-child')[0].r.baseVal.value * 2) : apps.taskmgr[widgets.monitor.type] / 100 * (Math.PI * $('*:not(.template)>*>.wg.monitor>.content>.container>svg>circle:last-child')[0].r.baseVal.value * 2) : apps.taskmgr.gpu.usage / 100 * (Math.PI * $('*:not(.template)>*>.wg.monitor>.content>.container>svg>circle:last-child')[0].r.baseVal.value * 2)}, 170`);
+            $('*:not(.template)>*>.wg.monitor>.content>.container>svg>circle:last-child').css('stroke-dasharray', `${widgets.monitor.type != 'gpu' ? widgets.monitor.type.match('wifi') ? widgets.monitor.type == 'wifi-send' ? apps.taskmgr.wifi.send / 100 * (Math.PI * $('*:not(.template)>*>.wg.monitor>.content>.container>svg>circle:last-child')[0].r.baseVal.value * 2) : apps.taskmgr.wifi.receive / 100 * (Math.PI * $('*:not(.template)>*>.wg.monitor>.content>.container>svg>circle:last-child')[0].r.baseVal.value * 2) : apps.taskmgr[widgets.monitor.type] / 100 * (Math.PI * $('*:not(.template)>*>.wg.monitor>.content>.container>svg>circle:last-child')[0].r.baseVal.value * 2) : apps.taskmgr.gpu.usage / 100 * (Math.PI * $('*:not(.template)>*>.wg.monitor>.content>.container>svg>circle:last-child')[0].r.baseVal.value * 2)}, 170`);
             if (widgets.monitor.type == 'cpu' || widgets.monitor.type == 'gpu') {
                 $('*:not(.template)>*>.wg.monitor>.content>.container>svg>circle:last-child').css('stroke', '#2983cc');
                 $('*:not(.template)>*>.wg.monitor>.content>.text>.type')[0].innerText = widgets.monitor.type == 'cpu' ? 'CPU利用率' : 'GPU利用率';
@@ -2819,14 +2957,14 @@ let widgets = {
                 $('*:not(.template)>*>.wg.monitor>.content>.container>svg>circle:last-child').css('stroke', '#8e5829');
                 $('*:not(.template)>*>.wg.monitor>.content>.text>.type')[0].innerText = '网络吞吐量-接收';
             }
-            $('*:not(.template)>*>.wg.monitor>.content>.text>.value')[0].innerText = (widgets.monitor.type != 'gpu' ? widgets.monitor.type.match('wifi') ? widgets.monitor.type == 'wifi-send' ? apps.taskmgr.wifi[1] : apps.taskmgr.wifi[0] : apps.taskmgr[widgets.monitor.type] : apps.taskmgr.gpu.usage).toFixed(widgets.monitor.type.match('wifi') ? 2 : 1) + (widgets.monitor.type.match('wifi') ? 'Mbps' : '%');
-            $('*:not(.template)>*>.wg.monitor>.content>.container>.text>.value')[0].innerText = (widgets.monitor.type != 'gpu' ? widgets.monitor.type.match('wifi') ? widgets.monitor.type == 'wifi-send' ? apps.taskmgr.wifi[1] : apps.taskmgr.wifi[0] : apps.taskmgr[widgets.monitor.type] : apps.taskmgr.gpu.usage).toFixed(widgets.monitor.type.match('wifi') ? 2 : 1) + (widgets.monitor.type.match('wifi') ? 'Mbps' : '%');
+            $('*:not(.template)>*>.wg.monitor>.content>.text>.value')[0].innerText = (widgets.monitor.type != 'gpu' ? widgets.monitor.type.match('wifi') ? widgets.monitor.type == 'wifi-send' ? apps.taskmgr.wifi.send : apps.taskmgr.wifi.receive : apps.taskmgr[widgets.monitor.type] : apps.taskmgr.gpu.usage).toFixed(widgets.monitor.type.match('wifi') ? 2 : 1) + (widgets.monitor.type.match('wifi') ? 'Mbps' : '%');
+            $('*:not(.template)>*>.wg.monitor>.content>.container>.text>.value')[0].innerText = (widgets.monitor.type != 'gpu' ? widgets.monitor.type.match('wifi') ? widgets.monitor.type == 'wifi-send' ? apps.taskmgr.wifi.send : apps.taskmgr.wifi.receive : apps.taskmgr[widgets.monitor.type] : apps.taskmgr.gpu.usage).toFixed(widgets.monitor.type.match('wifi') ? 2 : 1) + (widgets.monitor.type.match('wifi') ? 'Mbps' : '%');
         },
         remove: () => {
             window.clearInterval(widgets.monitor.handle);
         }
     }
-}
+};
 let edit_mode = false;
 function editMode() {
     if (edit_mode) {
@@ -2837,7 +2975,7 @@ function editMode() {
         $('#desktop-editbar-container').addClass('show');
         $('#desktop-widgets').addClass('edit');
     }
-    edit_mode = !edit_mode
+    edit_mode = !edit_mode;
 }
 function widgetsMove(elt, e) {
     if (elt.classList.contains('desktop') && edit_mode == true) {
@@ -2873,9 +3011,10 @@ function widgetsMove(elt, e) {
             elt.style.top = `${top}px`;
             // 基于人脑计算qwq
             gridnow = {
-                col: ((width / 2 + elt.getBoundingClientRect().right - 20) / ((gridcolmax * 83 + 10 * (gridcolmax - 1)) / gridcolmax) - gridcol + (gridcol - 2) * 0.5).toFixed(0),
+                // 四舍五入(组件宽度 / 2 + 组件视窗右边距 - 布局右边距) / ((网格总列数 * 网格宽度 + 网格间距 * 网格间距数量) / 网格总数量) - 元素网格列尾 + 校正值)
+                col: ((width / 2 + elt.getBoundingClientRect().right - 20) / ((gridcolmax * 83 + 10 * (gridcolmax - 1)) / gridcolmax) - gridcol/* + (gridcol - 2) * 0.5*/).toFixed(0),
                 row: ((height / 2 + top - 20) / ((gridrowmax * 83 + 10 * (gridrowmax - 1)) / gridrowmax) + (2 - gridrow) * 0.5).toFixed(0)
-            }
+            };
             gridnow.col = gridnow.col <= Math.floor(gridcol / 2) ? 1 + Math.floor(gridcol / 2) : gridnow.col > (gridcolmax - gridcol + (gridcol % 2 ? (Number(gridcol) + 1) / 2 : gridcol / 2)) ? (gridcolmax - gridcol + (gridcol % 2 ? (Number(gridcol) + 1) / 2 : gridcol / 2)) : gridnow.col;
             gridnow.row = gridnow.row <= 0 ? 1 : gridnow.row >= (gridrowmax - gridrow + 1) ? gridrowmax - gridrow + 1 : gridnow.row;
             $('#desktop-widgets>.widgets-move').css('cssText', `grid-column: ${gridcolmax - gridnow.col} / span ${gridcol}; grid-row: ${gridnow.row} / span ${gridrow}`);
@@ -2890,8 +3029,8 @@ function widgetsMove(elt, e) {
             window.setTimeout(() => {
                 elt.style.position = 'static';
                 $(elt).css('cssText', `grid-column: ${gridcolmax - gridnow.col} / span ${gridcol}; grid-row: ${gridnow.row} / span ${gridrow}`);
-                elt.style.left = `0px`;
-                elt.style.top = `0px`;
+                elt.style.left = '0px';
+                elt.style.top = '0px';
                 $('#desktop-widgets>.widgets-move').removeClass('show');
             }, 500);
             page.onmousemove = null;
@@ -2934,7 +3073,7 @@ let copilot = {
         5.指令"{settheme th}";用于切换系统的深色、浅色模式，区别于主题。用"light"表浅色，"dark"表深色，来替换其中的"th"
         仅有以下信息供你使用来回答用户的问题。
         1.Windows 12 网页版是一个开源项目，由谭景元原创, 使用 Html,css,js，在网络上模拟、创新操作系统
-        2.项目的地址是github.com/tjy-gitnub/win12
+        2.项目的地址是https://github.com/tjy-gitnub/win12
         3.此项目使用EPL v2.0开源许可
         有以下的应用供你回答用户。只有这些应用可以使用。
         1.设置:id为setting;在个性化页面中可以设置系统的主题，主题色，是否启用动画、阴影、圆角和为所有窗口开启亚克力透明效果
@@ -2945,7 +3084,7 @@ let copilot = {
         6.任务管理器:id为taskmgr;一个任务管理器
         7.cmd终端:id为terminal;一个cmd
         8.记事本:id为notepad;一个记事本
-        你只需要用一句话简单问候用户即可，现在开始与用户对话。`, false,role="system");
+        你只需要用一句话简单问候用户即可，现在开始与用户对话。`, false,role='system');
         // $('#copilot>.chat').append(`<div class="line system"><p class="text">本ai助手间歇性正常工作，如果ai提到一些花括号括起来的指令，请刷新页面后重新开始对话。见谅~</p></div>`);
         // $('#copilot>.chat').append(`<div class="line system"><p class="text">目前可用功能：<br>
         // 1.打开设置、edge、关于、计算器四个应用<br>
@@ -2955,10 +3094,10 @@ let copilot = {
         $('#copilot>.chat').append(`<div class="line system"><p class="text" id="init-message">正在初始化...</p></div>`);
         $('#copilot>.chat').scrollTop($('#copilot>.chat')[0].scrollHeight);
     },
-    send: (t, showusr = true,role="user") => {
+    send: (t, showusr = true,role='user') => {
         $('#copilot>.inputbox').addClass('disable');
         if (t.length == 0) {
-            $('#copilot>.chat').append(`<div class="line system"><p class="text">系统表示请发一些有意义的东西</p></div>`);
+            $('#copilot>.chat').append('<div class="line system"><p class="text">系统表示请发一些有意义的东西</p></div>');
             $('#copilot>.chat').scrollTop($('#copilot>.chat')[0].scrollHeight);
             msgDoneOperate();
             return;
@@ -2983,7 +3122,7 @@ let copilot = {
             }
             console.log(rt);
             if (rt == '请求过于频繁，等待10秒再试...') {
-                $('#copilot>.chat').append(`<div class="line system"><p class="text">api繁忙，过一会儿再试(实在不行刷新重新开始对话)</p></div>`);
+                $('#copilot>.chat').append('<div class="line system"><p class="text">api繁忙，过一会儿再试(实在不行刷新重新开始对话)</p></div>');
                 $('#copilot>.chat').scrollTop($('#copilot>.chat')[0].scrollHeight);
                 msgDoneOperate();
                 return;
@@ -3000,25 +3139,25 @@ let copilot = {
                     if (/{openapp .+?}/.test(i)) {
                         let t = i.match(/(?<={openapp ).+(?=})/)[0];
                         openapp(t);
-                        rt = rt.replace(i, `<div class="action"><p class="tit">打开应用</p><p class="detail">${$(`.window.${t}>.titbar>p`).text()}</p></div>`)
+                        rt = rt.replace(i, `<div class="action"><p class="tit">打开应用</p><p class="detail">${$(`.window.${t}>.titbar>p`).text()}</p></div>`);
                     } else if (/{openurl .+?}/.test(i)) {
                         let t = i.match(/(?<={openurl ).+(?=})/)[0];
                         openapp('edge');
                         apps.edge.newtab();
                         console.log(t);
                         apps.edge.goto(t);
-                        rt = rt.replace(i, `<div class="action"><p class="tit">打开URL</p><p class="detail">${decodeHtml(t)}</p></div>`)
+                        rt = rt.replace(i, `<div class="action"><p class="tit">打开URL</p><p class="detail">${decodeHtml(t)}</p></div>`);
                     } else if (/{feedback win12}/.test(i)) {
                         shownotice('feedback');
-                        rt = rt.replace(i, `<div class="action"><p class="tit">反馈</p><p class="detail">关于 Windows 12 网页版</p></div>`)
+                        rt = rt.replace(i, '<div class="action"><p class="tit">反馈</p><p class="detail">关于 Windows 12 网页版</p></div>');
                     } else if (/{feedback copilot}/.test(i)) {
                         shownotice('feedback-copilot');
-                        rt = rt.replace(i, `<div class="action"><p class="tit">反馈</p><p class="detail">关于 Windows 12 Copilot</p></div>`)
+                        rt = rt.replace(i, '<div class="action"><p class="tit">反馈</p><p class="detail">关于 Windows 12 Copilot</p></div>');
                     } else if (/{settheme .+?}/.test(i)) {
                         let t = i.match(/(?<={settheme ).+(?=})/)[0];
                         if ((t == 'light' && $(':root').hasClass('dark')) || (t == 'dark' && !$(':root').hasClass('dark')))
                             toggletheme();
-                        rt = rt.replace(i, `<div class="action"><p class="tit">切换外观模式</p><p class="detail">${t == 'dark' ? '深色' : '浅色'} 模式</p></div>`)
+                        rt = rt.replace(i, `<div class="action"><p class="tit">切换外观模式</p><p class="detail">${t == 'dark' ? '深色' : '浅色'} 模式</p></div>`);
                     }
                 }
                 $('#copilot>.chat').append(`<div class="line ai"><div class="text">${rt}</div></div>`);
@@ -3030,28 +3169,30 @@ let copilot = {
             msgDoneOperate();
         }).fail(r => {
             console.log(r);
-            $('#copilot>.chat').append(`<div class="line system"><p class="text">发生错误，请查看控制台输出或重试</p></div>`);
+            $('#copilot>.chat').append('<div class="line system"><p class="text">发生错误，请查看控制台输出或重试</p></div>');
             $('#copilot>.chat').scrollTop($('#copilot>.chat')[0].scrollHeight);
             msgDoneOperate();
         });
     }
-}
+};
 // 日期、时间
 let da = new Date();
-let date = `星期${['日', '一', '二', '三', '四', '五', '六'][da.getDay()]}, ${da.getFullYear()}年${(da.getMonth() + 1).toString().padStart(2, '0')}月${da.getDate().toString().padStart(2, '0')}日`
+let date = `星期${['日', '一', '二', '三', '四', '五', '六'][da.getDay()]}, ${da.getFullYear()}年${(da.getMonth() + 1).toString().padStart(2, '0')}月${da.getDate().toString().padStart(2, '0')}日`;
 $('#s-m-r>.row1>.tool>.date').text(date);
 $('.dock.date>.date').text(`${da.getFullYear()}/${(da.getMonth() + 1).toString().padStart(2, '0')}/${da.getDate().toString().padStart(2, '0')}`);
 $('#datebox>.tit>.date').text(date);
 function loadtime() {
     let d = new Date();
-    let time = `${d.getHours().toString().padStart(2, '0')}:${d.getMinutes().toString().padStart(2, '0')}:${d.getSeconds().toString().padStart(2, '0')}`
+    let time = d.toLocaleTimeString();
     $('#s-m-r>.row1>.tool>.time').text(time);
     $('.dock.date>.time').text(time);
     $('#datebox>.tit>.time').text(time);
 }
 apps.setting.theme_get();//提前加载主题
 loadtime();
-setTimeout('loadtime();setInterval(loadtime, 1000);', 1000 - da.getMilliseconds());//修复时间不精准的问题。以前的误差：0-999毫秒；现在：几乎没有
+setTimeout(() => {
+    loadtime(); setInterval(loadtime, 1000);
+}, 1000 - da.getMilliseconds());//修复时间不精准的问题。以前的误差：0-999毫秒；现在：几乎没有
 let d = new Date();
 let today = new Date().getDate();
 let start = 7 - ((d.getDate() - d.getDay()) % 7) + 1;
@@ -3068,7 +3209,7 @@ for (let i = 1; i <= daysum; i++) {
 }
 function pinapp(id, name, command) {
     if ($('#s-m-r>.pinned>.apps>.a.sm-app.' + id).length) return;
-    $('#s-m-r>.pinned>.apps').append(`<a class='a sm-app enable ${id}' onclick='${command}';hide_startmenu();' oncontextmenu='return showcm(event,\"smapp\",[\"${id}\",\"${name}\"])'><img src='icon/${geticon(id)}'><p>${name}</p></a>`)
+    $('#s-m-r>.pinned>.apps').append(`<a class='a sm-app enable ${id}' onclick='${command}';hide_startmenu();' oncontextmenu='return showcm(event,\"smapp\",[\"${id}\",\"${name}\"])'><img src='icon/${geticon(id)}'><p>${name}</p></a>`);
 }
 let icon = {
     bilibili: 'bilibili.png',
@@ -3078,7 +3219,7 @@ let icon = {
     // run: 'run.png',
     // whiteboard: 'whiteboard.png',
     taskmgr: 'taskmgr.png'
-}
+};
 function geticon(name) {
     if (icon[name]) return icon[name];
     else return name + '.svg';
@@ -3120,7 +3261,7 @@ function openapp(name) {
     apps[tmp].init();
     setTimeout(() => {
         $('.window.' + name).removeClass('load');
-    }, 500);
+    }, Number($('.window.' + name + '>.loadback').attr('data-delay')) || 500);
 }
 // 窗口操作
 function showwin(name) {
@@ -3128,7 +3269,7 @@ function showwin(name) {
     setTimeout(() => { $('.window.' + name).addClass('show'); }, 0);
     setTimeout(() => { $('.window.' + name).addClass('notrans'); }, 200);
     if (name != 'run') {
-        $('.window.' + name).attr('style', `top: 10%;left: 15%;`);
+        $('.window.' + name).attr('style', 'top: 10%;left: 15%;');
     }
     $('#taskbar>.' + wo[0]).removeClass('foc');
     $('.window.' + wo[0]).removeClass('foc');
@@ -3144,7 +3285,7 @@ function showwin(name) {
         }
     }
     else {
-        $('#dock-box').removeClass('hide')
+        $('#dock-box').removeClass('hide');
     }
 }
 function hidewin(name, arg = 'window') {
@@ -3156,7 +3297,7 @@ function hidewin(name, arg = 'window') {
       closeVideo()
     }
     if (arg == 'window') {
-        $('#taskbar').attr('count', Number($('#taskbar').attr('count')) - 1)
+        $('#taskbar').attr('count', Number($('#taskbar').attr('count')) - 1);
         $('#taskbar>.' + name).remove();
         $('#taskbar').css('width', 4 + $('#taskbar').attr('count') * (34 + 4));
         setTimeout(() => {
@@ -3170,7 +3311,7 @@ function hidewin(name, arg = 'window') {
         if (name == 'run') {
             window.setTimeout(() => {
                 $('.window.' + name).attr('style', '');
-            }, 200)
+            }, 200);
         }
     }, 200);
     $('.window.' + name + '>.titbar>div>.wbtg.max').html('<i class="bi bi-app"></i>');
@@ -3186,11 +3327,16 @@ function hidewin(name, arg = 'window') {
         }
     }
     else {
-        $('#dock-box').removeClass('hide')
+        $('#dock-box').removeClass('hide');
+    }
+    if (arg == 'window') {
+        if (apps[name].remove) {
+            apps[name].remove();
+        }
     }
 }
 function removeEdgeSaveUrl(classname) {
-  $('.' + classname).remove()
+    $('.' + classname).remove()
 }
 function maxwin(name, trigger = true) {
     if ($('.window.' + name).hasClass('max')) {
@@ -3217,7 +3363,7 @@ function maxwin(name, trigger = true) {
         }
         $('.window.' + name).removeClass('notrans');
         $('.window.' + name).addClass('max');
-        $('.window.' + name + '>.titbar>div>.wbtg.max').html('<svg version="1.1" width="12" height="12" viewBox="0,0,37.65105,35.84556" style="margin-top:4px;"><g transform="translate(-221.17804,-161.33903)"><g style="stroke:var(--text);" data-paper-data="{&quot;isPaintingLayer&quot;:true}" fill="none" fill-rule="nonzero" stroke-width="2" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="10" stroke-dasharray="" stroke-dashoffset="0" style="mix-blend-mode: normal"><path d="M224.68734,195.6846c-2.07955,-2.10903 -2.00902,-6.3576 -2.00902,-6.3576l0,-13.72831c0,0 -0.23986,-1.64534 2.00902,-4.69202c1.97975,-2.68208 4.91067,-2.00902 4.91067,-2.00902h14.06315c0,0 3.77086,-0.23314 5.80411,1.67418c2.03325,1.90732 1.33935,5.02685 1.33935,5.02685v13.39347c0,0 0.74377,4.01543 -1.33935,6.3576c-2.08312,2.34217 -5.80411,1.67418 -5.80411,1.67418h-13.39347c0,0 -3.50079,0.76968 -5.58035,-1.33935z"/><path d="M229.7952,162.85325h16.06111c0,0 5.96092,-0.36854 9.17505,2.64653c3.21412,3.01506 2.11723,7.94638 2.11723,7.94638v18.55642"/></g></g></svg>')
+        $('.window.' + name + '>.titbar>div>.wbtg.max').html('<svg version="1.1" width="12" height="12" viewBox="0,0,37.65105,35.84556" style="margin-top:4px;"><g transform="translate(-221.17804,-161.33903)"><g style="stroke:var(--text);" data-paper-data="{&quot;isPaintingLayer&quot;:true}" fill="none" fill-rule="nonzero" stroke-width="2" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="10" stroke-dasharray="" stroke-dashoffset="0" style="mix-blend-mode: normal"><path d="M224.68734,195.6846c-2.07955,-2.10903 -2.00902,-6.3576 -2.00902,-6.3576l0,-13.72831c0,0 -0.23986,-1.64534 2.00902,-4.69202c1.97975,-2.68208 4.91067,-2.00902 4.91067,-2.00902h14.06315c0,0 3.77086,-0.23314 5.80411,1.67418c2.03325,1.90732 1.33935,5.02685 1.33935,5.02685v13.39347c0,0 0.74377,4.01543 -1.33935,6.3576c-2.08312,2.34217 -5.80411,1.67418 -5.80411,1.67418h-13.39347c0,0 -3.50079,0.76968 -5.58035,-1.33935z"/><path d="M229.7952,162.85325h16.06111c0,0 5.96092,-0.36854 9.17505,2.64653c3.21412,3.01506 2.11723,7.94638 2.11723,7.94638v18.55642"/></g></g></svg>');
     }
     if (!$('#start-menu.show')[0] && !$('#search-win.show')[0] && !$('#widgets.show')[0] && !$('#control.show')[0] && !$('#datebox.show')[0]) {
         if ($('.window.max:not(.left):not(.right)')[0]) {
@@ -3228,7 +3374,7 @@ function maxwin(name, trigger = true) {
         }
     }
     else {
-        $('#dock-box').removeClass('hide')
+        $('#dock-box').removeClass('hide');
     }
 }
 function minwin(name) {
@@ -3265,10 +3411,10 @@ function minwin(name) {
 function resizewin(win, arg, resizeElt) {
     page.onmousemove = function (e) {
         resizing(win, e, arg);
-    }
+    };
     page.ontouchmove = function (e) {
         resizing(win, e, arg);
-    }
+    };
     function up_f() {
         page.onmousedown = null;
         page.ontouchstart = null;
@@ -3403,7 +3549,7 @@ function orderwindow() {
     for (let i = 0; i < wo.length; i++) {
         const win = $('.window.' + wo[wo.length - i - 1]);
         if (topmost.includes(wo[wo.length - i - 1])) {
-            win.css('z-index', 10 + i + 50/*这里的50可以改，不要太大，不然会覆盖任务栏；不要太小，不然就和普通窗口没有什么区别了。随着版本的更新，肯定会有更多窗口，以后就可以把数字改打一点点*/);
+            win.css('z-index', 10 + i + 50);
         } else {
             win.css('z-index', 10 + i);
         }
@@ -3492,8 +3638,8 @@ function controlStatus(name) {
 // 控制面板 亮度调整
 function dragBrightness(e) {
     const container = $('#control>.cont>.bottom>.brightness>.range-container')[0];
-    const after = $("#control>.cont>.bottom>.brightness>.range-container>.after")[0];
-    const slider = $("#control>.cont>.bottom>.brightness>.range-container>.slider-btn")[0];
+    const after = $('#control>.cont>.bottom>.brightness>.range-container>.after')[0];
+    const slider = $('#control>.cont>.bottom>.brightness>.range-container>.slider-btn')[0];
     const viewport = container.getBoundingClientRect().left;
     const width = Number(window.getComputedStyle(container, null).width.split('px')[0]);
     move(e);
@@ -3522,7 +3668,7 @@ function dragBrightness(e) {
             page.style.filter = `brightness(${_offset / width})`;
         }
         else {
-            page.style.filter = `brightness(0.1)`;
+            page.style.filter = 'brightness(0.1)';
         }
     }
     function up() {
@@ -3583,7 +3729,7 @@ $('#desktop')[0].addEventListener('mousedown', e => {
     chstX = e.clientX;
     chstY = e.clientY;
     this.onmousemove = ch;
-})
+});
 window.addEventListener('mouseup', e => {
     this.onmousemove = null;
     $('#desktop>.choose').css('left', 0);
@@ -3591,7 +3737,7 @@ window.addEventListener('mouseup', e => {
     $('#desktop>.choose').css('display', 'none');
     $('#desktop>.choose').css('width', 0);
     $('#desktop>.choose').css('height', 0);
-})
+});
 let isDark = false;
 
 // 主题
@@ -3612,7 +3758,7 @@ function toggletheme() {
     }
 }
 
-const isDarkTheme = window.matchMedia("(prefers-color-scheme: dark)");
+const isDarkTheme = window.matchMedia('(prefers-color-scheme: dark)');
 if (isDarkTheme.matches) { //是深色
     $('.dock.theme').toggleClass('dk');
     $(':root').toggleClass('dark');
@@ -3632,7 +3778,6 @@ function saveDesktop() {
 }
 
 // 拖拽窗口
-const page = document.getElementsByTagName('html')[0];
 const titbars = document.querySelectorAll('.window>.titbar');
 const wins = document.querySelectorAll('.window');
 let deltaLeft = 0, deltaTop = 0, fil = false, filty = 'none', bfLeft = 0, bfTop = 0;
@@ -3714,10 +3859,10 @@ for (let i = 0; i < wins.length; i++) {
     const titbar = titbars[i];
     titbar.addEventListener('mousedown', (e) => {
         if ($('.taskmgr>.titbar>div>input').is(':focus')) {
-            return
+            return;
         }
-        let x = window.getComputedStyle(win, null).getPropertyValue('left').split("px")[0];
-        let y = window.getComputedStyle(win, null).getPropertyValue('top').split("px")[0];
+        let x = window.getComputedStyle(win, null).getPropertyValue('left').split('px')[0];
+        let y = window.getComputedStyle(win, null).getPropertyValue('top').split('px')[0];
         if (y != 0) {
             bfLeft = x;
             bfTop = y;
@@ -3725,10 +3870,10 @@ for (let i = 0; i < wins.length; i++) {
         deltaLeft = e.clientX - x;
         deltaTop = e.clientY - y;
         page.onmousemove = win_move.bind(win);
-    })
+    });
     titbar.addEventListener('touchstart', (e) => {
-        let x = window.getComputedStyle(win, null).getPropertyValue('left').split("px")[0];
-        let y = window.getComputedStyle(win, null).getPropertyValue('top').split("px")[0];
+        let x = window.getComputedStyle(win, null).getPropertyValue('left').split('px')[0];
+        let y = window.getComputedStyle(win, null).getPropertyValue('top').split('px')[0];
         if (y != 0) {
             bfLeft = x;
             bfTop = y;
@@ -3736,7 +3881,7 @@ for (let i = 0; i < wins.length; i++) {
         deltaLeft = e.targetTouches[0].clientX - x;
         deltaTop = e.targetTouches[0].clientY - y;
         page.ontouchmove = win_move.bind(win);
-    })
+    });
 }
 page.addEventListener('mouseup', () => {
     page.onmousemove = null;
@@ -3806,7 +3951,7 @@ page.addEventListener('mousemove', (e) => {
             $('#dock-box').removeClass('hide');
         }
     }
-})
+});
 
 function setIcon() {
     if (Array.isArray(JSON.parse(localStorage.getItem('desktop')))) {
@@ -3836,13 +3981,13 @@ function setIcon() {
         desktopItem = JSON.parse(localStorage.getItem('desktop'));
         desktopItem.forEach((item) => {
             $('#desktop')[0].innerHTML += item;
-        })
+        });
         addMenu();
     }
     if (Array.isArray(JSON.parse(localStorage.getItem('topmost')))) {
         topmost = JSON.parse(localStorage.getItem('topmost'));
         if (topmost.includes('taskmgr')) {
-            document.getElementById('tsk-setting-topmost').checked = true;
+            $('#tsk-setting-topmost')[0].checked = true;
         }
     }
     if (Array.isArray(JSON.parse(localStorage.getItem('sys_setting')))) {
@@ -3866,7 +4011,7 @@ function setIcon() {
 }
 
 // 启动
-document.getElementsByTagName('body')[0].onload = function nupd() {
+document.getElementsByTagName('body')[0].onload = () => {
     setTimeout(() => {
         $('#loadback').addClass('hide');
     }, 500);
@@ -3928,7 +4073,7 @@ document.getElementsByTagName('body')[0].onload = function nupd() {
                 $('html').css('filter','saturate(0)');
             }
         }
-    })
+    });
     document.querySelector('.rainbow-container-main').setAttribute('style', 'display:' + (use_mic_voice ? 'block' : 'none')+ ';');
     // loadlang();
 };
@@ -3936,7 +4081,7 @@ document.getElementsByTagName('body')[0].onload = function nupd() {
 let autoUpdate = true;
 function checkUpdate() {
     const sha = localStorage.getItem('sha');
-    fetch('https://api.github.com/repos/tjy-gitnub/win12/commits').then(res => {
+    api('repos/tjy-gitnub/win12/commits').then(res => {
         res.json().then(json => {
             if (sha != json[0].sha && sha) {
                 localStorage.setItem('update', true);
@@ -3957,7 +4102,7 @@ else {
 }
 
 // PWA 应用
-if (!location.href.match(/((\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.){3}(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])(?::(?:[0-9]|[1-9][0-9]{1,3}|[1-5][0-9]{4}|6[0-4][0-9]{3}|65[0-4][0-9]{2}|655[0-2][0-9]|6553[0-5]))/) && !(new URL(location.href)).searchParams.get('develop')) {
+if (!location.href.match(/((\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.){3}(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])(?::(?:[0-9]|[1-9][0-9]{1,3}|[1-5][0-9]{4}|6[0-4][0-9]{3}|65[0-4][0-9]{2}|655[0-2][0-9]|6553[0-5]))/) && !location.href.match('localhost') && !(new URL(location.href)).searchParams.get('develop')) {
     $('#loginback').css('opacity', '1');
     $('#loginback').css('display', 'flex');
     shownotice('about');
@@ -4019,16 +4164,16 @@ function calcTimeString(second) {
     const minutes = Math.floor(second % 3600 / 60);
     const seconds = second % 60;
     if (days > 0) {
-        timeStr += " " + days + " 天";
+        timeStr += ' ' + days + ' 天';
     }
     if (hours > 0) {
-        timeStr += " " + hours + " 小时";
+        timeStr += ' ' + hours + ' 小时';
     }
     if (minutes > 0) {
-        timeStr += " " + minutes + " 分钟";
+        timeStr += ' ' + minutes + ' 分钟';
     }
     if (seconds > 0) {
-        timeStr += " " + seconds + " 秒";
+        timeStr += ' ' + seconds + ' 秒';
     }
-    return timeStr === "" ? " 0 秒" : timeStr;
+    return timeStr === '' ? ' 0 秒' : timeStr;
 }

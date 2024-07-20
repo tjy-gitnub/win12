@@ -203,12 +203,7 @@
     background-color: var(--mm);
 }
 
-.wg.weather.menu {
-    grid-column: auto / span 3;
-    grid-row: auto / span 1;
-}
-
-.wg.weather.desktop {
+.wg.weather {
     grid-column: auto / span 3;
     grid-row: auto / span 1;
 }
@@ -250,12 +245,7 @@
     font-size: 19px;
 }
 
-.wg.monitor.menu {
-    grid-column: auto / span 3;
-    grid-row: auto / span 1;
-}
-
-.wg.monitor.desktop {
+.wg.monitor {
     grid-column: auto / span 3;
     grid-row: auto / span 1;
 }

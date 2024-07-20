@@ -8,7 +8,11 @@
     <style>
         @font-face {
             font-family: 'dos';
-            src: url(../../fonts/dos.ttf);
+            src: url(./fonts/dos.ttf);
+        }
+
+        html {
+            background-color: #000000;
         }
 
         * {
@@ -38,11 +42,16 @@
             align-items: center;
             justify-content: center;
         }
+
+        #info {
+            position: absolute;
+            bottom: 10px;
+            width: 100%;
+        }
     </style>
 </head>
-<body>
-    <body style="background-color: black;color: white;cursor: none;/*加载界面隐藏鼠标指针*/" id="body" scroll="no"></body>
-    <div id="center-div" style="width: 114; /* width 不重要，重要的是 height */"></div>
+
+<body id="body" scroll="no">
     <div id="info">
         <div class="loading">
             <p>Starting</p>
@@ -52,6 +61,7 @@
         </div>
         <p style="text-align: center;">Press F2 or touch screen to enter SETUP</p>
     </div>
+    <script src="./scripts/jq.min.js"></script>
     <script src="./scripts/boot_kernel.js"></script>
 </body>
 </html>

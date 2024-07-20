@@ -41,7 +41,7 @@ let nochanges = [
   '/win12/fonts/',
   '/win12/img/',
   '/win12/apps/icons/',
-  '/win12/jq.min.js',
+  '/win12/scripts/jq.min.js',
   '/win12/bootstrap-icons.css',
 ]
 let flag = false;
