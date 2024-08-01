@@ -1,7 +1,15 @@
 'use strict';
 
-console.log('%cWindows 12 网页版(GitHub: tjy-gitnub/win12)', 'background-image: linear-gradient(to right, #ad6eca, #3b91d8); border-radius: 10px; font-size: 1.5em; padding: 10px; color: #fff; ');
-// console.log("%c开源项目链接：https://github.com/tjy-gitnub/win12 \n原作者：tjy-gitnub", "font-size: 1.5em")
+/*
+
+Windows 12 网页版
+    GitHub: tjy-gitnub/win12
+
+*/
+
+console.log('%cWindows 12 网页版(GitHub: tjy-gitnub/win12)', 'background-image: linear-gradient(to right, #ad6eca, #3b91d8); border-radius: 8px; font-size: 1.3em; padding: 10px 15px; color: #fff; ');
+
+
 
 // 后端服务器
 // loadlang();
@@ -42,6 +50,7 @@ page.addEventListener('touchend', enableIframes);
 page.addEventListener('touchcancel', enableIframes);
 
 
+// 上古代码
 document.querySelectorAll('list.focs').forEach(li => {
     li.addEventListener('click', () => {
         let _ = li.$$('span.focs')[0], la = li.$$('a.check')[0],
@@ -104,14 +113,27 @@ var topmost = [];
 var sys_setting = [1, 1, 1, 0, 0, 1, 1];
 var use_music = true;
 var use_mic_voice = true;
+
+// 右键菜单
+/* 参考 desktop.html 开头信息
+    每个标识对应一个列表，每一项为一个右键菜单中显示的项，可以有以下形式：
+1. 'text', 文本信息
+2. ['text','script'], 分别为显示内容，点击执行的代码
+3. arg => {
+        ...
+        return ...
+    }
+    形参 arg 为 showcm() 方法第三个位置的用以传参的参数内容，
+    返回内容或为 'null' 表示跳过此项，或参考条目 2 的格式
+*/
 let cms = {
     'save-bar':[
-      function (arg) {
+      arg => {
         return ['<i class="bi bi-window-x"></i> 移除', `removeEdgeSaveUrl('${arg}')`];
       }
     ],
     'titbar': [
-        function (arg) {
+        arg => {
             if (arg in nomax) {
                 return 'null';
             }
@@ -122,7 +144,7 @@ let cms = {
                 return ['<i class="bi bi-window-fullscreen"></i> 最大化', `maxwin('${arg}')`];
             }
         },
-        function (arg) {
+        arg => {
             if (arg in nomin) {
                 return 'null';
             }
@@ -130,7 +152,7 @@ let cms = {
                 return ['<i class="bi bi-window-dash"></i> 最小化', `minwin('${arg}')`];
             }
         },
-        function (arg) {
+        arg => {
             if (arg in nomin) {
                 return ['<i class="bi bi-window-x"></i> 关闭', `hidewin('${arg}', 'configs')`];
             }
@@ -140,7 +162,7 @@ let cms = {
         },
     ],
     'taskbar': [
-        function (arg) {
+        arg => {
             return ['<i class="bi bi-window-x"></i> 关闭', `hidewin('${arg}')`];
         }
     ],
@@ -148,7 +170,7 @@ let cms = {
         ['<i class="bi bi-arrow-clockwise"></i> 刷新', '$(\'#desktop\').css(\'opacity\',\'0\');setTimeout(()=>{$(\'#desktop\').css(\'opacity\',\'1\');},100);setIcon();'],
         ['<i class="bi bi-circle-square"></i> 切换主题', 'toggletheme()'],
         '<a onmousedown="window.open(\'https://github.com/tjy-gitnub/win12\',\'_blank\');" win12_title="https://github.com/tjy-gitnub/win12" onmouseenter="showdescp(event)" onmouseleave="hidedescp(event)"><i class="bi bi-github"></i> 在 Github 中查看此项目</a>',
-        function (arg) {
+        arg => {
             if (edit_mode) {
                 return ['<i class="bi bi-pencil"></i> 退出编辑模式', 'editMode();'];
             }
@@ -160,10 +182,10 @@ let cms = {
         ['<i class="bi bi-brush"></i> 个性化', 'openapp(\'setting\');$(\'#win-setting > div.menu > list > a.enable.appearance\')[0].click()']
     ],
     'desktop.icon': [
-        function (arg) {
+        arg => {
             return ['<i class="bi bi-folder2-open"></i> 打开', 'openapp(`' + arg[0] + '`)'];
         },
-        function (arg) {
+        arg => {
             if (arg[1] >= 0) {
                 return ['<i class="bi bi-trash3"></i> 删除', 'desktopItem.splice(' + (arg[1]) + ', 1);saveDesktop();setIcon();addMenu();'];
             } else {
@@ -172,7 +194,7 @@ let cms = {
         }
     ],
     'winx': [
-        function (arg) {
+        arg => {
             if ($('#start-menu').hasClass('show')) {
                 return ['<i class="bi bi-box-arrow-in-down"></i> 关闭开始菜单', 'hide_startmenu()'];
             }
@@ -196,24 +218,24 @@ let cms = {
         ['<i class="bi bi-arrow-counterclockwise"></i> 重启', 'window.location=\'reload.html\''],
     ],
     'smapp': [
-        function (arg) {
+        arg => {
             return ['<i class="bi bi-window"></i> 打开', `openapp('${arg[0]}');hide_startmenu();`];
         },
-        function (arg) {
+        arg => {
             return ['<i class="bi bi-link-45deg"></i> 在桌面创建链接', 'var s=`<div class=\'b\' ondblclick=openapp(\'' + arg[0] + '\')  ontouchstart=openapp(\'' + arg[0] + '\') appname=\'' + arg[0] + '\'><img src=\'icon/' + geticon(arg[0]) + '\'><p>' + arg[1] + '</p></div>`;$(\'#desktop\').append(s);desktopItem[desktopItem.length]=s;addMenu();saveDesktop();'];
         },
-        function (arg) {
+        arg => {
             return ['<i class="bi bi-x"></i> 取消固定', `$('#s-m-r>.pinned>.apps>.sm-app.${arg[0]}').remove()`];
         }
     ],
     'smlapp': [
-        function (arg) {
+        arg => {
             return ['<i class="bi bi-window"></i> 打开', `openapp('${arg[0]}');hide_startmenu();`];
         },
-        function (arg) {
+        arg => {
             return ['<i class="bi bi-link-45deg"></i> 在桌面创建链接', 'var s=`<div class=\'b\' ondblclick=openapp(\'' + arg[0] + '\')  ontouchstart=openapp(\'' + arg[0] + '\') appname=\'' + arg[0] + '\'><img src=\'icon/' + geticon(arg[0]) + '\'><p>' + arg[1] + '</p></div>`;$(\'#desktop\').append(s);desktopItem[desktopItem.length]=s;addMenu();saveDesktop();'];
         },
-        function (arg) {
+        arg => {
             return ['<i class="bi bi-pin-angle"></i> 固定到开始菜单', 'pinapp(\'' + arg[0] + '\', \'' + arg[1] + '\', \'openapp(&quot;' + arg[0] + '&quot;);hide_startmenu();\')'];
         }
     ],
@@ -535,6 +557,9 @@ function hidedescp(e) {
 }
 
 // 提示
+/* 参考 desktop.html 开头信息，
+格式、功能较简单，自行研究，不作赘述*/
+
 let nts = {
     'about': {
         cnt: `<p class="tit">Windows 12 网页版</p>
@@ -730,6 +755,7 @@ function closeVideo() {
 
 var shutdown_task = []; //关机任务，储存在这个数组里
 // 为什么要数组？
+
 // 运行的指令
 function runcmd(cmd, inTerminal=false) {
     if (cmd.slice(0, 3) == 'cmd') {
@@ -837,7 +863,7 @@ shutdown [-s] [-r] [-f] [-a] [-t time]
     }
     return false;
 }
-// 应用
+// 应用功能
 let apps = {
     setting: {
         init: () => {
@@ -899,6 +925,7 @@ let apps = {
                 });
             });
         },
+        // 无法正常运行，待调试
         checkUpdate: () => {
             $('#win-setting>.page>.cnt.update>.lo>.update-main .notice')[0].innerText = '正在检查更新...';
             $('#win-setting>.page>.cnt.update>.lo>.update-main .detail')[0].innerHTML = '&nbsp;';
@@ -1569,6 +1596,7 @@ let apps = {
             apps.whiteboard.ctx.clearRect(0, 0, apps.whiteboard.canvas.width, apps.whiteboard.canvas.height);
         }
     },
+    // webapp 即将网页嵌套作为应用内容，格式参考 desktop.html 中 vscode, bilibili
     webapps: {
         apps: ['vscode', 'bilibili'],
         init: () => {
@@ -1582,6 +1610,7 @@ let apps = {
             return null;
         },
         load: () => {
+            // 不能改成 vscode.dev, 别问，问就算用不了
             $('#win-vscode')[0].insertAdjacentHTML('afterbegin', '<iframe src="https://github1s.com/" frameborder="0" style="width: 100%; height: 100%;" loading="lazy"></iframe>');
         }
     },
@@ -1763,11 +1792,6 @@ let apps = {
         now: null,
         len: 0,
         newtab: (path = '') => {
-            // if(path==''){
-            //     m_tab.newtab('explorer','此电脑');
-            //     apps.explorer.tabs[apps.explorer.tabs.length-1][2]='';
-            //     m_tab.tab('explorer',apps.explorer.tabs.length - 1);
-            // }else{
             m_tab.newtab('explorer', '');
             apps.explorer.tabs[apps.explorer.tabs.length - 1][2] = path;
             apps.explorer.initHistory(apps.explorer.tabs[apps.explorer.tabs.length - 1][0]);
@@ -1858,6 +1882,7 @@ let apps = {
             var pathl = path.split('/');
             let tmp = apps.explorer.path, thisPath = '';
             $('#win-explorer>.path>.tit>.path')[0].innerHTML = '';
+            // 图标大小区别，需要面向现象进行个性化区别编程
             if (pathl[pathl.length - 1] == 'C:') {
                 $('#win-explorer>.path>.tit>.icon')[0].style.marginTop = '3px';
                 $('#win-explorer>.path>.tit>.icon')[0].style.backgroundImage = 'url("./apps/icons/explorer/diskwin.svg")';
@@ -2009,7 +2034,7 @@ let apps = {
             }
             else {
                 let ht = '';
-                for (folder in tmp['folder']) {
+                for (let folder in tmp['folder']) {
                     ht += `<a class="a item files" id="file${index_}" onclick="apps.explorer.select('${path}/${folder}','file${index_}');" ondblclick="apps.explorer.goto('${path}/${folder}')" ontouchend="apps.explorer.goto('${path}/${folder}')" oncontextmenu="showcm(event,'explorer.folder','${path}/${folder}');return stop(event);">
                         <img src="apps/icons/explorer/folder.svg">${folder}</a>`;
                     index_ += 1;
@@ -2513,8 +2538,8 @@ Type "help", "copyright", "credits" or "license" for more information.
         isViewingHistory: false,
         init: () => {
             $('#win-terminal').html(`<pre>
-Microsoft Windows [版本 12.0.39035.7324]
-(c) Microsoft Corporation。保留所有权利。
+Micrȯsoft Windows [版本 12.0.39035.7324]
+(c) Microṡoft Corporation。保留所有杈利。
         </pre>
         <pre class="text-cmd"></pre>
         <pre style="display: flex"><span class="prompt">C:\\Windows\\System32> </span><input type="text" onkeyup="if (event.keyCode == 13) { apps.terminal.run(); }"></pre>`);
@@ -2842,7 +2867,97 @@ Microsoft Windows [版本 12.0.39035.7324]
     }
 };
 
-// 小组件
+// 语音球
+
+var draggableElement = document.getElementById("draggableBtn");
+var nbFlag = true;
+var pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
+var isDragging = false;
+
+draggableElement.addEventListener("mousedown", dragMouseDown);
+draggableElement.addEventListener("mouseup", stopDrag);
+
+function dragMouseDown(e) {
+    e.preventDefault();
+    pos3 = e.clientX;
+    pos4 = e.clientY;
+    document.addEventListener("mousemove", elementDrag);
+    isDragging = false;
+}
+
+function elementDrag(e) {
+    e.preventDefault();
+    pos1 = pos3 - e.clientX;
+    pos2 = pos4 - e.clientY;
+    pos3 = e.clientX;
+    pos4 = e.clientY;
+    draggableElement.style.top = (draggableElement.offsetTop - pos2) + "px";
+    draggableElement.style.left = (draggableElement.offsetLeft - pos1) + "px";
+    isDragging = true;
+}
+
+function stopDrag() {
+    document.removeEventListener("mousemove", elementDrag);
+    if (!isDragging) {
+        startSpeechRecognition();
+    }
+}
+
+function insertTextAtCursor(text) {
+    var range, selection;
+    
+    if (window.getSelection) {
+        selection = window.getSelection();
+        
+        if (selection.rangeCount) {
+        range = selection.getRangeAt(0);
+        
+            if (range.commonAncestorContainer.parentNode.isContentEditable) {
+                range.collapse(false);
+                var textNode = document.createTextNode(text);
+                range.insertNode(textNode);
+                
+                range.setEndAfter(textNode);
+                range.setStartAfter(textNode);
+                selection.removeAllRanges();
+                selection.addRange(range);
+            }
+            else{
+                var el = document.activeElement;
+                var start = el.selectionStart;
+                var end = el.selectionEnd;
+                var value = el.value;
+                var newText = value.slice(0, start) + text + value.slice(end);
+                el.value = newText;
+                el.selectionStart = el.selectionEnd = start + text.length;
+
+            }
+        }
+    }
+}
+
+function startSpeechRecognition() {
+    var recognition = new webkitSpeechRecognition() || new SpeechRecognition();
+    recognition.lang = "zh-CN";
+
+    if (nbFlag)
+    {
+        shownotice("recognition");
+        nbFlag=false;
+    }
+    else
+    {
+        recognition.onresult = function (event) {
+            var result = event.results[0][0].transcript;
+            insertTextAtCursor(result);
+        };
+
+        recognition.start();
+    }
+
+}
+
+// 小组件功能
 let widgets = {
     widgets: {
         add: (arg) => {
@@ -3211,6 +3326,8 @@ function pinapp(id, name, command) {
     if ($('#s-m-r>.pinned>.apps>.a.sm-app.' + id).length) return;
     $('#s-m-r>.pinned>.apps').append(`<a class='a sm-app enable ${id}' onclick='${command}';hide_startmenu();' oncontextmenu='return showcm(event,\"smapp\",[\"${id}\",\"${name}\"])'><img src='icon/${geticon(id)}'><p>${name}</p></a>`);
 }
+
+// png 格式的图标在此备注，否则以 标识+.svg 的名称自动检索
 let icon = {
     bilibili: 'bilibili.png',
     vscode: 'vscode.png',
@@ -3225,7 +3342,8 @@ function geticon(name) {
     else return name + '.svg';
 }
 
-// 应用与窗口
+// 应用与窗口方法
+/* 基础功能支持，非须勿改 */
 function openapp(name) {
     if (taskmgrTasks.findIndex(elt => elt.link == name) > -1 && apps.taskmgr.tasks.findIndex(elt => elt.link == name) == -1) {
         apps.taskmgr.tasks.splice(apps.taskmgr.tasks.length, 0, taskmgrTasks.find(elt => elt.link == name));
@@ -3263,7 +3381,6 @@ function openapp(name) {
         $('.window.' + name).removeClass('load');
     }, Number($('.window.' + name + '>.loadback').attr('data-delay')) || 500);
 }
-// 窗口操作
 function showwin(name) {
     $('.window.' + name).addClass('show-begin');
     setTimeout(() => { $('.window.' + name).addClass('show'); }, 0);
@@ -3555,227 +3672,6 @@ function orderwindow() {
         }
     }
 }
-// 以下函数基于bug运行，切勿改动！
-function focwin(name, arg = 'window') {
-    // if(wo[0]==name)return;
-    if (arg == 'window') {
-        $('#taskbar>.' + wo[0]).removeClass('foc');
-        $('#taskbar>.' + name).addClass('foc');
-    }
-    $('.window.' + wo[0]).removeClass('foc');
-    wo.splice(wo.indexOf(name), 1);
-    wo.splice(0, 0, name);
-    orderwindow();
-    $('.window.' + name).addClass('foc');
-}
-function taskbarclick(name) {
-    if ($('.window.' + name).hasClass('foc')) {
-        minwin(name);
-        // focwin(null); // 禁改
-        return;
-    }
-    if ($('.window.' + name).hasClass('min')) {
-        minwin(name);
-    }
-    focwin(name);
-}
-// 菜单隐藏
-function hide_startmenu() {
-    $('#start-menu').removeClass('show');
-    $('#start-btn').removeClass('show');
-    setTimeout(() => { $('#start-menu').removeClass('show-begin'); }, 200);
-}
-function hide_widgets() {
-    $('#widgets').removeClass('show');
-    $('#widgets-btn').removeClass('show');
-    setTimeout(() => { $('#widgets').removeClass('show-begin'); }, 200);
-}
-const FLY_HIDDEN_LIST_KEY = 'control_status_fly_hidden_list'
-function controlStatus(name) {
-    if (this.classList.contains('active')) {
-        this.classList.remove('active');
-        if (name == 'wifi') {
-            wifiStatus = false;
-        }
-        if (name == 'fly') {
-            flyStatus = false
-            if (localStorage.getItem(FLY_HIDDEN_LIST_KEY)) {
-              const flyHiddenData = JSON.parse(localStorage.getItem(FLY_HIDDEN_LIST_KEY))
-              const flyHiddenList = Array.isArray(flyHiddenData) ? flyHiddenData : []
-              flyHiddenList.forEach(item => {
-                const dom = $(`#control .${item} .icon`)
-                if (!dom.hasClass('active')) {
-                  dom.addClass('active')
-                }
-              })
-              localStorage.removeItem(FLY_HIDDEN_LIST_KEY)
-            }
-        }
-    }
-    else if (!this.classList.contains('active')) {
-        this.classList.add('active');
-        if (name == 'wifi') {
-            wifiStatus = true;
-        }
-        if (name == 'fly') {
-          flyStatus = true
-          const hiddenList = ['btn1', 'btn2', 'btn5']
-          const hiddenDiffList = []
-          hiddenList.forEach(item => {
-            const dom = $(`#control .${item} .icon`)
-            if (dom.hasClass('active')) {
-              dom.removeClass('active')
-              hiddenDiffList.push(item)
-            }
-          })
-          localStorage.setItem(FLY_HIDDEN_LIST_KEY, JSON.stringify(hiddenDiffList))
-        }
-    }
-    if (name == 'dark') {
-      toggletheme()
-    }
-}
-// 控制面板 亮度调整
-function dragBrightness(e) {
-    const container = $('#control>.cont>.bottom>.brightness>.range-container')[0];
-    const after = $('#control>.cont>.bottom>.brightness>.range-container>.after')[0];
-    const slider = $('#control>.cont>.bottom>.brightness>.range-container>.slider-btn')[0];
-    const viewport = container.getBoundingClientRect().left;
-    const width = Number(window.getComputedStyle(container, null).width.split('px')[0]);
-    move(e);
-    page.onmousemove = move;
-    page.ontouchmove = move;
-    container.classList.add('active');
-    function move(e) {
-        let clientX;
-        if (e.type.match('mouse')) {
-            clientX = e.clientX;
-        }
-        else if (e.type.match('touch')) {
-            clientX = e.touches[0].clientX;
-        }
-        var _offset = clientX - viewport;
-        if (_offset < 0) {
-            _offset = 0;
-        }
-        else if (_offset > width) {
-            _offset = width;
-        }
-        slider.style.marginLeft = _offset + 'px';
-        after.style.left = _offset + 'px';
-        after.style.width = width - _offset + 'px';
-        if (_offset / width > 0.1) {
-            page.style.filter = `brightness(${_offset / width})`;
-        }
-        else {
-            page.style.filter = 'brightness(0.1)';
-        }
-    }
-    function up() {
-        container.classList.remove('active');
-        page.onmouseup = null;
-        page.ontouchend = null;
-        page.ontouchcancel = null;
-        page.onmousemove = null;
-        page.ontouchmove = null;
-    }
-    page.onmouseup = up;
-    page.ontouchend = up;
-    page.ontouchcancel = up;
-}
-
-// 控制面板 电量监测
-try {
-    navigator.getBattery().then((battery) => {
-        $('.a.dock.control>svg>path')[0].outerHTML = `<path
-            d="M 4 7 C 2.3550302 7 1 8.3550302 1 10 L 1 19 C 1 20.64497 2.3550302 22 4 22 L 24 22 C 25.64497 22 27 20.64497 27 19 L 27 10 C 27 8.3550302 25.64497 7 24 7 L 4 7 z M 4 9 L 24 9 C 24.56503 9 25 9.4349698 25 10 L 25 19 C 25 19.56503 24.56503 20 24 20 L 4 20 C 3.4349698 20 3 19.56503 3 19 L 3 10 C 3 9.4349698 3.4349698 9 4 9 z M 5 11 L 5 18 L ${18 * battery.level + 5} 18 L ${18 * battery.level + 5} 11 L 5 11 z M 28 12 L 28 17 L 29 17 C 29.552 17 30 16.552 30 16 L 30 13 C 30 12.448 29.552 12 29 12 L 28 12 z"
-            id="path2" fill="#000000"
-        />`;
-
-        battery.addEventListener('levelchange', () => {
-            $('.a.dock.control>svg>path')[0].outerHTML = `<path
-                d="M 4 7 C 2.3550302 7 1 8.3550302 1 10 L 1 19 C 1 20.64497 2.3550302 22 4 22 L 24 22 C 25.64497 22 27 20.64497 27 19 L 27 10 C 27 8.3550302 25.64497 7 24 7 L 4 7 z M 4 9 L 24 9 C 24.56503 9 25 9.4349698 25 10 L 25 19 C 25 19.56503 24.56503 20 24 20 L 4 20 C 3.4349698 20 3 19.56503 3 19 L 3 10 C 3 9.4349698 3.4349698 9 4 9 z M 5 11 L 5 18 L ${18 * battery.level + 5} 18 L ${18 * battery.level + 5} 11 L 5 11 z M 28 12 L 28 17 L 29 17 C 29.552 17 30 16.552 30 16 L 30 13 C 30 12.448 29.552 12 29 12 L 28 12 z"
-                id="path2" fill="#000000"
-            />`;
-        });
-    });
-} catch (TypeError) {
-    console.log('内部错误: 无法获取电量');
-}
-
-// 任务管理器 记录硬件运行时间
-if (localStorage.getItem('cpuRunningTime')) {
-    apps.taskmgr.cpuRunningTime = localStorage.getItem('cpuRunningTime');
-}
-window.setInterval(() => {
-    apps.taskmgr.cpuRunningTime++;
-    localStorage.setItem('cpuRunningTime', apps.taskmgr.cpuRunningTime);
-}, 1000);
-
-var wifiStatus = true;
-// 飞行模式
-var flyStatus = false;
-
-// 选择框
-let chstX, chstY;
-function ch(e) {
-    $('#desktop>.choose').css('left', Math.min(chstX, e.clientX));
-    $('#desktop>.choose').css('width', Math.abs(e.clientX - chstX));
-    $('#desktop>.choose').css('display', 'block');
-    $('#desktop>.choose').css('top', Math.min(chstY, e.clientY));
-    $('#desktop>.choose').css('height', Math.abs(e.clientY - chstY));
-}
-$('#desktop')[0].addEventListener('mousedown', e => {
-    chstX = e.clientX;
-    chstY = e.clientY;
-    this.onmousemove = ch;
-});
-window.addEventListener('mouseup', e => {
-    this.onmousemove = null;
-    $('#desktop>.choose').css('left', 0);
-    $('#desktop>.choose').css('top', 0);
-    $('#desktop>.choose').css('display', 'none');
-    $('#desktop>.choose').css('width', 0);
-    $('#desktop>.choose').css('height', 0);
-});
-let isDark = false;
-
-// 主题
-function toggletheme() {
-    $('.dock.theme').toggleClass('dk');
-    var darkControl = $(`#control .btn4 .icon`)
-    $(':root').toggleClass('dark');
-    if ($(':root').hasClass('dark')) {
-        $('.window.whiteboard>.titbar>p').text('Blackboard');
-        setData('theme', 'dark');
-        isDark = true;
-        darkControl.addClass('active')
-    } else {
-        $('.window.whiteboard>.titbar>p').text('Whiteboard');
-        setData('theme', 'light');
-        isDark = false;
-        darkControl.removeClass('active')
-    }
-}
-
-const isDarkTheme = window.matchMedia('(prefers-color-scheme: dark)');
-if (isDarkTheme.matches) { //是深色
-    $('.dock.theme').toggleClass('dk');
-    $(':root').toggleClass('dark');
-    $('.window.whiteboard>.titbar>p').text('Blackboard');
-    localStorage.setItem('theme', 'dark');
-    isDark = true;
-} else { // 不是深色
-    $('.window.whiteboard>.titbar>p').text('Whiteboard');
-    localStorage.setItem('theme', 'light');
-}
-let desktopItem = [];
-function saveDesktop() {
-    localStorage.setItem('desktop', /*$('#desktop')[0].innerHTML*/JSON.stringify(desktopItem));
-    localStorage.setItem('topmost', JSON.stringify(topmost));
-    localStorage.setItem('sys_setting', JSON.stringify(sys_setting));
-    localStorage.setItem('root_class', $(':root').attr('class'));
-}
 
 // 拖拽窗口
 const titbars = document.querySelectorAll('.window>.titbar');
@@ -3953,6 +3849,229 @@ page.addEventListener('mousemove', (e) => {
     }
 });
 
+
+// 千年屎山，一改即崩！莫改、莫动！
+function focwin(name, arg = 'window') {
+    // if(wo[0]==name)return;
+    if (arg == 'window') {
+        $('#taskbar>.' + wo[0]).removeClass('foc');
+        $('#taskbar>.' + name).addClass('foc');
+    }
+    $('.window.' + wo[0]).removeClass('foc');
+    wo.splice(wo.indexOf(name), 1);
+    wo.splice(0, 0, name);
+    orderwindow();
+    $('.window.' + name).addClass('foc');
+}
+function taskbarclick(name) {
+    if ($('.window.' + name).hasClass('foc')) {
+        minwin(name);
+        // focwin(null); // 禁改
+        return;
+    }
+    if ($('.window.' + name).hasClass('min')) {
+        minwin(name);
+    }
+    focwin(name);
+}
+// 开始菜单一类
+function hide_startmenu() {
+    $('#start-menu').removeClass('show');
+    $('#start-btn').removeClass('show');
+    setTimeout(() => { $('#start-menu').removeClass('show-begin'); }, 200);
+}
+function hide_widgets() {
+    $('#widgets').removeClass('show');
+    $('#widgets-btn').removeClass('show');
+    setTimeout(() => { $('#widgets').removeClass('show-begin'); }, 200);
+}
+const FLY_HIDDEN_LIST_KEY = 'control_status_fly_hidden_list'
+function controlStatus(name) {
+    if (this.classList.contains('active')) {
+        this.classList.remove('active');
+        if (name == 'wifi') {
+            wifiStatus = false;
+        }
+        if (name == 'fly') {
+            flyStatus = false
+            if (localStorage.getItem(FLY_HIDDEN_LIST_KEY)) {
+              const flyHiddenData = JSON.parse(localStorage.getItem(FLY_HIDDEN_LIST_KEY))
+              const flyHiddenList = Array.isArray(flyHiddenData) ? flyHiddenData : []
+              flyHiddenList.forEach(item => {
+                const dom = $(`#control .${item} .icon`)
+                if (!dom.hasClass('active')) {
+                  dom.addClass('active')
+                }
+              })
+              localStorage.removeItem(FLY_HIDDEN_LIST_KEY)
+            }
+        }
+    }
+    else if (!this.classList.contains('active')) {
+        this.classList.add('active');
+        if (name == 'wifi') {
+            wifiStatus = true;
+        }
+        if (name == 'fly') {
+          flyStatus = true
+          const hiddenList = ['btn1', 'btn2', 'btn5']
+          const hiddenDiffList = []
+          hiddenList.forEach(item => {
+            const dom = $(`#control .${item} .icon`)
+            if (dom.hasClass('active')) {
+              dom.removeClass('active')
+              hiddenDiffList.push(item)
+            }
+          })
+          localStorage.setItem(FLY_HIDDEN_LIST_KEY, JSON.stringify(hiddenDiffList))
+        }
+    }
+    if (name == 'dark') {
+      toggletheme()
+    }
+}
+// 控制面板 亮度调整
+function dragBrightness(e) {
+    const container = $('#control>.cont>.bottom>.brightness>.range-container')[0];
+    const after = $('#control>.cont>.bottom>.brightness>.range-container>.after')[0];
+    const slider = $('#control>.cont>.bottom>.brightness>.range-container>.slider-btn')[0];
+    const viewport = container.getBoundingClientRect().left;
+    const width = Number(window.getComputedStyle(container, null).width.split('px')[0]);
+    move(e);
+    page.onmousemove = move;
+    page.ontouchmove = move;
+    container.classList.add('active');
+    function move(e) {
+        let clientX;
+        if (e.type.match('mouse')) {
+            clientX = e.clientX;
+        }
+        else if (e.type.match('touch')) {
+            clientX = e.touches[0].clientX;
+        }
+        var _offset = clientX - viewport;
+        if (_offset < 0) {
+            _offset = 0;
+        }
+        else if (_offset > width) {
+            _offset = width;
+        }
+        slider.style.marginLeft = _offset + 'px';
+        after.style.left = _offset + 'px';
+        after.style.width = width - _offset + 'px';
+        if (_offset / width > 0.1) {
+            page.style.filter = `brightness(${_offset / width})`;
+        }
+        else {
+            page.style.filter = 'brightness(0.1)';
+        }
+    }
+    function up() {
+        container.classList.remove('active');
+        page.onmouseup = null;
+        page.ontouchend = null;
+        page.ontouchcancel = null;
+        page.onmousemove = null;
+        page.ontouchmove = null;
+    }
+    page.onmouseup = up;
+    page.ontouchend = up;
+    page.ontouchcancel = up;
+}
+
+// 控制面板 电量监测
+try {
+    navigator.getBattery().then((battery) => {
+        $('.a.dock.control>svg>path')[0].outerHTML = `<path
+            d="M 4 7 C 2.3550302 7 1 8.3550302 1 10 L 1 19 C 1 20.64497 2.3550302 22 4 22 L 24 22 C 25.64497 22 27 20.64497 27 19 L 27 10 C 27 8.3550302 25.64497 7 24 7 L 4 7 z M 4 9 L 24 9 C 24.56503 9 25 9.4349698 25 10 L 25 19 C 25 19.56503 24.56503 20 24 20 L 4 20 C 3.4349698 20 3 19.56503 3 19 L 3 10 C 3 9.4349698 3.4349698 9 4 9 z M 5 11 L 5 18 L ${18 * battery.level + 5} 18 L ${18 * battery.level + 5} 11 L 5 11 z M 28 12 L 28 17 L 29 17 C 29.552 17 30 16.552 30 16 L 30 13 C 30 12.448 29.552 12 29 12 L 28 12 z"
+            id="path2" fill="#000000"
+        />`;
+
+        battery.addEventListener('levelchange', () => {
+            $('.a.dock.control>svg>path')[0].outerHTML = `<path
+                d="M 4 7 C 2.3550302 7 1 8.3550302 1 10 L 1 19 C 1 20.64497 2.3550302 22 4 22 L 24 22 C 25.64497 22 27 20.64497 27 19 L 27 10 C 27 8.3550302 25.64497 7 24 7 L 4 7 z M 4 9 L 24 9 C 24.56503 9 25 9.4349698 25 10 L 25 19 C 25 19.56503 24.56503 20 24 20 L 4 20 C 3.4349698 20 3 19.56503 3 19 L 3 10 C 3 9.4349698 3.4349698 9 4 9 z M 5 11 L 5 18 L ${18 * battery.level + 5} 18 L ${18 * battery.level + 5} 11 L 5 11 z M 28 12 L 28 17 L 29 17 C 29.552 17 30 16.552 30 16 L 30 13 C 30 12.448 29.552 12 29 12 L 28 12 z"
+                id="path2" fill="#000000"
+            />`;
+        });
+    });
+} catch (TypeError) {
+    console.log('内部错误: 无法获取电量');
+}
+
+// 任务管理器 记录硬件运行时间
+if (localStorage.getItem('cpuRunningTime')) {
+    apps.taskmgr.cpuRunningTime = localStorage.getItem('cpuRunningTime');
+}
+window.setInterval(() => {
+    apps.taskmgr.cpuRunningTime++;
+    localStorage.setItem('cpuRunningTime', apps.taskmgr.cpuRunningTime);
+}, 1000);
+
+var wifiStatus = true;
+// 飞行模式
+var flyStatus = false;
+
+// 选择框
+let chstX, chstY;
+function ch(e) {
+    $('#desktop>.choose').css('left', Math.min(chstX, e.clientX));
+    $('#desktop>.choose').css('width', Math.abs(e.clientX - chstX));
+    $('#desktop>.choose').css('display', 'block');
+    $('#desktop>.choose').css('top', Math.min(chstY, e.clientY));
+    $('#desktop>.choose').css('height', Math.abs(e.clientY - chstY));
+}
+$('#desktop')[0].addEventListener('mousedown', e => {
+    chstX = e.clientX;
+    chstY = e.clientY;
+    this.onmousemove = ch;
+});
+window.addEventListener('mouseup', e => {
+    this.onmousemove = null;
+    $('#desktop>.choose').css('left', 0);
+    $('#desktop>.choose').css('top', 0);
+    $('#desktop>.choose').css('display', 'none');
+    $('#desktop>.choose').css('width', 0);
+    $('#desktop>.choose').css('height', 0);
+});
+let isDark = false;
+
+// 个性化主题
+function toggletheme() {
+    $('.dock.theme').toggleClass('dk');
+    var darkControl = $(`#control .btn4 .icon`)
+    $(':root').toggleClass('dark');
+    if ($(':root').hasClass('dark')) {
+        $('.window.whiteboard>.titbar>p').text('Blackboard');
+        setData('theme', 'dark');
+        isDark = true;
+        darkControl.addClass('active')
+    } else {
+        $('.window.whiteboard>.titbar>p').text('Whiteboard');
+        setData('theme', 'light');
+        isDark = false;
+        darkControl.removeClass('active')
+    }
+}
+
+const isDarkTheme = window.matchMedia('(prefers-color-scheme: dark)');
+if (isDarkTheme.matches) { //是深色
+    $('.dock.theme').toggleClass('dk');
+    $(':root').toggleClass('dark');
+    $('.window.whiteboard>.titbar>p').text('Blackboard');
+    localStorage.setItem('theme', 'dark');
+    isDark = true;
+} else { // 不是深色
+    $('.window.whiteboard>.titbar>p').text('Whiteboard');
+    localStorage.setItem('theme', 'light');
+}
+let desktopItem = [];
+function saveDesktop() {
+    localStorage.setItem('desktop', /*$('#desktop')[0].innerHTML*/JSON.stringify(desktopItem));
+    localStorage.setItem('topmost', JSON.stringify(topmost));
+    localStorage.setItem('sys_setting', JSON.stringify(sys_setting));
+    localStorage.setItem('root_class', $(':root').attr('class'));
+}
+
 function setIcon() {
     if (Array.isArray(JSON.parse(localStorage.getItem('desktop')))) {
         $('#desktop')[0].innerHTML = `<div ondblclick="openapp('explorer');" ontouchstart="openapp('explorer');" oncontextmenu="return showcm(event,'desktop.icon',['explorer',-1]);" appname="explorer">
@@ -4010,7 +4129,7 @@ function setIcon() {
     }
 }
 
-// 启动
+// 原神，启动！
 document.getElementsByTagName('body')[0].onload = () => {
     setTimeout(() => {
         $('#loadback').addClass('hide');

@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" style="height: 100%;">
 
+
 <!-------- 禁止格式化本文档！-------->
 
 <head>
@@ -8,8 +9,6 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 	<meta name="format-detection" content="telephone=no" />
-
-	<!-- Windows 12 网页版 谭景元原创  -->
 
 	<!-- Windows 12 网页版是一个开放源项目,
 	希望让用户在网络上预先体验 Windows 12,
@@ -53,44 +52,53 @@
 <!-- 	<meta name="keywords" content="Windows 12, windows 12, Windows12, windows12, Windows 12 网页版, Windows 12网页版, Windows12网页版, windows12网页版, Win12, win12,Win12网页版, win12网页版, 网页版"> -->
 <!-- 	真正的SEO强者，是不会用keywords的 -->
 </head>
+
+<!-- 编辑前务必认真阅读，有不合规范之pr，视情况或要求整改或不予合并 -->
 <!-- 开发须知：
-为统一代码风格和增加可读性，为他人的便利，以下内容所有开发者、贡献者务必遵守，感谢配合
+
+旨为统一代码风格，增加其可读性，也为他人开发便利，以下内容所有开发者、贡献者务必严格遵守，感谢配合！
+
 对于HTML文件的规定
-1. 绝对禁止格式化本文档
-2. 对于id属性，除必须不使用id属性，尽量以class替代。若必须使用，切记：
-	1. 除非是body>*的节点，请不要使用单个单词的 id 名称
+1. 绝对严格禁止格式化本 html 文档，否则坚决拒绝合并
+2. 对于id属性，除必须外一般不使用id属性，尽量以class替代。若必须使用，切记：
+	1. 若非 body 下直接的子元素，原则上不设置 id。若确需，参见下方条目 3
+	2. 所取 id 必须有意义，且不可有与其他 id 重复者
+	3. 对于非 body>* 元素，坚决不得以单个单词作为 id。请按照 “父元素标志词-(...)-id名称” 进行命名。如：taskmgr-search, setting-search等
+3. 对于 class 属性：
+	1. 仅对必要的元素分配 class
 	2. 所取的名字必须要有意义
-	3. 对于非body>*节点，请按照“父元素标志词-(...)-id名称”进行命名。如：taskmgr-search, setting-search等
-3. 对于class属性的规定：
-	1. 仅对必要的元素分配class
-	2. 所取的名字必须要有意义
-	3. 在使用css选择器时，请确保选择的元素准确定位无其他匹配
-4. 压行：
-	1. 对于文件中的svg图像，请务必压成一行
+	3. 使用css选择器时，确保所选元素准确定位且无其他匹配，以 id 选择器开头来选择为佳
+4. 对于压行，可在保证可读性前提下自由处置，参考规范：
+	1. 对于文件中的 svg 图像，压为一行
 	2. 对于连续3个以上的连续结束标签，视情况压为一行
 	3. 对于较短的多个并列雷同的项，每项视情况压为一行，如list中的内容
-	3. 对于#loginback前的内容，压行可以舍弃可读性
+	4. 对于不更改、无具体意义的内容，可视情况处置
 
 一些全局性可用的内容，供使用和统一风格：
-.button 经典按钮，常与.a合用
+.a 可点击元素，可用于各种元素。用于 <a> 可去除下划线、颜色等。
+	与 .jump 合用于设置了 href 属性的 <a> 链接
+.button 经典按钮，常与 .a 合用
 list 列表>
-	a 列表项，常与.a合用
-	.text 文本内容
+	<a> 列表项，常与.a合用
+	.text 文本内容，不可点击
 .buttons 按钮组>
 	.submit 确认，常与.a合用
 	.cancel 取消，常与.a合用
 .act 经典点击动画
-.a 现代设计的链接，可用于各种元素
 .input 输入框
+其他自行研究
 
-有以下函数可用：
-setData(k, v) 本地存储信息，永久可用
-localStorage.getItem(k) 与前者配合使用
-stop(event) 停止事件向父级传递（停止冒泡）
-showcm(event, id, arg) 显示右键菜单，使用方法：oncontextmenu="return showcm(event,'标识',arg);"
-openapp(name) 打开窗口，用法：openapp('程序（窗口）名称')，注意：程序（窗口）名称就是想要显示的窗口.window的另一个类名，必须要有apps[程序（窗口）名称]对象和init方法
-shownotice(name) 打开提示窗口，用法：shownotice('提示内容标识符')，注意：需要提前在let nts对象中定义提示内容及其标识符
-closenotice() 关闭提示窗口
+有以下 js 函数可用：
+setData(key, value) 本地存储信息，永久可用，注意管理，谨慎使用
+localStorage.getItem(key) 与前者配合使用，以读取存储信息
+stop(event) 停止事件向父级传递（停止冒泡），event变量照抄
+showcm(event, id, arg) 显示右键菜单，使用方法：oncontextmenu="return showcm(event,'标识',arg);"，
+	参考 desktop.js 中 cms 中的写法，需提前在 cms 中定义提示内容及其标识符。showcm 带有 stop(event), 无需另加
+openapp(name) 打开窗口，用法：openapp('程序（窗口）名称')，
+	程序（窗口）名称就是想要显示的窗口.window的另一个类名，须设置 apps[程序（窗口）名称]对象和init方法
+shownotice(name) 打开提示窗口，用法：shownotice('提示内容标识符')，
+	参考 desktop.js 中 nts 中的写法，需提前在 nts 对象中定义提示内容及其标识符
+closenotice() 与前者配合，关闭提示窗口
 showwin(name) 显示窗口，除特殊用途外不建议使用，用法：showwin('窗口名称')，注意：窗口名称就是想要显示的窗口.window的另一个类名
 hidewin(name) 关闭窗口，用法：hidewin('程序（窗口）名称')，注意：程序（窗口）名称就是想要显示的窗口.window的另一个类名
 toggletheme() 切换主题
@@ -149,6 +157,7 @@ toggletheme() 切换主题
 	<div id="loginback">
 		<div class="user"></div>
 		<div class="name">Administrator</div>
+		<!-- 不是，这玩意太简陋了吧，， -->
 		<div id="login" onclick="
 			this.id = 'login-after';
 			this.innerText = '登录中...';
@@ -200,95 +209,8 @@ toggletheme() 切换主题
         </div>
     </div>
 
-    <script>
-        var draggableElement = document.getElementById("draggableBtn");
-		var nbFlag = true;
-        var pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
-        var isDragging = false;
-
-        draggableElement.addEventListener("mousedown", dragMouseDown);
-        draggableElement.addEventListener("mouseup", stopDrag);
-
-        function dragMouseDown(e) {
-            e.preventDefault();
-            pos3 = e.clientX;
-            pos4 = e.clientY;
-            document.addEventListener("mousemove", elementDrag);
-            isDragging = false;
-        }
-
-        function elementDrag(e) {
-            e.preventDefault();
-            pos1 = pos3 - e.clientX;
-            pos2 = pos4 - e.clientY;
-            pos3 = e.clientX;
-            pos4 = e.clientY;
-            draggableElement.style.top = (draggableElement.offsetTop - pos2) + "px";
-            draggableElement.style.left = (draggableElement.offsetLeft - pos1) + "px";
-            isDragging = true;
-        }
-
-        function stopDrag() {
-            document.removeEventListener("mousemove", elementDrag);
-            if (!isDragging) {
-                startSpeechRecognition();
-            }
-        }
-
-		function insertTextAtCursor(text) {
-			var range, selection;
-			
-			if (window.getSelection) {
-				selection = window.getSelection();
-				
-				if (selection.rangeCount) {
-				range = selection.getRangeAt(0);
-				
-					if (range.commonAncestorContainer.parentNode.isContentEditable) {
-						range.collapse(false);
-						var textNode = document.createTextNode(text);
-						range.insertNode(textNode);
-						
-						range.setEndAfter(textNode);
-						range.setStartAfter(textNode);
-						selection.removeAllRanges();
-						selection.addRange(range);
-					}
-					else{
-						var el = document.activeElement;
-						var start = el.selectionStart;
-						var end = el.selectionEnd;
-						var value = el.value;
-						var newText = value.slice(0, start) + text + value.slice(end);
-						el.value = newText;
-						el.selectionStart = el.selectionEnd = start + text.length;
-
-					}
-				}
-			}
-		}
-
-        function startSpeechRecognition() {
-            var recognition = new webkitSpeechRecognition() || new SpeechRecognition();
-            recognition.lang = "zh-CN";
-
-			if (nbFlag)
-			{
-				shownotice("recognition");
-				nbFlag=false;
-			}
-			else
-			{
-				recognition.onresult = function (event) {
-					var result = event.results[0][0].transcript;
-					insertTextAtCursor(result);
-				};
-
-				recognition.start();
-			}
-
-        }
-    </script>
+    <!-- <script>
+    </script> -->
 	<div id="start-menu">
 		<!-- 开始菜单 -->
 		<div id="s-m-l">
@@ -337,6 +259,10 @@ toggletheme() 切换主题
 				<a oncontextmenu="return showcm(event, 'smlapp', ['edge', 'Microsoft Edge'])" onclick="openapp('edge');hide_startmenu();">
 					<img src="icon/edge.svg">
 					<p>Microsoft Edge</p>
+				</a>
+				<a oncontextmenu="return showcm(event, 'smlapp', ['msstore', 'Microsoft Store'])" onclick="openapp('msstore');hide_startmenu();">
+					<img src="icon/msstore.svg">
+					<p>Microsoft Store</p>
 				</a>
 				<a oncontextmenu="return showcm(event, 'smlapp', ['camera', '相机'])" onclick="apps.camera.notice();hide_startmenu()">
 					<img src="icon/camera.svg">
@@ -445,10 +371,6 @@ toggletheme() 切换主题
 						<img src="icon/feedback.svg">
 						<p>反馈中心</p>
 					</a>
-					<a class="a sm-app enable defender" onclick="openapp('defender');hide_startmenu();" oncontextmenu="return showcm(event,'smapp',['defender','Windows 安全中心'])">
-						<img src="icon/defender.svg">
-						<p>Windows 安全中心</p>
-					</a>
 					<a class="a sm-app enable about" onclick="openapp('about');hide_startmenu();" oncontextmenu="return showcm(event,'smapp',['about','关于 Win12 网页版'])">
 						<img src="icon/about.svg">
 						<p>关于Win12网页版</p>
@@ -464,6 +386,10 @@ toggletheme() 切换主题
 					<a class="a sm-app enable setting" onclick="openapp('setting');hide_startmenu();" oncontextmenu="return showcm(event,'smapp',['setting','设置'])">
 						<img src="icon/setting.svg">
 						<p>设置 </p>
+					</a>
+					<a class="a sm-app enable defender" onclick="openapp('defender');hide_startmenu();" oncontextmenu="return showcm(event,'smapp',['defender','Windows 安全中心'])">
+						<img src="icon/defender.svg">
+						<p>Windows 安全中心</p>
 					</a>
 					<a class="a sm-app enable msstore" onclick="openapp('msstore');hide_startmenu();" oncontextmenu="return showcm(event, 'smapp', ['msstore', 'Microsoft Store'])">
 						<img src="icon/msstore.svg">
@@ -729,11 +655,11 @@ toggletheme() 切换主题
 					<a class="a" style="margin: 0 0 0 170px;font-size: 17px;color: #9dd0fb;">详细信息 ></a>
 				</div>
 				<div class="card" style="grid-column: 3/6;grid-row: 5/7;background:linear-gradient(#00000000 0 30%,var(--bg) 70%),url(img/mc.jpg) bottom;background-size: cover;">
-					<p class="tit" style="margin: 100px 0 -20px 10px;">今日凌晨,Minecraft把代理权交给中国航天员谭景元,网易败下阵来了?</p>
+					<p class="tit" style="margin: 100px 0 -20px 10px;">今日凌晨,Minecraft把代理权交给中国航天员星源,网易败下阵来了?</p>
 					<a class="a" style="margin: 0 0 0 170px;font-size: 17px;">详细信息 ></a>
 				</div>
 				<div class="card" style="grid-column: 1/4;grid-row: 3/5;background:linear-gradient(#00000000 0 30%,var(--bg) 80%),url(img/yq.jpg) center;background-size: cover;">
-					<p class="tit" style="margin: 120px 0 -20px 10px;">中国航天员谭景元昨天下午成功登月</p>
+					<p class="tit" style="margin: 120px 0 -20px 10px;">中国航天员星源昨天下午成功登月</p>
 					<a class="a" style="margin: 0 0 0 150px;font-size: 17px;">详细信息 ></a>
 				</div>
 				<div class="card" style="grid-column: 3/6;grid-row: 9/11;background:linear-gradient(#00000000 0 30%,var(--bg) 80%),url(img/office.png) center;background-size: cover;">
@@ -747,7 +673,7 @@ toggletheme() 切换主题
 				</div>
 				<div class="card" style="grid-column: 1/3;grid-row: 9/11;background:#171b22;">
 					<p class="tit" style="font-size: 19px;margin: 50px 0 0 10px;color: #fff;">想给新闻增加更多奇思妙想?
-						<br />快在github上来提交吧</p>
+						<br />在github上提交</p>
 					<a class="a" win12_title="https://github.com/tjy-gitnub/win12/issues"
 						style="margin: 10px 0 0 70px;font-size: 17px;color: #9dd0fb" onclick="
 					window.open('https://github.com/tjy-gitnub/win12/issues','_blank');">提交issues ></a>
@@ -1446,8 +1372,8 @@ toggletheme() 切换主题
 				<a class="a user">
 					<svg viewBox="0,0,257,344" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" overflow="hidden"><defs><clipPath id="user-clip1"><rect x="382" y="195" width="257" height="344" /></clipPath><linearGradient x1="351.462" y1="233.56" x2="669.496" y2="500.422" gradientUnits="userSpaceOnUse" spreadMethod="reflect" id="user-fill3"><stop offset="0" stop-color="#A964C8" /><stop offset="0.35" stop-color="#A964C8" /><stop offset="0.87" stop-color="#2D8AD5" /><stop offset="1" stop-color="#2D8AD5" /></linearGradient><linearGradient x1="351.462" y1="233.56" x2="669.496" y2="500.422" gradientUnits="userSpaceOnUse" spreadMethod="reflect" id="user-fill4"><stop offset="0" stop-color="#A964C8" /><stop offset="0.35" stop-color="#A964C8" /><stop offset="0.87" stop-color="#2D8AD5" /><stop offset="1" stop-color="#2D8AD5" /></linearGradient></defs><g clip-path="url(#user-clip1)" transform="translate(-382 -195)"><path d="M637.755 433.872C642.215 515.221 579.577 537.983 508.011 537.983 436.444 537.983 376.676 507.833 383.513 437.11 383.109 425.234 389.59 414.133 398.634 409.891 413.82 402.768 444.753 402.936 507.484 402.997 570.214 403.058 609.164 402.279 621.521 407.947 633.878 413.614 638.011 424.609 637.755 433.872Z" fill="url(#user-fill3)" fill-rule="evenodd" /><path d="M422 285C422 235.847 461.623 196 510.5 196 559.377 196 599 235.847 599 285 599 334.153 559.377 374 510.5 374 461.623 374 422 334.153 422 285Z" fill="url(#user-fill4)" fill-rule="evenodd" /></g></svg>
 					<div>
-						<p>瓶盖</p>
-						<p>tanjingyuan@windows12.com</p>
+						<p>星瓶</p>
+						<p>starry-source@windows12.com</p>
 					</div>
 				</a>
 				<input type="text" class="input" placeholder="查找设置" style="padding-left: 30px;">
@@ -1686,8 +1612,8 @@ toggletheme() 切换主题
 						<a class="a user" style="display:flex">
 							<svg viewBox="0,0,257,344" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="width: 100px;height: 100px;background-color: var(--hover-b);/* box-shadow: 0 0 10px var(--sd); */width: 60px;width: 60px;height: 60px;border-radius: 50%;padding: 11px;margin-right: 15px;margin-bottom: 15px;" overflow="hidden"><defs><clipPath id="user-clip1"><rect x="382" y="195" width="257" height="344" /></clipPath><linearGradient x1="351.462" y1="233.56" x2="669.496" y2="500.422" gradientUnits="userSpaceOnUse" spreadMethod="reflect" id="user-fill3"><stop offset="0" stop-color="#A964C8" /><stop offset="0.35" stop-color="#A964C8" /><stop offset="0.87" stop-color="#2D8AD5" /><stop offset="1" stop-color="#2D8AD5" /></linearGradient><linearGradient x1="351.462" y1="233.56" x2="669.496" y2="500.422" gradientUnits="userSpaceOnUse" spreadMethod="reflect" id="user-fill4"><stop offset="0" stop-color="#A964C8" /><stop offset="0.35" stop-color="#A964C8" /><stop offset="0.87" stop-color="#2D8AD5" /><stop offset="1" stop-color="#2D8AD5" /></linearGradient></defs><g clip-path="url(#user-clip1)" transform="translate(-382 -195)"><path d="M637.755 433.872C642.215 515.221 579.577 537.983 508.011 537.983 436.444 537.983 376.676 507.833 383.513 437.11 383.109 425.234 389.59 414.133 398.634 409.891 413.82 402.768 444.753 402.936 507.484 402.997 570.214 403.058 609.164 402.279 621.521 407.947 633.878 413.614 638.011 424.609 637.755 433.872Z" fill="url(#user-fill3)" fill-rule="evenodd" /><path d="M422 285C422 235.847 461.623 196 510.5 196 559.377 196 599 235.847 599 285 599 334.153 559.377 374 510.5 374 461.623 374 422 334.153 422 285Z" fill="url(#user-fill4)" fill-rule="evenodd" /></g></svg>
 							<div style="margin-top: 5px;">
-								<p>瓶盖</p>
-								<p>tanjingyuan@Windows12.com</p>
+								<p>星瓶</p>
+								<p>starry-source@Windows12.com</p>
 							</div>
 						</a>
 					</div>
@@ -1985,7 +1911,7 @@ toggletheme() 切换主题
 				<h1 class="tit"><span></span>Windows 12 网页版</h1>
 				<div style="margin-left: 20px;">
 					<h2 class="tit"><span></span>简介</h2>
-					<p>&emsp;&emsp;Windows 12 网页版是一个开源项目，由星源(谭景元)原创，使用 HTML、CSS 和 JavaScript，在网络上模拟、创新操作系统。</p>
+					<p>&emsp;&emsp;Windows 12 网页版是一个开源项目，由星源原创，使用 HTML、CSS 和 JavaScript，在网络上模拟、创新操作系统。</p>
 					<p>&emsp;&emsp;此项目已发布至 GitHub，<a onclick="window.open('https://github.com/tjy-gitnub/win12','_blank');" win12_title="https://github.com/tjy-gitnub/win12" class="jump">点击此处查看</a>。</p>
 					<p>&emsp;&emsp;若您对于该项目有任何意见或建议，请在 GitHub 上<a onclick="window.open('https://github.com/tjy-gitnub/win12/issues','_blank');" win12_title="https://github.com/tjy-gitnub/win12/issues" class="jump">提交 issues</a>，您的问题会被尽可能快地解决。</p>
 					<p>&emsp;&emsp;原创作者星源，点击以<a onclick="window.open('https://tjy-gitnub.github.io/','_blank');" win12_title="https://tjy-gitnub.github.io/" class="jump">了解详细</a>。</p>
@@ -2030,28 +1956,39 @@ toggletheme() 切换主题
 			<div class="cnt update">
 				<h1 class="tit"><span></span>更新记录</h1>
 				<div style="margin-left: 20px;">
+					<details><summary><span>v8.1.0</span> 整理</summary><p>
+						&emsp;&emsp;-(更新来自@tjy-gitnub)<br>
+						&emsp;&emsp;- 代码整理<br>
+						&emsp;&emsp;- 修复一些问题</p>
+					</details>
+					<details><summary><span>v8.0.0</span> </summary><p>
+						&emsp;&emsp;-(更新来自@User782Tec)<br>
+						&emsp;&emsp;-使用svg矢量图优化了任务管理器性能图表的绘制<br>
+						&emsp;&emsp;-加入了半成品的Microsoft Store<br>
+						&emsp;&emsp;-其他一些细微之处的更新</p>
+					</details>
 					<details><summary><span>v7.4.2</span> AI Copilot 3.0！</summary><p>
-						&emsp;&emsp;-(更新来自@NB-Group)</p>
+						&emsp;&emsp;-(更新来自@NB-Group)<br>
 						&emsp;&emsp;-笑死，昨天刚修好就又寄了，这次的船新版本绝对稳定，（理论上）再也不会寄</p>
 					</details>
 					<details><summary><span>v7.4.1</span> AI Copilot 2.0！</summary><p>
-						&emsp;&emsp;-(更新来自@NB-Group)</p>
+						&emsp;&emsp;-(更新来自@NB-Group)<br />
 						&emsp;&emsp;-修复了ai无法使用的问题</p>
 					</details>
 					<details><summary><span>v7.4.0</span> AI Copilot！</summary><p>
-						&emsp;&emsp;-(更新来自@NB-Group)</p>
-						&emsp;&emsp;-去掉一些奇怪的东西</p>
-						&emsp;&emsp;-经过我114年的开发，AI Copilot 2.0诞生了！</p>
-						&emsp;&emsp;-开源了AI后端的代码</p>
+						&emsp;&emsp;-(更新来自@NB-Group)<br>
+						&emsp;&emsp;-去掉一些奇怪的东西<br />
+						&emsp;&emsp;-经过我114年的开发，AI Copilot 2.0诞生了！<br />
+						&emsp;&emsp;-开源了AI后端的代码<br />
 						&emsp;&emsp;-细节优化和修复</p>
 					</details>
 					<details><summary><span>v7.3.7</span> 细节更改</summary><p>
-						&emsp;&emsp;-加入一些奇怪的东西</p>
+						&emsp;&emsp;-加入一些奇怪的东西<br />
 						&emsp;&emsp;-细节优化和修复</p>
 					</details>
 					<details><summary><span>v7.3.6</span> 语音识别球</summary><p>
 						&emsp;&emsp;(更新来自@NB-Group)<br/>
-						&emsp;&emsp;-增加语音识别球</p>
+						&emsp;&emsp;-增加语音识别球<br />
 						&emsp;&emsp;-细节优化和修复</p>
 					</details>
 					<details><summary><span>v7.3.5</span> 整顿代码</summary><p>
@@ -2143,21 +2080,6 @@ toggletheme() 切换主题
 						&emsp;&emsp;-修复了终端的灾难性bug<br />
 						&emsp;&emsp;-优化部分UI<br />
 						&emsp;&emsp;-细节优化和修复</p>
-					</details>
-					<details>
-						<summary><span>v6.0.0</span> 文件系统,窗口大小,天气小组件,任务栏小组件</summary>
-						<p>
-							&emsp;&emsp;-新增文件系统(由 @NB-Group 之后提供)<br />
-							&emsp;&emsp;-窗口大小调整功能(由 @User782Tec 提供)<br />
-							&emsp;&emsp;-保存桌面布局(由 @User782Tec 提供)<br />
-							&emsp;&emsp;-天气小组件(由 @tjy-gitnub 提供)<br />
-							&emsp;&emsp;-小组件添加到任务栏(由 @tjy-gitnub 提供,目前仅支持天气小组件)<br />
-							&emsp;&emsp;-引入全新提示框(由 @tjy-gitnub 提供)<br />
-							&emsp;&emsp;-新的反馈通道<br />
-							&emsp;&emsp;-修复了有时开机动画不能正确显示的问题<br />
-							&emsp;&emsp;-修复了登录界面不显示的问题<br />
-							&emsp;&emsp;-适配新的主题格式，加速预览图显示<br />
-							&emsp;&emsp;-细节优化和修复</p>
 					</details>
 					<!-- 全部列出来那这个更多意义何在？ -->
 					<a onclick="window.open('changelog.md','_blank');" win12_title="changelog.md" class="a jump" style="text-align: center;">更多</a>

@@ -28,9 +28,10 @@
 
 
 #win-setting>.menu {
-    width: 30%;
-    min-width: 246px;
-    max-width: 300px;
+    width: 30% !important;
+    overflow: hidden;
+    min-width: 280px;
+    /* max-width: 30%; */
     padding: 3px 5px 5px 15px;
 }
 

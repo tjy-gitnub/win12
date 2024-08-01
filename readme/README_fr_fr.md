@@ -1,7 +1,7 @@
 <p align="center">
     <img src="./../icon/windows12.svg" width="100" height="100">
 </p>
-<h1 align="center">Windows 12 Web Edition</h1>
+<h1 align="center">Windows 12 Online</h1>
 <p align="center" class="shields">
   <a href="https://github.com/tjy-gitnub/win12/issues" style="text-decoration:none">
     <img src="https://img.shields.io/github/issues/tjy-gitnub/win12.svg" alt="GitHub issues"/>
@@ -33,39 +33,6 @@
 ### C’est important !
 Gratuitement, nous demandons sincèrement à tous les utilisateurs compétents de réaliser des vidéos promotionnelles pour nous !
 Pour plus de détails, reportez-vous à [Annonce vidéo promotionnelle(chinois)](https://github.com/tjy-gitnub/win12/wiki/%E5%AE%A3%E4%BC%A0%E7%89%87%E5%85%AC%E5%91%8A)
-
-### Quelques autres annonces
-> **🎉🎉Joyeux premier anniversaire pour Windows 12!`o(^o^)o`**
-> **Un grand merci à vous tous ici présents pour votre soutien!**
-
-
-```
-千古有冬夏，一载经春秋。破浪长风扶摇起，夜深星源起处。
-天涯何处觅知音，春秋冬夏君相昔。
-一路有你，纵冰塞黄河，雪满太行，不畏，丈夫未可轻年少。
-愿我如星君如月，夜夜流光相皎洁。
-
-感念一年来大家的支持与鼓励，批评和建议。
-Windows 12 的明天在大家的努力下会更灿烂美好！
-————星源 23/8/28
-```
-
----
-
-> L’auteur est dans la troisième année de la nouvelle année, et il ne fera aucune mise à jour des fonctionnalités. Maintenir et poursuivre le développement du [@User782Tec](https://github.com/User782Tec) [@NB-Groupe](https://github.com/NB-Group) qui nous a été confié, comme détaillé dans [Annonce(chinois)](https://github.com/tjy-gitnub/win12/wiki/%E5%85%AC%E5%91%8A-Notices).
-
-```
-寒窗苦读九春秋，一朝定乾坤。
-山岭越尽云雾散，霞光终万道。
-待蟾折桂题金榜，再叙一载过往！
-后会有期，明年再见，各位朋友，洒家告辞！
-————星源 23/8/30
-```
-
----
-
-> 🎉🎉 Projet Breakthrough sur github ✨ 5.6k ✨ Les stars ✨ - Oui! Le wow 🎊🎈`o(^o^)o`
-> Un grand merci à vous tous ici présents pour votre soutien!
 
 ---
 

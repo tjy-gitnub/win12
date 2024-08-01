@@ -1,7 +1,7 @@
 <p align="center">
     <img src="./../icon/windows12.svg" width="100" height="100">
 </p>
-<h1 align="center">Windows 12 Web Edition</h1>
+<h1 align="center">Windows 12 Online</h1>
 <p align="center" class="shields">
   <a href="https://github.com/tjy-gitnub/win12/issues" style="text-decoration:none">
     <img src="https://img.shields.io/github/issues/tjy-gitnub/win12.svg" alt="GitHub issues"/>
@@ -34,40 +34,6 @@
 Free of charge, we sincerely ask all capable users to make promotional videos for us!
 For details, please refer to [Promotional Video Announcement(Chinese)](https://github.com/tjy-gitnub/win12/wiki/%E5%AE%A3%E4%BC%A0%E7%89%87%E5%85%AC%E5%91%8A)
 
-### Some other Announcements
-> **🎉🎉 Happy First Birthday to 'Windows 12 Web Edition'！`o(^o^)o`**
-> **Sincere thanks for your support！**
-
-
-```
-千古有冬夏，一载经春秋。破浪长风扶摇起，夜深星源起处。
-天涯何处觅知音，春秋冬夏君相昔。
-一路有你，纵冰塞黄河，雪满太行，不畏，丈夫未可轻年少。
-愿我如星君如月，夜夜流光相皎洁。
-
-感念一年来大家的支持与鼓励，批评和建议。
-Windows 12 的明天在大家的努力下会更灿烂美好！
-————星源 23/8/28
-```
-
----
-
-> The author is in his third year and won't be doing any feature updates. Maintenance and continued development is left to our [@User782Tec](https://github.com/User782Tec) [@NB-Group](https://github.com/NB-Group)，refer to [Announcement(Chinese)](https://github.com/tjy-gitnub/win12/wiki/%E5%85%AC%E5%91%8A-Notices).
-
-```
-寒窗苦读九春秋，一朝定乾坤。
-山岭越尽云雾散，霞光终万道。
-待蟾折桂题金榜，再叙一载过往！
-后会有期，明年再见，各位朋友，洒家告辞！
-————星源 23/8/30
-```
-
----
-
-> 🎉🎉Project breaks ✨5.6k✨stars✨ on GitHub now! WOW🎊🎈`o(^o^)o`
-> Sincere thanks for your support！
-
----
 
 - [Windows 12 Web Edition](#windows-12-web-edition)
   - [Introduction Before Introduction](#introduction-before-introduction)
