@@ -3,19 +3,14 @@
 </p>
 <h1 align="center">Windows 12 网页版</h1>
 <p align="center" class="shields">
-  <a href="https://github.com/tjy-gitnub/win12/issues" style="text-decoration:none">
-    <img src="https://img.shields.io/github/issues/tjy-gitnub/win12.svg" alt="GitHub issues"/>
-  </a>
-  <a href="https://github.com/tjy-gitnub/win12/stargazers" style="text-decoration:none">
-    <img src="https://img.shields.io/github/stars/tjy-gitnub/win12.svg" alt="GitHub stars"/>
-  </a>
+  <a href="https://github.com/tjy-gitnub/win12/issues" style="text-decoration:none"><img src="https://img.shields.io/github/issues/tjy-gitnub/win12.svg" alt="GitHub issues"/></a>
+  <a href="https://github.com/tjy-gitnub/win12/stargazers" style="text-decoration:none"><img src="https://img.shields.io/github/stars/tjy-gitnub/win12.svg" alt="GitHub stars"/></a>
   <a href="https://github.com/tjy-gitnub/win12/network" style="text-decoration:none">
-    <img src="https://img.shields.io/github/forks/tjy-gitnub/win12.svg" alt="GitHub forks"/>
-  </a>
-  </a>
+    <img src="https://img.shields.io/github/forks/tjy-gitnub/win12.svg" alt="GitHub forks"/></a>
+  
   <a href="https://github.com/tjy-gitnub/win12/blob/master/LICENSE" style="text-decoration:none">
-    <img src="https://img.shields.io/github/license/tjy-gitnub/win12" alt="GitHub License"/>
-  </a>
+    <img src="https://img.shields.io/github/license/tjy-gitnub/win12" alt="GitHub License"/></a>
+    
 </p>
 <p align="center" class="language" title="Language selection 语言选择">
   <a href="readme/README_en_us.md">English</a> | 
