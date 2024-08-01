@@ -583,7 +583,7 @@ let nts = {
         cnt: `
             <p class="tit">关于 Windows 12 Copilot</p>
             <p>你可以使用此 AI 助手帮助你更快地完成工作 (有人用Win12工作?)<br>
-            由于所用模型（基于LLaMA模型架构）理解力较差，所以间歇性正常工作。<br>
+            由于所用模型理解力较差，所以间歇性正常工作。<br>
             有任何关于本 AI 的反馈请让 AI 帮你打开 AI Copilot反馈界面<br>
             每日只有100,000条请求机会！每月只有1G的流量限制，请各位合理安排使用次数（<br>
             也请适当使用，不要谈论敏感、违规话题，<br>请有身为一个人类最基本的道德底线。<br>
@@ -2945,7 +2945,6 @@ let copilot = {
         // 2.在浏览器中打开链接、搜索<br>
         // 3.发送对系统、ai助手的反馈
         // 注意：请勿滥用本ai助手，否则将下个版本将撤销此功能，影响所有人。</p></div>`);
-	// 来自YHX的注释：二次开发时想将原API请求接口（Workers AI）改为BingAPI（Go Proxy BingAI），但接口问题……还是不改的好😅
 	$('#copilot>.chat').append(`<div class="line system"><p class="text">正在初始化...</p></div>`);
         $('#copilot>.chat').scrollTop($('#copilot>.chat')[0].scrollHeight);
     },
@@ -2964,7 +2963,6 @@ let copilot = {
         if (showusr) $('#copilot>.chat').append(`<div class="line user"><p class="text">${t}</p></div>`);
         copilot.history.push({ role: role, content: t });
         $('#copilot>.chat').scrollTop($('#copilot>.chat')[0].scrollHeight);
-	console.log(copilot.history)
         $.post({
             url: 'https://nbgroup.pythonanywhere.com/',
             contentType: 'application/json',
