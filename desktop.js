@@ -2945,7 +2945,7 @@ let copilot = {
         // 2.在浏览器中打开链接、搜索<br>
         // 3.发送对系统、ai助手的反馈
         // 注意：请勿滥用本ai助手，否则将下个版本将撤销此功能，影响所有人。</p></div>`);
-	$('#copilot>.chat').append(`<div class="line system"><p class="text">正在初始化...</p></div>`);
+        $('#copilot>.chat').append(`<div class="line system"><p class="text">正在初始化...</p></div>`);
         $('#copilot>.chat').scrollTop($('#copilot>.chat')[0].scrollHeight);
     },
     send: (t, showusr = true,role="user") => {
