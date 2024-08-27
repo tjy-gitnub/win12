@@ -2869,13 +2869,13 @@ Micrȯsoft Windows [版本 12.0.39035.7324]
 
 // 语音球
 
-var draggableElement = document.getElementById("draggableBtn");
+var voiceBall = document.getElementById("voiceBall");
 var nbFlag = true;
 var pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
 var isDragging = false;
 
-draggableElement.addEventListener("mousedown", dragMouseDown);
-draggableElement.addEventListener("mouseup", stopDrag);
+voiceBall.addEventListener("mousedown", dragMouseDown);
+voiceBall.addEventListener("mouseup", stopDrag);
 
 function dragMouseDown(e) {
     e.preventDefault();
@@ -2891,8 +2891,8 @@ function elementDrag(e) {
     pos2 = pos4 - e.clientY;
     pos3 = e.clientX;
     pos4 = e.clientY;
-    draggableElement.style.top = (draggableElement.offsetTop - pos2) + "px";
-    draggableElement.style.left = (draggableElement.offsetLeft - pos1) + "px";
+    voiceBall.style.top = (voiceBall.offsetTop - pos2) + "px";
+    voiceBall.style.left = (voiceBall.offsetLeft - pos1) + "px";
     isDragging = true;
 }
 
@@ -4193,7 +4193,7 @@ document.getElementsByTagName('body')[0].onload = () => {
             }
         }
     });
-    document.querySelector('.rainbow-container-main').setAttribute('style', 'display:' + (use_mic_voice ? 'block' : 'none')+ ';');
+    document.getElementById('voiceBall').style.setProperty('display', use_mic_voice ? 'block' : 'none');
     // loadlang();
 };
 
