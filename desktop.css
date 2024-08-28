@@ -2366,14 +2366,29 @@ input-before {
     height: 100%;
     min-height: 0px !important;
 }
+/* 
+问题：当我打开edge浏览器，并点击窗口最大化时，窗口确实覆盖了整个屏幕。但是在edge打开某个网页时，
+窗口并没有覆盖到任务栏的位置，底下有一排巨大的空隙。
 
+我把100%的高度设置为120%，好像问题就解决了？
+
+我是小白，改着玩的，不知道会不会有其他bug发生，大佬们多多指教。
+
+github-red2026 */
+
+/* 定义当窗口处于最大状态时的样式 */
 .window.max {
     width: 100% !important;
-    height: 100% !important;
+    height: 120% !important;
+  
+
+    /* 定位属性，确保窗口从屏幕的左上角开始 */
     left: 0 !important;
     top: 0 !important;
+    /* 移除圆角和边框，使窗口边缘与屏幕边缘无缝对接 */
     border-radius: 0;
     border: none;
+    /* 定义过渡效果，确保窗口在最大化时有平滑的过渡 */
     transition: cubic-bezier(0.9, 0, 0.1, 1) 200ms, top 200ms 100ms, backdrop-filter, background 0ms;
 }
 
