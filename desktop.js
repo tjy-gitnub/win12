@@ -2957,6 +2957,10 @@ function startSpeechRecognition() {
 
 }
 
+function updateVoiceBallStatus() {
+    document.getElementById('voiceBall').style.setProperty('display', use_mic_voice ? 'block' : 'none');
+}
+
 // 小组件功能
 let widgets = {
     widgets: {
@@ -4193,7 +4197,7 @@ document.getElementsByTagName('body')[0].onload = () => {
             }
         }
     });
-    document.getElementById('voiceBall').style.setProperty('display', use_mic_voice ? 'block' : 'none');
+    updateVoiceBallStatus();
     // loadlang();
 };
 
