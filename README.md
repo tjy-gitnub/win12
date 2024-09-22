@@ -78,7 +78,7 @@ NB-group：
 
 ![image](https://github.com/tjy-gitnub/win12/assets/121747915/c4a7e71c-ac41-4ab5-ba87-967d188ca2cc)
 
-链接：<https://afdian.net/a/qstudio>
+链接：<https://afdian.com/a/qstudio>
 
 **我们的项目及源代码绝对不进行强制收费！如果看到倒卖本项目且没有注明原项目链接的，或违反EPL-2.0开源协议及本项目开源说明的，欢迎举报！**
 
@@ -96,8 +96,8 @@ NB-group：
 
 特别感谢以下赞助者:
 
-- CursoR_光标（<https://afdian.net/a/cursor>）
-- Baymax（<https://afdian.net/u/a131cd504dea11eeb6be5254001e7c00>）
+- CursoR_光标（<https://afdian.com/a/cursor>）
+- Baymax（<https://afdian.com/u/a131cd504dea11eeb6be5254001e7c00>）
 
 在此对以上赞助者表示公开鸣谢！
 

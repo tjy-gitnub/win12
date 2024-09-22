@@ -54,7 +54,7 @@ This project was developed by tjy-gitnub（Grade 9），NB-group（Prospective j
 
 （If you're going to make a promotional video for us, please hook up our Bilibili account as well!
 
-We only have official accounts on GitHub, Bilibili and afdian.net！
+We only have official accounts on GitHub, Bilibili and afdian.com！
 
 GitHub：
 
@@ -74,13 +74,13 @@ NB-group：
 
 ![image](https://github.com/tjy-gitnub/win12/assets/121747915/e475890f-010d-4e47-9ac6-fd4abad26218)
 
-afdian.net：
+afdian.com：
 
 The only official account in the world where you can donate! Shine your eyes! Don't donate to anyone else!
 
 ![image](https://github.com/tjy-gitnub/win12/assets/121747915/c4a7e71c-ac41-4ab5-ba87-967d188ca2cc)
 
-URL：<https://afdian.net/a/qstudio>
+URL：<https://afdian.com/a/qstudio>
 
 **This project and source code is absolutely no mandatory charges! If you see the sale of this project and did not specify the original project link, or violation of the EPL-2.0 open source agreement and the project open source description, welcome to report!**
 
@@ -98,8 +98,8 @@ Beautiful ui design, smooth and rich animations, various advanced features (comp
 
 Special thanks to the following sponsors.
 
-- CursoR_光标（<https://afdian.net/a/cursor>）
-- Baymax（<https://afdian.net/u/a131cd504dea11eeb6be5254001e7c00>）
+- CursoR_光标（<https://afdian.com/a/cursor>）
+- Baymax（<https://afdian.com/u/a131cd504dea11eeb6be5254001e7c00>）
 
 Hereby, we express public gratitude to the above sponsors!
 
