@@ -75,13 +75,13 @@ NB-group：
 
 ![image](https://github.com/tjy-gitnub/win12/assets/121747915/e475890f-010d-4e47-9ac6-fd4abad26218)
 
-afdian.net：
+afdian.com：
 
 Le seul compte officiel au monde où vous pouvez faire un don ! Ouvrez bien vos yeux ! Ne faites pas de dons à d'autres personnes !
 
 ![image](https://github.com/tjy-gitnub/win12/assets/121747915/c4a7e71c-ac41-4ab5-ba87-967d188ca2cc)
 
-URL：<https://afdian.net/a/qstudio>
+URL：<https://afdian.com/a/qstudio>
 
 **Notre projet et notre code source ne sont absolument pas soumis à des frais obligatoires ! Si vous voyez que ce projet est vendu sans mentionner le lien vers le projet d'origine, ou s'il enfreint la licence open source EPL-2.0 et les instructions open source de ce projet, n'hésitez pas à le signaler !**
 
@@ -99,8 +99,8 @@ Un design d'interface utilisateur élégant, des animations fluides et riches, t
 
 Un grand merci aux sponsors suivants :
 
-- CursoR_光标（<https://afdian.net/a/cursor>）
-- Baymax（<https://afdian.net/u/a131cd504dea11eeb6be5254001e7c00>）
+- CursoR_光标（<https://afdian.com/a/cursor>）
+- Baymax（<https://afdian.com/u/a131cd504dea11eeb6be5254001e7c00>）
 
 Nous tenons à remercier publiquement ces sponsors !
 
