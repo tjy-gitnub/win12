@@ -38,7 +38,7 @@
     --text2: #aaa;
     --bg: #000000;
     --bg50: #00000060;
-    --bg70: #00000090;
+    --bg70: #212121e6;
     --sd: #000000a0;
     --card: #72727240;
     --hover: #aaaaaa15;
@@ -207,6 +207,7 @@ list:not(.new)>a:active,
     box-shadow: 0 1px 10px var(--s3d);
     opacity: 1;
 }
+
 input.foc {
     display: block;
     height: 0;
@@ -2231,8 +2232,8 @@ input-before {
 }
 
 .window.foc {
-    background-color: var(--bg70);
-    backdrop-filter: blur(180px) saturate(1.5);
+    background: radial-gradient(rgba(26, 31, 53, 0.96) 25%, rgba(32, 32, 32, 0.96) 100%);
+    backdrop-filter: blur(50px) saturate(5);
     filter: none;
     -webkit-backdrop-filter: blur(80px) saturate(1.5);
     box-shadow: 3px 3px 20px 3px var(--sd);
@@ -2366,6 +2367,7 @@ input-before {
     height: 100%;
     min-height: 0px !important;
 }
+
 /* 
 问题：当我打开edge浏览器，并点击窗口最大化时，窗口确实覆盖了整个屏幕。但是在edge打开某个网页时，
 窗口并没有覆盖到任务栏的位置，底下有一排巨大的空隙。
@@ -2380,7 +2382,7 @@ github-red2026 */
 .window.max {
     width: 100% !important;
     height: 120% !important;
-  
+
 
     /* 定位属性，确保窗口从屏幕的左上角开始 */
     left: 0 !important;
@@ -2609,4 +2611,5 @@ github-red2026 */
 
 .setting-card>.setting-list {
     padding-bottom: 5px;
+    padding: 20px;
 }

@@ -162,6 +162,7 @@
     justify-content: space-around;
     border: 2px solid #00000000;
     background-clip: padding-box;
+    align-items: center; 
 }
 
 .setting-list>a:hover {
