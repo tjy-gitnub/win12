@@ -10,7 +10,7 @@
     --text2: #444;
     --bg: #ffffff;
     --bg50: #ffffff80;
-    --bg70: #ffffffa0;
+    --bg70: radial-gradient(rgba(239,244,249, 0.9) 25%, rgba(243,243,243,0.9) 100%);
     --sd: #22222230;
     --card: #efefef55;
     --hover: #ffffff65;
@@ -38,7 +38,7 @@
     --text2: #aaa;
     --bg: #000000;
     --bg50: #00000060;
-    --bg70: #212121e6;
+    --bg70: radial-gradient(rgba(26, 31, 53, 0.96) 25%, rgba(32, 32, 32, 0.96) 100%);
     --sd: #000000a0;
     --card: #72727240;
     --hover: #aaaaaa15;
@@ -2232,7 +2232,7 @@ input-before {
 }
 
 .window.foc {
-    background: radial-gradient(rgba(26, 31, 53, 0.96) 25%, rgba(32, 32, 32, 0.96) 100%);
+    background: var(--bg70);
     backdrop-filter: blur(50px) saturate(5);
     filter: none;
     -webkit-backdrop-filter: blur(80px) saturate(1.5);
