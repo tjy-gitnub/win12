@@ -78,7 +78,8 @@
 }
 
 :root.moreblur .window:not(.foc) {
-    background-color: var(--bg70);
+    background: var(--bg70);
+    background-color: none;
     backdrop-filter: blur(30px);
 }
 
