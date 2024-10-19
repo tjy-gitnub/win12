@@ -950,7 +950,7 @@ toggletheme() 切换主题
 		</div>
 		<span class="choose">
 		</span>
-		<p style="background-color: rgba(11,45,14,0);z-index:1;position: absolute;top:0px;left:0px;height:100%;width:100%" oncontextmenu="return showcm(event,'desktop');"></p>
+		<p tabindex="0" @keydown.meta="metaPressed" style="background-color: rgba(11,45,14,0);z-index:1;position: absolute;top:0px;left:0px;height:100%;width:100%" oncontextmenu="return showcm(event,'desktop');"></p>
 	</div>
 	<div id="cm" tabindex="-1">
 		<input class="foc">
@@ -3062,6 +3062,8 @@ toggletheme() 切换主题
 	<script src='https://cdn.staticfile.org/big.js/6.2.1/big.min.js'></script>
 	<script src="./scripts/calculator_kernel.js"></script>
 	<script src='https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.js'></script>
+	<script src="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/vue/3.2.31/vue.global.min.js"></script>
+	<script src="scripts/hotkey.js"></script>
 </body>
 
 </html>
