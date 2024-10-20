@@ -338,12 +338,6 @@ let cms = {
         }
     ]
 };
-window.onkeydown = function (event) {
-    if (event.keyCode == 116/*F5被按下(刷新)*/) {
-        event.preventDefault();/*取消默认刷新行为*/
-        $('#desktop').css('opacity', '0'); setTimeout(() => { $('#desktop').css('opacity', '1'); }, 100); setIcon();
-    }
-};
 
 function showcm(e, cl, arg) {
     if ($('#cm').hasClass('show-begin')) {
@@ -3456,6 +3450,115 @@ function hidewin(name, arg = 'window') {
         }
     }
 }
+
+//打开任务栏按钮对应的widget
+function openDockWidget(name){
+    if(name=="start-menu"){ //打开开始菜单
+        if($('#start-menu').hasClass('show')){
+            hide_startmenu();
+        }
+        else{
+            $('#start-btn').addClass('show');
+            if($('#search-win').hasClass('show')){
+                $('#search-btn').removeClass('show');
+                $('#search-win').removeClass('show');
+                setTimeout(() => {
+                    $('#search-win').removeClass('show-begin');
+                }, 200);
+                hide_widgets();
+            }
+            if($('#widgets').hasClass('show'))hide_widgets();
+            $('#start-menu').addClass('show-begin');
+            setTimeout(() => {
+                $('#start-menu').addClass('show');
+            }, 0);
+        }
+    }else if(name=="search-win"){   //打开搜索框
+        if ($('#search-win').hasClass('show')) {
+            $('#search-btn').removeClass('show');
+            $('#search-win').removeClass('show');
+            setTimeout(() => {
+                $('#search-win').removeClass('show-begin');
+            }, 200);
+        }
+        else {
+            $('#search-btn').addClass('show');
+            if($('#start-menu').hasClass('show'))hide_startmenu();
+            if($('#widgets').hasClass('show'))hide_widgets();
+            $('#search-win').addClass('show-begin');
+            setTimeout(() => {
+                $('#search-win').addClass('show');
+            }, 0);
+            $('#search-input').focus();
+        }
+    }else if(name=="widgets"){  //打开小组件
+        if($('#widgets').hasClass('show')){
+            hide_widgets();
+        }
+        else{
+            $('#widgets-btn').addClass('show');
+            if($('#search-win').hasClass('show')){
+                $('#search-btn').removeClass('show');
+                $('#search-win').removeClass('show');
+                setTimeout(() => {
+                    $('#search-win').removeClass('show-begin');
+                }, 200);
+            }
+            if($('#start-menu').hasClass('show'))hide_startmenu();
+            $('#widgets').addClass('show-begin');
+            setTimeout(() => {
+                $('#widgets').addClass('show');
+            }, 0);
+            $('#widgets-input').focus();
+        }
+    }else if(name=="control"){  //打开控制
+        if($('#control').hasClass('show')) {
+			$('#control').removeClass('show');
+			setTimeout(() => {
+				$('#control').removeClass('show-begin');
+			}, 200);
+		}
+		else {
+			if ($('#datebox').hasClass('show')) {
+				$('.dock.date').removeClass('show');
+				$('#datebox').removeClass('show');
+				setTimeout(() => {
+					$('#datebox').removeClass('show-begin');
+				}, 200);
+			}
+			$('#control').css('left',$('.a.dock.control').position().left - 123);
+			$('#control').addClass('show-begin');
+			setTimeout(() => {
+				$('#control').addClass('show');
+			}, 0);
+		}
+    }else if(name=="datebox"){  //打开时间框
+        if($('#datebox').hasClass('show')) {
+			$('.dock.date').removeClass('show');
+			$('#datebox').removeClass('show');
+			setTimeout(() => {
+				$('#datebox').removeClass('show-begin');
+			}, 200);
+		}
+		else {
+			if ($('#control').hasClass('show')) {
+				$('#control').removeClass('show');
+				setTimeout(() => {
+					$('#control').removeClass('show-begin');
+				}, 200);
+			}
+			$('.dock.date').addClass('show');
+			$('#datebox').css('left',$('.a.dock.date').position().left-125);
+			$('#datebox').addClass('show-begin');
+			setTimeout(() => {
+				$('#datebox').addClass('show');
+			}, 0);
+		}
+    }else{
+        console.err("openDockWidget()传递的name不正确!");
+    }
+}
+
 function removeEdgeSaveUrl(classname) {
     $('.' + classname).remove()
 }
@@ -4300,3 +4403,21 @@ function calcTimeString(second) {
     }
     return timeStr === '' ? ' 0 秒' : timeStr;
 }
+
+//监听全局按键
+function setupGlobalKey(){
+    $(document).keydown(function (event) {
+        if (event.keyCode == 116/*F5被按下(刷新)*/) {
+            event.preventDefault();/*取消默认刷新行为*/
+            $('#desktop').css('opacity', '0'); setTimeout(() => { $('#desktop').css('opacity', '1'); }, 100); setIcon();
+            return;
+        }
+
+        //按下徽标键
+        if (event.metaKey) {
+            //打开或关闭开始菜单
+            openDockWidget("start-menu");
+        }
+    });
+}
+setupGlobalKey();
