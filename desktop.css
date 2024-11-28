@@ -1474,6 +1474,41 @@ input-before {
 }
 
 
+#widgets>.news {
+    overflow: hidden;
+}
+
+#widgets>.news>.full-tip {
+    /* position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0; */
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+#widgets>.news>.full-tip.hidden {
+    display: none;
+}
+
+#widgets>.news>.full-tip>* {
+    margin-bottom: 10px;
+}
+
+#widgets>.news>.full-tip>.tit {
+    font-weight: bold;
+    font-size: large;
+}
+
+#widgets>.news>.full-tip>.info {
+    font-size: small;
+}
+
 #widgets>.news>.content {
     overflow: auto;
 }

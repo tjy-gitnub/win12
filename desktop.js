@@ -636,6 +636,14 @@ let nts = {
             { type: 'cancel', text: '取消', js: 'closenotice();' }
         ]
     },
+    'widgets.news.source': {
+        cnt: `
+            <p class="tit">切换新闻源</p>
+            <list class="new">
+                新闻源未加载，请检查网络连接
+            </list>`,
+        btn: [{ type: 'cancel', text: '取消', js: 'closenotice();' }],
+    },
     'duplication file name': {
         cnt: `
             <p class="tit">错误</p>
