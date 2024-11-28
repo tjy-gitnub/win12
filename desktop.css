@@ -1476,36 +1476,77 @@ input-before {
 
 #widgets>.news>.content {
     overflow: auto;
+}
+
+#widgets>.news>.content .line {
+    margin-top: 10px;
     display: grid;
-    justify-content: center;
     gap: 10px;
     grid-template-columns: repeat(5, 83px);
-    grid-template-rows: repeat(11, 83px);
+    /* grid-template-rows: repeat(1, 114px); */
 }
 
-#widgets>.news>.content>.card {
+#widgets>.news>.content .card {
     border-radius: 10px;
     transition: 10ms;
+    background-image: linear-gradient(#00000000,#111 90%);
+    background-size: cover;
+    grid-row: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: flex-start;
+    padding: 10px;
+    height: 175px;
 }
 
-#widgets>.news>.content>.card:hover {
+#widgets>.news>.content .card-left {
+    grid-column: 1 / 4;
+}
+
+#widgets>.news>.content .card-right {
+    grid-column: 4 / 6;
+}
+
+#widgets>.news>.content .line:nth-child(even) .card-left {
+    grid-column: 1 / 3;
+}
+
+#widgets>.news>.content .line:nth-child(even) .card-right {
+    grid-column: 3 / 6;
+}
+
+#widgets>.news>.content .card:hover {
     box-shadow: 1px 1px 7px var(--sd);
     filter: brightness(0.95);
 }
 
-#widgets>.news>.content>.card>.tit {
+#widgets>.news>.content .card>.tit {
+    color: white;
     font-size: 18px;
     line-height: 1.2;
-    margin: 30px 0 0 10px;
+    margin-bottom: 10px;
     transition: 100ms;
+    text-shadow: 0 0 8px #000;
 }
 
-#widgets>.news>.content>.card>.a {
-    color: var(--href);
+#widgets>.news>.content .card>.a {
+    color: #9dd0fb;
+    font-size: 17px;
+    text-shadow: 0 0 3px #000;
 }
 
-#widgets>.news>.content>.card>.a:hover {
+#widgets>.news>.content .card>.a:hover {
     border-bottom: 2px solid;
+}
+
+#widgets>.news>.content .card.top-news {
+    color: #fff;
+    background-color: var(--bgul);
+}
+
+#widgets>.news>.content .card.top-news>.tit {
+    font-size: 20px;
 }
 
 /*** 以下任务栏各面板 ***/

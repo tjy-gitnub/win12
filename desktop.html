@@ -622,61 +622,46 @@ toggletheme() 切换主题
 		<div class="news">
 			<div class="bar">
 				<p class="tit">新闻</p>
-				<p style="color: #7f7f7f;margin-right: 5px;margin-top: 2px;">注意: 新闻内容均不属实 </p>
+				<div>
+					<span style="color: #7f7f7f;margin-right: 5px;margin-top: 2px;">我们不对新闻内容负责</span>
+					<button onclick="shownotice('widgets.news.source')" class="a act btn btn-icon big"
+						style="background: linear-gradient(100deg, var(--theme-1), var(--theme-2));color:#fff;"
+						win12_title="切换新闻源"><i class="bi bi-arrow-repeat"></i></button>
+				</div>
 			</div>
 			<div class="content">
-				<div class="card" style="grid-column: 1/6;grid-row: 1/3;color: #fff;background: var(--bgul);background-position:0 -278px;background-size: 100%;">
-					<p class="tit" style="font-size: 20px;margin: 90px 0 0 30px;text-shadow: 0 0 8px #000;">Windows12 v7.0 发布</p>
-					<a class="a" style="margin: 5px 0 0 50px;font-size: 17px;color: #9dd0fb;text-shadow: 0 0 3px #000;" onclick="hide_widgets();
-					openapp('about');if($('.window.about').hasClass('min'))minwin('about');
-					$('#win-about>.about').removeClass('show');$('#win-about>.update').addClass('show');
-					$('#win-about>.update>div>details:first-child').attr('open','open')">详细信息 ></a>
+				<div class="card top-news">
+					<p class="tit">Windows12 v7.0 发布</p>
+					<a class="a" onclick="hide_widgets();
+									openapp('about');if($('.window.about').hasClass('min'))minwin('about');
+									$('#win-about>.about').removeClass('show');$('#win-about>.update').addClass('show');
+									$('#win-about>.update>div>details:first-child').attr('open','open')">详细信息 ></a>
 				</div>
-				<div class="card"
-					style="grid-column: 4/6;grid-row: 7/9;background:url(img/win13.jpg) right;background-size: cover;">
-					<p class="tit" style="margin: 70px 0 0 10px;color: #fff;">Windows13 即将发布，官方透露: 将自带 Macos 子系统</p>
-					<a class="a"
-						style="margin: 5px 0 0 80px;font-size: 17px;color: #9dd0fb;text-shadow: 0 0 3px #000;">详细信息
-						></a>
-				</div>
-				<div class="card"
-					style="grid-column: 4/6;grid-row: 3/5;background:linear-gradient(#00000000,var(--bg) 70%),url(img/win11.jpg) center;background-size: cover;">
-					<p class="tit" style="margin: 100px 0 0 10px;">Windows11 将于下周停止支持</p>
-					<a class="a" style="margin: 5px 0 0 80px;font-size: 17px;">详细信息 ></a>
-				</div>
-				<div class="card"
-					style="grid-column: 1/3;grid-row: 5/7;background:linear-gradient(#00000000,#111 80%),url(img/corsiri.svg) bottom;background-size: 150%;">
-					<p class="tit" style="margin: 80px 0 0px 10px;color: #fff;">2029年,微软终重拾Cortana 微软员工透露:将与Siri整合</p>
-					<a class="a" style="margin: 0 0 0 80px;font-size: 17px;color: #9dd0fb;">详细信息 ></a>
-				</div>
-				<div class="card"
-					style="grid-column: 1/4;grid-row: 7/9;background:linear-gradient(#00000000,#111 90%),url(img/wsm.png) left;background-size: 120%;">
-					<p class="tit" style="margin: 100px 0 0px 10px;color: #fff;">微软发布 Windows Subsystem for MacOS</p>
-					<a class="a" style="margin: 0 0 0 170px;font-size: 17px;color: #9dd0fb;">详细信息 ></a>
-				</div>
-				<div class="card" style="grid-column: 3/6;grid-row: 5/7;background:linear-gradient(#00000000 0 30%,var(--bg) 70%),url(img/mc.jpg) bottom;background-size: cover;">
-					<p class="tit" style="margin: 100px 0 -20px 10px;">今日凌晨,Minecraft把代理权交给中国航天员星源,网易败下阵来了?</p>
-					<a class="a" style="margin: 0 0 0 170px;font-size: 17px;">详细信息 ></a>
-				</div>
-				<div class="card" style="grid-column: 1/4;grid-row: 3/5;background:linear-gradient(#00000000 0 30%,var(--bg) 80%),url(img/yq.jpg) center;background-size: cover;">
-					<p class="tit" style="margin: 120px 0 -20px 10px;">中国航天员星源昨天下午成功登月</p>
-					<a class="a" style="margin: 0 0 0 150px;font-size: 17px;">详细信息 ></a>
-				</div>
-				<div class="card" style="grid-column: 3/6;grid-row: 9/11;background:linear-gradient(#00000000 0 30%,var(--bg) 80%),url(img/office.png) center;background-size: cover;">
-					<p class="tit" style="margin: 100px 0 0 10px;">微软发布声控Office套件，用户可以用嗓子完成文件编辑</p>
-					<a class="a" style="margin: 0 0 0 160px;font-size: 17px;">详细信息 ></a>
-				</div>
-				<div class="card"
-					style="grid-column: 1/4;grid-row: 11/13;background:linear-gradient(#00000000,var(--bg) 70%),url(img/earth.webp) center;background-size: cover;">
-					<p class="tit" style="margin: 100px 0 0 10px;">流浪地球4首支预告片发布</p>
-					<a class="a" style="margin: 5px 0 0 160px;font-size: 17px;">详细信息 ></a>
-				</div>
-				<div class="card" style="grid-column: 1/3;grid-row: 9/11;background:#171b22;">
-					<p class="tit" style="font-size: 19px;margin: 50px 0 0 10px;color: #fff;">想给新闻增加更多奇思妙想?
-						<br />在github上提交</p>
-					<a class="a" win12_title="https://github.com/tjy-gitnub/win12/issues"
-						style="margin: 10px 0 0 70px;font-size: 17px;color: #9dd0fb" onclick="
-					window.open('https://github.com/tjy-gitnub/win12/issues','_blank');">提交issues ></a>
+				<div class="news-all">
+		
+					<div class="line">
+						<div class="card card-left" style="background:url(img/win13.jpg) right;">
+							<p class="tit">Windows13 即将发布，官方透露: 将自带 Macos 子系统</p>
+							<a class="a">详细信息 ></a>
+						</div>
+						<div class="card card-right"
+							style="background:linear-gradient(#00000000,var(--bg) 70%),url(img/win11.jpg) center;">
+							<p class="tit">Windows11 将于下周停止支持</p>
+							<a class="a">详细信息 ></a>
+						</div>
+					</div>
+					<div class="line">
+						<div class="card card-left"
+							style="background:linear-gradient(#00000000,#111 80%),url(img/corsiri.svg) bottom;background-size: 150%;">
+							<p class="tit">2029年,微软终重拾Cortana 微软员工透露:将与Siri整合</p>
+							<a class="a">详细信息 ></a>
+						</div>
+						<div class="card card-right"
+							style="background:linear-gradient(#00000000,#111 90%),url(img/wsm.png) left;background-size: 120%;">
+							<p class="tit">微软发布 Windows Subsystem for MacOS</p>
+							<a class="a">详细信息 ></a>
+						</div>
+					</div>
 				</div>
 			</div>
 		</div>
