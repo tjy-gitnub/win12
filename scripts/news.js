@@ -114,7 +114,7 @@ var news = {
             return `
 <div class="card ${classList}" style="background: url(${data.image}) right;">
     <p class="tit">${await this.parseToHTMLString(data.title)}</p>
-    <a class="a" href="${data.url}">详细信息 ></a>
+    <a class="a" onclick="openapp(\'edge\');window.setTimeout(() => {apps.edge.newtab();apps.edge.goto('${data.url}');}, 300);">详细信息 &gt;</a>
 </div>
 `;
         };
