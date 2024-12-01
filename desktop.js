@@ -49,7 +49,13 @@ page.addEventListener('mouseup', enableIframes);
 page.addEventListener('touchend', enableIframes);
 page.addEventListener('touchcancel', enableIframes);
 
-
+page.addEventListener('click',(event)=>{
+if($('#start-menu').hasClass('show')&&!$(event.target).closest('#start-menu').length){
+hide_startmenu();
+}
+});
+//开始菜单收回
+	
 // 上古代码
 document.querySelectorAll('list.focs').forEach(li => {
     li.addEventListener('click', () => {
