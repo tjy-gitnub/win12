@@ -56,6 +56,7 @@ hide_startmenu();
 });
 //开始菜单收回
 	
+
 // 上古代码
 document.querySelectorAll('list.focs').forEach(li => {
     li.addEventListener('click', () => {
@@ -4316,6 +4317,7 @@ document.getElementsByTagName('body')[0].onload = () => {
     });
     updateVoiceBallStatus();
     // loadlang();
+    checkOrientation();
 };
 
 let autoUpdate = true;
@@ -4435,3 +4437,22 @@ function setupGlobalKey(){
     });
 }
 setupGlobalKey();
+
+
+function isMobileDevice() {
+    return /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+}
+
+function checkOrientation() {
+    const container = document.getElementById('orientation-warning');
+    const isPortrait = window.matchMedia("(orientation: portrait)").matches;
+    if (isMobileDevice() && isPortrait) {
+        container.style.display = "flex"; // 显示提示
+    } else {
+        container.style.display = "none"; // 隐藏提示
+    }
+}
+
+// 监听屏幕方向变化
+window.addEventListener("resize", checkOrientation);
+window.addEventListener("orientationchange", checkOrientation);
