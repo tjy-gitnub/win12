@@ -782,15 +782,21 @@ function runcmd(cmd, inTerminal=false) {
         openapp(cmd.replace('.exe', ''));
         return true;
     }
-    else if (cmd.includes('shutdown')) {//关机指令
+    else if (cmd.includes('shutdown')) {//关机指令 by fzlzjerry
+        // 保存当前命令以供后续使用
         run_cmd = cmd;
+        // 将命令按空格分割成数组以便解析参数
         var cmds = cmd.split(' ');
+        // 检查命令是否为shutdown或shutdown.exe
         if ((cmds[0] == 'shutdown') || (cmds[0] == 'shutdown.exe')) {
+            // 如果没有参数，显示帮助信息
             if (cmds.length == 1) {
+                // 如果不是在终端中执行，则打开终端
                 if(!inTerminal){
                     openapp('terminal');
                     $('#win-terminal').html('<pre class="text-cmd"></pre>');
                 }
+                // 显示帮助信息
                 $('#win-terminal>.text-cmd').append(`
 shutdown [-s] [-r] [-f] [-a] [-t time]
 -s:关机
@@ -807,33 +813,37 @@ shutdown [-s] [-r] [-f] [-a] [-t time]
                 return true;
             }
             
-            // Parse shutdown options
-            let hasTime = false;
-            let timeValue = 0;
-            let operation = '';
-            let forceMode = false;
+            // 初始化参数变量
+            let hasTime = false;      // 是否指定了时间
+            let timeValue = 0;        // 延迟时间值（秒）
+            let operation = '';       // 操作类型（关机/重启/注销）
+            let forceMode = false;    // 是否为强制模式（不显示通知）
 
-            // Check for time parameter
+            // 检查并解析时间参数 (-t 或 /t)
             if (cmds.includes('-t') || cmds.includes('/t')) {
                 const timeFlag = cmds.includes('-t') ? '-t' : '/t';
                 const timeIndex = cmds.indexOf(timeFlag);
+                // 检查时间参数是否有效
                 if (timeIndex < cmds.length - 1 && !isNaN(cmds[timeIndex + 1])) {
                     hasTime = true;
                     timeValue = parseInt(cmds[timeIndex + 1]);
                 } else {
+                    // 时间参数无效时显示错误信息
                     $('#win-terminal>.text-cmd').append(`错误: 无效的时间参数\n`);
                     return true;
                 }
             }
 
-            // Check for force flag
+            // 检查是否为强制模式 (-f 或 /f)
             if (cmds.includes('-f') || cmds.includes('/f')) {
                 forceMode = true;
             }
 
-            // Check for abort flag
+            // 检查是否为取消操作 (-a 或 /a)
             if (cmds.includes('-a') || cmds.includes('/a')) {
+                // 如果有正在进行的关机任务
                 if (shutdown_task.length > 0) {
+                    // 清除所有关机任务
                     for (let task of shutdown_task) {
                         if (task != null) {
                             try {
@@ -842,6 +852,7 @@ shutdown [-s] [-r] [-f] [-a] [-t time]
                         }
                     }
                     shutdown_task = [];
+                    // 显示取消通知
                     nts['shutdown'] = {
                         cnt: `
                         <p class="tit">注销已取消</p>
@@ -852,32 +863,33 @@ shutdown [-s] [-r] [-f] [-a] [-t time]
                     };
                     shownotice('shutdown');
                 } else {
+                    // 如果没有正在进行的关机任务，显示错误信息
                     $('#win-terminal>.text-cmd').append(`错误: 没有正在进行的关机操作\n`);
                 }
                 return true;
             }
 
-            // Check for shutdown flag
+            // 确定操作类型
             if (cmds.includes('-s') || cmds.includes('/s')) {
-                operation = 'shutdown';
+                operation = 'shutdown';    // 关机
             }
-            // Check for restart flag
             else if (cmds.includes('-r') || cmds.includes('/r')) {
-                operation = 'restart';
+                operation = 'restart';     // 重启
             }
-            // Check for logoff flag
             else if (cmds.includes('-f') || cmds.includes('/f')) {
-                operation = 'logoff';
+                operation = 'logoff';      // 注销
             }
             else {
+                // 如果没有指定有效的操作类型，显示错误信息
                 $('#win-terminal>.text-cmd').append(`错误: 无效的操作参数\n`);
                 return true;
             }
 
-            // Execute the operation
-            const delay = hasTime ? timeValue * 1000 : 0;
+            // 计算延迟时间和显示文本
+            const delay = hasTime ? timeValue * 1000 : 0;  // 将秒转换为毫秒
             const timeString = hasTime ? calcTimeString(timeValue) : '立即';
             
+            // 准备通知内容
             nts['shutdown'] = {
                 cnt: `
                 <p class="tit">即将${operation === 'restart' ? '重启' : operation === 'logoff' ? '注销' : '关机'}</p>
@@ -887,7 +899,9 @@ shutdown [-s] [-r] [-f] [-a] [-t time]
                 ]
             };
 
+            // 创建定时任务
             const task = setTimeout(() => {
+                // 根据操作类型跳转到相应页面
                 if (operation === 'restart') {
                     window.location.href = './reload.html';
                 } else if (operation === 'logoff') {
@@ -897,8 +911,10 @@ shutdown [-s] [-r] [-f] [-a] [-t time]
                 }
             }, delay);
 
+            // 将任务添加到任务列表
             shutdown_task.push(task);
             
+            // 如果不是强制模式，显示通知
             if (!forceMode) {
                 shownotice('shutdown');
             }
