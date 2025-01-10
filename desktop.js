@@ -769,7 +769,9 @@ var shutdown_task = []; //关机任务，储存在这个数组里
 function runcmd(cmd, inTerminal=false) {
     if (cmd.slice(0, 3) == 'cmd') {
         run_cmd = cmd;
-        openapp('terminal');
+        if (!inTerminal) {
+            openapp('terminal');
+        }
         return true;
     }
     else if (cmd in apps) {
@@ -780,15 +782,21 @@ function runcmd(cmd, inTerminal=false) {
         openapp(cmd.replace('.exe', ''));
         return true;
     }
-    else if (cmd.includes('shutdown')) {//关机指令
+    else if (cmd.includes('shutdown')) {//关机指令 by fzlzjerry
+        // 保存当前命令以供后续使用
         run_cmd = cmd;
+        // 将命令按空格分割成数组以便解析参数
         var cmds = cmd.split(' ');
-        if ((cmds[0] == 'shutdown') || (cmds[0] == 'shutdown.exe')) { //帮助
+        // 检查命令是否为shutdown或shutdown.exe
+        if ((cmds[0] == 'shutdown') || (cmds[0] == 'shutdown.exe')) {
+            // 如果没有参数，显示帮助信息
             if (cmds.length == 1) {
+                // 如果不是在终端中执行，则打开终端
                 if(!inTerminal){
                     openapp('terminal');
                     $('#win-terminal').html('<pre class="text-cmd"></pre>');
                 }
+                // 显示帮助信息
                 $('#win-terminal>.text-cmd').append(`
 shutdown [-s] [-r] [-f] [-a] [-t time]
 -s:关机
@@ -799,63 +807,52 @@ shutdown [-s] [-r] [-f] [-a] [-t time]
 
 其余不多做介绍了` + (inTerminal?'' : `
 请按任意键继续.&nbsp;.&nbsp;.<input type="text" onkeydown="hidewin('terminal')"></input>`));
-                // 所以你是没事干吗？。。提示：github并不是以行数来计算贡献的哦   from @tjy-gitnub
-                $('#win-terminal>pre>input').focus();
+                if (!inTerminal) {
+                    $('#win-terminal>pre>input').focus();
+                }
+                return true;
             }
-            else if (cmds.includes('-s') || cmds.includes('/s')) {//关机
-                if ((cmds.indexOf('-t') != -1 && cmd.length/*判断是否-t后有其他参数*/ >= cmds.indexOf('-t') + 2/*先加一，获取当下标是从1开始的时候的下标索引；再加一，获取下一项。配合数组.length使用*/) || (cmds.indexOf('/t') != -1 && cmd.length/*判断是否-t后有其他参数*/ >= cmds.indexOf('/t') + 2)) {
-                    str = '';
-                    if (cmds.includes('-t')) { str = '-t'; }
-                    if (cmds.includes('/t')) { str = '/t'; }
-                    if (!isNaN(cmds[cmds.indexOf(str) + 1]/*这里只加一是因为下标是从0开始的*/)) {
-                        num = parseInt(cmds[cmds.indexOf(str) + 1]);
-                        nts['shutdown'] = {
-                            cnt: `
-                            <p class="tit">即将注销你的登录</p>
-                            <p>Windows 将在 ` + calcTimeString(num) + ' 后关闭。</p>', // 如果必须原生样式的，建议改为 num<60 ? 1 : Math.floor(num / 60) + ` 分钟后关闭。</p>`,
-                            btn: [
-                                { type: 'main', text: '关闭', js: 'closenotice();' },
-                            ]
-                        };
-                        shutdown_task[shutdown_task.length] = setTimeout('window.location.href = \'./shutdown.html\'', num * 1000);
-                        if (!(cmds.includes('/f') || cmds.includes('-f'))) {
-                            shownotice('shutdown');
-                        }
-                    }
+            
+            // 初始化参数变量
+            let hasTime = false;      // 是否指定了时间
+            let timeValue = 0;        // 延迟时间值（秒）
+            let operation = '';       // 操作类型（关机/重启/注销）
+            let forceMode = false;    // 是否为强制模式（不显示通知）
+
+            // 检查并解析时间参数 (-t 或 /t)
+            if (cmds.includes('-t') || cmds.includes('/t')) {
+                const timeFlag = cmds.includes('-t') ? '-t' : '/t';
+                const timeIndex = cmds.indexOf(timeFlag);
+                // 检查时间参数是否有效
+                if (timeIndex < cmds.length - 1 && !isNaN(cmds[timeIndex + 1])) {
+                    hasTime = true;
+                    timeValue = parseInt(cmds[timeIndex + 1]);
+                } else {
+                    // 时间参数无效时显示错误信息
+                    $('#win-terminal>.text-cmd').append(`错误: 无效的时间参数\n`);
+                    return true;
                 }
             }
-            else if (cmds.includes('-r') || cmds.includes('/r')) {//重启
-                if ((cmds.indexOf('-t') != -1 && cmd.length >= cmds.indexOf('-t') + 2) || (cmds.indexOf('/t') != -1 && cmd.length >= cmds.indexOf('/t') + 2)) {/*详见上面的注释*/
-                    str = '';
-                    if (cmds.includes('-t')) { str = '-t'; }
-                    if (cmds.includes('/t')) { str = '/t'; }
-                    if (!isNaN(cmds[cmds.indexOf(str) + 1])) {
-                        num = parseInt(cmds[cmds.indexOf(str) + 1]);
-                        nts['shutdown'] = {
-                            cnt: `
-                            <p class="tit">即将注销你的登录</p>
-                            <p>Windows 将在 ` + calcTimeString(num) + ' 后关闭。</p>', // 如果必须原生样式的，建议改为 num<60 ? 1 : Math.floor(num / 60) + ` 分钟后关闭。</p>`,
-                            btn: [
-                                { type: 'main', text: '关闭', js: 'closenotice();' },
-                            ]
-                        };
-                        shutdown_task[shutdown_task.length] = setTimeout('window.location.href = \'./reload.html\'', num * 1000);
-                        if (!(cmds.includes('/f') || cmds.includes('-f'))) {
-                            shownotice('shutdown');
-                        }
-                    }
-                }
+
+            // 检查是否为强制模式 (-f 或 /f)
+            if (cmds.includes('-f') || cmds.includes('/f')) {
+                forceMode = true;
             }
-            else if (cmds.includes('-a') || cmds.includes('/a')) {//取消电源操作
+
+            // 检查是否为取消操作 (-a 或 /a)
+            if (cmds.includes('-a') || cmds.includes('/a')) {
+                // 如果有正在进行的关机任务
                 if (shutdown_task.length > 0) {
-                    for (var i = 0; i < shutdown_task.length; i++) {
-                        if (shutdown_task[i] != null) {
+                    // 清除所有关机任务
+                    for (let task of shutdown_task) {
+                        if (task != null) {
                             try {
-                                clearTimeout(shutdown_task[i]);
+                                clearTimeout(task);
                             } catch (err) { console.log(err); }
-                            shutdown_task[i] = null;
                         }
                     }
+                    shutdown_task = [];
+                    // 显示取消通知
                     nts['shutdown'] = {
                         cnt: `
                         <p class="tit">注销已取消</p>
@@ -865,7 +862,61 @@ shutdown [-s] [-r] [-f] [-a] [-t time]
                         ]
                     };
                     shownotice('shutdown');
+                } else {
+                    // 如果没有正在进行的关机任务，显示错误信息
+                    $('#win-terminal>.text-cmd').append(`错误: 没有正在进行的关机操作\n`);
                 }
+                return true;
+            }
+
+            // 确定操作类型
+            if (cmds.includes('-s') || cmds.includes('/s')) {
+                operation = 'shutdown';    // 关机
+            }
+            else if (cmds.includes('-r') || cmds.includes('/r')) {
+                operation = 'restart';     // 重启
+            }
+            else if (cmds.includes('-f') || cmds.includes('/f')) {
+                operation = 'logoff';      // 注销
+            }
+            else {
+                // 如果没有指定有效的操作类型，显示错误信息
+                $('#win-terminal>.text-cmd').append(`错误: 无效的操作参数\n`);
+                return true;
+            }
+
+            // 计算延迟时间和显示文本
+            const delay = hasTime ? timeValue * 1000 : 0;  // 将秒转换为毫秒
+            const timeString = hasTime ? calcTimeString(timeValue) : '立即';
+            
+            // 准备通知内容
+            nts['shutdown'] = {
+                cnt: `
+                <p class="tit">即将${operation === 'restart' ? '重启' : operation === 'logoff' ? '注销' : '关机'}</p>
+                <p>Windows 将在 ${timeString} 后${operation === 'restart' ? '重启' : operation === 'logoff' ? '注销' : '关机'}。</p>`,
+                btn: [
+                    { type: 'main', text: '关闭', js: 'closenotice();' },
+                ]
+            };
+
+            // 创建定时任务
+            const task = setTimeout(() => {
+                // 根据操作类型跳转到相应页面
+                if (operation === 'restart') {
+                    window.location.href = './reload.html';
+                } else if (operation === 'logoff') {
+                    window.location.href = './login.html';
+                } else {
+                    window.location.href = './shutdown.html';
+                }
+            }, delay);
+
+            // 将任务添加到任务列表
+            shutdown_task.push(task);
+            
+            // 如果不是强制模式，显示通知
+            if (!forceMode) {
+                shownotice('shutdown');
             }
             return true;
         }
@@ -2551,57 +2602,66 @@ Micrȯsoft Windows [版本 12.0.39035.7324]
 (c) Microṡoft Corporation。保留所有杈利。
         </pre>
         <pre class="text-cmd"></pre>
-        <pre style="display: flex"><span class="prompt">C:\\Windows\\System32> </span><input type="text" onkeyup="if (event.keyCode == 13) { apps.terminal.run(); }"></pre>`);
+        <pre style="display: flex"><span class="prompt">C:\\Windows\\System32> </span><input type="text" onkeyup="apps.terminal.handleKeyUp(event)"></pre>`);
             $('#win-terminal>pre>input').focus();
+        },
+        handleKeyUp: (event) => {
+            const input = $('#win-terminal input');
+            if (event.keyCode === 13) { // Enter
+                apps.terminal.run();
+            } else if (event.keyCode === 38) { // Up arrow
+                apps.terminal.history('up');
+            } else if (event.keyCode === 40) { // Down arrow
+                apps.terminal.history('down');
+            }
         },
         run: () => {
             const elt = $('#win-terminal>pre.text-cmd')[0];
             const input = $('#win-terminal input');
-            const command = input.val();
-            var newD = document.createElement('div');
-            newD.innerText = `C:\\Windows\\System32> ${command}`;
-            elt.appendChild(newD);
-            if (command == 'exit') {
-                hidewin('terminal');
-                input.val('');
-            }
-            else {
-                if (!runcmd(command, inTerminal=true) && command!='') {
+            const command = input.val().trim();
+            
+            if (command !== '') {
+                // Add command to history
+                apps.terminal.historyList.push(command);
+                apps.terminal.historypt = apps.terminal.historyList.length;
+                
+                var newD = document.createElement('div');
+                newD.innerText = `C:\\Windows\\System32> ${command}`;
+                elt.appendChild(newD);
+                
+                if (command === 'exit') {
+                    hidewin('terminal');
+                } else if (!runcmd(command, true)) {
                     var newD = document.createElement('div');
-                    newD.innerText = `"${command}"不是内部或外部命令,也不是可运行程序
-                或批处理文件`;
+                    newD.innerText = `"${command}" 不是内部或外部命令,也不是可运行程序或批处理文件`;
                     elt.appendChild(newD);
                 }
-                input.val('');
-    
-                // 自动聚焦
-                input.blur();
-                input.focus();
             }
+            
+            input.val('');
+            input.blur();
+            input.focus();
         },
-        historyIsEmpty: () => {
-            return historypt <= 0;
-        },
-        historyIsFull: () => {
-            return historypt >= apps.terminal.historyList.length - 1;
-        },
-        checkHistory: () => {
-            return !(apps.terminal.historyIsEmpty() && apps.terminal.historyIsFull());
-        },
-        pushHistory: (cmd) => {
-            historypt = apps.terminal.historyList.length;
-            apps.terminal.historyList[historypt++] = cmd;
-        },
-        popHistory: () => {
-            return apps.terminal.historyList[--historypt];
-        },
-        incHistory: () => {
-            return apps.taskmgr.historyList[++historypt];
-        },
-        history: (type) => {
+        history: (direction) => {
+            const input = $('#win-terminal input');
+            
             if (!apps.terminal.isViewingHistory) {
                 apps.terminal.isViewingHistory = true;
-                apps.terminal.historyTemp = $('#win-terminal input').val();
+                apps.terminal.historyTemp = input.val();
+            }
+            
+            if (direction === 'up' && apps.terminal.historypt > 0) {
+                apps.terminal.historypt--;
+                input.val(apps.terminal.historyList[apps.terminal.historypt]);
+            } else if (direction === 'down') {
+                apps.terminal.historypt++;
+                if (apps.terminal.historypt >= apps.terminal.historyList.length) {
+                    apps.terminal.historypt = apps.terminal.historyList.length;
+                    apps.terminal.isViewingHistory = false;
+                    input.val(apps.terminal.historyTemp);
+                } else {
+                    input.val(apps.terminal.historyList[apps.terminal.historypt]);
+                }
             }
         }
     },
