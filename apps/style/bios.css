@@ -15,7 +15,7 @@ body {
 
 
 * {
-    font-family: 'dos';
+    font-family: 'dos', monospace;
     padding: 0px;
     margin: 0px;
     border: 0px;
@@ -74,7 +74,9 @@ a {
 }
 
 .option {
-    border: none;
+    color: #0100a2;
+    background-color: #aaaaaa;
+    padding: 0 10px;
 }
 
 .page {
@@ -83,6 +85,7 @@ a {
     border: 3.5px solid #000;
     height: 100%;
     display: none;
+    overflow-y: auto;
 }
 
 .page.show {
@@ -99,10 +102,12 @@ a {
     color: #000000;
 }
 
-#mainPage>.table {
+#mainPage>.table,
+#advancedPage>.table,
+#bootPage>.table,
+#securityPage>.table {
     display: grid;
     grid-template-columns: auto auto;
-    grid-template-rows: auto auto;
     gap: 10px;
     width: fit-content;
 }
@@ -141,4 +146,12 @@ a {
 
 #confirm>*:last-child {
     align-self: flex-end;
+}
+
+.submenu {
+    padding-left: 20px;
+    display: grid;
+    grid-template-columns: auto auto;
+    gap: 5px;
+    margin-bottom: 15px;
 }

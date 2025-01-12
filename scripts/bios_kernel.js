@@ -1,11 +1,13 @@
 function addZero(i) {
-    return i < 10 ? ('0' + i) : i;
+    return i < 10 ? `0${i}` : i;
 }
+
 function timeChange() {
-    d = new Date();
-    $('#time')[0].innerText = '[' + addZero(d.getHours()) + ':' + addZero(d.getMinutes()) + ':' + addZero(d.getSeconds()) + ']';
-    $('#date')[0].innerText = '[' + d.getDate() + '/' + (d.getMonth() + 1) + '/' + d.getFullYear() + ']';
+    const d = new Date();
+    $('#time')[0].innerText = `[${addZero(d.getHours())}:${addZero(d.getMinutes())}:${addZero(d.getSeconds())}]`;
+    $('#date')[0].innerText = `[${d.getDate()}/${d.getMonth() + 1}/${d.getFullYear()}]`;
 }
+
 function toBoot() {
     setTimeout(() => {
         $('#body').html('');
@@ -13,8 +15,9 @@ function toBoot() {
     }, 500);
     setTimeout(() => {
         location.href = './boot.html';
-    }, 1000); //Boot延迟
+    }, 1000);
 }
+
 function BIOS_confirm(tit, func) {
     $('#confirm-tit')[0].innerText = tit;
     $('#confirmContainer').css('display', 'flex');
@@ -22,116 +25,199 @@ function BIOS_confirm(tit, func) {
     $('#confirm>.btns>*:first-child').attr('click', func);
     $('#confirm>.btns>*:first-child').attr('ontouchstart', func);
 }
-setTimeout(() => {
-    timeChange();
-    setInterval(timeChange, 1000);
-}, 1000 - (new Date()).getMilliseconds());
 
-var tab = 0, tab_back = tab;
-var btn = 0, btn_back = btn;
-var foc = 0, foc_back = foc;
-timeChange();
 function changePage(t) {
     $('.tab.show').removeClass('show');
     $('.tab.foc').removeClass('foc');
-    $('.tab' + t).addClass('show');
-    $('.tab' + t).addClass('foc');
+    $(`.tab${t}`).addClass('show');
+    $(`.tab${t}`).addClass('foc');
     $('.page.show').removeClass('show');
-    $('.page' + t).addClass('show');
+    $(`.page${t}`).addClass('show');
     tab = t;
 }
-changePage(0);
-document.oncontextmenu = function () {
-    return false;
+
+let tab = 0;
+let btn = 0;
+let foc = 0;
+let tab_back = tab;
+let btn_back = btn;
+let foc_back = foc;
+let subFoc = -1;
+
+timeChange();
+
+// Add configuration state
+const biosConfig = {
+    cpuHyperThreading: true,
+    cpuTurboBoost: true,
+    cpuCoreRatio: 'Auto',
+    memoryFrequency: 'Auto',
+    memoryTimingMode: 'Auto',
+    xmpProfile: false,
+    fastBoot: true,
+    bootMode: 'UEFI',
+    secureBoot: true,
+    tpmState: true
 };
-var tabs = ['main', 'exit'];
-window.onkeydown = function (event) {
-    event = event || window.event;
-    tab_back = tab;
-    if ($('#confirm').attr('data-show') != 'true') {
-        if (event.keyCode == 9) {
-            tab++;
+
+function toggleOption(optionElement) {
+    const currentValue = optionElement.innerText;
+    if (currentValue.includes('Enabled')) {
+        optionElement.innerText = '[Disabled]';
+        return false;
+    }
+    if (currentValue.includes('Disabled')) {
+        optionElement.innerText = '[Enabled]';
+        return true;
+    }
+    if (currentValue.includes('Auto')) {
+        optionElement.innerText = '[Manual]';
+        return 'Manual';
+    }
+    if (currentValue.includes('Manual')) {
+        optionElement.innerText = '[Auto]';
+        return 'Auto';
+    }
+    return currentValue;
+}
+
+function handleExitOption(option) {
+    const action = $(option).attr('click');
+    if (action.includes('toBoot()')) {
+        toBoot();
+    } else if (action.includes('BIOS_confirm')) {
+        const match = action.match(/BIOS_confirm\('([^']+)',\s*'([^']+)'\)/);
+        if (match) {
+            const [_, message, callback] = match;
+            BIOS_confirm(message, callback);
+        }
+    }
+}
+
+function updateFocus() {
+    // Clear all focus states first
+    $('.option').css('background-color', '#aaaaaa');
+    $('.option').css('color', '#0100a2');
+    $('.exit').css('color', '#0100a2');
+    
+    const currentPage = $(`.page${tab}`);
+    
+    if (tab === tabs.length - 1) { // Exit page
+        const exitOptions = currentPage.find('.exit');
+        if (foc > 0 && foc <= exitOptions.length) {
+            $(exitOptions[foc - 1]).css('color', '#ffffff');
+        }
+    } else { // Other pages
+        const options = currentPage.find('.option');
+        if (foc > 0 && options.length > 0) {
+            const focusedOption = options[Math.min(foc - 1, options.length - 1)];
+            if (focusedOption) {
+                $(focusedOption).css('background-color', '#0100a2');
+                $(focusedOption).css('color', '#ffffff');
+            }
+        }
+    }
+}
+
+// Update tabs array
+const tabs = ['main', 'advanced', 'boot', 'security', 'exit'];
+
+changePage(0);
+document.oncontextmenu = () => false;
+
+window.onkeydown = (evt) => {
+    const event = evt || window.event;
+    
+    if ($('#confirm').attr('data-show') !== 'true') {
+        if (event.keyCode === 9) { // Tab
+            event.preventDefault();
+            tab = (tab + 1) % tabs.length;
             foc = 0;
-            tab = tab % 2;
             changePage(tab);
         }
-        if (event.keyCode == 121/*F10=退出*/) {
-            eval($('#e1').attr('click'));
+        else if (event.keyCode === 121) { // F10
+            toBoot();
         }
-        if (event.keyCode == 39) {
+        else if (event.keyCode === 39) { // Right
             event.preventDefault();
-            tab++;
-        } else if (event.keyCode == 37) {
-            event.preventDefault();
-            tab--;
-        }
-        if (tab + 1 > 0 && tab + 1 <= tabs.length && foc == 0) {
-            if ([37, 39].includes(event.keyCode)) {
+            if (tab < tabs.length - 1) {
+                tab++;
+                foc = 0;
                 changePage(tab);
             }
-        } else {
-            tab = tab_back;
         }
-        foc_back = foc;
-        if (event.keyCode == 40) {
+        else if (event.keyCode === 37) { // Left
             event.preventDefault();
-            foc++;
-        } else if (event.keyCode == 38) {
-            event.preventDefault();
-            foc--;
+            if (tab > 0) {
+                tab--;
+                foc = 0;
+                changePage(tab);
+            }
         }
-        if (tab == 1 && foc <= 3 && foc >= 0) {
-            if (!foc) { //0
-                if (tab)
-                    $('#exit').addClass('foc');
-                else
-                    $('#main').addClass('foc');
-                for (var i = 1; i <= 3; i++)
-                    $('#e' + i).css('color', '#0100a2');
+        else if (event.keyCode === 40) { // Down
+            event.preventDefault();
+            const currentPage = $(`.page${tab}`);
+            if (tab === tabs.length - 1) { // Exit page
+                const exitOptions = currentPage.find('.exit');
+                if (exitOptions.length > 0) {
+                    foc = Math.min(foc + 1, exitOptions.length);
+                    updateFocus();
+                }
             } else {
-                if (tab) {
-                    $('#exit').removeClass('foc');
-                }
-                else {
-                    $('#main').removeClass('foc');
-                }
-                for (var i = 1; i <= 3; i++) {
-                    $('#e' + i).css('color', '#0100a2');
-                }
-                $('#e' + foc).css('color', '#ffffff');
-                if (event.keyCode == 13) {
-                    eval($('#e' + foc).attr('click'));
+                const options = currentPage.find('.option');
+                if (options.length > 0) {
+                    foc = Math.min(foc + 1, options.length);
+                    updateFocus();
                 }
             }
-        } else {
-            foc = foc_back;
+        }
+        else if (event.keyCode === 38) { // Up
+            event.preventDefault();
+            if (foc > 0) {
+                foc--;
+                updateFocus();
+            }
+        }
+        else if (event.keyCode === 13) { // Enter
+            const currentPage = $(`.page${tab}`);
+            if (tab === tabs.length - 1) { // Exit page
+                const exitOptions = currentPage.find('.exit');
+                if (foc > 0 && foc <= exitOptions.length) {
+                    const focusedOption = exitOptions[foc - 1];
+                    handleExitOption(focusedOption);
+                }
+            } else {
+                const options = currentPage.find('.option');
+                if (foc > 0 && foc <= options.length) {
+                    const focusedOption = options[foc - 1];
+                    const newValue = toggleOption(focusedOption);
+                    const optionId = $(focusedOption).attr('data-option');
+                    if (optionId) {
+                        biosConfig[optionId] = newValue;
+                    }
+                }
+            }
         }
     } else {
-        btn_back = btn;
-        if (event.keyCode == 39) {
+        // Confirm dialog navigation
+        if (event.keyCode === 39 || event.keyCode === 37) { // Right/Left
             event.preventDefault();
-            btn++;
-        } else if (event.keyCode == 37) {
-            event.preventDefault();
-            btn--;
-        }
-        if ([0, 1].includes(btn)) {
-            if (btn) {//1
+            btn = btn ? 0 : 1;
+            if (btn) {
                 $('#cancel-btn').css('cssText', 'background-color: #000; color: #fff;');
                 $('#ok-btn').css('cssText', 'color: #000; background-color: #fff;');
-            } else {//0
+            } else {
                 $('#ok-btn').css('cssText', 'background-color: #000;color: #fff;');
                 $('#cancel-btn').css('cssText', 'color: #000;background-color: #fff;');
             }
-        } else {
-            btn = btn_back;
         }
-        if (event.keyCode == 13) {
+        else if (event.keyCode === 13) { // Enter
             event.preventDefault();
             if (btn) {
-                eval($('#cancel-btn').attr('click'));
+                $('#confirmContainer').css('display', 'none');
+                $('#confirm').attr('data-show', 'false');
             } else {
-                eval($('#ok-btn').attr('click'));
+                toBoot();
             }
             btn = 0;
             $('#ok-btn').css('cssText', 'background-color: #000;color: #fff;');
@@ -139,3 +225,14 @@ window.onkeydown = function (event) {
         }
     }
 };
+
+// Add click handlers for options
+for (const option of document.querySelectorAll('.option')) {
+    option.addEventListener('click', function() {
+        const newValue = toggleOption(this);
+        const optionId = this.getAttribute('data-option');
+        if (optionId) {
+            biosConfig[optionId] = newValue;
+        }
+    });
+}
