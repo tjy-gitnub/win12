@@ -2136,34 +2136,51 @@ let apps = {
                 shownotice('duplication file name');
                 return;
             }
-            name_1 = name_.split('.');
-
-            if (type == 'file') {
-                if (name_1[1] == 'txt') {
-                    icon_ = 'icon/files/txt.png';
-                    if (command == '')
-                        command = 'openapp(\'notepad\')';
-                }
-                else if (name_1[1] == 'png' || name_1[1] == 'jpg' | name_1[1] == 'bmp') {
-                    icon_ = 'icon/files/picture.png';
-                }
-                else {
-                    icon_ = 'icon/files/none.png';
-                }
-                //这边可以适配更多的文件类型
-                if (icon != '') {
+            
+            // 检查是否是文件夹
+            if (type === 'folder') {
+                if (icon !== '') {
                     icon_ = icon;
+                } else {
+                    icon_ = 'icon/folder.png';
                 }
                 try {
-                    tmp.file.push({ name: name_, ico: icon_, command: command });
+                    tmp.folder[name_] = { folder: {}, file: [] };
+                } catch {
+                    tmp = { folder: {}, file: [] };
+                    tmp.folder[name_] = { folder: {}, file: [] };
                 }
-                catch {
-                    tmp.push(file);
-                    tmp.file.push({ name: name_, ico: icon_, command: command });
+                return;
+            }
+
+            // 处理文件
+            const name_1 = name_.split('.');
+            if (name_1.length < 2) {
+                icon_ = 'icon/files/none.png';
+            }
+            else if (name_1[1] === 'txt') {
+                icon_ = 'icon/files/txt.png';
+                if (command === '') {
+                    command = 'openapp(\'notepad\')';
                 }
             }
+            else if (['png', 'jpg', 'bmp'].includes(name_1[1])) {
+                icon_ = 'icon/files/picture.png';
+            }
             else {
-                tmp.folder[name_] = { folder: {}, file: [] };
+                icon_ = 'icon/files/none.png';
+            }
+
+            if (icon !== '') {
+                icon_ = icon;
+            }
+
+            try {
+                tmp.file.push({ name: name_, ico: icon_, command: command });
+            }
+            catch {
+                tmp = { folder: {}, file: [] };
+                tmp.file = [{ name: name_, ico: icon_, command: command }];
             }
             apps.explorer.goto(path);
             apps.explorer.rename(path + '/' + name_);
@@ -2214,13 +2231,13 @@ let apps = {
             pathl.forEach(name => {
                 tmp = tmp['folder'][name];
             });
-            tmp_file = tmp['file'];
+            let tmp_file = tmp['file'];
             for (var i = 0; i < tmp_file.length; i++) {
                 if (tmp_file[i]['name'] == name) {
                     tmp_file.splice(i, 1);
                 }
             }
-            tmp_files = tmp['folder'];
+            let tmp_files = tmp['folder'];
             delete tmp_files[name];
             apps.explorer.goto(pathl.join('/'));
             apps.explorer.history.forEach(item => {
