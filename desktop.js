@@ -7,12 +7,15 @@ Windows 12 网页版
 
 */
 
-console.log('%cWindows 12 网页版(GitHub: tjy-gitnub/win12)', 'background-image: linear-gradient(to right, #ad6eca, #3b91d8); border-radius: 8px; font-size: 1.3em; padding: 10px 15px; color: #fff; ');
+/********** 禁止格式化此文档！ **********/
+
+console.log('%cWindows 12 网页版 (GitHub: tjy-gitnub/win12)', 'background-image: linear-gradient(to right,rgb(174, 115, 229),rgb(21, 105, 223)); border-radius: 8px; font-size: 1.3em; padding: 10px 15px; color: #fff; ');
+// 好高级，还能这样？？
 
 
+// loadlang();
 
 // 后端服务器
-// loadlang();
 const server = 'http://win12server.freehk.svipss.top/';
 const pages = {
     'get-title': '', // 获取标题
@@ -29,16 +32,17 @@ function enableIframes() {
     $('iframe:not(.nochanges)').css('touch-action', 'auto');
 }
 
-async function api(index) {
+async function api(index, nobase=false) {
+    if (!nobase) index='https://api.github.com/' +index;
     const token = localStorage.getItem('token');
     if (token) {
         const headers = new Headers();
         headers.append('Authorization', token);
-        const res = await fetch('https://api.github.com/' + index, {headers: headers});
+        const res = await fetch( index, {headers: headers});
         return res;
     }
     else {
-        const res = await fetch('https://api.github.com/' + index);
+        const res = await fetch( index);
         return res;
     }
 }
@@ -50,14 +54,14 @@ page.addEventListener('touchend', enableIframes);
 page.addEventListener('touchcancel', enableIframes);
 
 page.addEventListener('click',(event)=>{
-if($('#start-menu').hasClass('show')&&!$(event.target).closest('#start-menu').length){
-hide_startmenu();
-}
+    if($('#start-menu').hasClass('show')&&!$(event.target).closest('#start-menu').length){
+        hide_startmenu();
+    }
 });
 //开始菜单收回
 	
 
-// 上古代码
+// 上古代码，列表前的小竖线
 document.querySelectorAll('list.focs').forEach(li => {
     li.addEventListener('click', () => {
         let _ = li.$$('span.focs')[0], la = li.$$('a.check')[0],
@@ -79,6 +83,7 @@ document.querySelectorAll('list.focs').forEach(li => {
         }
     });
 });
+
 // 禁止拖拽图片
 $('img').on('dragstart', () => {
     return false;
@@ -95,6 +100,7 @@ $('input,textarea,*[contenteditable=true]').on('contextmenu', (e) => {
     stop(e);
     return true;
 });
+// 给桌面上的图标加右键菜单
 function addMenu() {
     var parentDiv = $('#desktop')[0];
     var childDivs = parentDiv.$$('#div');
@@ -557,7 +563,7 @@ function hidedescp(e) {
     }, 100);
 }
 
-// 提示
+// 提示窗
 /* 参考 desktop.html 开头信息，
 格式、功能较简单，自行研究，不作赘述*/
 
@@ -943,10 +949,11 @@ let apps = {
             <circle cx="8px" cy="8px" r="7px" style="stroke:#7f7f7f50;fill:none;stroke-width:3px;"></circle>
             <circle cx="8px" cy="8px" r="7px" style="stroke:#2983cc;stroke-width:3px;"></circle></svg></loading>`);
             // 实时获取主题
-            $.get('https://api.github.com/repos/tjy-gitnub/win12-theme/contents').then(cs => {
+            api('repos/tjy-gitnub/win12-theme/contents').then(res => {res.json().then(cs => {
+                console.log(cs);
                 cs.forEach(c => {
                     if (c.type == 'dir') {
-                        $.get(c.url).then(cnt => {
+                        api(c.url,true).then(res => {res.json().then(cnt => {
                             $('#set-theme').html('');
                             cnt.forEach(cn => {
                                 if (cn.name == 'theme.json') {
@@ -958,14 +965,14 @@ let apps = {
                                     });
                                 }
                             });
-                        });
+                        })});
                     }
                 });
-            });
+            })});
         },
         theme_set: (infp) => {
-            $.get('https://api.github.com/repos/tjy-gitnub/win12-theme/contents/' + infp).then(cnt => {
-                console.log('https://api.github.com/repos/tjy-gitnub/win12-theme/contents/' + infp);
+            api('repos/tjy-gitnub/win12-theme/contents/' + infp).then(res => {res.json().then(cnt => {
+                // console.log('https://api.github.com/repos/tjy-gitnub/win12-theme/contents/' + infp);
                 cnt.forEach(cn => {
                     if (cn.name == 'theme.json') {
                         $.getJSON('https://tjy-gitnub.github.io/win12-theme/' + cn.path).then(inf => {
@@ -983,7 +990,7 @@ let apps = {
                         });
                     }
                 });
-            });
+            })});
         },
         // 无法正常运行，待调试
         checkUpdate: () => {
@@ -1860,10 +1867,20 @@ let apps = {
             // }
         },
         settab: (t, i) => {
-            return `<div class="tab ${t[0]}" onclick="m_tab.tab('explorer',${i})" oncontextmenu="showcm(event,'explorer.tab',${i});stop(event);return false" onmousedown="m_tab.moving('explorer',this,event,${i});stop(event);disableIframes();" ontouchstart="m_tab.moving('exploer',this,event,${i});stop(event);disableIframes();"><p>${t[1]}</p><span class="clbtn bi bi-x" onclick="m_tab.close('explorer',${i});stop(event);"></span></div>`;
+            return `
+                <div class="tab ${t[0]}" onclick="m_tab.tab('explorer',${i})"
+                oncontextmenu="showcm(event,'explorer.tab',${i});stop(event);return false"
+                onmousedown="
+                    if(event.button==1){m_tab.close('explorer',${i});stop(event);}
+                    else{m_tab.moving('explorer',this,event,${i});stop(event);disableIframes();}"
+                ontouchstart="m_tab.moving('explorer',this,event,${i});stop(event);disableIframes();">
+                    <p>${t[1]}</p>
+                    <span class="clbtn bi bi-x" onclick="m_tab.close('explorer',${i});stop(event);"></span>
+                </div>`;
         },
         tab: (c, load = true) => {
             if (load) {
+                console.log(c);
                 if (!apps.explorer.tabs[c][2].length) apps.explorer.reset();
                 else apps.explorer.goto(apps.explorer.tabs[c][2]);
             }
@@ -2307,7 +2324,6 @@ let apps = {
             else if (!apps.explorer.historyIsFull(tab)) {
                 $('#win-explorer>.path>.front').removeClass('disabled');
             }
-            console.log(tab, apps.explorer.history[tab]);
         },
         back: (tab) => {
             apps.explorer.goto(apps.explorer.popHistory(tab), false);
@@ -3093,31 +3109,93 @@ let widgets = {
     weather: {
         init: () => {
             widgets.weather.update();
-            widgets.weather.handel = setInterval(widgets.weather.update, 30000);
+            widgets.weather.handel = setInterval(widgets.weather.update, 100000);
         },
         remove: () => {
             clearInterval(widgets.weather.handel);
         },
         update: () => {
             let wic = {
-                23: 'HeavyDrizzle', 40: 'HeavyDrizzle', 26: 'SnowShowersDayV2', 6: 'BlowingHailV2',
-                5: 'CloudyV3', 20: 'LightSnowV2', 91: 'WindyV2', 27: 'ThunderstormsV2', 10: 'FreezingRainV2',
-                77: 'RainSnowV2', 12: 'Haze', 13: 'HeavyDrizzle', 39: 'Fair', 24: 'RainSnowV2',
-                78: 'RainSnowShowersNightV2', 9: 'FogV2', 3: 'PartlyCloudyDayV3', 43: 'IcePelletsV2',
-                16: 'IcePellets', 8: 'LightRainV2', 15: 'HeavySnowV2', 28: 'ClearNightV3',
-                30: 'PartlyCloudyNightV2', 14: 'ModerateRainV2', 1: 'SunnyDayV3', 7: 'BlowingSnowV2',
-                50: 'RainShowersNightV2', 82: 'LightSnowShowersNight', 81: 'LightSnowShowersDay',
-                2: 'MostlySunnyDay', 29: 'MostlyClearNight', 4: 'MostlyCloudyDayV2',
-                31: 'MostlyCloudyNightV2', 19: 'LightRainV3', 17: 'LightRainShowerDay', 53: 'N422Snow',
-                52: 'Snow', 25: 'Snow', 44: 'LightRainShowerNight', 65: 'HailDayV2', 73: 'HailDayV2',
-                74: 'HailNightV2', 79: 'RainShowersDayV2', 89: 'HazySmokeV2', 90: 'HazeSmokeNightV2_106',
-                66: 'HailNightV2', 59: 'WindyV2', 56: 'ThunderstormsV2', 58: 'FogV2', 54: 'HazySmokeV2',
-                55: 'Dust1', 57: 'Haze'
+                "d000": "SunnyDayV3",
+                "d100": "MostlySunnyDay",
+                "d200": "D200PartlySunnyV2",
+                "d210": "D210LightRainShowersV2",
+                "d211": "D211LightRainSowShowersV2",
+                "d212": "D212LightSnowShowersV2",
+                "d220": "LightRainShowerDay",
+                "d221": "D221RainSnowShowersV2",
+                "d222": "SnowShowersDayV2",
+                "d240": "D240TstormsV2",
+                "d300": "MostlyCloudyDayV2",
+                "d310": "D310LightRainShowersV2",
+                "d311": "D311LightRainSnowShowersV2",
+                "d312": "LightSnowShowersDay",
+                "d320": "RainShowersDayV2",
+                "d321": "D321RainSnowShowersV2",
+                "d322": "SnowShowersDayV2",
+                "d340": "D340TstormsV2",
+                "d400": "CloudyV3",
+                "d410": "LightRainV3",
+                "d411": "RainSnowV2",
+                "d412": "LightSnowV2",
+                "d420": "HeavyDrizzle",
+                "d421": "RainSnowV2",
+                "d422": "Snow",
+                "d430": "ModerateRainV2",
+                "d431": "RainSnowV2",
+                "d432": "HeavySnowV2",
+                "d440": "Thunderstorm",
+                "d500": "MostlyCloudyDayV2",
+                "d600": "FogV2",
+                "d603": "FreezingRainV2",
+                "d605": "IcePelletsV2",
+                "d705": "BlowingHailV2",
+                "d905": "BlowingHailV2",
+                "d907": "Haze",
+                "d900": "Haze",
+                "n000": "ClearNightV3",
+                "n100": "MostlyClearNight",
+                "n200": "PartlyCloudyNightV2",
+                "n210": "N210LightRainShowersV2",
+                "n211": "N211LightRainSnowShowersV2",
+                "n212": "N212LightSnowShowersV2",
+                "n220": "LightRainShowerNight",
+                "n221": "N221RainSnowShowersV2",
+                "n222": "N222SnowShowersV2",
+                "n240": "N240TstormsV2",
+                "n300": "MostlyCloudyNightV2",
+                "n310": "N310LightRainShowersV2",
+                "n311": "N311LightRainSnowShowersV2",
+                "n312": "LightSnowShowersNight",
+                "n320": "RainShowersNightV2",
+                "n321": "N321RainSnowShowersV2",
+                "n322": "N322SnowShowersV2",
+                "n340": "N340TstormsV2",
+                "n400": "CloudyV3",
+                "n410": "LightRainV3",
+                "n411": "RainSnowV2",
+                "n412": "LightSnowV2",
+                "n420": "HeavyDrizzle",
+                "n421": "RainSnowShowersNightV2",
+                "n422": "N422SnowV2",
+                "n430": "ModerateRainV2",
+                "n431": "RainSnowV2",
+                "n432": "HeavySnowV2",
+                "n440": "Thunderstorm",
+                "n500": "PartlyCloudyNightV2",
+                "n600": "FogV2",
+                "n603": "FreezingRainV2",
+                "n605": "BlowingHailV2",
+                "n705": "BlowingHailV2",
+                "n905": "BlowingHailV2",
+                "n907": "Hazy-Night",
+                "n900": "Hazy-Night",
+                "xxxx1": "WindyV2"
             };
-            $.getJSON('https://assets.msn.cn/service/weatherfalcon/weather/overview?locale=zh-cn&ocid=msftweather').then(r => {
+            $.getJSON('https://api.msn.cn/weather/overview?apikey=j5i4gDqHL6nGYwx5wi5kRhXjtf2c5qgFX9fzfk0TOo&locale=zh-cn&ocid=msftweather').then(r => {
                 let inf = r.value[0].responses[0].weather[0].current;
                 // console.log(inf.icon,wic[inf.icon]);
-                $('.wg.weather>.content>.img').attr('src', `https://assets.msn.cn/weathermapdata/1/static/weather/Icons/taskbar_v10/Condition_Card/${wic[inf.icon]}.svg`);
+                $('.wg.weather>.content>.img').attr('src', `https://assets.msn.cn/weathermapdata/1/static/weather/Icons/taskbar_v10/Condition_Card/${wic[inf.symbol]}.svg`);
                 $('.wg.weather>.content>.text>.temperature').text(`${inf.temp}℃`);
                 $('.wg.weather>.content>.text>.detail').text(`${inf.cap} 体感温度${inf.feels}℃`);
             });
@@ -3170,7 +3248,7 @@ let widgets = {
         }
     }
 };
-let edit_mode = false;
+let edit_mode = false,gridnow;
 function editMode() {
     if (edit_mode) {
         $('#desktop-editbar-container').removeClass('show');
@@ -3393,7 +3471,7 @@ function loadtime() {
     $('.dock.date>.time').text(time);
     $('#datebox>.tit>.time').text(time);
 }
-apps.setting.theme_get();//提前加载主题
+// apps.setting.theme_get();//提前加载主题
 loadtime();
 setTimeout(() => {
     loadtime(); setInterval(loadtime, 1000);
@@ -4125,8 +4203,11 @@ function controlStatus(name) {
           localStorage.setItem(FLY_HIDDEN_LIST_KEY, JSON.stringify(hiddenDiffList))
         }
     }
-    if (name == 'dark') {
-      toggletheme()
+    if (name == 'dark') { 
+        $('html').toggleClass('night');
+        setTimeout(() => {
+            alert('别看电脑了，去休息眼睛吧~');
+        }, 200);
     }
 }
 // 控制面板 亮度调整
@@ -4152,17 +4233,19 @@ function dragBrightness(e) {
         if (_offset < 0) {
             _offset = 0;
         }
-        else if (_offset > width) {
-            _offset = width;
-        }
+        // else if (_offset > width) {
+        //     _offset = width;
+        // }
         slider.style.marginLeft = _offset + 'px';
         after.style.left = _offset + 'px';
         after.style.width = width - _offset + 'px';
-        if (_offset / width > 0.1) {
+        if (_offset / width > 0.3 && _offset / width < 2) {
             page.style.filter = `brightness(${_offset / width})`;
         }
-        else {
-            page.style.filter = 'brightness(0.1)';
+        else if (_offset / width < 2){
+            page.style.filter = 'brightness(0.3)';
+        }else{
+            page.style.filter = 'brightness(2)';
         }
     }
     function up() {

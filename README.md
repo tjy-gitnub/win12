@@ -3,14 +3,18 @@
 </p>
 <h1 align="center">Windows 12 网页版</h1>
 <p align="center" class="shields">
-  <a href="https://github.com/tjy-gitnub/win12/issues" style="text-decoration:none"><img src="https://img.shields.io/github/issues/tjy-gitnub/win12.svg" alt="GitHub issues"/></a>
-  <a href="https://github.com/tjy-gitnub/win12/stargazers" style="text-decoration:none"><img src="https://img.shields.io/github/stars/tjy-gitnub/win12.svg" alt="GitHub stars"/></a>
-  <a href="https://github.com/tjy-gitnub/win12/network" style="text-decoration:none">
-    <img src="https://img.shields.io/github/forks/tjy-gitnub/win12.svg" alt="GitHub forks"/></a>
-  
-  <a href="https://github.com/tjy-gitnub/win12/blob/master/LICENSE" style="text-decoration:none">
-    <img src="https://img.shields.io/github/license/tjy-gitnub/win12" alt="GitHub License"/></a>
-    
+  <span href="https://github.com/tjy-gitnub/win12/issues" style="text-decoration:none">
+    <img src="https://img.shields.io/github/issues/tjy-gitnub/win12.svg" alt="GitHub issues"/>
+  </span>
+  <span href="https://github.com/tjy-gitnub/win12/stargazers" style="text-decoration:none">
+    <img src="https://img.shields.io/github/stars/tjy-gitnub/win12.svg" alt="GitHub stars"/>
+  </span>
+  <span href="https://github.com/tjy-gitnub/win12/network" style="text-decoration:none">
+    <img src="https://img.shields.io/github/forks/tjy-gitnub/win12.svg" alt="GitHub forks"/>
+  </span>
+  <span href="https://github.com/tjy-gitnub/win12/blob/master/LICENSE" style="text-decoration:none">
+    <img src="https://img.shields.io/github/license/tjy-gitnub/win12" alt="GitHub License"/>
+  </pan>
 </p>
 <p align="center" class="language" title="Language selection 语言选择">
   <a href="readme/README_en_us.md">English</a> | 
@@ -25,10 +29,11 @@
 </details>
 
 ## 公告
+
 ### 重要！
+
 无偿恳请各位有能力的用户为我们制作宣传片！
 详情请见[宣传片公告](https://github.com/tjy-gitnub/win12/wiki/%E5%AE%A3%E4%BC%A0%E7%89%87%E5%85%AC%E5%91%8A)
-
 
 - [Windows 12 网页版](#windows-12-网页版)
   - [前前言](#前前言)
@@ -41,8 +46,8 @@
   - [开源说明](#开源说明)
   - [贡献须知](#贡献须知)
   - [AI Copilot 实现](#ai-copilot-实现)
-
-
+    
+    
 
 ## 前前言
 
@@ -198,3 +203,7 @@ NB-group：
 ## AI Copilot 实现
 
 详情请见 [AI Copilot 实现](./scripts/AI%20Copilot%20service/README.md)
+
+
+
+

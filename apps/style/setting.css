@@ -100,6 +100,10 @@
     filter: contrast(0.6) brightness(0.8) opacity(0.3);
 }
 
+#win-setting>.menu>list>a.enable:not(.avlb) {
+    filter: contrast(0.7)  opacity(0.7) !important;
+}
+
 #win-setting>.menu>list>a>p {
     margin: 5px 7px;
 }
