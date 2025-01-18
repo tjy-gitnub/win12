@@ -1,0 +1,23 @@
+<div class="window terminal terminal-apps">
+		<div class="resize-bar"></div>
+		<div class="titbar">
+			<img src="icon/terminal.svg" class="icon">
+			<p>终端</p>
+			<div>
+				<a class="a wbtg red" onclick="hidewin('terminal')"><i class="bi bi-x-lg"></i></a>
+				<a class="a wbtg max" onclick="maxwin('terminal')"><i class="bi bi-app"></i></a>
+				<a class="a wbtg" onclick="minwin('terminal')"><i class="bi bi-dash-lg"></i></a>
+			</div>
+		</div>
+		<div class="loadback">
+			<img src="icon/terminal.svg" class="icon">
+		</div>
+
+		<div class="content" id="win-terminal" onmouseup="$('#win-terminal input').focus();" ontouchend="$('#win-terminal input').focus();">
+            <pre>				Microsoft Windows [版本 12.0.39035.7324]
+				(c) Microsoft Corporation。保留所有权利。
+			</pre>
+			<pre class="text-cmd"></pre>
+			<pre style="display: flex"><span class="prompt">C:\Windows\System32&gt; </span><input type="text" onkeyup="if (event.keyCode == 13) { apps.terminal.run(); }"></pre>
+		</div>
+	</div>

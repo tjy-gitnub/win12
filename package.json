@@ -1,0 +1,12 @@
+{
+  "name": "win12",
+  "version": "1.0.0",
+  "description": "Windows 12 web version",
+  "type": "module",
+  "scripts": {
+    "extract-windows": "node scripts/extract_windows.js"
+  },
+  "dependencies": {
+    "cheerio": "^1.0.0-rc.12"
+  }
+} 
