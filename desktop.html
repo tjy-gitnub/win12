@@ -34,7 +34,6 @@
 	<link rel="stylesheet" href="apps/style/defender.css">
 	<link rel="stylesheet" href="apps/style/taskmgr.css">
 	<link rel="stylesheet" href="apps/style/msstore.css">
-	<link rel="stylesheet" href="widgets.css">
 	<!-- 掌声欢迎 Copilot 的 css 引入(bs -->
 	<link rel="stylesheet" href="apps/style/copilot.css">
 	<!--  掌声欢迎 语音识别输入法 的 css 引入(bs -->
@@ -43,7 +42,8 @@
 	<link rel="manifest" href="pwa/manifest.json">
 	<link rel="shortcut icon" href="./pwa/logo.png" type="image/x-icon">
 	<link rel="stylesheet" href="apps/style/login.css">
-	<!-- 一个模块 -->
+	<!-- 模块 -->
+	<link rel="stylesheet" href="module/widget.css">
 	<link rel="stylesheet" href="module/tab.css">
 	<base target="_blank">
 
@@ -105,6 +105,19 @@ closenotice() 与前者配合，关闭提示窗口
 showwin(name) 显示窗口，除特殊用途外不建议使用，用法：showwin('窗口名称')，注意：窗口名称就是想要显示的窗口.window的另一个类名
 hidewin(name) 关闭窗口，用法：hidewin('程序（窗口）名称')，注意：程序（窗口）名称就是想要显示的窗口.window的另一个类名
 toggletheme() 切换主题
+
+关于 App 添加：
+
+壹 常规 app
+	1. 界面与(伪)后端的开发，js 在 module/apps.js 中，css 和资源文件在 apps/style 和 apps/icons 中
+	2. 绘制图标，存储于 icon 中，注意后缀名，参考 desktop.js 中 @icon 的说明
+	3. 在开始菜单 (@s-m-l>list) 中添加你的应用
+
+贰 webapp，即使用 iframe 嵌套网页的应用：
+	1. 确保目标网页不阻止跨域嵌套，允许 iframe 嵌套
+	2. html 内容参考 @.window.bilibili.webapp
+	3. 在 module/apps.js 中参考 @apps[bilibili]
+	4. 在 module/apps.js 中 @apps[webapps] 里补充 appid
 
 欢迎补充~
 -->
@@ -744,7 +757,7 @@ toggletheme() 切换主题
 	<div id="dock-box">
 		<!-- Dock(任务)栏 -->
 		<div class="dock dock-start">
-			<a class="dock-btn" id="start-btn" win12_title="开始" onclick="openDockWidget('start-menu')" oncontextmenu="return showcm(event,'winx',null)">
+			<a class="dock-btn" id="start-btn" win12_title="开始 (Ctrl+Win)" onclick="openDockWidget('start-menu')" oncontextmenu="return showcm(event,'winx',null)">
 				<!-- 开始按钮 -->
 				<svg class="menu" viewBox="0,0,440,439" xmlns="http://www.w3.org/2000/svg"
 					xmlns:xlink="http://www.w3.org/1999/xlink" overflow="hidden">
@@ -839,7 +852,7 @@ toggletheme() 切换主题
 	<!-- 右键菜单 -->
 	<div id="cm" tabindex="-1">
 		<input class="foc">
-		<list>
+		<list class="new">
 		</list>
 	</div>
 	<!-- 下拉菜单 -->
@@ -1847,7 +1860,12 @@ toggletheme() 切换主题
 			<div class="cnt update">
 				<h1 class="tit"><span></span>更新记录</h1>
 				<div style="margin-left: 20px;">
-					<details><summary><span>v9.2.0</span> 整理</summary>
+					<details><summary><span>v9.2.1</span> 整理</summary><p>
+						&emsp;&emsp;-(更新来自 @tjy-gitnub)<br>
+						&emsp;&emsp;-拆解 desktop.js<br>
+						&emsp;&emsp;-细节优化和修复<br>
+					</p></details>
+					<details><summary><span>v9.2.0</span> 整理</summary><p>
 						&emsp;&emsp;-(更新来自 @tjy-gitnub)<br>
 						&emsp;&emsp;修改大量积累的 bug<br>
 						&emsp;&emsp;-关于开始菜单全屏的问题<br>
@@ -1858,37 +1876,37 @@ toggletheme() 切换主题
 						&emsp;&emsp;-鼠标中键关闭标签页<br>
 						&emsp;&emsp;-登录界面的美化<br>
 						&emsp;&emsp;-细节优化和修复<br>
-					</details>
-					<details><summary><span>v9.1.2</span> 任务栏预览</summary>
+					</p></details>
+					<details><summary><span>v9.1.2</span> 任务栏预览</summary><p>
 						&emsp;&emsp;-(更新来自 @fzlzjerry)<br>
 						&emsp;&emsp;-加入任务栏窗口预览<br>
-					</details>
-					<details><summary><span>v9.1.1</span> 移动端适配</summary>
+					</p></details>
+					<details><summary><span>v9.1.1</span> 移动端适配</summary><p>
 						&emsp;&emsp;-(更新来自@NB-Group)<br>
 						&emsp;&emsp;- 在移动端竖屏体验时将会提示“横屏以获得最佳体验”<br>
-					</details>
-					<details><summary><span>v9.1.0</span> 真正的在线新闻功能！</summary>
+					</p></details>
+					<details><summary><span>v9.1.0</span> 真正的在线新闻功能！</summary><p>
 						&emsp;&emsp;-(更新来自@lingbopro)<br>
 						&emsp;&emsp;- 现在在小组件面板里有真正从网络实时获取的新闻！ <br>
 						&emsp;&emsp;&nbsp; （可能会出现卡顿，触发方式薛定谔）<br>
 						&emsp;&emsp;- 顺便重构了一下新闻部分</p>
-					</details>
-					<details><summary><span>v9.0.0</span> 窗口背景材质超级大升级！</summary>
+					</p></details>
+					<details><summary><span>v9.0.0</span> 窗口背景材质超级大升级！</summary><p>
 						&emsp;&emsp;-(更新来自@NB-Group)<br>
 						&emsp;&emsp;- 新材质(仿win11 Mica)非常高级！ <br>
 						&emsp;&emsp;- 将设置的UI更新了</p>
-					</details>
-					<details><summary><span>v8.1.0</span> 整理</summary>
+					</p></details>
+					<details><summary><span>v8.1.0</span> 整理</summary><p>
 						&emsp;&emsp;-(更新来自@tjy-gitnub)<br>
 						&emsp;&emsp;- 代码整理<br>
 						&emsp;&emsp;- 修复一些问题</p>
-					</details>
-					<details><summary><span>v8.0.0</span> </summary>
+					</p></details>
+					<details><summary><span>v8.0.0</span> </summary><p>
 						&emsp;&emsp;-(更新来自@User782Tec)<br>
 						&emsp;&emsp;-使用svg矢量图优化了任务管理器性能图表的绘制<br>
 						&emsp;&emsp;-加入了半成品的Microsoft Store<br>
 						&emsp;&emsp;-其他一些细微之处的更新</p>
-					</details>
+					</p></details>
 					<!-- 全部列出来那这个更多意义何在？ -->
 					<a onclick="window.open('changelog.md','_blank');" win12_title="changelog.md" class="a jump" style="text-align: center;">更多</a>
 				</div>
@@ -2856,7 +2874,13 @@ toggletheme() 切换主题
 	</div>
 	<script defer src="data/tasks.js"></script>
 	<script defer src="scripts/utils.js"></script>
+
+	<script defer src="module/apps.js"></script>
 	<script defer src="desktop.js"></script>
+	<script defer src="module/window.js"></script>
+	<script defer src="module/widget.js"></script>
+	<script defer src="module/tab.js"></script>
+
 	<script defer src="scripts/setting_getTime.js"></script><!-- 设置页面获取时间逻辑 @Junchen Yi 2023-9-17-->
 	<script defer src="scripts/news.js"></script>
 	<script defer src="https://fastly.jsdelivr.net/pyodide/v0.23.4/full/pyodide.js" async></script>
@@ -2867,7 +2891,6 @@ toggletheme() 切换主题
 	<script defer src="./scripts/calculator_kernel.js"></script>
 	<script defer src='https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.js'></script>
 
-	<script defer src="module/tab.js"></script>
 </body>
 
 </html>

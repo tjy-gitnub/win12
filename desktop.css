@@ -9,8 +9,8 @@
     --text: #000;
     --text2: #444;
     --bg: #ffffff;
-    --bg50: #ffffff80;
-    --bg70: #ffffffc0;
+    --bg50: #ffffff90;
+    --bg70: #fefefeb7;
     --sd: #22222230;
     --card: #efefef75;
     --hover: #ffffff65;
@@ -34,10 +34,10 @@
 }
 
 :root.dark {
-    --text: #ddd;
+    --text: #eee;
     --text2: #aaa;
     --bg: #000000;
-    --bg50: #00000060;
+    --bg50: #00000065;
     --bg70: #111111c5;
     --sd: #000000a0;
     --card: #72727240;
@@ -45,7 +45,7 @@
     --hover-half: #ffffff20;
     --hover-b: #eeeeee0f;
     --bggrey: #444;
-    --fill: #54545470;
+    --fill: #99999970;
     --bgul: url('bg-dark.svg');
     --mm: #ffffff50;
     --cm: #252525bb;
@@ -166,7 +166,7 @@ list:not(.new)>a,
 .wg>.titbar>.more,
 .wg.calc>.content>.b,
 .button {
-    transition: 80ms, transform 400ms cubic-bezier(0.14, 1.02, 0.17, 0.03) !important;
+    transition: 80ms!important;
 }
 
 .act:active,
@@ -176,9 +176,9 @@ list:not(.new)>a:active,
 .wg>.titbar>.more:active,
 .wg.calc>.content>.b:active,
 .button:active {
-    transform: scale(0.93);
+    /* transform: scale(0.93); */
     /* filter: blur(0.5px); */
-    filter: opacity(0.75);
+    filter: opacity(0.7);
     /* transition: transform 500ms cubic-bezier(0.24, 0.86, 0.36, 0.44) !important; */
 }
 
@@ -324,11 +324,11 @@ list>* {
     border-radius: 7px;
     position: relative;
     display: block;
-    padding: 2px 20px;
+    padding: 3px 24px;
 }
 
 list:not(.new)>a {
-    transition: 80ms, transform 400ms cubic-bezier(0.14, 1.02, 0.17, 0.03);
+    transition: 50ms, transform 400ms cubic-bezier(0.14, 1.02, 0.17, 0.03);
 }
 
 list:not(.new)>a:active {
@@ -1603,8 +1603,8 @@ input-before {
     width: 350px;
     border-radius: 20px;
     background-color: var(--bg50);
-    backdrop-filter: blur(80px) saturate(1.3);
-    -webkit-backdrop-filter: blur(80px) saturate(1.3);
+    backdrop-filter: blur(50px) saturate(3) contrast(0.6);
+    -webkit-backdrop-filter: blur(50px) saturate(3) contrast(0.6);
     transition: 200ms;
     box-shadow: 3px 3px 15px 1px var(--sd);
     border: 1.5px solid #6f6f6f30;
@@ -1642,7 +1642,7 @@ input-before {
 #control>.cont>.top>div>.icon {
     width: 100%;
     height: 100%;
-    background-color: var(--bg70);
+    background-color: var(--hover-b);
     border-radius: 10px;
     display: flex;
     justify-content: center;
@@ -1712,27 +1712,34 @@ input-before {
 #control>.cont>.bottom>.brightness>.range-container>.after {
     height: 4.5px;
     position: relative;
-    background-color: var(--bg70);
+    background-color: var(--bg);
     bottom: 0px;
     width: 0px;
     border-radius: 7px;
 }
 
 #control>.cont>.bottom>.brightness>.range-container>.slider-btn {
-    height: 17px;
-    border-radius: 3.5px;
+    height: 20px;
+    border-radius: 10px;
     background-image: linear-gradient(to top, var(--theme-1), var(--theme-2));
     position: relative;
-    width: 7px;
-    bottom: 10.5px;
+    width: 20px;
+    bottom: 12px;
     margin-left: 100%;
-    transform: translateX(-3.5px);
-    transition: filter 100ms;
+    transform: translateX(-10px);
+    border: solid var(--msg);
+    border-width: 5px;
+    transition: 0ms,border-width 100ms;
 }
 
 #control>.cont>.bottom>.brightness>.range-container>.slider-btn:hover,
 #control>.cont>.bottom>.brightness>.range-container.active>.slider-btn {
-    filter: brightness(0.8);
+    /* filter: brightness(0.8); */
+    border-width: 3.5px;
+}
+
+#control>.cont>.bottom>.brightness>.range-container>.slider-btn:active{
+    border-width: 6px;
 }
 
 #datebox.show-begin,
@@ -2021,7 +2028,7 @@ input-before {
 
 #cm>list>a {
     padding: 4.5px 12px;
-    margin: 0 0;
+    margin: 1px 0;
     border-radius: 6px;
     font-size: 15px;
     display: flex;
@@ -2032,6 +2039,13 @@ input-before {
     font-size: 17px;
     margin-right: 10px;
     display: block;
+}
+
+#cm>list>a>info{
+    float: right;
+    text-align: end;
+    color: #888;
+    flex-grow: 1;
 }
 
 #cm>list>*:not(hr):hover {
@@ -2121,7 +2135,7 @@ input-before {
 /*** 以下消息 ***/
 
 .msg {
-    background-color: var(--bg50);
+    background-color: var(--bg70);
     backdrop-filter: blur(50px) saturate(130%);
     position: fixed;
     right: -430px;
@@ -2142,7 +2156,7 @@ input-before {
 
 .msg:hover {
     transition: 80ms;
-    background-color: var(--hover-half);
+    background-color: var(--msg);
 }
 
 .msg.show {

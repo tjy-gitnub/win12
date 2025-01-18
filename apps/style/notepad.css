@@ -11,20 +11,21 @@
 
 #win-notepad>.text-box{
     border-radius: 10px 10px 0px 0px;
-    width: 100%;
+    /* width: 100%; */
     border: none;
     background-color: var(--card);
     opacity: 0.8;
     transform: translate(0,8px);
     outline: none;
-    box-shadow: 0 -3px 3px var(--sd);
+    box-shadow: 0 -3px 5px var(--s3d);
     padding: 10px;
     resize: none;
     font-size: 15px;
     line-height: 1.25;
     color: var(--text);
-    height: calc(100% - 65px);
+    height: calc(100% - 35px);
     transition: 200ms;
+    margin: 0 10px;
 }
 
 #win-notepad>.text-box *:not(div):not(br){
@@ -45,7 +46,7 @@
 #win-notepad>.text-box:focus{
     transform: none;
     opacity: 1;
-    box-shadow: 0 -6px 6px var(--sd);
+    box-shadow: 0 -5px 7px var(--s3d);
 }
 
 #win-notepad>.text-box::selection{
