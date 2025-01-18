@@ -20,7 +20,7 @@
 <p align="center" class="language" title="Language selection 语言选择">
   <a href="README_en_us.md">English</a> | 
   <a href="README_zh_cn.md">简体中文</a> | 
-  <b>Français</b>
+  <a href="README_fr_fr.md">Français</a>
 </p>
 <details align="center">
   <summary>Star History</summary>
