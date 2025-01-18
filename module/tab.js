@@ -2,11 +2,10 @@ let m_tab={
     newtab: (appn,n) => {
         app=apps[appn];
         app.tabs.push([app.len++, n]);
-        console.log(app.tabs)
         m_tab.settabs(appn);
     },
     settabs: (appn) => {
-        app=apps[appn];
+        let app=apps[appn];
         let html = '';
         for (let i = 0; i < app.tabs.length; i++) {
             const t = app.tabs[i];
@@ -17,8 +16,8 @@ let m_tab={
         // $(`.window.${appn}>.titbar>.tabs>.tab.`+app.tabs[app.now][0]).addClass('show');
     },
     moving: (appn, t, ev, np) => {
-        app=apps[appn];
-        let deltaLeft, pos;
+        let app=apps[appn];
+        let deltaLeft, pos=np;
         if (ev.type.match('mouse')) {
             deltaLeft = ev.clientX;
         }
@@ -59,18 +58,22 @@ let m_tab={
         };
         page.onmousemove = move_f.bind(t);
         page.ontouchmove = move_f.bind(t);
+
         function up_f(e) {
             page.onmousemove = null;
             page.onmouseup = null;
             page.ontouchmove = null;
             page.ontouchend = null;
-            let x;
-            if (e.type.match('mouse')) {
-                x = e.clientX;
-                pos = Math.floor((this.offsetLeft + x - deltaLeft - 36 + (this.offsetWidth / 2)) / this.offsetWidth);
-                if (pos > app.tabs.length - 1) {
-                    pos = app.tabs.length - 1;
-                }
+            page.ontouchcancel = null;
+            // let x;
+            // if (e.type.match('mouse')) {
+            //     x = e.clientX;
+            // }else if (e.type.match('touch')) {
+            //     x = e.touches[0].clientX
+            // }
+            // pos = Math.floor((this.offsetLeft + x - deltaLeft - 36 + (this.offsetWidth / 2)) / this.offsetWidth);
+            if (pos > app.tabs.length - 1) {
+                pos = app.tabs.length - 1;
             }
             if (pos == np || pos > app.tabs.length || pos < 0) {
                 $(this).css('transform', 'none');
@@ -82,6 +85,7 @@ let m_tab={
                 app.tabs.splice(np < pos ? pos + 1 : pos, 0, app.tabs[np]);
                 app.tabs.splice(np < pos ? np : (np + 1), 1);
                 m_tab.settabs(appn);
+                // console.log('pos:',pos);
                 m_tab.tab(appn,pos);
             }
         }
@@ -119,7 +123,6 @@ let m_tab={
     },
     rename: (appn,n) => {
         app=apps[appn];
-        console.log(n,app.tabs);
         app.tabs[app.now][1] = n;
         m_tab.settabs(appn);
         m_tab.tab(appn,app.now,false);

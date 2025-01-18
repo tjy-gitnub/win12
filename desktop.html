@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="en" style="height: 100%;">
 
-
-<!-------- 禁止格式化本文档！-------->
+<!--------禁止格式化本文档!  -------->
+<!-----No Formatting the Code! ---->
 
 <head>
 	<meta charset="UTF-8" />
@@ -34,7 +34,6 @@
 	<link rel="stylesheet" href="apps/style/defender.css">
 	<link rel="stylesheet" href="apps/style/taskmgr.css">
 	<link rel="stylesheet" href="apps/style/msstore.css">
-	<link rel="stylesheet" href="widgets.css">
 	<!-- 掌声欢迎 Copilot 的 css 引入(bs -->
 	<link rel="stylesheet" href="apps/style/copilot.css">
 	<!--  掌声欢迎 语音识别输入法 的 css 引入(bs -->
@@ -43,15 +42,17 @@
 	<link rel="manifest" href="pwa/manifest.json">
 	<link rel="shortcut icon" href="./pwa/logo.png" type="image/x-icon">
 	<link rel="stylesheet" href="apps/style/login.css">
-	<!-- 各个模块 -->
+	<!-- 模块 -->
+	<link rel="stylesheet" href="module/widget.css">
 	<link rel="stylesheet" href="module/tab.css">
 	<base target="_blank">
 
 	<title>Windows 12 网页版</title>
-	<meta name="description" content="Windows 12网页版是一个在线体验Windows 12操作系统的开源项目,使用 HTML、CSS 和 JavaScript 模拟 Windows 12 操作系统的界面与交互。">
+	<meta name="description" content="Windows 12 网页版是一个在线体验 Windows 12 操作系统的开源项目, 使用 HTML、CSS 和 JavaScript 模拟 Windows 12 操作系统的界面与交互。">
 <!-- 	<meta name="keywords" content="Windows 12, windows 12, Windows12, windows12, Windows 12 网页版, Windows 12网页版, Windows12网页版, windows12网页版, Win12, win12,Win12网页版, win12网页版, 网页版"> -->
 <!-- 	真正的SEO强者，是不会用keywords的 -->
 </head>
+
 
 <!-- 编辑前务必认真阅读，有不合规范之pr，视情况或要求整改或不予合并 -->
 <!-- 开发须知：
@@ -89,9 +90,11 @@ list 列表>
 其他自行研究
 
 有以下 js 函数可用：
-setData(key, value) 本地存储信息，永久可用，注意管理，谨慎使用
+setData(key, value) 本地存储信息。注意管理，谨慎使用
 localStorage.getItem(key) 与前者配合使用，以读取存储信息
-stop(event) 停止事件向父级传递（停止冒泡），event变量照抄
+
+stop(event) 停止事件向父级传递事件（停止冒泡），event变量照抄。可使祖先元素接受不到发生的对应事件。
+
 showcm(event, id, arg) 显示右键菜单，使用方法：oncontextmenu="return showcm(event,'标识',arg);"，
 	参考 desktop.js 中 cms 中的写法，需提前在 cms 中定义提示内容及其标识符。showcm 带有 stop(event), 无需另加
 openapp(name) 打开窗口，用法：openapp('程序（窗口）名称')，
@@ -102,6 +105,19 @@ closenotice() 与前者配合，关闭提示窗口
 showwin(name) 显示窗口，除特殊用途外不建议使用，用法：showwin('窗口名称')，注意：窗口名称就是想要显示的窗口.window的另一个类名
 hidewin(name) 关闭窗口，用法：hidewin('程序（窗口）名称')，注意：程序（窗口）名称就是想要显示的窗口.window的另一个类名
 toggletheme() 切换主题
+
+关于 App 添加：
+
+壹 常规 app
+	1. 界面与(伪)后端的开发，js 在 module/apps.js 中，css 和资源文件在 apps/style 和 apps/icons 中
+	2. 绘制图标，存储于 icon 中，注意后缀名，参考 desktop.js 中 @icon 的说明
+	3. 在开始菜单 (@s-m-l>list) 中添加你的应用
+
+贰 webapp，即使用 iframe 嵌套网页的应用：
+	1. 确保目标网页不阻止跨域嵌套，允许 iframe 嵌套
+	2. html 内容参考 @.window.bilibili.webapp
+	3. 在 module/apps.js 中参考 @apps[bilibili]
+	4. 在 module/apps.js 中 @apps[webapps] 里补充 appid
 
 欢迎补充~
 -->
@@ -164,49 +180,46 @@ toggletheme() 切换主题
 	<div id="loginback">
 		<div class="user"></div>
 		<div class="name">Administrator</div>
-		<!-- 不是，这玩意太简陋了吧，， -->
-		<div id="login" onclick="
-			this.id = 'login-after';
-			this.innerText = '登录中...';
-			document.querySelector('#loginback').removeChild(document.querySelector('#loginback .power'));
-			var qwq = window.setInterval(() => {
-				if (this.innerText.match(/\.\.\./)) {
-					this.innerText = '登录中.';
-				}
-				else {
-					this.innerText += '.';
-				}
-			}, 500);
-			window.setTimeout(() => {
-				this.style.transition = 'color 500ms';
-			}, 100);
-			window.setTimeout(() => {
+		
+		<div id="login" onclick="$(this).css('opacity','0');$('#login-welc').css('opacity','1');
+			setTimeout(() => {
 				$('#loginback').addClass('close');
-				window.setTimeout(() => {
+				setTimeout(() => {
 					$('#loginback').css('opacity', '0');
 				}, 500);
-				window.setTimeout(() => {
+				setTimeout(() => {
 					$('#loginback').css('display', 'none');
-					window.clearInterval(qwq);
 				}, 2000);
 				if(use_music){
 					document.querySelector('audio#startup-music').play();
 				}
-			}, 1000);
-			this.onclick = null;
-		">
+			}, 2000);">
 			登录
+		</div>
+		<div id="login-welc" style="opacity: 0;">
+			<loading>
+				<svg width="50px" height="50px" viewBox="0 0 16 16">
+					<circle cx="8px" cy="8px" r="6px"></circle>
+				</svg>
+			</loading>
+			<p style="font-size: 22px;
+            color: #fff;
+			margin-top: 5px;
+            text-align: center;">欢迎</p>
 		</div>
 		<a class="power" onclick="$(this).addClass('show')">
 			<i class="bi bi-power" onclick="setTimeout(() => {window.location='shutdown.html';}, 200);" win12_title="关机"></i>
 			<i class="bi bi-arrow-counterclockwise" onclick="setTimeout(() => {window.location='reload.html';}, 200);" win12_title="重启"></i>
 		</a>
 	</div>
+	<!-- 下方图片用于拖慢加载速度，测试 loadback -->
 	<!-- <img src="https://bing.com/th?id=OHR.Trossachs_ZH-CN9299955040_UHD.jpg&qlt=100" alt=""> -->
-	<script src="./scripts/jq.min.js"></script>
-	<div id="voiceBall" class="draggable no-drag" style="top: 80%;left: 80%;">
-        <link rel="stylesheet" href="./style.css">
 
+	<!-- 风水宝地，不可移动 -->
+	<script src="./scripts/jq.min.js"></script>
+	<!-- 风水宝地，不可移动 -->
+
+	<div id="voiceBall" class="draggable no-drag" style="top: 80%;left: 80%;">
         <div class="rainbow-container-main">
             <div class="rainbow-container">
                 <div class="green"></div>
@@ -216,8 +229,7 @@ toggletheme() 切换主题
         </div>
     </div>
 
-    <!-- <script>
-    </script> -->
+
 	<div id="start-menu">
 		<!-- 开始菜单 -->
 		<div id="s-m-l">
@@ -336,7 +348,7 @@ toggletheme() 切换主题
 				<div class="tool">
 					<p style="font-size: 40px;margin-bottom: -10px;" class="time">12:00</p>
 					<p class="date">星期一, 2368年13月34日</p>
-					<a class="a btn btn-icon power" win12_title="电源" onclick="$(this).addClass('show')">
+					<a class="a btn btn-icon power" win12_title="电源" onclick="$(this).addClass('show');">
 						<span class="bi bi-power"></span>
 						<i class="bi bi-power" onclick="$('#start-menu').removeClass('show');
 						setTimeout(() => {window.location='shutdown.html';},200);" win12_title="关机"></i>
@@ -344,13 +356,14 @@ toggletheme() 切换主题
 						setTimeout(() => {window.location='reload.html';},200);" win12_title="重启"></i>
 					</a>
 					<a class="a btn btn-icon big" win12_title="切换全屏" onclick="
-					if($('#start-menu').hasClass('max')){
-						$('#start-menu>#s-m-r>.row1>.tool>.btn-icon.big').html('<i class=\'bi bi-arrows-angle-expand\'></i>');
-						$('#start-menu').removeClass('max');
-					}else{
-						$('#start-menu>#s-m-r>.row1>.tool>.btn-icon.big').html('<i class=\'bi bi-arrows-angle-contract\'></i>');
-						$('#start-menu').addClass('max');
-					}
+						if($('#start-menu').hasClass('max')){
+							$('#start-menu>#s-m-r>.row1>.tool>.btn-icon.big').html('<i class=\'bi bi-arrows-angle-expand\'></i>');
+							$('#start-menu').removeClass('max');
+						}else{
+							$('#start-menu>#s-m-r>.row1>.tool>.btn-icon.big').html('<i class=\'bi bi-arrows-angle-contract\'></i>');
+							$('#start-menu').addClass('max');
+						}
+						stop(event)
 					">
 						<i class="bi bi-arrows-angle-expand"></i>
 					</a>
@@ -363,6 +376,7 @@ toggletheme() 切换主题
 					<div>
 						<a class="a more-btn">所有应用 <i class="bi bi-chevron-right"></i></a>
 						<!-- 这个好像没什么必要 -->
+						<!-- 包没有必要的，为了符合宣传片而已（ from stsc -->
 					</div>
 				</div>
 				<div class="apps">
@@ -417,7 +431,6 @@ toggletheme() 切换主题
 				</div>
 			</div>
 			<div class="tuijian">
-				<!-- 推荐的项目 卡片 -->
 				<div class="title">
 					<p>推荐的项目</p>
 					<div>
@@ -697,9 +710,9 @@ toggletheme() 切换主题
 				</div>
 				<div class="btn4">
 					<div class="icon" onclick="controlStatus.call(this, 'dark')">
-						<icon class="s-icon"></icon>
+						<icon class="s-icon"></icon>
 					</div>
-					<div class="tit">夜间模式</div>
+					<div class="tit">护眼模式</div>
 				</div>
 				<div class="btn5">
 					<div class="icon" onclick="controlStatus.call(this)">
@@ -744,7 +757,7 @@ toggletheme() 切换主题
 	<div id="dock-box">
 		<!-- Dock(任务)栏 -->
 		<div class="dock dock-start">
-			<a class="dock-btn" id="start-btn" win12_title="开始" onclick="openDockWidget('start-menu')" oncontextmenu="return showcm(event,'winx',null)">
+			<a class="dock-btn" id="start-btn" win12_title="开始 (Ctrl+Win)" onclick="openDockWidget('start-menu')" oncontextmenu="return showcm(event,'winx',null)">
 				<!-- 开始按钮 -->
 				<svg class="menu" viewBox="0,0,440,439" xmlns="http://www.w3.org/2000/svg"
 					xmlns:xlink="http://www.w3.org/1999/xlink" overflow="hidden">
@@ -836,18 +849,22 @@ toggletheme() 切换主题
 		</span>
 		<p style="background-color: rgba(11,45,14,0);z-index:1;position: absolute;top:0px;left:0px;height:100%;width:100%" oncontextmenu="return showcm(event,'desktop');"></p>
 	</div>
+	<!-- 右键菜单 -->
 	<div id="cm" tabindex="-1">
 		<input class="foc">
-		<list>
+		<list class="new">
 		</list>
 	</div>
+	<!-- 下拉菜单 -->
 	<div id="dp">
 		<list>
 		</list>
 	</div>
+	<!-- 悬停提示 -->
 	<div id="descp">
 
 	</div>
+
 	<div id="desktop-widgets">
 		<div class="widgets-move"></div>
 	</div>
@@ -859,10 +876,11 @@ toggletheme() 切换主题
 		</div>
 	</div>
 	<p id="translater" style="display: none;"></p>
+	<!-- 提示窗 -->
 	<div id="notice-back">
 		<div id="notice">
 			<div class="cnt">
-				<p class="tit">注意</p>
+				<p class="tit">快跑！</p>
 				<p>你的电脑即将爆炸</p>
 			</div>
 			<div class="btns">
@@ -1098,6 +1116,7 @@ toggletheme() 切换主题
 		</div>
 	</div>
 	<div id="window-fill"></div>
+
 	<!-- Microsoft Store @User782Tec (2023/10/3) -->
 	<div class="window msstore">
 		<div class="resize-bar"></div>
@@ -1237,6 +1256,7 @@ toggletheme() 切换主题
 			</div>
 		</div>
 	</div>
+
 	<div class="window setting">
 		<div class="resize-bar"></div>
 		<div class="titbar">
@@ -1264,17 +1284,17 @@ toggletheme() 切换主题
 				<input-before class="bi bi-search"></input-before>
 				<list class="focs"><!--压缩行数-->
 					<a class="enable home check" onclick="apps.setting.page('home')"><img src="apps/icons/setting/home.png">主页</a><!-- 主页  @lh11117 (2023/9/31~2023/10/1) -->
-					<a class="enable system" onclick="apps.setting.page('system')"><img src="apps/icons/setting/system.png">系统</a>
+					<a class="enable system" onclick="apps.setting.page('system')"><img src="apps/icons/setting/system.png">系统</a><!-- 系统  stsc 远古-->
 					<a class="enable blueteeth" onclick="apps.setting.page('blueteeth')"><img src="apps/icons/setting/blueteeth.png">蓝牙和其他设备</a><!-- 蓝牙与设备  @Junchen Yi 2023-9-9-->
 					<a class="enable network" onclick="apps.setting.page('network')"><img src="apps/icons/setting/network.png">网络和 Internet</a><!-- 网络和 Internet  @Junchen Yi 2023-9-10-->
-					<a class="enable appearance" onclick="apps.setting.page('appearance')"><img src="apps/icons/setting/personal.png">个性化</a>
+					<a class="enable appearance avlb" onclick="apps.setting.page('appearance')"><img src="apps/icons/setting/personal.png">个性化</a><!-- 个性化  stsc 远古-->
 					<a class="enable apps" onclick="apps.setting.page('apps')"><img src="apps/icons/setting/apps.png">应用</a><!-- 应用  @Junchen Yi 2023-9-11-->
 					<a class="enable user" onclick="apps.setting.page('user')"><img src="apps/icons/setting/user.png">账户</a><!-- 账户  @Junchen Yi 2023-9-11-->
 					<a class="enable time" onclick="apps.setting.page('time')"><img src="apps/icons/setting/time.png">时间和语言</a><!-- 时间  @Junchen Yi 2023-9-17-->
 					<a class="enable game" onclick="apps.setting.page('game')"><img src="apps/icons/setting/game.png">游戏</a>
 					<a><img src="apps/icons/setting/help.png">辅助功能</a>
-					<a class="enable safe" onclick="apps.setting.page('safe')"><img src="apps/icons/setting/safe.png">隐私和安全性</a>
-					<a class="enable update" onclick="apps.setting.page('update')"><img src="apps/icons/setting/update.png">Windows 更新</a>
+					<a class="enable safe avlb" onclick="apps.setting.page('safe')"><img src="apps/icons/setting/safe.png">隐私和安全性</a>
+					<a class="enable update avlb" onclick="apps.setting.page('update')"><img src="apps/icons/setting/update.png">Windows 更新</a><!-- 更新  stsc 远古-->
 					<span class="focs"></span>
 				</list>
 			</div>
@@ -1428,7 +1448,7 @@ toggletheme() 切换主题
 							</div>
 						</div>
 						<a class="dp theme" onclick="$('.dp.theme').toggleClass('show');if (!($('#set-theme>.a').length)) apps.setting.theme_get();">
-							<icon>&#xE771;</icon><div><p>主题</p><p>设置 Windows 的主题 想要<span class="a jump" win12_title="https://github.com/tjy-gitnub/win12-theme" onclick="window.open('https://github.com/tjy-gitnub/win12-theme','_blank')">上传自己的主题</span>?</p></div><i class="bi bi-chevron-down"></i></a>
+							<icon>&#xE771;</icon><div><p>主题</p><p>(！消耗大量 github api 限度！) 设置 Windows 的主题 想要<span class="a jump" win12_title="https://github.com/tjy-gitnub/win12-theme" onclick="window.open('https://github.com/tjy-gitnub/win12-theme','_blank')">上传自己的主题</span>?</p></div><i class="bi bi-chevron-down"></i></a>
 						<div class="dp theme" id="set-theme">
 							<loading>
 								<svg width="30px" height="30px" viewBox="0 0 16 16">
@@ -1840,150 +1860,53 @@ toggletheme() 切换主题
 			<div class="cnt update">
 				<h1 class="tit"><span></span>更新记录</h1>
 				<div style="margin-left: 20px;">
+					<details><summary><span>v9.2.1</span> 修复一些问题</summary><p>
+						&emsp;&emsp;-(更新来自 @tjy-gitnub)<br>
+						&emsp;&emsp;-拆解 desktop.js<br>
+						&emsp;&emsp;-细节优化和修复<br>
+					</p></details>
+					<details><summary><span>v9.2.0</span> 整理</summary><p>
+						&emsp;&emsp;-(更新来自 @tjy-gitnub)<br>
+						&emsp;&emsp;修改大量积累的 bug<br>
+						&emsp;&emsp;-关于开始菜单全屏的问题<br>
+						&emsp;&emsp;-关于小组件的大量问题<br>
+						&emsp;&emsp;-标签页的移动端适配问题<br>
+						&emsp;&emsp;-天气小组件 api 失效的问题<br>
+						&emsp;&emsp;新增和完善部分内容<br>
+						&emsp;&emsp;-鼠标中键关闭标签页<br>
+						&emsp;&emsp;-登录界面的美化<br>
+						&emsp;&emsp;-细节优化和修复<br>
+					</p></details>
 					<details><summary><span>v9.1.2</span> 任务栏预览</summary><p>
 						&emsp;&emsp;-(更新来自 @fzlzjerry)<br>
 						&emsp;&emsp;-加入任务栏窗口预览<br>
-					</details>
+					</p></details>
 					<details><summary><span>v9.1.1</span> 移动端适配</summary><p>
 						&emsp;&emsp;-(更新来自@NB-Group)<br>
 						&emsp;&emsp;- 在移动端竖屏体验时将会提示“横屏以获得最佳体验”<br>
-					</details>
+					</p></details>
 					<details><summary><span>v9.1.0</span> 真正的在线新闻功能！</summary><p>
 						&emsp;&emsp;-(更新来自@lingbopro)<br>
 						&emsp;&emsp;- 现在在小组件面板里有真正从网络实时获取的新闻！ <br>
 						&emsp;&emsp;&nbsp; （可能会出现卡顿，触发方式薛定谔）<br>
 						&emsp;&emsp;- 顺便重构了一下新闻部分</p>
-					</details>
+					</p></details>
 					<details><summary><span>v9.0.0</span> 窗口背景材质超级大升级！</summary><p>
 						&emsp;&emsp;-(更新来自@NB-Group)<br>
 						&emsp;&emsp;- 新材质(仿win11 Mica)非常高级！ <br>
 						&emsp;&emsp;- 将设置的UI更新了</p>
-					</details>
+					</p></details>
 					<details><summary><span>v8.1.0</span> 整理</summary><p>
 						&emsp;&emsp;-(更新来自@tjy-gitnub)<br>
 						&emsp;&emsp;- 代码整理<br>
 						&emsp;&emsp;- 修复一些问题</p>
-					</details>
+					</p></details>
 					<details><summary><span>v8.0.0</span> </summary><p>
 						&emsp;&emsp;-(更新来自@User782Tec)<br>
 						&emsp;&emsp;-使用svg矢量图优化了任务管理器性能图表的绘制<br>
 						&emsp;&emsp;-加入了半成品的Microsoft Store<br>
 						&emsp;&emsp;-其他一些细微之处的更新</p>
-					</details>
-					<details><summary><span>v7.4.2</span> AI Copilot 3.0！</summary><p>
-						&emsp;&emsp;-(更新来自@NB-Group)<br>
-						&emsp;&emsp;-笑死，昨天刚修好就又寄了，这次的船新版本绝对稳定，（理论上）再也不会寄</p>
-					</details>
-					<details><summary><span>v7.4.1</span> AI Copilot 2.0！</summary><p>
-						&emsp;&emsp;-(更新来自@NB-Group)<br />
-						&emsp;&emsp;-修复了ai无法使用的问题</p>
-					</details>
-					<details><summary><span>v7.4.0</span> AI Copilot！</summary><p>
-						&emsp;&emsp;-(更新来自@NB-Group)<br>
-						&emsp;&emsp;-去掉一些奇怪的东西<br />
-						&emsp;&emsp;-经过我114年的开发，AI Copilot 2.0诞生了！<br />
-						&emsp;&emsp;-开源了AI后端的代码<br />
-						&emsp;&emsp;-细节优化和修复</p>
-					</details>
-					<details><summary><span>v7.3.7</span> 细节更改</summary><p>
-						&emsp;&emsp;-加入一些奇怪的东西<br />
-						&emsp;&emsp;-细节优化和修复</p>
-					</details>
-					<details><summary><span>v7.3.6</span> 语音识别球</summary><p>
-						&emsp;&emsp;(更新来自@NB-Group)<br/>
-						&emsp;&emsp;-增加语音识别球<br />
-						&emsp;&emsp;-细节优化和修复</p>
-					</details>
-					<details><summary><span>v7.3.5</span> 整顿代码</summary><p>
-						&emsp;&emsp;-整顿代码，贡献者必须按本文件开头以及CONTRIBUTING.md的规范编辑代码，否则不予合并，感谢理解<br/>
-						&emsp;&emsp;-重绘新增的一些图标<br>
-						&emsp;&emsp;-细节优化和修复</p>
-					</details>
-					<details><summary><span>v7.3.4</span> Edge更新</summary><p>
-						&emsp;&emsp;(更新来自@lh11117)<br>
-						&emsp;&emsp;-Edge 支持全屏<br/>
-						&emsp;&emsp;-Edge 支持收藏夹</p>
-					</details>
-					<details><summary><span>v7.3.3</span> 细节优化</summary><p>
-						&emsp;&emsp;细节优化</p>
-					</details>
-					<details><summary><span>v7.3.2</span> 细节更改</summary><p>
-						&emsp;&emsp;(更新来自 @tjy-gitnub )<br />
-						&emsp;&emsp;-新增了部分本地化语言功能<br />
-						&emsp;&emsp;-更新壁纸<br />
-						&emsp;&emsp;-优化样式<br />
-						&emsp;&emsp;-优化shutdown命令<br />
-						&emsp;&emsp;-其他更新与优化<br />
-						&emsp;&emsp;-修复了点击标签页无法切换焦点的问题<br />
-						&emsp;&emsp;-各位可以抽时间去看看README.md，一些特殊情况</p>
-					</details>
-					<details><summary><span>v7.3.1</span> Bug修复与细节优化</summary><p>
-						&emsp;&emsp;-删除changelog.md中重复的字(更新来自 @ZigaoWang )<br />
-						&emsp;&emsp;-修复BIOS无法正确访问的问题(更新来自 @ludonghengsb )</p>
-					</details>
-					<details><summary><span>v7.3.0</span> 桌面小组件、Dock自动隐藏、计算器完善和Windows 更新</summary><p>
-						&emsp;&emsp;(更新来自 @User782Tec )<br />
-						&emsp;&emsp;-新增了桌面小组件，可将小组件添加到桌面并调整位置<br />
-						&emsp;&emsp;-新增了编辑模式，可快捷编辑小组件的位置，并提供了相关的快捷入口<br />
-						&emsp;&emsp;-新增了窗口全屏且Dock不在使用时自动隐藏的功能<br />
-						&emsp;&emsp;-为Microsoft Edge浏览器和文件资源管理器新增了后退/前进的功能<br />
-						&emsp;&emsp;-又双叒叕优化计算器的精度问题与安全性问题<br />
-						&emsp;&emsp;-重写更新机制，并完善 Windows 更新<br />
-						&emsp;&emsp;-修复了文件资源管理器中右键文件失效的问题<br />
-						&emsp;&emsp;-修复了文件资源管理器中无法正确显示文件夹中文件的问题<br />
-						&emsp;&emsp;-更换了Python Editor的图标<br />
-						&emsp;&emsp;-完善了开源说明<br />
-						&emsp;&emsp;-其他细节与修复</p>
-					</details>
-					<details><summary><span>v7.2.1</span> README更新、“关于”应用显示实时Star数量、个性化设置支持保存</summary><p>
-						&emsp;&emsp;(更新来自 @lh11117 )<br />
-						&emsp;&emsp;-README更新<br />
-						&emsp;&emsp;-“关于”应用显示实时Star数量<br />
-						&emsp;&emsp;-个性化设置支持保存<br /></p>
-					</details>
-					<details><summary><span>v7.2.0</span> 优化运行、添加Windows12应用、添加WSA</summary><p>
-						&emsp;&emsp;(更新来自 @lh11117 )<br />
-						&emsp;&emsp;-优化运行<br />
-						&emsp;&emsp;-添加Windows12应用<br />
-						&emsp;&emsp;-添加WSA<br />
-						&emsp;&emsp;-添加shutdown命令<br />
-						&emsp;&emsp;-添加BIOS系统<br />
-						&emsp;&emsp;-支持桌面图标删除<br />
-						&emsp;&emsp;-更丰富的文件目录<br />
-						&emsp;&emsp;-任务管理器支持置顶<br /></p>
-					</details>
-					<details><summary><span>v7.1.0</span> 计算器进一步修复、离线页面的深色模式</summary><p>
-						&emsp;&emsp;(更新来自 @lh11117)<br />
-						&emsp;&emsp;-进一步修复了计算器精度缺陷和接受输入非法内容的问题<br />
-						&emsp;&emsp;-为Microsoft Edge浏览器的离线界面添加了深色模式版本<br />
-						&emsp;&emsp;-其他一些细节修复<br /></p>
-					</details>
-					<details><summary><span>v7.0.2</span> 计算器修复</summary><p>
-						&emsp;&emsp;(更新来自 @cong1223 和 @iewnfod)<br />
-						&emsp;&emsp;-修复计算器计算加减乘除、平方、平方根等运算的精度问题(来自 @cong1223)<br />
-						&emsp;&emsp;-只允许calc-input输入数字(来自 @iewnfod)<br /></p>
-					</details>
-					<details><summary><span>v7.0.1</span> 资源管理器标签页、离线界面与新闻</summary><p>
-						&emsp;&emsp;-文件资源管理器的标签页(来自 @tjy-gitnub)<br />
-						&emsp;&emsp;-新增了Microsoft Edge浏览器的离线界面(来自 @User782Tec)<br />
-						&emsp;&emsp;-新增新闻(来自 @Nick-DL)<br />
-						&emsp;&emsp;-优化部分UI<br />
-						&emsp;&emsp;-细节优化和修复</p>
-					</details>
-					<details><summary><span>v7.0.0</span> AI助手,新增多个应用与功能</summary><p>
-						&emsp;&emsp;-Windows 12 AI Copilot(@NB-Group提供api, @tjy-gitnub魔改)<br />
-						&emsp;&emsp;-任务管理器(由 @User782Tec 提供)<br />
-						&emsp;&emsp;-安全中心(由 @NB-Group 提供)<br />
-						&emsp;&emsp;-适配文件系统(由 @NB-Group 提供)(别问我为啥现在才出，要问问@NB-Group)<br />
-						&emsp;&emsp;-窗口云母(Mica)效果(由 @tjy-gitnub 提供，在设置中启用)<br />
-						&emsp;&emsp;-文件资源管理器导航栏(由 @User782Tec 提供)<br />
-						&emsp;&emsp;-任务管理器小组件(由 @User782Tec 提供)<br />
-						&emsp;&emsp;-全新壁纸(由 @tjy-gitnub 提供)<br />
-						&emsp;&emsp;-新增新闻(来自 @for-the-zero)<br />
-						&emsp;&emsp;-修复了终端的灾难性bug<br />
-						&emsp;&emsp;-优化部分UI<br />
-						&emsp;&emsp;-细节优化和修复</p>
-					</details>
+					</p></details>
 					<!-- 全部列出来那这个更多意义何在？ -->
 					<a onclick="window.open('changelog.md','_blank');" win12_title="changelog.md" class="a jump" style="text-align: center;">更多</a>
 				</div>
@@ -2017,6 +1940,7 @@ toggletheme() 切换主题
 			<a href="" download="未命名.html" style="opacity: 0;" class="save">另存为</a>
 		</div>
 	</div>
+	<!-- 这个东西还有用吗？？（ -->
 	<div class="window notepad-fonts">
 		<div class="titbar">
 			<img src="icon/notepad.svg" class="icon">
@@ -2950,8 +2874,13 @@ toggletheme() 切换主题
 	</div>
 	<script defer src="data/tasks.js"></script>
 	<script defer src="scripts/utils.js"></script>
+
+	<script defer src="module/apps.js"></script>
 	<script defer src="desktop.js"></script>
+	<script defer src="module/window.js"></script>
+	<script defer src="module/widget.js"></script>
 	<script defer src="module/tab.js"></script>
+
 	<script defer src="scripts/setting_getTime.js"></script><!-- 设置页面获取时间逻辑 @Junchen Yi 2023-9-17-->
 	<script defer src="scripts/news.js"></script>
 	<script defer src="https://fastly.jsdelivr.net/pyodide/v0.23.4/full/pyodide.js" async></script>
@@ -2961,6 +2890,7 @@ toggletheme() 切换主题
 	<script defer src='https://cdn.staticfile.org/big.js/6.2.1/big.min.js'></script>
 	<script defer src="./scripts/calculator_kernel.js"></script>
 	<script defer src='https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.js'></script>
+
 </body>
 
 </html>

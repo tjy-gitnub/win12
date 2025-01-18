@@ -149,24 +149,26 @@
 #win-winver>.logo{
     display: flex;
     justify-content: center;
+    align-items: center;
 }
 
 #win-winver>.logo>.img{
     background: url(../../icon/logo.svg) center;
     background-size: cover;
-    height: 80px;
-    width: 80px;
+    height: 70px;
+    width: 70px;
     margin:10px;
 }
 
 #win-winver>.logo>p{
-    background-image: linear-gradient(100deg, var(--theme-1), var(--theme-2));
+    background-image: linear-gradient(100deg, #b660d9,#2983cc);
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
     font-size: 45px;
-    font-weight: 550;
-    font-family: 'Microsoft Yahei UI';
+    /* font-weight: 450; */
+    font-family:
+    'Microsoft Yahei UI';
     margin: 15px;
 }
 
