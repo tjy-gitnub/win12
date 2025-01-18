@@ -1,0 +1,220 @@
+<div class="window about">
+		<div class="resize-bar"></div>
+		<div class="titbar">
+			<img src="icon/about.svg" class="icon">
+			<p>关于 Windows12 网页版</p>
+			<div>
+				<a class="a wbtg red" onclick="hidewin('about')"><i class="bi bi-x-lg"></i></a>
+				<a class="a wbtg max" onclick="maxwin('about')"><i class="bi bi-app"></i></a>
+				<a class="a wbtg" onclick="minwin('about')"><i class="bi bi-dash-lg"></i></a>
+			</div>
+		</div>
+		<div class="loadback">
+			<img src="icon/about.svg" class="icon">
+		</div>
+		<div class="content" id="win-about">
+			<div class="menu">
+				<list class="focs">
+					<a onclick="$('#win-about>.about').addClass('show');$('#win-about>.update').removeClass('show');"><img src="apps/icons/about/info.svg" height="17px" width="19px">简介</a>
+					<a onclick="$('#win-about>.update').addClass('show');$('#win-about>.about').removeClass('show');"><img src="apps/icons/about/update.svg" height="20px" width="18px">更新记录</a>
+				</list>
+			</div>
+			<div class="cnt about">
+				<h1 class="tit"><span></span>Windows 12 网页版</h1>
+				<div style="margin-left: 20px;">
+					<h2 class="tit"><span></span>简介</h2>
+					<p>  Windows 12 网页版是一个开源项目，由星源原创，使用 HTML、CSS 和 JavaScript，在网络上模拟、创新操作系统。</p>
+					<p>  此项目已发布至 GitHub，<a onclick="window.open('https://github.com/tjy-gitnub/win12','_blank');" win12_title="https://github.com/tjy-gitnub/win12" class="jump">点击此处查看</a>。</p>
+					<p>  若您对于该项目有任何意见或建议，请在 GitHub 上<a onclick="window.open('https://github.com/tjy-gitnub/win12/issues','_blank');" win12_title="https://github.com/tjy-gitnub/win12/issues" class="jump">提交 issues</a>，您的问题会被尽可能快地解决。</p>
+					<p>  原创作者星源，点击以<a onclick="window.open('https://tjy-gitnub.github.io/','_blank');" win12_title="https://tjy-gitnub.github.io/" class="jump">了解详细</a>。</p>
+					<h2 class="tit"><span></span>开源说明</h2>
+					<p>  此项目是一个开源项目。此项目使用 EPL v2.0 开源许可。开源许可是具有法律效力的合同，请自觉遵守开源许可，尊重他人劳动。</p>
+					<p>  根据许可，你可以对该项目进行传播、分发、修改以及二次发布，包括个人和商业用途。</p>
+					<p>  但您必须给出源码来源，<strong>包括作者，项目链接等</strong>，必须使用相同的协议开源。</p>
+					<p>  若此项目的源码作为项目的一部分与你私有的源码一起发布时，你可以使用其它协议，<strong>但要声明 EPL 部分的内容并声明此部分继续遵循 EPL 协议</strong>。</p>
+					<p>  不是在该项目基础上进行增加、修改的，仅参考源码的，不需要开源，但也仅供学习用途。</p>
+					<h2 class="tit"><span></span>特别感谢</h2>
+					<p>  <strong>特别感谢 @NB-Group</strong></p>
+					<p>  NB-Group 为本项目的后端开发做出了重要贡献</p>
+					<p>  在此表示特别感谢！</p>
+					<h2 class="tit"><span></span>贡献者</h2>
+					<p>  感谢所有项目的贡献者（实时数据，计算方法：即为 Commits 次数）</p>
+					<div id="contri">
+						<loading>
+							<svg width="30px" height="30px" viewBox="0 0 16 16">
+								<circle cx="8px" cy="8px" r="7px" style="stroke:#7f7f7f50;fill:none;stroke-width:3px;">
+								</circle>
+								<circle cx="8px" cy="8px" r="7px" style="stroke:#2983cc;stroke-width:3px;"></circle>
+							</svg>
+						</loading>
+					</div>
+					<h2 class="tit"><span></span>Star</h2>
+					<p>  感谢<a class="jump" win12_title="给个 Star 好不好？(即将跳转到：https://github.com/tjy-gitnub/win12/stargazers)" onclick="window.open('https://github.com/tjy-gitnub/win12/stargazers','_blank')">所有支持我们的人</a>。</p>
+					<div id="StarShow">
+						<loading>
+							<svg width="30px" height="30px" viewBox="0 0 16 16">
+								<circle cx="8px" cy="8px" r="7px" style="stroke:#7f7f7f50;fill:none;stroke-width:3px;">
+								</circle>
+								<circle cx="8px" cy="8px" r="7px" style="stroke:#2983cc;stroke-width:3px;"></circle>
+							</svg>
+						</loading>
+					</div>
+					<h2 class="tit"><span></span>其它</h2>
+					<p>  此项目基于目前 Windows 版本创造，与微软的 Windows 12 正式版本不一致。</p>
+					<p>  此项目绝不附属于微软，且不应与微软操作系统或产品混淆，这也不是 Windows365 cloud PC。</p>
+					<p>  本项目中微软、Windows 和其他示范产品是微软公司的商标。</p>
+				</div>
+			</div>
+			<div class="cnt update">
+				<h1 class="tit"><span></span>更新记录</h1>
+				<div style="margin-left: 20px;">
+					<details><summary><span>v9.1.2</span> 任务栏预览</summary><p>
+						  -(更新来自 @fzlzjerry)<br>
+						  -加入任务栏窗口预览<br>
+					</p></details>
+					<details><summary><span>v9.1.1</span> 移动端适配</summary><p>
+						  -(更新来自@NB-Group)<br>
+						  - 在移动端竖屏体验时将会提示“横屏以获得最佳体验”<br>
+					</p></details>
+					<details><summary><span>v9.1.0</span> 真正的在线新闻功能！</summary><p>
+						  -(更新来自@lingbopro)<br>
+						  - 现在在小组件面板里有真正从网络实时获取的新闻！ <br>
+						  &nbsp; （可能会出现卡顿，触发方式薛定谔）<br>
+						  - 顺便重构了一下新闻部分</p>
+					</details>
+					<details><summary><span>v9.0.0</span> 窗口背景材质超级大升级！</summary><p>
+						  -(更新来自@NB-Group)<br>
+						  - 新材质(仿win11 Mica)非常高级！ <br>
+						  - 将设置的UI更新了</p>
+					</details>
+					<details><summary><span>v8.1.0</span> 整理</summary><p>
+						  -(更新来自@tjy-gitnub)<br>
+						  - 代码整理<br>
+						  - 修复一些问题</p>
+					</details>
+					<details><summary><span>v8.0.0</span> </summary><p>
+						  -(更新来自@User782Tec)<br>
+						  -使用svg矢量图优化了任务管理器性能图表的绘制<br>
+						  -加入了半成品的Microsoft Store<br>
+						  -其他一些细微之处的更新</p>
+					</details>
+					<details><summary><span>v7.4.2</span> AI Copilot 3.0！</summary><p>
+						  -(更新来自@NB-Group)<br>
+						  -笑死，昨天刚修好就又寄了，这次的船新版本绝对稳定，（理论上）再也不会寄</p>
+					</details>
+					<details><summary><span>v7.4.1</span> AI Copilot 2.0！</summary><p>
+						  -(更新来自@NB-Group)<br>
+						  -修复了ai无法使用的问题</p>
+					</details>
+					<details><summary><span>v7.4.0</span> AI Copilot！</summary><p>
+						  -(更新来自@NB-Group)<br>
+						  -去掉一些奇怪的东西<br>
+						  -经过我114年的开发，AI Copilot 2.0诞生了！<br>
+						  -开源了AI后端的代码<br>
+						  -细节优化和修复</p>
+					</details>
+					<details><summary><span>v7.3.7</span> 细节更改</summary><p>
+						  -加入一些奇怪的东西<br>
+						  -细节优化和修复</p>
+					</details>
+					<details><summary><span>v7.3.6</span> 语音识别球</summary><p>
+						  (更新来自@NB-Group)<br>
+						  -增加语音识别球<br>
+						  -细节优化和修复</p>
+					</details>
+					<details><summary><span>v7.3.5</span> 整顿代码</summary><p>
+						  -整顿代码，贡献者必须按本文件开头以及CONTRIBUTING.md的规范编辑代码，否则不予合并，感谢理解<br>
+						  -重绘新增的一些图标<br>
+						  -细节优化和修复</p>
+					</details>
+					<details><summary><span>v7.3.4</span> Edge更新</summary><p>
+						  (更新来自@lh11117)<br>
+						  -Edge 支持全屏<br>
+						  -Edge 支持收藏夹</p>
+					</details>
+					<details><summary><span>v7.3.3</span> 细节优化</summary><p>
+						  细节优化</p>
+					</details>
+					<details><summary><span>v7.3.2</span> 细节更改</summary><p>
+						  (更新来自 @tjy-gitnub )<br>
+						  -新增了部分本地化语言功能<br>
+						  -更新壁纸<br>
+						  -优化样式<br>
+						  -优化shutdown命令<br>
+						  -其他更新与优化<br>
+						  -修复了点击标签页无法切换焦点的问题<br>
+						  -各位可以抽时间去看看README.md，一些特殊情况</p>
+					</details>
+					<details><summary><span>v7.3.1</span> Bug修复与细节优化</summary><p>
+						  -删除changelog.md中重复的字(更新来自 @ZigaoWang )<br>
+						  -修复BIOS无法正确访问的问题(更新来自 @ludonghengsb )</p>
+					</details>
+					<details><summary><span>v7.3.0</span> 桌面小组件、Dock自动隐藏、计算器完善和Windows 更新</summary><p>
+						  (更新来自 @User782Tec )<br>
+						  -新增了桌面小组件，可将小组件添加到桌面并调整位置<br>
+						  -新增了编辑模式，可快捷编辑小组件的位置，并提供了相关的快捷入口<br>
+						  -新增了窗口全屏且Dock不在使用时自动隐藏的功能<br>
+						  -为Microsoft Edge浏览器和文件资源管理器新增了后退/前进的功能<br>
+						  -又双叒叕优化计算器的精度问题与安全性问题<br>
+						  -重写更新机制，并完善 Windows 更新<br>
+						  -修复了文件资源管理器中右键文件失效的问题<br>
+						  -修复了文件资源管理器中无法正确显示文件夹中文件的问题<br>
+						  -更换了Python Editor的图标<br>
+						  -完善了开源说明<br>
+						  -其他细节与修复</p>
+					</details>
+					<details><summary><span>v7.2.1</span> README更新、“关于”应用显示实时Star数量、个性化设置支持保存</summary><p>
+						  (更新来自 @lh11117 )<br>
+						  -README更新<br>
+						  -“关于”应用显示实时Star数量<br>
+						  -个性化设置支持保存<br></p>
+					</details>
+					<details><summary><span>v7.2.0</span> 优化运行、添加Windows12应用、添加WSA</summary><p>
+						  (更新来自 @lh11117 )<br>
+						  -优化运行<br>
+						  -添加Windows12应用<br>
+						  -添加WSA<br>
+						  -添加shutdown命令<br>
+						  -添加BIOS系统<br>
+						  -支持桌面图标删除<br>
+						  -更丰富的文件目录<br>
+						  -任务管理器支持置顶<br></p>
+					</details>
+					<details><summary><span>v7.1.0</span> 计算器进一步修复、离线页面的深色模式</summary><p>
+						  (更新来自 @lh11117)<br>
+						  -进一步修复了计算器精度缺陷和接受输入非法内容的问题<br>
+						  -为Microsoft Edge浏览器的离线界面添加了深色模式版本<br>
+						  -其他一些细节修复<br></p>
+					</details>
+					<details><summary><span>v7.0.2</span> 计算器修复</summary><p>
+						  (更新来自 @cong1223 和 @iewnfod)<br>
+						  -修复计算器计算加减乘除、平方、平方根等运算的精度问题(来自 @cong1223)<br>
+						  -只允许calc-input输入数字(来自 @iewnfod)<br></p>
+					</details>
+					<details><summary><span>v7.0.1</span> 资源管理器标签页、离线界面与新闻</summary><p>
+						  -文件资源管理器的标签页(来自 @tjy-gitnub)<br>
+						  -新增了Microsoft Edge浏览器的离线界面(来自 @User782Tec)<br>
+						  -新增新闻(来自 @Nick-DL)<br>
+						  -优化部分UI<br>
+						  -细节优化和修复</p>
+					</details>
+					<details><summary><span>v7.0.0</span> AI助手,新增多个应用与功能</summary><p>
+						  -Windows 12 AI Copilot(@NB-Group提供api, @tjy-gitnub魔改)<br>
+						  -任务管理器(由 @User782Tec 提供)<br>
+						  -安全中心(由 @NB-Group 提供)<br>
+						  -适配文件系统(由 @NB-Group 提供)(别问我为啥现在才出，要问问@NB-Group)<br>
+						  -窗口云母(Mica)效果(由 @tjy-gitnub 提供，在设置中启用)<br>
+						  -文件资源管理器导航栏(由 @User782Tec 提供)<br>
+						  -任务管理器小组件(由 @User782Tec 提供)<br>
+						  -全新壁纸(由 @tjy-gitnub 提供)<br>
+						  -新增新闻(来自 @for-the-zero)<br>
+						  -修复了终端的灾难性bug<br>
+						  -优化部分UI<br>
+						  -细节优化和修复</p>
+					</details>
+					<!-- 全部列出来那这个更多意义何在？ -->
+					<a onclick="window.open('changelog.md','_blank');" win12_title="changelog.md" class="a jump" style="text-align: center;">更多</a>
+				</div>
+			</div>
+		</div>
+	</div>

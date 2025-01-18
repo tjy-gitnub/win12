@@ -1,0 +1,26 @@
+<div class="window notepad" onclick="if(font_window){playWindowsBackground();showwin('notepad-fonts');}">
+		<div class="resize-bar"></div>
+		<div class="titbar">
+			<img src="icon/notepad.svg" class="icon">
+			<p>记事本</p>
+			<div>
+				<a class="a wbtg red" onclick="hidewin('notepad');hidewin('notepad-fonts', 'configs')"><i class="bi bi-x-lg"></i></a>
+				<a class="a wbtg max" onclick="maxwin('notepad')"><i class="bi bi-app"></i></a>
+				<a class="a wbtg" onclick="minwin('notepad')"><i class="bi bi-dash-lg"></i></a>
+			</div>
+		</div>
+		<div class="loadback">
+			<img src="icon/notepad.svg" class="icon">
+		</div>
+		<div class="content" id="win-notepad">
+			<div class="tool">
+				<a class="a" onmouseover="showdp(this,'notepad.file',null)" onmouseleave="hidedp()">文件</a>
+				<a class="a" onmouseover="showdp(this,'notepad.edit',null)" onmouseleave="hidedp()">编辑</a>
+				<a class="a" onmouseover="showdp(this,'notepad.view',null)" onmouseleave="hidedp()">格式</a>
+			</div>
+			<div class="text-box" contenteditable="true" spellcheck="false">
+				<p>Type here...</p>
+			</div>
+			<a href="" download="未命名.html" style="opacity: 0;" class="save">另存为</a>
+		</div>
+	</div>

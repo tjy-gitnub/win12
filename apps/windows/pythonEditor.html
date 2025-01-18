@@ -1,0 +1,20 @@
+<div class="window pythonEditor">
+		<div class="resize-bar"></div>
+		<div class="titbar">
+			<img src="icon/pythonEditor.svg" class="icon">
+			<p>Python Editor</p>
+			<div>
+				<a class="a wbtg red" onclick="hidewin('pythonEditor')"><i class="bi bi-x-lg"></i></a>
+				<a class="a wbtg max" onclick="maxwin('pythonEditor')"><i class="bi bi-app"></i></a>
+				<a class="a wbtg" onclick="minwin('pythonEditor')"><i class="bi bi-dash-lg"></i></a>
+				<a class="a wbtg run" onclick="apps.pythonEditor.run();"><i class="bi bi-play"></i></a>
+			</div>
+		</div>
+		<div class="loadback">
+			<img src="icon/pythonEditor.svg" class="icon">
+		</div>
+		<div class="content" id="win-pythonEditor">
+			<div id="win-python-ace-editor"></div>
+			<div class="output" id="output"></div>
+		</div>
+	</div>

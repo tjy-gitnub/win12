@@ -2186,19 +2186,35 @@ let apps = {
             apps.explorer.rename(path + '/' + name_);
         },
         rename: (path) => {
-            var pathl = path.split('/');
-            var name = pathl[pathl.length - 1];
+            const pathl = path.split('/');
+            const name = pathl[pathl.length - 1];
             apps.explorer.old_name = name;
             pathl.pop();
             let tmp = apps.explorer.path;
             pathl.forEach(name => {
-                tmp = tmp['folder'][name];
+                tmp = tmp.folder[name];
             });
-            let element = document.querySelector('#' + apps.explorer.get_file_id(name));
-            let img = element.querySelector('img').outerHTML;
-            element.innerHTML = img;
-            let input = document.createElement('input');
-            // input.style.cssText = '';
+            
+            const elementId = apps.explorer.get_file_id(name);
+            if (!elementId) {
+                console.warn(`Could not find element to rename: ${name}`);
+                return;
+            }
+            
+            const element = document.querySelector(`#${elementId}`);
+            if (!element) {
+                console.warn(`Could not find element with id: ${elementId}`);
+                return;
+            }
+
+            const img = element.querySelector('img');
+            if (!img) {
+                console.warn(`Could not find img element in: ${elementId}`);
+                return;
+            }
+
+            element.innerHTML = img.outerHTML;
+            const input = document.createElement('input');
             input.id = 'new_name';
             input.className = 'input';
             input.value = apps.explorer.old_name;
@@ -2206,22 +2222,24 @@ let apps = {
             setTimeout(() => { $('#new_name').focus(); $('#new_name').select(); }, 200);
 
             element.classList.add('change');
-            var input_ = document.getElementById('new_name');
-            input_.addEventListener('keyup', function (event) {
-                if (event.key === 'Enter') {
-                    event.preventDefault();
-                    apps.explorer.del_select();
-                }
-            });
+            const input_ = document.getElementById('new_name');
+            if (input_) {
+                input_.addEventListener('keyup', (event) => {
+                    if (event.key === 'Enter') {
+                        event.preventDefault();
+                        apps.explorer.del_select();
+                    }
+                });
+            }
         },
         get_file_id: (name) => {  //只能找到已经打开了的文件夹的元素id
-            var elements = document.getElementsByClassName('item');
-            for (var i = 0; i < elements.length; i++) {
-                var element = elements[i];
-                if (element.innerText == name) {
+            const elements = document.getElementsByClassName('item');
+            for (const element of elements) {
+                if (element.innerText === name) {
                     return element.id;
                 }
             }
+            return null; // Return null if element not found
         },
         del: (path) => {
             var pathl = path.split('/');
@@ -2247,16 +2265,19 @@ let apps = {
             });
         },
         traverseDirectory(dir, name) {
-            if (dir['file'] == null && dir['folder'] == null)
+            if (!dir || !dir.folder || !dir.file) {
                 return false;
-            for (var i = 0; i < dir['file'].length; i++) {
-                if (dir['file'][i]['name'] == name) {
+            }
+            // Check files
+            for (let i = 0; i < dir.file.length; i++) {
+                if (dir.file[i].name === name) {
                     return true;
                 }
             }
-            const keys = Object.keys(dir['folder']);
-            for (var i = 0; i < keys.length; i++) {
-                if (keys[i] == name) {
+            // Check folders
+            const keys = Object.keys(dir.folder);
+            for (let i = 0; i < keys.length; i++) {
+                if (keys[i] === name) {
                     return true;
                 }
             }
@@ -4345,18 +4366,6 @@ document.getElementsByTagName('body')[0].onload = () => {
     }
     setIcon();//加载桌面图标
 
-    // 所以这个东西为啥要在开机的时候加载？
-    // 不应该在python.init里面吗？
-    //     (async function () {
-    //         apps.python.pyodide = await loadPyodide();
-    //         apps.python.pyodide.runPython(`
-    // import sys
-    // import io
-    // `);
-    //     })();
-    // apps.pythonEditor.load();
-    // apps.notepadFonts.load();
-    // apps.whiteboard.load();
     document.querySelectorAll('.window').forEach(w => {
         let qw = $(w), wc = w.classList[1];
         // window: onmousedown="focwin('explorer')" ontouchstart="focwin('explorer')"
@@ -4373,7 +4382,36 @@ document.getElementsByTagName('body')[0].onload = () => {
         qw.attr('onclick', `let os=$(this).offset();stop(event);return showcm({clientX:os.left-5,clientY:os.top+this.offsetHeight+3},'titbar','${wc}')`);
         qw.mousedown(stop);
         $(`.window.${wc}>.titbar>div>.wbtg`).mousedown(stop);
+
+        // Add window dragging initialization
+        const titbar = qw.parent()[0];
+        titbar.addEventListener('mousedown', (e) => {
+            if ($('.taskmgr>.titbar>div>input').is(':focus')) {
+                return;
+            }
+            let x = window.getComputedStyle(w, null).getPropertyValue('left').split('px')[0];
+            let y = window.getComputedStyle(w, null).getPropertyValue('top').split('px')[0];
+            if (y != 0) {
+                bfLeft = x;
+                bfTop = y;
+            }
+            deltaLeft = e.clientX - x;
+            deltaTop = e.clientY - y;
+            page.onmousemove = win_move.bind(w);
+        });
+        titbar.addEventListener('touchstart', (e) => {
+            let x = window.getComputedStyle(w, null).getPropertyValue('left').split('px')[0];
+            let y = window.getComputedStyle(w, null).getPropertyValue('top').split('px')[0];
+            if (y != 0) {
+                bfLeft = x;
+                bfTop = y;
+            }
+            deltaLeft = e.targetTouches[0].clientX - x;
+            deltaTop = e.targetTouches[0].clientY - y;
+            page.ontouchmove = win_move.bind(w);
+        });
     });
+
     document.querySelectorAll('.window>div.resize-bar').forEach(w => {
         for (const n of ['top', 'bottom', 'left', 'right', 'top-right', 'top-left', 'bottom-right', 'bottom-left']) {
             w.insertAdjacentHTML('afterbegin', `<div class="resize-knob ${n}" onmousedown="resizewin(this.parentElement.parentElement, '${n}', this)"></div>`);

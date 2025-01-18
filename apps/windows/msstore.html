@@ -1,0 +1,138 @@
+<div class="window msstore">
+		<div class="resize-bar"></div>
+		<div class="titbar">
+			<img src="icon/msstore.svg" class="icon">
+			<p>Microsoft Store</p>
+			<div>
+				<a class="a wbtg red" onclick="hidewin('msstore');"><i class="bi bi-x-lg"></i></a>
+				<a class="a wbtg max" onclick="maxwin('msstore')"><i class="bi bi-app"></i></a>
+				<a class="a wbtg" onclick="minwin('msstore')"><i class="bi bi-dash-lg"></i></a>
+			</div>
+		</div>
+		<div class="loadback" data-delay="3500">
+			<img src="icon/msstore.svg" class="icon">
+            <loading style="position: static; ">
+                <svg width="40px" height="40px" viewBox="0 0 16 16">
+                    <!-- <circle cx="8px" cy="8px" r="7px" style="stroke:#7f7f7f50;fill:none;stroke-width:3px;"></circle> -->
+                    <circle cx="8px" cy="8px" r="7px" style="stroke:#2983cc;stroke-width:3px;"></circle>
+                </svg>
+            </loading>
+		</div>
+
+		<div class="content" id="win-msstore">
+			<div class="menu">
+				<list class="focs">
+					<a class="home check" onclick="apps.msstore.page('home');"><icon></icon><span class="t2">首页</span></a>
+					<a class="apps" onclick="apps.msstore.page('apps');"><icon></icon><span class="t2">应用</span></a>
+					<a class="game" onclick="apps.msstore.page('game');"><icon></icon><span class="t2">游戏</span></a>
+					<a class="down" onclick="apps.msstore.page('down');"><icon></icon><span class="t2">下载</span></a>
+					<span class="focs"></span>
+				</list>
+			</div>
+			<div class="page">
+				<div class="cnt home show">
+					<div class="container">
+						<div class="cards"></div>
+						<div class="apps">
+							<div class="tit">热门免费应用 &gt;</div>
+							<div class="app-cards">
+								<div class="card1">
+									<div class="left"></div>
+									<div class="right">
+										<div class="tit">
+											<div class="up">
+												<div class="name">Visual Studio Code</div>
+												<div class="type">免费下载</div>
+											</div>
+											<div class="down">
+												<div class="rating"></div>
+												<div class="cate">开发</div>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="card2">
+									<div class="left"></div>
+									<div class="right">
+										<div class="tit">
+											<div class="up">
+												<div class="name">原神</div>
+												<div class="type">免费下载</div>
+											</div>
+											<div class="down">
+												<div class="rating"></div>
+												<div class="cate">游戏</div>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="card3">
+									<div class="left"></div>
+									<div class="right">
+										<div class="tit">
+											<div class="up">
+												<div class="name">我的世界</div>
+												<div class="type">免费下载</div>
+											</div>
+											<div class="down">
+												<div class="rating"></div>
+												<div class="cate">游戏</div>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="card4">
+									<div class="left"></div>
+									<div class="right">
+										<div class="tit">
+											<div class="up">
+												<div class="name">Krita</div>
+												<div class="type">免费下载</div>
+											</div>
+											<div class="down">
+												<div class="rating"></div>
+												<div class="cate">设计</div>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="card5">
+									<div class="left"></div>
+									<div class="right">
+										<div class="tit">
+											<div class="up">
+												<div class="name">VirtualBox</div>
+												<div class="type">免费下载</div>
+											</div>
+											<div class="down">
+												<div class="rating"></div>
+												<div class="cate">工具</div>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="card6">
+									<div class="left"></div>
+									<div class="right">
+										<div class="tit">
+											<div class="up">
+												<div class="name">LibreOffice</div>
+												<div class="type">免费下载</div>
+											</div>
+											<div class="down">
+												<div class="rating"></div>
+												<div class="cate">办公</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="cnt apps"></div>
+				<div class="cnt game"></div>
+				<div class="cnt down"></div>
+			</div>
+		</div>
+	</div>
