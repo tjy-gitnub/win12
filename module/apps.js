@@ -1912,7 +1912,7 @@ Micrȯsoft Windows [版本 12.0.39035.7324]
         },
         reload: () => {
             if (wifiStatus == false) {
-                $('#win-edge>iframe.show').attr('src', './disconnected' + (isDark ? '_dark' : '') + '.html');
+                $('#win-edge>iframe.show').attr('src', 'data/disconnected' + (isDark ? '_dark' : '') + '.html');
             }
             else {
                 $('#win-edge>iframe.show').attr('src', $('#win-edge>iframe.show').attr('src'));
@@ -1936,7 +1936,7 @@ Micrȯsoft Windows [版本 12.0.39035.7324]
         goto: (u, clear = true) => {
             if (wifiStatus == false) {
                 m_tab.rename('edge', u);
-                $('#win-edge>iframe.show').attr('src', './disconnected' + (isDark ? '_dark' : '') + '.html');
+                $('#win-edge>iframe.show').attr('src', '.data/disconnected' + (isDark ? '_dark' : '') + '.html');
                 $('#win-edge>.tool>input.url').val(u);
             }
             else {

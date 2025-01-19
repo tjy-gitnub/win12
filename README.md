@@ -1,3 +1,6 @@
+> [!CAUTION]
+> 重构期间，不接受任何 PR 
+
 <p align="center">
     <img src="./icon/windows12.svg" width="100" height="100">
 </p>
