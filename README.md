@@ -18,7 +18,7 @@
 </p>
 <p align="center" class="language" title="Language selection 语言选择">
   <a href="readme/README_en_us.md">English</a> | 
-  <a href="readme/README_zh_cn.md">简体中文</a> | 
+  <b>简体中文</b> | 
   <a href="readme/README_fr_fr.md">Français</a>
 </p>
 <details align="center">
