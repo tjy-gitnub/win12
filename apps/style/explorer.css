@@ -48,6 +48,8 @@
     border-radius: 7px;
     transition: 100ms;
     display: flex;
+    height: 30px;
+    align-items: center;
 }
 
 #win-explorer>.page>.menu>.card>list>a.check {
@@ -57,15 +59,15 @@
 #win-explorer>.page>.menu>.pinned>list>a>img {
     width: 18px;
     height: 18px;
-    margin-top: 2px;
+    /* margin-top: 2px; */
     margin-right: 5px;
 }
 
-#win-explorer>.page>.menu>.tags>list>a>span {
+#win-explorer>.page>.menu>.tags>list>a>span:first-child {
     width: 13px;
     height: 13px;
     margin-left: 4px;
-    margin-top: 4px;
+    /* margin-top: 4px; */
     margin-right: 7px;
     border-radius: 50%;
     box-shadow: 0 0 5px var(--sd);

@@ -13,7 +13,50 @@ console.log('%cWindows 12 网页版 (GitHub: tjy-gitnub/win12)', 'background-ima
 // 好高级，还能这样？？
 
 
-// loadlang();
+
+function loadlang(code) {
+    $.i18n.properties({
+        name: 'lang',
+        path: 'lang/', // 目录
+        language: code,
+        mode: 'map',
+        callback: function() {
+            $('[data-i18n]').each(function() {
+                // 标签的内容
+
+                // console.log($.i18n.prop($(this).data("i18n")));
+                $(this).html($.i18n.prop($(this).data("i18n")));
+            });
+            $('[data-i18n-attr]').each(function() {
+                // 标签的属性
+
+                $(this).attr($(this).data("i18n-attr"),$.i18n.prop($(this).data("i18n-key")));
+            });
+        }
+    });
+}
+
+// langcode=[hans/hant/en/...]
+
+let langcode='hans',lang=(txt,id)=>{
+    return txt;
+};
+
+// 函数 lang(txt,id)
+/// langcode==hans 下返回 txt,
+/// 否则返回语言 properties 文件中键 id 对应的值。
+// 用例： lang('设置','setting.name')
+
+if((new URLSearchParams(window.location.search)).has('lang')){
+    if((new URLSearchParams(window.location.search)).get('lang')!='hans'){
+        langcode=(new URLSearchParams(window.location.search)).get('lang');
+        loadlang(langcode);
+        lang=(txt,id)=>{
+            return $.i18n.prop(id);
+        };
+    }
+}
+
 
 // 后端服务器
 const server = 'http://win12server.freehk.svipss.top/';
@@ -151,10 +194,10 @@ let cms = {
                 return 'null';
             }
             if ($('.window.' + arg).hasClass('max')) {
-                return ['<i class="bi bi-window-stack"></i> 还原', `maxwin('${arg}')`];
+                return ['<i class="bi bi-window-stack"></i> '+lang('还原','window.restore'), `maxwin('${arg}')`];
             }
             else {
-                return ['<i class="bi bi-window-fullscreen"></i> 最大化', `maxwin('${arg}')`];
+                return ['<i class="bi bi-window-fullscreen"></i> '+lang('最大化','window.max'), `maxwin('${arg}')`];
             }
         },
         arg => {
@@ -162,45 +205,45 @@ let cms = {
                 return 'null';
             }
             else {
-                return ['<i class="bi bi-window-dash"></i> 最小化', `minwin('${arg}')`];
+                return ['<i class="bi bi-window-dash"></i> '+lang('最小化','window.min'), `minwin('${arg}')`];
             }
         },
         arg => {
             if (arg in nomin) {
-                return ['<i class="bi bi-window-x"></i> 关闭', `hidewin('${arg}', 'configs')`];
+                return ['<i class="bi bi-window-x"></i> '+lang('关闭','close'), `hidewin('${arg}', 'configs')`];
             }
             else {
-                return ['<i class="bi bi-window-x"></i> 关闭', `hidewin('${arg}')`];
+                return ['<i class="bi bi-window-x"></i> '+lang('关闭','close'), `hidewin('${arg}')`];
             }
         },
     ],
     'taskbar': [
         arg => {
-            return ['<i class="bi bi-window-x"></i> 关闭', `hidewin('${arg}')`];
+            return ['<i class="bi bi-window-x"></i> '+lang('关闭','close'), `hidewin('${arg}')`];
         }
     ],
     'desktop': [
-        ['<i class="bi bi-arrow-clockwise"></i> 刷新 <info>F5</info>', '$(\'#desktop\').css(\'opacity\',\'0\');setTimeout(()=>{$(\'#desktop\').css(\'opacity\',\'1\');},100);setIcon();'],
-        ['<i class="bi bi-circle-square"></i> 切换主题', 'toggletheme()'],
-        '<a onmousedown="window.open(\'https://github.com/tjy-gitnub/win12\',\'_blank\');" win12_title="https://github.com/tjy-gitnub/win12" onmouseenter="showdescp(event)" onmouseleave="hidedescp(event)"><i class="bi bi-github"></i> 在 Github 中查看此项目</a>',
+        [`<i class="bi bi-arrow-clockwise"></i> ${lang('刷新','refresh')} <info>F5</info>`, '$(\'#desktop\').css(\'opacity\',\'0\');setTimeout(()=>{$(\'#desktop\').css(\'opacity\',\'1\');},100);setIcon();'],
+        ['<i class="bi bi-circle-square"></i> '+lang('切换主题','desktop.tgltheme'), 'toggletheme()'],
+        `<a onmousedown="window.open(\'https://github.com/tjy-gitnub/win12\',\'_blank\');" win12_title="https://github.com/tjy-gitnub/win12" onmouseenter="showdescp(event)" onmouseleave="hidedescp(event)"><i class="bi bi-github"></i> ${lang('在 Github 中查看此项目','desktop.vogithub')}</a>`,
         arg => {
             if (edit_mode) {
-                return ['<i class="bi bi-pencil"></i> 退出编辑模式', 'editMode();'];
+                return ['<i class="bi bi-pencil"></i> '+lang('退出编辑模式','desktop.exitedit'), 'editMode();'];
             }
             else if (!edit_mode) {
-                return ['<i class="bi bi-pencil"></i> 进入编辑模式', 'editMode();'];
+                return ['<i class="bi bi-pencil"></i> '+lang('进入编辑模式','desktop.enteredit'), 'editMode();'];
             }
         },
-        ['<i class="bi bi-info-circle"></i> 关于 Win12 网页版', '$(\'#win-about>.about\').addClass(\'show\');$(\'#win-about>.update\').removeClass(\'show\');openapp(\'about\');if($(\'.window.about\').hasClass(\'min\'))minwin(\'about\');'],
-        ['<i class="bi bi-brush"></i> 个性化', 'openapp(\'setting\');$(\'#win-setting > div.menu > list > a.enable.appearance\')[0].click()']
+        ['<i class="bi bi-info-circle"></i> '+lang('关于 Win12 网页版','about.name'), '$(\'#win-about>.about\').addClass(\'show\');$(\'#win-about>.update\').removeClass(\'show\');openapp(\'about\');if($(\'.window.about\').hasClass(\'min\'))minwin(\'about\');'],
+        ['<i class="bi bi-brush"></i> '+lang('个性化','psnl'), 'openapp(\'setting\');$(\'#win-setting > div.menu > list > a.enable.appearance\')[0].click()']
     ],
     'desktop.icon': [
         arg => {
-            return ['<i class="bi bi-folder2-open"></i> 打开', 'openapp(`' + arg[0] + '`)'];
+            return ['<i class="bi bi-folder2-open"></i> '+lang('打开','open'), 'openapp(`' + arg[0] + '`)'];
         },
         arg => {
             if (arg[1] >= 0) {
-                return ['<i class="bi bi-trash3"></i> 删除', 'desktopItem.splice(' + (arg[1]) + ', 1);saveDesktop();setIcon();addMenu();'];
+                return ['<i class="bi bi-trash3"></i> '+lang('删除','del'), 'desktopItem.splice(' + (arg[1]) + ', 1);saveDesktop();setIcon();addMenu();'];
             } else {
                 return 'null';
             }
@@ -220,9 +263,9 @@ let cms = {
             }
         },
         '<hr>',
-        ['<i class="bi bi-gear"></i> 设置', 'openapp(\'setting\')'],
-        ['<i class="bi bi-terminal"></i> 运行', 'openapp(\'run\')'],
-        ['<i class="bi bi-folder2-open"></i> 文件资源管理器', 'openapp(\'explorer\')'],
+        ['<i class="bi bi-gear"></i> '+lang('设置','setting.name'), 'openapp(\'setting\')'],
+        ['<i class="bi bi-terminal"></i> '+lang('运行','run.name'), 'openapp(\'run\')'],
+        ['<i class="bi bi-folder2-open"></i> '+lang('文件资源管理器','explorer.name'), 'openapp(\'explorer\')'],
         ['<i class="bi bi-search"></i> 搜索', `$('#search-btn').addClass('show');hide_startmenu();
         $('#search-win').addClass('show-begin');setTimeout(() => {$('#search-win').addClass('show');
         $('#search-input').focus();}, 0);`],
@@ -232,7 +275,7 @@ let cms = {
     ],
     'smapp': [
         arg => {
-            return ['<i class="bi bi-window"></i> 打开', `openapp('${arg[0]}');hide_startmenu();`];
+            return ['<i class="bi bi-window"></i> '+lang('打开','open'), `openapp('${arg[0]}');hide_startmenu();`];
         },
         arg => {
             return ['<i class="bi bi-link-45deg"></i> 在桌面创建链接', 'var s=`<div class=\'b\' ondblclick=openapp(\'' + arg[0] + '\')  ontouchstart=openapp(\'' + arg[0] + '\') appname=\'' + arg[0] + '\'><img src=\'icon/' + geticon(arg[0]) + '\'><p>' + arg[1] + '</p></div>`;$(\'#desktop\').append(s);desktopItem[desktopItem.length]=s;addMenu();saveDesktop();'];
@@ -243,7 +286,7 @@ let cms = {
     ],
     'smlapp': [
         arg => {
-            return ['<i class="bi bi-window"></i> 打开', `openapp('${arg[0]}');hide_startmenu();`];
+            return ['<i class="bi bi-window"></i> '+lang('打开','open'), `openapp('${arg[0]}');hide_startmenu();`];
         },
         arg => {
             return ['<i class="bi bi-link-45deg"></i> 在桌面创建链接', 'var s=`<div class=\'b\' ondblclick=openapp(\'' + arg[0] + '\')  ontouchstart=openapp(\'' + arg[0] + '\') appname=\'' + arg[0] + '\'><img src=\'icon/' + geticon(arg[0]) + '\'><p>' + arg[1] + '</p></div>`;$(\'#desktop\').append(s);desktopItem[desktopItem.length]=s;addMenu();saveDesktop();'];
@@ -260,14 +303,14 @@ let cms = {
     ],
     'explorer.folder': [
         arg => {
-            return ['<i class="bi bi-folder2-open"></i> 打开', `apps.explorer.goto('${arg}')`];
+            return ['<i class="bi bi-folder2-open"></i> '+lang('打开','open'), `apps.explorer.goto('${arg}')`];
         },
         arg => {
             return ['<i class="bi bi-arrow-up-right-square"></i> 在新标签页中打开', `apps.explorer.newtab('${arg}');`];
         },
         arg => {
             if ($('#win-explorer>.path>.tit>.path>div.text').length > 1)
-                return ['<i class="bi bi-trash3"></i> 删除', `apps.explorer.del('${arg}')`];
+                return ['<i class="bi bi-trash3"></i> '+lang('删除','del'), `apps.explorer.del('${arg}')`];
             return 'null';
         },
         arg => {
@@ -292,7 +335,7 @@ let cms = {
         },
         arg => {
             if ($('#win-explorer>.path>.tit>.path>div.text').length > 1)
-                return ['<i class="bi bi-trash3"></i> 删除', `apps.explorer.del('${arg}')`];
+                return ['<i class="bi bi-trash3"></i> '+lang('删除','del'), `apps.explorer.del('${arg}')`];
             return 'null';
         },
         arg => {
@@ -569,7 +612,7 @@ function hidedescp(e) {
 
 let nts = {
     'about': {
-        cnt: `<p class="tit">Windows 12 网页版</p>
+        cnt: lang(`<p class="tit">Windows 12 网页版</p>
             <p>Windows 12 网页版是一个开放源项目,<br />
             希望让用户在网络上预先体验 Windows 12,<br />
             内容可能与 Windows 12 正式版本不一致。<br />
@@ -577,48 +620,47 @@ let nts = {
             此项目绝不附属于微软,且不应与微软操作系统或产品混淆,<br />
             这也不是 Windows365 cloud PC<br />
             本项目中微软、Windows和其他示范产品是微软公司的商标<br />
-            本项目中谷歌、Android和其他示范产品是谷歌公司的商标</p>`,
+            本项目中 Android 是谷歌公司的商标。</p>`,'nts.about'),
         btn: [
-            { type: 'main', text: '关闭', js: 'closenotice();' },
-            { type: 'detail', text: '更多', js: 'closenotice();openapp(\'about\');if($(\'.window.about\').hasClass(\'min\'))minwin(\'about\');$(\'.dock.about\').removeClass(\'show\')' },
+            { type: 'main', text: lang(lang('关闭','close'),'close'), js: 'closenotice();' },
+            { type: 'detail', text: lang('更多','more'), js: 'closenotice();openapp(\'about\');if($(\'.window.about\').hasClass(\'min\'))minwin(\'about\');$(\'.dock.about\').removeClass(\'show\')' },
         ]
     },
     'feedback': {
-        cnt: `<p class="tit">反馈</p>
-            <p>我们非常注重用户的体验与反馈</p>
+        cnt: `<p class="tit">${lang('反馈','nts.feedback.name')}</p>
+            <p>${lang('我们非常注重用户的体验与反馈','nts.feedback.txt')}</p>
             <list class="new">
-                <a class="a" onclick="window.open('https://github.com/tjy-gitnub/win12/issues','_blank');" win12_title="在浏览器新窗口打开链接" onmouseenter="showdescp(event)" onmouseleave="hidedescp(event)">在github上提交issue(需要github账户，会得到更高重视)</a>
-                <a class="a" onclick="window.open('https://forms.office.com/Pages/ResponsePage.aspx?id=DQSIkWdsW0yxEjajBLZtrQAAAAAAAAAAAAO__SDw7SZURjUzOUo0VEVXU1pMWlFTSUVGWDNYWU1EWS4u','_blank');" win12_title="在浏览器新窗口打开链接" onmouseenter="showdescp(event)" onmouseleave="hidedescp(event)">在Microsoft Forms上发送反馈(不需要账户，也会重视)</a>
+                <a class="a" onclick="window.open('https://github.com/tjy-gitnub/win12/issues','_blank');" win12_title="在浏览器新窗口打开链接" onmouseenter="showdescp(event)" onmouseleave="hidedescp(event)">${lang('在github上提交issue (需要github账户)','nts.feedback.github')}</a>
             </list>`,
         btn: [
-            { type: 'main', text: '关闭', js: 'closenotice();' },
+            { type: 'main', text: lang(lang('关闭','close'),'close'), js: 'closenotice();' },
         ]
     },
     'widgets': {
         cnt: `
-            <p class="tit">添加小组件</p>
+            <p class="tit">${lang('添加小组件','nts.addwg')}</p>
             <list class="new">
-                <a class="a" onclick="closenotice(); widgets.widgets.add('calc');">计算器</a>
-                <a class="a" onclick="closenotice(); widgets.widgets.add('weather');">天气</a>
-                <a class="a" onclick="closenotice(); widgets.widgets.add('monitor');">系统性能监视器</a>
+                <a class="a" onclick="closenotice(); widgets.widgets.add('calc');">${lang('计算器','calc.name')}</a>
+                <a class="a" onclick="closenotice(); widgets.widgets.add('weather');">${lang('天气','nts.addwg.weather')}</a>
+                <a class="a" onclick="closenotice(); widgets.widgets.add('monitor');">${lang('系统性能监视器','nts.addwg.monitor')}</a>
             </list>`,
         btn: [
-            { type: 'cancel', text: '取消', js: 'closenotice();' }
+            { type: 'cancel', text: lang('取消','cancel'), js: 'closenotice();' }
         ]
     },
     'ZeroDivision': {//计算器报错窗口
-        // 甚至还报错我真的哭死，直接输入框显示给error啥的不就完了。。
-        cnt: `<p class="tit">错误</p>
-            <p>除数不得等于0</p>`,
+        // 甚至还报错我真的哭死，直接输入框显示error啥的不就完了。。
+        cnt: lang(`<p class="tit">错误</p>
+            <p>除数不得等于0</p>`,'calc.error.zero'),
         btn: [
-            { type: 'main', text: '确定', js: 'closenotice();' },
+            { type: 'main', text: lang('确定','ok'), js: 'closenotice();' },
         ]
     },
     'Can-not-open-file': {
         cnt: '<p class="tit">' + run_cmd + `</p>
         <p>Windows 找不到文件 '` + run_cmd + '\'。请确定文件名是否正确后，再试一次。</p> ',
         btn: [
-            { type: 'main', text: '确定', js: 'closenotice();' },
+            { type: 'main', text: lang('确定','ok'), js: 'closenotice();' },
             { type: 'detail', text: '在 Micrsoft Edge 中搜索', js: 'closenotice();openapp(\'edge\');window.setTimeout(() => {apps.edge.newtab();apps.edge.goto(' + run_cmd + ');}, 300);' }
         ]
     },
@@ -634,7 +676,7 @@ let nts = {
             <a class="a" onclick="closenotice(); widgets.monitor.type = 'gpu';">GPU利用率</a>
         </list>`,
         btn: [
-            { type: 'cancel', text: '取消', js: 'closenotice();' }
+            { type: 'cancel', text: lang('取消','cancel'), js: 'closenotice();' }
         ]
     },
     'widgets.desktop': {
@@ -646,7 +688,7 @@ let nts = {
                 <a class="a" onclick="closenotice(); widgets.widgets.add('monitor'); widgets.widgets.addToDesktop('monitor');">系统性能监视器</a>
             </list>`,
         btn: [
-            { type: 'cancel', text: '取消', js: 'closenotice();' }
+            { type: 'cancel', text: lang('取消','cancel'), js: 'closenotice();' }
         ]
     },
     'widgets.news.source': {
@@ -655,14 +697,14 @@ let nts = {
             <list class="new">
                 新闻源未加载，请检查网络连接
             </list>`,
-        btn: [{ type: 'cancel', text: '取消', js: 'closenotice();' }],
+        btn: [{ type: 'cancel', text: lang('取消','cancel'), js: 'closenotice();' }],
     },
     'duplication file name': {
         cnt: `
             <p class="tit">错误</p>
             <p>文件名重复</p>`,
         btn: [
-            { type: 'cancel', text: '取消', js: 'closenotice();' }
+            { type: 'cancel', text: lang('取消','cancel'), js: 'closenotice();' }
         ]
     },
     'about-copilot': {
@@ -675,7 +717,7 @@ let nts = {
             也请适当使用，不要谈论敏感、违规话题，<br>请有身为一个人类最基本的道德底线。<br>
             小项目难免会有bug，见谅，后端由 github@NB-Group 提供</p>`,
         btn: [
-            { type: 'main', text: '确定', js: 'closenotice();' },
+            { type: 'main', text: lang('确定','ok'), js: 'closenotice();' },
         ]
     },
     'feedback-copilot': {
@@ -687,7 +729,7 @@ let nts = {
         </list>
             `,
         btn: [
-            { type: 'main', text: '关闭', js: 'closenotice();' }
+            { type: 'main', text: lang('关闭','close'), js: 'closenotice();' }
         ]
     },
     'shutdown': {
@@ -695,7 +737,7 @@ let nts = {
         <p class="tit">即将注销你的登录</p>
         <p>Windows 将在 114514 分钟后关闭。</p>`,
         btn: [
-            { type: 'main', text: '关闭', js: 'closenotice();' }
+            { type: 'main', text: lang('关闭','close'), js: 'closenotice();' }
         ]
     },
     'setting.update': {
@@ -722,7 +764,7 @@ let nts = {
         </p>
          `,
         btn: [
-            { type: 'main', text: '确定', js: 'closenotice();' },
+            { type: 'main', text: lang('确定','ok'), js: 'closenotice();' },
         ]
     },
     'setting.down': {
@@ -864,7 +906,7 @@ shutdown [-s] [-r] [-f] [-a] [-t time]
                         <p class="tit">注销已取消</p>
                         <p>计划的关闭已取消。</p>`,
                         btn: [
-                            { type: 'main', text: '关闭', js: 'closenotice();' },
+                            { type: 'main', text: lang('关闭','close'), js: 'closenotice();' },
                         ]
                     };
                     shownotice('shutdown');
@@ -901,7 +943,7 @@ shutdown [-s] [-r] [-f] [-a] [-t time]
                 <p class="tit">即将${operation === 'restart' ? '重启' : operation === 'logoff' ? '注销' : '关机'}</p>
                 <p>Windows 将在 ${timeString} 后${operation === 'restart' ? '重启' : operation === 'logoff' ? '注销' : '关机'}。</p>`,
                 btn: [
-                    { type: 'main', text: '关闭', js: 'closenotice();' },
+                    { type: 'main', text: lang('关闭','close'), js: 'closenotice();' },
                 ]
             };
 
@@ -1155,7 +1197,12 @@ let copilot = {
 };
 // 日期、时间
 let da = new Date();
-let date = `星期${['日', '一', '二', '三', '四', '五', '六'][da.getDay()]}, ${da.getFullYear()}年${(da.getMonth() + 1).toString().padStart(2, '0')}月${da.getDate().toString().padStart(2, '0')}日`;
+
+let date = {
+    hans:`星期${['日', '一', '二', '三', '四', '五', '六'][da.getDay()]}, ${da.getFullYear()}年${(da.getMonth() + 1).toString().padStart(2, '0')}月${da.getDate().toString().padStart(2, '0')}日`,
+    en:`${['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'][da.getDay()]}, ${['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'][da.getMonth()]} ${da.getDate().toString().padStart(2, '0')}, ${da.getFullYear()}`
+}[langcode];
+
 $('#s-m-r>.row1>.tool>.date').text(date);
 $('.dock.date>.date').text(`${da.getFullYear()}/${(da.getMonth() + 1).toString().padStart(2, '0')}/${da.getDate().toString().padStart(2, '0')}`);
 $('#datebox>.tit>.date').text(date);
@@ -1165,6 +1212,7 @@ function loadtime() {
     $('#s-m-r>.row1>.tool>.time').text(time);
     $('.dock.date>.time').text(time);
     $('#datebox>.tit>.time').text(time);
+    $('.settingTime').text(time);
 }
 // apps.setting.theme_get();//提前加载主题
 loadtime();
@@ -1572,15 +1620,15 @@ function setIcon() {
     if (Array.isArray(JSON.parse(localStorage.getItem('desktop')))) {
         $('#desktop')[0].innerHTML = `<div ondblclick="openapp('explorer');" ontouchstart="openapp('explorer');" oncontextmenu="return showcm(event,'desktop.icon',['explorer',-1]);" appname="explorer">
         <img src="apps/icons/explorer/thispc.svg">
-        <p>此电脑</p>
+        <p>${lang('此电脑','explorer.thispc')}</p>
     </div>
     <div class="b" ondblclick="openapp('setting');" ontouchstart="openapp('setting');" oncontextmenu="return showcm(event,'desktop.icon',['setting',-1]);" appname="setting">
         <img src="icon/setting.svg">
-        <p>设置</p>
+        <p>${lang('设置','setting.name')}</p>
     </div>
     <div class="b" ondblclick="openapp('about');" ontouchstart="openapp('about');" oncontextmenu="return showcm(event,'desktop.icon',['about',-1]);" appname="about">
         <img src="icon/about.svg">
-        <p>关于 Win12 网页版</p>
+        <p>${lang('关于 Win12 网页版','about.name')}</p>
     </div>
     <div class="b" ondblclick="openapp('edge');" ontouchstart="openapp('edge');" oncontextmenu="return showcm(event,'desktop.icon',['edge',-1]);" appname="edge">
         <img src="icon/edge.svg">
@@ -1588,7 +1636,7 @@ function setIcon() {
     </div>
     <div class="b" ondblclick="shownotice('feedback');" ontouchstart="shownotice('feedback');;">
         <img src="icon/feedback.svg">
-        <p>反馈中心</p>
+        <p>${lang('反馈中心','feedback.name')}</p>
     </div>
     <span class="choose">
     </span>

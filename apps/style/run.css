@@ -17,6 +17,11 @@
     margin-right: 10px;
 }
 
+#win-run>.top>.text {
+    font-size: 15px;
+    line-height: 1.2;
+}
+
 #win-run>.open {
     display: flex;
     gap: 15px;

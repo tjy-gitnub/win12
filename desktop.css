@@ -241,6 +241,8 @@ input.foc {
     font-size: 23px;
     height: 33px;
     width: 33px;
+    overflow: hidden;
+    /* display: flex; */
 }
 
 .btn-icon.big {
@@ -951,73 +953,80 @@ input-before {
     width: 200px;
     padding: 5px 10px 0 0;
     transition: 300ms;
+    display: flex;
+    flex-direction: column;
+    align-items: end;
 }
 
-#s-m-r>.row1>.tool>* {
+/* #s-m-r>.row1>.tool>* {
     float: right;
+} */
+
+#s-m-r>.row1>.tool>.pw{
+    display: flex;
+    justify-content: right;
+    align-items: center;
 }
 
-#s-m-r>.row1>.tool>.btn-icon.power {
+#s-m-r>.row1>.tool>.pw>.btn-icon.power {
     overflow: hidden;
     display: flex;
-    padding-left: 0;
+    width: 33px;
+    padding: 0;
+    /* padding-left: 0; */
 }
 
-#s-m-r>.row1>.tool>.btn-icon.power:active {
-    padding: 1px 0;
-    font-size: 23px;
-}
+/* #s-m-r>.row1>.tool>.pw>.btn-icon.power:active {
+    opacity: 0.7;
+} */
 
-#s-m-r>.row1>.tool>.btn-icon.show {
+#s-m-r>.row1>.tool>.pw>.power.show {
     width: 100px;
-    background-color: var(--card);
-    box-shadow: 3px 3px 6px var(--sd);
+    background-color: var(--hover-b);
+    /* box-shadow: 3px 3px 6px var(--sd); */
 }
 
-#s-m-r>.row1>.tool>.btn-icon.show:hover {
-    background-color: var(--card);
+#s-m-r>.row1>.tool>.pw>.power.show>span.bi-power {
+    opacity: 0.7;
+    transform: scale(0.7);
 }
 
-#s-m-r>.row1>.tool>.btn-icon.power>.bi {
-    position: relative;
+#s-m-r>.row1>.tool>.pw>.btn-icon.show:hover {
+    background-color: var(--hover-b);
+}
+
+#s-m-r>.row1>.tool>.pw>.btn-icon.power>.bi {
+    /* position: relative; */
     height: 33px;
     padding-left: 5px;
     padding-right: 5px;
     transition: 200ms;
 }
 
-#s-m-r>.row1>.tool>.btn-icon.power>i.bi-power {
+#s-m-r>.row1>.tool>.pw>.btn-icon.power>i.bi-power {
     border-radius: 10px 0 0 10px;
 }
 
-#s-m-r>.row1>.tool>.btn-icon.power>i.bi-arrow-counterclockwise {
+#s-m-r>.row1>.tool>.pw>.btn-icon.power>i.bi-arrow-counterclockwise {
     border-radius: 0 10px 10px 0;
 }
 
-#s-m-r>.row1>.tool>.btn-icon>.bi-arrow-counterclockwise::before {
+/* #s-m-r>.row1>.tool>.pw>.btn-icon>.bi-arrow-counterclockwise::before {
     position: relative;
     top: 1.15px;
-}
+} */
 
-#s-m-r>.row1>.tool>.btn-icon>.bi-power::before {
+/* #s-m-r>.row1>.tool>.btn-icon>.bi-power::before {
     position: relative;
     top: -2px;
+} */
+
+
+#s-m-r>.row1>.tool>.pw>.btn-icon.show>i {
+    background-color: var(--hover-h);
 }
 
-#s-m-r>.row1>.tool>.btn-icon.show>.bi-power::before {
-    position: relative;
-    top: 0;
-}
-
-#s-m-r>.row1>.tool>.btn-icon.show>.bi {
-    top: -2px;
-}
-
-#s-m-r>.row1>.tool>.btn-icon.show>i {
-    background-color: var(--card);
-}
-
-#s-m-r>.row1>.tool>.btn-icon.show>i:hover {
+#s-m-r>.row1>.tool>.pw>.btn-icon.show>i:hover {
     background-color: var(--hover);
 }
 
@@ -2480,7 +2489,7 @@ github-red2026 */
 /* 定义当窗口处于最大状态时的样式 */
 .window.max {
     width: 100% !important;
-    height: 120% !important;
+    height: 100% !important;
 
 
     /* 定位属性，确保窗口从屏幕的左上角开始 */
