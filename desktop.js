@@ -713,7 +713,6 @@ let nts = {
             <p>你可以使用此 AI 助手帮助你更快地完成工作 (有人用Win12工作?)<br>
             由于所用模型理解力较差，所以间歇性正常工作。<br>
             有任何关于本 AI 的反馈请让 AI 帮你打开 AI Copilot反馈界面<br>
-            每日只有100,000条请求机会！每月只有1G的流量限制，请各位合理安排使用次数（<br>
             也请适当使用，不要谈论敏感、违规话题，<br>请有身为一个人类最基本的道德底线。<br>
             小项目难免会有bug，见谅，后端由 github@NB-Group 提供</p>`,
         btn: [
@@ -1104,7 +1103,7 @@ let copilot = {
         6.任务管理器:id为taskmgr;一个任务管理器
         7.cmd终端:id为terminal;一个cmd
         8.记事本:id为notepad;一个记事本
-        你只需要用一句话简单问候用户即可，现在开始与用户对话。`, false,role='system');
+        你只需要用一句话简单问候用户即可，现在开始与用户对话。`, false,'system');
         // $('#copilot>.chat').append(`<div class="line system"><p class="text">本ai助手间歇性正常工作，如果ai提到一些花括号括起来的指令，请刷新页面后重新开始对话。见谅~</p></div>`);
         // $('#copilot>.chat').append(`<div class="line system"><p class="text">目前可用功能：<br>
         // 1.打开设置、edge、关于、计算器四个应用<br>
@@ -1114,84 +1113,116 @@ let copilot = {
         $('#copilot>.chat').append(`<div class="line system"><p class="text" id="init-message">正在初始化...</p></div>`);
         $('#copilot>.chat').scrollTop($('#copilot>.chat')[0].scrollHeight);
     },
-    send: (t, showusr = true,role='user') => {
+    send: (t, showusr = true, role='user') => {
         $('#copilot>.inputbox').addClass('disable');
+        
+        // 输入验证
         if (t.length == 0) {
             $('#copilot>.chat').append('<div class="line system"><p class="text">系统表示请发一些有意义的东西</p></div>');
             $('#copilot>.chat').scrollTop($('#copilot>.chat')[0].scrollHeight);
             msgDoneOperate();
             return;
         }
-        if (copilot.history.length > 3){ // 万年代码，千万不要改
+
+        // 历史记录管理
+        if (copilot.history.length > 3){
             copilot.history.splice(2, 2);
             copilot.history.splice(2, 2);
         }
-        if (showusr) $('#copilot>.chat').append(`<div class="line user"><p class="text">${t}</p></div>`);
+
+        // 显示用户消息
+        if (showusr) {
+            $('#copilot>.chat').append(`<div class="line user"><p class="text">${t}</p></div>`);
+        }
         copilot.history.push({ role: role, content: t });
         $('#copilot>.chat').scrollTop($('#copilot>.chat')[0].scrollHeight);
-        $.post({
-            url: 'https://nbgroup.pythonanywhere.com/',
+
+        // API请求
+        $.ajax({
+            url: 'https://nbgroup.pythonanywhere.com/proxy',
+            method: 'POST',
             contentType: 'application/json',
-            data: JSON.stringify({ msg: copilot.history }),
-        }).then(rt => {
-            msgDoneOperate();
-            // 替换初始化完成的文本内容
-            if (isFirstChat) {
-            $("#init-message").html(`初始化完成！`);
-            isFirstChat = false;
-            }
-            console.log(rt);
-            if (rt == '请求过于频繁，等待10秒再试...') {
-                $('#copilot>.chat').append('<div class="line system"><p class="text">api繁忙，过一会儿再试(实在不行刷新重新开始对话)</p></div>');
+            data: JSON.stringify({
+                url: 'https://copilot-new.nb-group8302.workers.dev/',
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: {
+                    prompt: t,
+                    history: copilot.history
+                }
+            }),
+            success: function(response) {
+                msgDoneOperate();
+                
+                // 处理首次对话
+                if (isFirstChat) {
+                    $("#init-message").html(`初始化完成！`);
+                    isFirstChat = false;
+                }
+        
+                // 解析代理响应
+                let responseText = '';
+                try {
+                    // 解析代理服务器的响应
+                    const proxyResponse = typeof response === 'string' ? JSON.parse(response) : response;
+                    // 获取实际响应内容
+                    const actualResponse = typeof proxyResponse.body === 'string' ? 
+                        JSON.parse(proxyResponse.body) : proxyResponse.body;
+                    responseText = actualResponse.response || actualResponse;
+                } catch (e) {
+                    responseText = response;
+                }
+
+                // 处理特殊命令
+                let rt = responseText;
+                let r = [];
+                if (/{.+}/.test(rt)) {
+                    r = rt.match(/{.+?}/g) || [];
+                }
+
+                if (r.length) {
+                    for (const i of r) {
+                        if (/{openapp .+?}/.test(i)) {
+                            let t = i.match(/(?<={openapp ).+(?=})/)[0];
+                            openapp(t);
+                            rt = rt.replace(i, `<div class="action"><p class="tit">打开应用</p><p class="detail">${$(`.window.${t}>.titbar>p`).text()}</p></div>`);
+                        } else if (/{openurl .+?}/.test(i)) {
+                            let t = i.match(/(?<={openurl ).+(?=})/)[0];
+                            openapp('edge');
+                            apps.edge.newtab();
+                            apps.edge.goto(t);
+                            rt = rt.replace(i, `<div class="action"><p class="tit">打开URL</p><p class="detail">${decodeHtml(t)}</p></div>`);
+                        } else if (/{feedback win12}/.test(i)) {
+                            shownotice('feedback');
+                            rt = rt.replace(i, '<div class="action"><p class="tit">反馈</p><p class="detail">关于 Windows 12 网页版</p></div>');
+                        } else if (/{feedback copilot}/.test(i)) {
+                            shownotice('feedback-copilot');
+                            rt = rt.replace(i, '<div class="action"><p class="tit">反馈</p><p class="detail">关于 Windows 12 Copilot</p></div>');
+                        } else if (/{settheme .+?}/.test(i)) {
+                            let t = i.match(/(?<={settheme ).+(?=})/)[0];
+                            if ((t == 'light' && $(':root').hasClass('dark')) || (t == 'dark' && !$(':root').hasClass('dark'))) {
+                                toggletheme();
+                            }
+                            rt = rt.replace(i, `<div class="action"><p class="tit">切换外观模式</p><p class="detail">${t == 'dark' ? '深色' : '浅色'} 模式</p></div>`);
+                        }
+                    }
+                    $('#copilot>.chat').append(`<div class="line ai"><div class="text">${rt}</div></div>`);
+                } else {
+                    $('#copilot>.chat').append(`<div class="line ai"><p class="text">${decodeHtml(rt)}</p></div>`);
+                }
+
+                copilot.history.push({ role: 'assistant', content: responseText });
                 $('#copilot>.chat').scrollTop($('#copilot>.chat')[0].scrollHeight);
                 msgDoneOperate();
-                return;
+            },
+            error: function(error) {
+                console.log(error);
+                $('#copilot>.chat').append('<div class="line system"><p class="text">发生错误，请查看控制台输出或重试</p></div>');
+                $('#copilot>.chat').scrollTop($('#copilot>.chat')[0].scrollHeight);
+                msgDoneOperate();
             }
-            let rtt = rt; let r = [];
-            rt = rtt.split('\n');
-            for (const i of rt) {
-                if (/{.+}/.test(i)) r.push(i);
-            }
-            console.log(rtt, rt, r);
-            rt = rtt;
-            if (r.length) {
-                for (const i of r) {
-                    if (/{openapp .+?}/.test(i)) {
-                        let t = i.match(/(?<={openapp ).+(?=})/)[0];
-                        openapp(t);
-                        rt = rt.replace(i, `<div class="action"><p class="tit">打开应用</p><p class="detail">${$(`.window.${t}>.titbar>p`).text()}</p></div>`);
-                    } else if (/{openurl .+?}/.test(i)) {
-                        let t = i.match(/(?<={openurl ).+(?=})/)[0];
-                        openapp('edge');
-                        apps.edge.newtab();
-                        console.log(t);
-                        apps.edge.goto(t);
-                        rt = rt.replace(i, `<div class="action"><p class="tit">打开URL</p><p class="detail">${decodeHtml(t)}</p></div>`);
-                    } else if (/{feedback win12}/.test(i)) {
-                        shownotice('feedback');
-                        rt = rt.replace(i, '<div class="action"><p class="tit">反馈</p><p class="detail">关于 Windows 12 网页版</p></div>');
-                    } else if (/{feedback copilot}/.test(i)) {
-                        shownotice('feedback-copilot');
-                        rt = rt.replace(i, '<div class="action"><p class="tit">反馈</p><p class="detail">关于 Windows 12 Copilot</p></div>');
-                    } else if (/{settheme .+?}/.test(i)) {
-                        let t = i.match(/(?<={settheme ).+(?=})/)[0];
-                        if ((t == 'light' && $(':root').hasClass('dark')) || (t == 'dark' && !$(':root').hasClass('dark')))
-                            toggletheme();
-                        rt = rt.replace(i, `<div class="action"><p class="tit">切换外观模式</p><p class="detail">${t == 'dark' ? '深色' : '浅色'} 模式</p></div>`);
-                    }
-                }
-                $('#copilot>.chat').append(`<div class="line ai"><div class="text">${rt}</div></div>`);
-            } else {
-                $('#copilot>.chat').append(`<div class="line ai"><p class="text">${decodeHtml(rt)}</p></div>`);
-            }
-            copilot.history.push({ role: 'assistant', content: rtt });
-            $('#copilot>.chat').scrollTop($('#copilot>.chat')[0].scrollHeight);
-            msgDoneOperate();
-        }).fail(r => {
-            console.log(r);
-            $('#copilot>.chat').append('<div class="line system"><p class="text">发生错误，请查看控制台输出或重试</p></div>');
-            $('#copilot>.chat').scrollTop($('#copilot>.chat')[0].scrollHeight);
-            msgDoneOperate();
         });
     }
 };
