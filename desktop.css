@@ -261,8 +261,8 @@ input.foc {
 
 .button {
     background-color: #9f9f9f40;
-    border-radius: 10px;
-    padding: 5px 10px;
+    border-radius: 7px;
+    padding: 6px 12px;
     cursor: pointer;
 }
 
