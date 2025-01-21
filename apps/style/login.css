@@ -118,3 +118,17 @@
 #loginback .power>*:active {
     opacity: 0.7;
 }
+
+#loginback>.langselect{
+    position: absolute;
+    bottom: 80px;
+    right: 10px;
+}
+
+#loginback>.langselect>*{
+    padding: 4px 18px;
+}
+#loginback>.langselect>.selected{
+    pointer-events: none;
+    font-weight: bold;
+}

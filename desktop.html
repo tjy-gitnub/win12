@@ -129,18 +129,6 @@ toggletheme() 切换主题
 -->
 <body>
 	<audio src="media/startup.mp3" id="startup-music"></audio>
-	<script>
-		// 语言
-		if(localStorage.getItem('lang')&&localStorage.getItem('lang')!='hans'){
-			if((new URLSearchParams(window.location.search)).get('lang')!=localStorage.getItem('lang')){
-				// console.log('go');
-				window.location.href='?lang='+localStorage.getItem('lang');
-			}
-		}else if((new URLSearchParams(window.location.search)).get('lang')!='hans'){
-			// console.log('go2');
-			window.location.href='?lang=hans';
-		}
-	</script>
 	<div id="loadback" style="background-color:#000;width:100%;height:100%;z-index:105;position:absolute;transition:200ms;cursor: none;/*加载界面隐藏鼠标指针*/">
 		<style>
 			#loadback.hide {
@@ -225,15 +213,21 @@ toggletheme() 切换主题
 			margin-top: 5px;
             text-align: center;" data-i18n="welcome">欢迎</p>
 		</div>
+		<list class="langselect new">
+			<span class="text" style="font-size: 22px;"><i class="bi bi-globe2"></i></span>
+			<a class="a zh_cn" onclick="setData('lang','zh_cn');window.location.href='';">简体中文</a>
+			<!-- <a class="a zh_tw" onclick="setData('lang','zh_tw');window.location.href='';">繁體中文</a> -->
+			<a class="a en" onclick="setData('lang','en');window.location.href='';">English</a>
+		</list>
 		<a class="power" onclick="$(this).addClass('show')">
-			<i class="bi bi-translate" onclick="
-				if((!(new URLSearchParams(window.location.search)).has('lang'))||((new URLSearchParams(window.location.search)).get('lang')=='hans')){
-					window.location.href='?lang=en';
-					setData('lang','en');
+			<!-- <i class="bi bi-translate" onclick="
+				if(localStorage.getItem('lang')&&localStorage.getItem('lang')=='en'){
+					setData('lang','zh_cn');
 				}else{
-					window.location.href='?lang=hans';
-					setData('lang','hans');
-				}" win12_title="Toggle language"></i>
+					setData('lang','en');
+				}
+				window.location.href='';
+				" win12_title="Toggle language"></i> -->
 			<i class="bi bi-power" onclick="setTimeout(() => {window.location='shutdown.html';}, 200);" win12_title="关机"></i>
 			<i class="bi bi-arrow-counterclockwise" onclick="setTimeout(() => {window.location='reload.html';}, 200);" win12_title="重启"></i>
 		</a>
@@ -285,9 +279,9 @@ toggletheme() 切换主题
 					<img src="icon/run.svg">
 					<p data-i18n="run.name">运行</p>
 				</a>
-				<a oncontextmenu="return showcm(event, 'smlapp', ['about', '关于Win12网页版'])" onclick="openapp('about');hide_startmenu();">
+				<a oncontextmenu="return showcm(event, 'smlapp', ['about', '关于 Win12 网页版'])" onclick="openapp('about');hide_startmenu();">
 					<img src="icon/about.svg">
-					<p data-i18n="about.name">关于Win12网页版</p>
+					<p data-i18n="about.name">关于 Win12 网页版</p>
 				</a>
 				<a oncontextmenu="return showcm(event, 'smlapp', ['taskmgr', '任务管理器'])" onclick="openapp('taskmgr');hide_startmenu();">
 					<img src="icon/taskmgr.png">
@@ -340,7 +334,7 @@ toggletheme() 切换主题
 				</a>
 				<a oncontextmenu="return showcm(event, 'smlapp', ['wsa', '适用于 Android™️ 的 Windows 子系统'])" onclick="openapp('wsa');hide_startmenu();">
 					<img src="icon/wsa.png">
-					<p data-i18n="wsa.name">适用于 Android™️ 的 Windows 子系统</p>
+					<p data-i18n="wsa.name">适用于 Android™ 的 Windows 子系统</p>
 				</a>
 				<a oncontextmenu="return showcm(event, 'smlapp', ['windows12', 'Windows 12'])" onclick="openapp('windows12');hide_startmenu();">
 					<img src="icon/logo.svg">
@@ -419,7 +413,7 @@ toggletheme() 切换主题
 					</a>
 					<a class="a sm-app enable about" onclick="openapp('about');hide_startmenu();" oncontextmenu="return showcm(event,'smapp',['about','关于 Win12 网页版'])">
 						<img src="icon/about.svg">
-						<p data-i18n="about.name">关于Win12网页版</p>
+						<p data-i18n="about.name">关于 Win12 网页版</p>
 					</a>
 					<a class="a sm-app enable explorer" onclick="openapp('explorer');hide_startmenu();" oncontextmenu="return showcm(event,'smapp',['explorer','文件资源管理器'])">
 						<img src="icon/explorer.svg">
@@ -500,7 +494,7 @@ toggletheme() 切换主题
 						$('#search-win').removeClass('show-begin');
 					}, 200);">
 						<img src="icon/about.svg">
-						<p data-i18n="about.name">关于Win12网页版</p>
+						<p data-i18n="about.name">关于 Win12 网页版</p>
 					</a>
 				</list>
 			</div>
@@ -852,26 +846,9 @@ toggletheme() 切换主题
 		</div>
 	</div>
 	<div id="desktop">
-		<div ondblclick="openapp('explorer');" ontouchstart="openapp('explorer');" win12_title="显示连接到此计算机的驱动器和硬件。" oncontextmenu="return showcm(event,'desktop.icon',['explorer',-1]);" appname="explorer">
-			<img src="apps/icons/explorer/thispc.svg">
-			<p>此电s脑</p>
-		</div>
-		<div class="b" ondblclick="openapp('setting');" ontouchstart="openapp('setting');" oncontextmenu="return showcm(event,'desktop.icon',['setting',-1]);" appname="setting">
-			<img src="icon/setting.svg">
-			<p>设置</p>
-		</div>
-		<div class="b" ondblclick="openapp('about');" ontouchstart="openapp('about');" oncontextmenu="return showcm(event,'desktop.icon',['about',-1]);" appname="about">
-			<img src="icon/about.svg">
-			<p>关于 Win12 网页版</p>
-		</div>
-		<div class="b" ondblclick="openapp('edge');" ontouchstart="openapp('edge');" oncontextmenu="return showcm(event,'desktop.icon',['edge',-1]);" appname="edge">
-			<img src="icon/edge.svg">
-			<p>Microsoft Edge</p>
-		</div>
-		<div class="b" ondblclick="shownotice('feedback');" ontouchstart="shownotice('feedback');;">
-			<img src="icon/feedback.svg">
-			<p>反馈中心</p>
-		</div>
+		<h1>请使用相对正常的浏览器访问。(出现错误：无法处理桌面图标)</h1>
+		<h1>請使用相對正常的瀏覽器訪問。</h1>
+		<h1>Please use a common browser to access.</h1>
 		<span class="choose">
 		</span>
 		<p style="background-color: rgba(11,45,14,0);z-index:1;position: absolute;top:0px;left:0px;height:100%;width:100%" oncontextmenu="return showcm(event,'desktop');"></p>
@@ -1822,7 +1799,7 @@ toggletheme() 切换主题
 		<div class="resize-bar"></div>
 		<div class="titbar">
 			<img src="icon/about.svg" class="icon">
-			<p data-i18n="about.name">关于 Windows12 网页版</p>
+			<p data-i18n="about.name">关于 Win12 网页版</p>
 			<div>
 				<a class="a wbtg red" onclick="hidewin('about')"><i class="bi bi-x-lg"></i></a>
 				<a class="a wbtg max" onclick="maxwin('about')"><i class="bi bi-app"></i></a>

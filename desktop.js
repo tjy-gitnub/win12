@@ -23,39 +23,43 @@ function loadlang(code) {
         callback: function() {
             $('[data-i18n]').each(function() {
                 // 标签的内容
-
+                // console.log($(this).data("i18n"));
                 // console.log($.i18n.prop($(this).data("i18n")));
+                // if($.i18n.prop($(this).data("i18n"))!=$(this).html())console.log($(this).data("i18n"),$(this).html());
                 $(this).html($.i18n.prop($(this).data("i18n")));
             });
             $('[data-i18n-attr]').each(function() {
                 // 标签的属性
 
+                // if($.i18n.prop($(this).data("i18n-key"))!=$(this).attr($(this).data("i18n-attr")))console.log($(this).data("i18n-key"),$(this).attr($(this).data("i18n-attr")));
                 $(this).attr($(this).data("i18n-attr"),$.i18n.prop($(this).data("i18n-key")));
             });
         }
     });
 }
 
-// langcode=[hans/hant/en/...]
+// langcode=[zh_cn/zh_tw/en/...]
 
-let langcode='hans',lang=(txt,id)=>{
+let langcode=localStorage.getItem('lang')||'zh_cn',lang=(txt,id='')=>{
     return txt;
 };
 
-// 函数 lang(txt,id)
-/// langcode==hans 下返回 txt,
-/// 否则返回语言 properties 文件中键 id 对应的值。
-// 用例： lang('设置','setting.name')
-
-if((new URLSearchParams(window.location.search)).has('lang')){
-    if((new URLSearchParams(window.location.search)).get('lang')!='hans'){
-        langcode=(new URLSearchParams(window.location.search)).get('lang');
-        loadlang(langcode);
-        lang=(txt,id)=>{
-            return $.i18n.prop(id);
-        };
-    }
+if(langcode!='zh_cn'){
+    lang=(txt,id)=>{
+        // if(txt!=$.i18n.prop(id))console.log(id,txt);
+        return $.i18n.prop(id);
+    };
+    loadlang(langcode);
 }
+
+$('#loginback>.langselect>.'+langcode).addClass('selected')
+
+// 函数 lang(txt,id)
+/// langcode==zh_cn 下返回 txt,
+/// 否则返回语言 properties 文件中键 id 对应的值。
+/// 用例： lang('设置','setting.name')
+// 
+// 为开发方便，故不将简体中文纳入语言考虑
 
 
 // 后端服务器
@@ -1236,7 +1240,7 @@ let copilot = {
 let da = new Date();
 
 let date = {
-    hans:`星期${['日', '一', '二', '三', '四', '五', '六'][da.getDay()]}, ${da.getFullYear()}年${(da.getMonth() + 1).toString().padStart(2, '0')}月${da.getDate().toString().padStart(2, '0')}日`,
+    zh_cn:`星期${['日', '一', '二', '三', '四', '五', '六'][da.getDay()]}, ${da.getFullYear()}年${(da.getMonth() + 1).toString().padStart(2, '0')}月${da.getDate().toString().padStart(2, '0')}日`,
     en:`${['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'][da.getDay()]}, ${['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'][da.getMonth()]} ${da.getDate().toString().padStart(2, '0')}, ${da.getFullYear()}`
 }[langcode];
 
@@ -1654,6 +1658,10 @@ function saveDesktop() {
 }
 
 function setIcon() {
+    // return;
+    if (!Array.isArray(JSON.parse(localStorage.getItem('desktop')))){
+        setData('desktop','[]')
+    }
     if (Array.isArray(JSON.parse(localStorage.getItem('desktop')))) {
         $('#desktop')[0].innerHTML = `<div ondblclick="openapp('explorer');" ontouchstart="openapp('explorer');" oncontextmenu="return showcm(event,'desktop.icon',['explorer',-1]);" appname="explorer">
         <img src="apps/icons/explorer/thispc.svg">
