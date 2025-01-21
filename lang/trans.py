@@ -60,9 +60,11 @@ while i<len(f):
         print(clear_line_c+str(i)+'   '+f[i][:pos]+'|'+f[i][pos:],end='')
         g=getch()
         if g==b'\r':
+            # 回车键
             break
         elif g==b'\xe0':
             g=getch()
+            # 上下左右按键
             if g==b'K':
                 pos-=1
             elif g==b'M':
@@ -73,6 +75,7 @@ while i<len(f):
             elif g==b'P':
                 break
         elif g==b' ' or g==b'/':
+            # 空格或“/”建
             print('')
             iid=input('> ')
             if not '=' in iid:
@@ -84,5 +87,6 @@ while i<len(f):
             p.write(iid+'='+txt+'\n')
             break
         elif g==b'\x1b':
+            # ESC键，保存内容并退出
             n.write('\n'.join(f))
             exit()

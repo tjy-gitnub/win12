@@ -38,21 +38,59 @@ function loadlang(code) {
     });
 }
 
-// langcode=[zh_cn/zh_tw/en/...]
+let nl='zh-TW';
+let langc={
+    'zh-CN':'zh-CN',
+    'zh-cn':'zh-CN',
+    'zh-hans':'zh-CN',
+    'zh-Hans':'zh-CN',
+    'zh-TW':'zh-TW',
+    'zh-tw':'zh-TW',
+    'zh-hant':'zh-TW',
+    'zh-Hant':'zh-TW',
+    'zh-HK':'zh-TW',
+    'zh-hk':'zh-TW',
+    'zh':'zh-CN',
 
-let langcode=localStorage.getItem('lang')||'zh_cn',lang=(txt,id='')=>{
-    return txt;
-};
-
-if(langcode!='zh_cn'){
-    lang=(txt,id)=>{
-        // if(txt!=$.i18n.prop(id))console.log(id,txt);
-        return $.i18n.prop(id);
-    };
-    loadlang(langcode);
+    'en':'en',
+    'en-US':'en',
+    'en-us':'en',
+    'en-GB':'en',
+    'en-gb':'en'
 }
 
-$('#loginback>.langselect>.'+langcode).addClass('selected')
+let langcode,lang=(txt,id)=>{
+    return $.i18n.prop(id);
+};
+
+if(localStorage.getItem('lang')!=null){
+    if(localStorage.getItem('lang')=='hans' || localStorage.getItem('lang')=='zh_cn' || localStorage.getItem('lang')=='zh-cn'){
+        localStorage.setItem('lang','zh-CN');
+    }
+}else{
+    localStorage.setItem('lang',langc[navigator.language]);
+}
+langcode=localStorage.getItem('lang');
+
+
+if(document.querySelectorAll('#loginback>.langselect>.'+langcode).length!=0){
+    $('#loginback>.langselect>.'+langcode).addClass('selected')
+}else{
+    $('#loginback>.langselect>.en').addClass('selected')
+}
+
+
+if(langcode!='zh-CN')
+    loadlang(langcode);
+
+if(langcode=='zh-CN'){
+    lang=(txt,id)=>{
+        // if(txt!=$.i18n.prop(id))console.log(id,txt);
+        return txt;
+    };
+}
+console.log('?')
+
 
 // 函数 lang(txt,id)
 /// langcode==zh_cn 下返回 txt,
@@ -1240,7 +1278,8 @@ let copilot = {
 let da = new Date();
 
 let date = {
-    zh_cn:`星期${['日', '一', '二', '三', '四', '五', '六'][da.getDay()]}, ${da.getFullYear()}年${(da.getMonth() + 1).toString().padStart(2, '0')}月${da.getDate().toString().padStart(2, '0')}日`,
+    'zh-CN':`星期${['日', '一', '二', '三', '四', '五', '六'][da.getDay()]}, ${da.getFullYear()}年${(da.getMonth() + 1).toString().padStart(2, '0')}月${da.getDate().toString().padStart(2, '0')}日`,
+    'zh-TW':`星期${['日', '一', '二', '三', '四', '五', '六'][da.getDay()]}, ${da.getFullYear()}年${(da.getMonth() + 1).toString().padStart(2, '0')}月${da.getDate().toString().padStart(2, '0')}日`,
     en:`${['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'][da.getDay()]}, ${['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'][da.getMonth()]} ${da.getDate().toString().padStart(2, '0')}, ${da.getFullYear()}`
 }[langcode];
 
