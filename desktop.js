@@ -1131,27 +1131,28 @@ let copilot = {
 3.指令"{feedback copilot}";打开ai助手反馈界面，用于用户想对ai助手的功能等提出反馈时帮助其打开
 4.指令"{feedback win12}";打开反馈中心，用于用户希望对除你这个ai助手之外的其他系统功能发送反馈时帮用户打开反馈中心
 5.指令"{settheme th}";用于切换系统的深色、浅色模式，区别于主题。用"light"表浅色，"dark"表深色，来替换其中的"th"
-仅有以下信息供你使用来回答用户的问题。
+仅有以下关于此项目的信息。
 1.Windows 12 网页版是一个开源项目，由谭景元原创, 使用 Html,css,js，在网络上模拟、创新操作系统
 2.项目的Github地址是https://github.com/tjy-gitnub/win12
 3.此项目使用EPL v2.0开源许可
-有以下的应用供你回答用户。只有这些应用可以使用。
+有以下的应用。目前只有这些应用可以使用。
 1.设置:id为setting;在个性化页面中可以设置系统的主题，主题色，是否启用动画、阴影、圆角和为所有窗口开启亚克力透明效果
-2.关于系统:id为about;简介页面有关于本系统的介绍说明与贡献者信息，更新记录页面有本系统的各版本更新记录
+2.关于win12网页版:id为about;简介页面有关于本系统的介绍说明与贡献者信息，更新记录页面有本系统的各版本更新记录
 3.Microsoft Edge浏览器:id为edge;一个网页浏览器。但因为浏览器的安全限制，部分网页会显示"拒绝连接"而无法访问。
-4.计算器:id为calc;一个计算器
-5.文件资源管理器:id为explorer;一个文件资源管理器
+4.计算器:id为calc;
+5.文件资源管理器:id为explorer;
 6.任务管理器:id为taskmgr;
 7.cmd终端:id为terminal;
 8.记事本:id为notepad;
-比如这时用户让你打开计算器，你会回答：`
+9.python:id为python;
+比如这时用户说"请打开计算器"，你会回答什么？`
         },{
             role:'assistant',
-            content:'好的，我帮你打开计算器。\n{openapp calc}'
+            content:'好的，现在我帮你打开计算器。\n{openapp calc}'
         }],
     init: () => {
         $('#copilot>.chat').html('');
-        copilot.send('很好。你只需要用一句话简单问候即可，现在开始与用户对话。', false,'system');
+        copilot.send('很好。接下来，请说"欢迎使用 Windows 12，我可以帮您做什么？"。现在开始与用户对话。', false,'system');
         // $('#copilot>.chat').append(`<div class="line system"><p class="text">本ai助手间歇性正常工作，如果ai提到一些花括号括起来的指令，请刷新页面后重新开始对话。见谅~</p></div>`);
         // $('#copilot>.chat').append(`<div class="line system"><p class="text">目前可用功能：<br>
         // 1.打开设置、edge、关于、计算器四个应用<br>
@@ -1161,7 +1162,16 @@ let copilot = {
         $('#copilot>.chat').append(`<div class="line system"><p class="text" id="init-message">正在初始化...</p></div>`);
         $('#copilot>.chat').scrollTop($('#copilot>.chat')[0].scrollHeight);
     },
+    ailimit: 0,
     send: (t, showusr = true, role='user') => {
+        if(role=='user'){
+            if(ailimit>=10){
+                $('#copilot>.inputbox').addClass('disable');
+                $('#copilot>.chat').append('<div class="line system"><p class="text">非常抱歉，但是已达到对话限制(10句)，请移步到其他 AI 网站 >u-)o</p></div>');
+                return;
+            }
+            copilot.ailimit++;
+        }
         $('#copilot>.inputbox').addClass('disable');
         
         // 输入验证
