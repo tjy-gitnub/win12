@@ -1165,7 +1165,7 @@ let copilot = {
     ailimit: 0,
     send: (t, showusr = true, role='user') => {
         if(role=='user'){
-            if(ailimit>=10){
+            if(copilot.ailimit>=10){
                 $('#copilot>.inputbox').addClass('disable');
                 $('#copilot>.chat').append('<div class="line system"><p class="text">非常抱歉，但是已达到对话限制(10句)，请移步到其他 AI 网站 >u-)o</p></div>');
                 return;
