@@ -1010,64 +1010,52 @@ let apps = {
 
             if (Object.keys(tmp['folder']).includes(name)) {
                 apps.explorer.clipboard = ['folder', [name], tmp['folder'][name]];
-                if (operate == 'cut')
+                if (operate == 'cut') {
                     delete tmp['folder'][name];
+                }
             }
             else {
                 for (var i = 0; i < tmp['file'].length; i++) {
                     if (tmp['file'][i]['name'] == name) {
                         apps.explorer.clipboard = ['file', tmp['file'][i]];
-                        if (operate == 'cut')
-                            delete tmp['file'][i];
+                        if (operate == 'cut') {
+                            tmp['file'].splice(i, 1); // Use splice instead of delete
+                        }
+                        break;
                     }
                 }
             }
             apps.explorer.goto($('#win-explorer>.path>.tit')[0].dataset.path, false);
         },
         paste: (path) => {
-            var pathl = path.split('/');
-            let tmp = apps.explorer.path, thisPath = '';
-            $('#win-explorer>.path>.tit>.path')[0].innerHTML = '';
-            // 图标大小区别，需要面向现象进行个性化区别编程
-            if (pathl[pathl.length - 1] == 'C:') {
-                $('#win-explorer>.path>.tit>.icon')[0].style.marginTop = '3px';
-                $('#win-explorer>.path>.tit>.icon')[0].style.backgroundImage = 'url("./apps/icons/explorer/diskwin.svg")';
-            }
-            else if (pathl[pathl.length - 1] == 'D:') {
-                $('#win-explorer>.path>.tit>.icon')[0].style.marginTop = '0px';
-                $('#win-explorer>.path>.tit>.icon')[0].style.backgroundImage = 'url("./apps/icons/explorer/disk.svg")';
-            }
-            else {
-                $('#win-explorer>.path>.tit>.icon')[0].style.marginTop = '0px';
-                $('#win-explorer>.path>.tit>.icon')[0].style.backgroundImage = 'url("./apps/icons/explorer/folder.svg")';
-            }
-            pathl.forEach(name => {
-                thisPath += name + '/';
-                tmp = tmp['folder'][name];
-                $('#win-explorer>.path>.tit>.path')[0].insertAdjacentHTML('beforeend', `<div class="text" onmousedown="apps.explorer.goto('${thisPath.substring(0, thisPath.length - 1)}');stop(event);">${name}</div> <div class="arrow">></div> `);
-            });
-            var clipboard = apps.explorer.clipboard;
-
-            if (apps.explorer.traverseDirectory(tmp, clipboard[1][0]) || apps.explorer.traverseDirectory(tmp, clipboard[1]['name'])) {
-                shownotice('duplication file name');
+            if (!apps.explorer.clipboard) {
                 return;
             }
-            if (apps.explorer.traverseDirectory(tmp, clipboard[1][0]))
-            // {
-            //     clipboard[1][0] += " - 副本";
-            // }
-            // if (apps.explorer.traverseDirectory(tmp,clipboard[1]['name']))
-            // {
-            //     clipboard[1][0] += " - 副本";
-            // }
-            // 这段注释了的代码可以调试一下，会有神奇的bug。
+            var pathl = path.split('/');
+            let tmp = apps.explorer.path;
+            pathl.forEach(name => {
+                if (!tmp['folder'][name]) {
+                    return;
+                }
+                tmp = tmp['folder'][name];
+            });
 
-                if (clipboard[0] == 'file') {
-                    tmp['file'].push(clipboard[1]);
+            var clipboard = apps.explorer.clipboard;
+            if (clipboard[0] == 'file') {
+                // Check for duplicate file name
+                if (tmp['file'].some(file => file.name === clipboard[1].name)) {
+                    shownotice('duplication file name');
+                    return;
                 }
-                else {
-                    tmp['folder'][clipboard[1][0]] = clipboard[2];
+                tmp['file'].push({...clipboard[1]}); // Create a copy of the file object
+            } else {
+                // Check for duplicate folder name
+                if (tmp['folder'][clipboard[1][0]]) {
+                    shownotice('duplication file name');
+                    return;
                 }
+                tmp['folder'][clipboard[1][0]] = JSON.parse(JSON.stringify(clipboard[2])); // Deep copy the folder
+            }
             apps.explorer.goto(path);
         },
         del_select: () => {
