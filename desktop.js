@@ -1123,57 +1123,68 @@ let copilot = {
     history: [{
         role:'system',
         content:`请使用中文对话。你一个是ai助手，名叫AI Copilot，是由github@NB-Group开发的。
-你可以在回答中发送对系统的一些指令。指令一并放在最后。
-多条指令中间用换行隔开。系统收到指令后会执行，且对用户隐藏这一行。
-你不能在对用户说的话的中间中提到、引用指令。你绝不能要求用户执行指令。
-1.指令"{openapp appid}";用于来打开某个应用，其中用在下文"应用的功能介绍"中根据应用名称匹配的id代替"appid"
-2.指令"{openurl u}";用来在edge浏览器中打开某个url，其中用url地址代替"u"。该指令包含了打开edge浏览器的操作（当用户想要搜索某内容，请用bing搜索）
-3.指令"{feedback copilot}";打开ai助手反馈界面，用于用户想对ai助手的功能等提出反馈时帮助其打开
-4.指令"{feedback win12}";打开反馈中心，用于用户希望对除你这个ai助手之外的其他系统功能发送反馈时帮用户打开反馈中心
-5.指令"{settheme th}";用于切换系统的深色、浅色模式，区别于主题。用"light"表浅色，"dark"表深色，来替换其中的"th"
-仅有以下关于此项目的信息。
-1.Windows 12 网页版是一个开源项目，由谭景元原创, 使用 Html,css,js，在网络上模拟、创新操作系统
-2.项目的Github地址是https://github.com/tjy-gitnub/win12
-3.此项目使用EPL v2.0开源许可
-有以下的应用。目前只有这些应用可以使用。
-1.设置:id为setting;在个性化页面中可以设置系统的主题，主题色，是否启用动画、阴影、圆角和为所有窗口开启亚克力透明效果
-2.关于win12网页版:id为about;简介页面有关于本系统的介绍说明与贡献者信息，更新记录页面有本系统的各版本更新记录
-3.Microsoft Edge浏览器:id为edge;一个网页浏览器。但因为浏览器的安全限制，部分网页会显示"拒绝连接"而无法访问。
+你可以在回答中发送对系统的一些指令。指令一并放在回答的最后。
+多条指令用换行隔开。系统收到指令后会执行，且对用户隐藏回答后的指令。
+你不能在对用户说的话的中间中提到、引用指令。绝不能要求用户执行指令。
+1.指令"{openapp appid}";用来打开某个应用，用在下文"应用的功能介绍"中匹配的id代替其中的"appid"
+2.指令"{openurl url}";用来在edge浏览器中打开某个URL，其中用URL地址代替"url"。该指令包含了打开edge浏览器的操作。当用户想要搜索某内容，请用bing搜索
+3.指令"{feedback copilot}";打开ai助手反馈界面，用于用户想对ai助手的功能提出反馈时帮助他打开
+4.指令"{feedback win12}";打开反馈中心，当用户希望对除ai助手外的其他系统功能发送反馈时，帮他打开反馈中心
+5.指令"{settheme theme}";用于切换系统的深色、浅色模式，区别于主题。用"light"表浅色，"dark"表深色，来替换其中的"theme"
+如下是应用的功能介绍。
+1.设置:id为setting;在个性化页面中可以设置系统的主题，主题色，是否启用动画、阴影、圆角、云母mica效果和为所有窗口开启亚克力透明效果。
+2.关于win12网页版:id为about;简介页面有关于本项目的介绍说明与贡献者信息，更新记录页面有本项目的各版本更新记录。
+3.Microsoft Edge浏览器:id为edge;一个浏览器。但因为浏览器跨域的限制，部分网页会显示"拒绝连接"而无法访问。
 4.计算器:id为calc;
 5.文件资源管理器:id为explorer;
 6.任务管理器:id为taskmgr;
 7.cmd终端:id为terminal;
 8.记事本:id为notepad;
 9.python:id为python;
+仅有以下关于此项目的信息。
+1.Windows 12 网页版是一个开源项目，由谭景元原创, 使用Html,css,js，在网络上模拟、创新操作系统
+2.项目的Github地址是https://github.com/tjy-gitnub/win12
+3.此项目使用EPL v2.0开源许可
+当用户询问更多项目信息时，帮助他打开"关于win12网页版"应用。
 比如这时用户说"请打开计算器"，你会回答什么？`
         },{
             role:'assistant',
-            content:'好的，现在我帮你打开计算器。\n{openapp calc}'
+            content:'好的呢，亲，现在我就帮您打开计算器。\n{openapp calc}'
+        },{
+            role:'system',
+            content:'很好。现在开始与用户对话。'
+        },{
+            role:'assistant',
+            content:'欢迎使用 Windows 12，有什么可以帮您？'
         }],
     init: () => {
         $('#copilot>.chat').html('');
-        copilot.send('很好。接下来，请说"欢迎使用 Windows 12，我可以帮您做什么？"。现在开始与用户对话。', false,'system');
         // $('#copilot>.chat').append(`<div class="line system"><p class="text">本ai助手间歇性正常工作，如果ai提到一些花括号括起来的指令，请刷新页面后重新开始对话。见谅~</p></div>`);
         // $('#copilot>.chat').append(`<div class="line system"><p class="text">目前可用功能：<br>
         // 1.打开设置、edge、关于、计算器四个应用<br>
         // 2.在浏览器中打开链接、搜索<br>
         // 3.发送对系统、ai助手的反馈
         // 注意：请勿滥用本ai助手，否则将下个版本将撤销此功能，影响所有人。</p></div>`);
-        $('#copilot>.chat').append(`<div class="line system"><p class="text" id="init-message">正在初始化...</p></div>`);
-        $('#copilot>.chat').scrollTop($('#copilot>.chat')[0].scrollHeight);
-    },
-    ailimit: 0,
-    send: (t, showusr = true, role='user') => {
-        if(role=='user'){
-            if(copilot.ailimit>=10){
+        $('#copilot>.chat').append(`<div class="line system"><p class="text">本 AI 助手间歇性正常工作。目前支持以下操作：<br>
+        1.打开除webapp外大多应用<br>
+        2.在浏览器中打开链接、搜索<br>
+        3.发送对系统、AI助手的反馈<br>
+        4.切换颜色主题<br>
+        <strong>请勿滥用本ai助手！每日对话限 7 条。</strong></p></div>`);
+        setTimeout(() => {
+            if(Number(localStorage.getItem('ailimit'))>=7){
                 $('#copilot>.inputbox').addClass('disable');
-                $('#copilot>.chat').append('<div class="line system"><p class="text">非常抱歉，但是已达到对话限制(10句)，请移步到其他 AI 网站 >u-)o</p></div>');
+                $('#copilot>.chat').append('<div class="line system"><p class="text">非常抱歉，但已达到本日对话限制 (7句)，请移步到其他 AI 网站 >u-)o</p></div>');
+                $('#copilot>.chat').scrollTop($('#copilot>.chat')[0].scrollHeight);
                 return;
             }
-            copilot.ailimit++;
-        }
-        $('#copilot>.inputbox').addClass('disable');
-        
+            $('#copilot>.chat').append(`<div class="line ai"><p class="text">欢迎使用 Windows 12，有什么可以帮您？</p></div>`);
+            $('#copilot>.inputbox').removeClass('disable');
+            $('#copilot>.chat').scrollTop($('#copilot>.chat')[0].scrollHeight);
+        }, 200);
+    },
+    ailimit: 7,
+    send: (t, showusr = true, role='user') => {
         // 输入验证
         if (t.length == 0) {
             $('#copilot>.chat').append('<div class="line system"><p class="text">系统表示请发一些有意义的东西</p></div>');
@@ -1182,11 +1193,23 @@ let copilot = {
             return;
         }
 
-        // 历史记录管理
-        if (copilot.history.length > 3){
-            copilot.history.splice(2, 2);
-            copilot.history.splice(2, 2);
+        if(role=='user'){
+            if(localStorage.getItem('ailimit')==null || 
+                (localStorage.getItem('ailimitday')!=(new Date()).toDateString())){
+                localStorage.setItem('ailimitday',(new Date()).toDateString());
+                localStorage.setItem('ailimit','0');
+            }
+            localStorage.setItem('ailimit',(Number(localStorage.getItem('ailimit'))+1).toString());
         }
+
+        $('#copilot>.inputbox').addClass('disable');
+        
+
+        // 历史记录管理
+        // if (copilot.history.length > 3){
+        //     copilot.history.splice(2, 2);
+        //     copilot.history.splice(2, 2);
+        // }
 
         // 显示用户消息
         if (showusr) {
@@ -1215,11 +1238,11 @@ let copilot = {
                 msgDoneOperate();
                 
                 // 处理首次对话
-                if (isFirstChat) {
-                    $("#init-message").html(`初始化完成！`);
-                    isFirstChat = false;
-                }
-        
+                // if (isFirstChat) {
+                //     $("#init-message").html(`初始化完成！`);
+                //     isFirstChat = false;
+                // }
+
                 // 解析代理响应
                 let responseText = '';
                 try {
@@ -1244,8 +1267,12 @@ let copilot = {
                     for (const i of r) {
                         if (/{openapp .+?}/.test(i)) {
                             let t = i.match(/(?<={openapp ).+(?=})/)[0];
-                            openapp(t);
-                            rt = rt.replace(i, `<div class="action"><p class="tit">打开应用</p><p class="detail">${$(`.window.${t}>.titbar>p`).text()}</p></div>`);
+                            if($('.window.'+t).length){
+                                openapp(t);
+                                rt = rt.replace(i, `<div class="action"><p class="tit">打开应用</p><p class="detail">${$(`.window.${t}>.titbar>p`).text()}</p></div>`);
+                            }else{
+                                rt = rt.replace(i, `<div class="action"><p class="tit">打开应用</p><p class="detail">${t} <span style="color:red">(AI 理解力较差，见谅)</span></p></div>`);
+                            }
                         } else if (/{openurl .+?}/.test(i)) {
                             let t = i.match(/(?<={openurl ).+(?=})/)[0];
                             openapp('edge');
@@ -1263,7 +1290,10 @@ let copilot = {
                             if ((t == 'light' && $(':root').hasClass('dark')) || (t == 'dark' && !$(':root').hasClass('dark'))) {
                                 toggletheme();
                             }
-                            rt = rt.replace(i, `<div class="action"><p class="tit">切换外观模式</p><p class="detail">${t == 'dark' ? '深色' : '浅色'} 模式</p></div>`);
+                            if(t!='light' && t!='dark')
+                                rt = rt.replace(i, `<div class="action"><p class="tit">切换外观模式</p><p class="detail">${t} 模式 <span style="color:red">(AI 理解力较差，见谅)</span></p></div>`);
+                            else
+                                rt = rt.replace(i, `<div class="action"><p class="tit">切换外观模式</p><p class="detail">${t == 'dark' ? '深色' : '浅色'} 模式</p></div>`);
                         }
                     }
                     $('#copilot>.chat').append(`<div class="line ai"><div class="text">${rt}</div></div>`);
@@ -1272,6 +1302,14 @@ let copilot = {
                 }
 
                 copilot.history.push({ role: 'assistant', content: responseText });
+                
+                if(Number(localStorage.getItem('ailimit'))>=7){
+                    $('#copilot>.inputbox').addClass('disable');
+                    $('#copilot>.chat').append('<div class="line system"><p class="text">非常抱歉，但已达到本日对话限制 (7句)，请移步到其他 AI 网站 >u-)o</p></div>');
+                    $('#copilot>.chat').scrollTop($('#copilot>.chat')[0].scrollHeight);
+                    return;
+                }
+
                 $('#copilot>.chat').scrollTop($('#copilot>.chat')[0].scrollHeight);
                 msgDoneOperate();
             },
@@ -1279,6 +1317,9 @@ let copilot = {
                 console.log(error);
                 $('#copilot>.chat').append('<div class="line system"><p class="text">发生错误，请查看控制台输出或重试</p></div>');
                 $('#copilot>.chat').scrollTop($('#copilot>.chat')[0].scrollHeight);
+
+
+                localStorage.setItem('ailimit',(Number(localStorage.getItem('ailimit'))-1).toString());
                 msgDoneOperate();
             }
         });
