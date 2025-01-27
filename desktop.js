@@ -68,7 +68,10 @@ if(localStorage.getItem('lang')!=null){
         localStorage.setItem('lang','zh-CN');
     }
 }else{
-    localStorage.setItem('lang',langc[navigator.language]);
+    if(navigator.language in langc)
+        localStorage.setItem('lang',langc[navigator.language]);
+    else
+        localStorage.setItem('lang','en-US');
 }
 langcode=localStorage.getItem('lang');
 
@@ -1172,6 +1175,11 @@ let copilot = {
         4.切换颜色主题<br>
         <strong>请勿滥用本ai助手！每日对话限 7 条。</strong></p></div>`);
         setTimeout(() => {
+            if(localStorage.getItem('ailimit')==null || 
+                (localStorage.getItem('ailimitday')!=(new Date()).toDateString())){
+                localStorage.setItem('ailimitday',(new Date()).toDateString());
+                localStorage.setItem('ailimit','0');
+            }
             if(Number(localStorage.getItem('ailimit'))>=7){
                 $('#copilot>.inputbox').addClass('disable');
                 $('#copilot>.chat').append('<div class="line system"><p class="text">非常抱歉，但已达到本日对话限制 (7句)，请移步到其他 AI 网站 >u-)o</p></div>');
@@ -1194,11 +1202,11 @@ let copilot = {
         }
 
         if(role=='user'){
-            if(localStorage.getItem('ailimit')==null || 
-                (localStorage.getItem('ailimitday')!=(new Date()).toDateString())){
-                localStorage.setItem('ailimitday',(new Date()).toDateString());
-                localStorage.setItem('ailimit','0');
-            }
+            // if(localStorage.getItem('ailimit')==null || 
+            //     (localStorage.getItem('ailimitday')!=(new Date()).toDateString())){
+            //     localStorage.setItem('ailimitday',(new Date()).toDateString());
+            //     localStorage.setItem('ailimit','0');
+            // }
             localStorage.setItem('ailimit',(Number(localStorage.getItem('ailimit'))+1).toString());
         }
 
