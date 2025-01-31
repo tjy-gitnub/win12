@@ -728,9 +728,9 @@ let nts = {
         cnt: `
             <p class="tit">添加桌面小组件</p>
             <list class="new">
-                <a class="a" onclick="closenotice(); widgets.widgets.add('calc'); widgets.widgets.addToDesktop('calc');">计算器</a>
-                <a class="a" onclick="closenotice(); widgets.widgets.add('weather'); widgets.widgets.addToDesktop('weather');">天气</a>
-                <a class="a" onclick="closenotice(); widgets.widgets.add('monitor'); widgets.widgets.addToDesktop('monitor');">系统性能监视器</a>
+                <a class="a" onclick="closenotice(); widgets.widgets.addToDesktop('calc');">计算器</a>
+                <a class="a" onclick="closenotice(); widgets.widgets.addToDesktop('weather');">天气</a>
+                <a class="a" onclick="closenotice(); widgets.widgets.addToDesktop('monitor');">系统性能监视器</a>
             </list>`,
         btn: [
             { type: 'cancel', text: lang('取消','cancel'), js: 'closenotice();' }

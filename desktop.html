@@ -532,7 +532,7 @@ toggletheme() 切换主题
 			<div class="content">
 				<div class="template">
 					<div class="calc">
-						<div class="wg calc">
+						<div class="wg calc template">
 							<div class="titbar">
 								<a win12_title="更多" onmouseenter="showdescp(event)" onmouseleave="hidedescp(event)" class="a more notip" onclick="$('.wg.calc>.titbar>.menu').toggleClass('show')"><i class="bi bi-three-dots"></i></a>
 								<div class="menu">
@@ -540,7 +540,7 @@ toggletheme() 切换主题
 										<img src="icon/calc.svg">
 									</a>
 									<a class="a move" win12_title="移动" onmouseenter="showdescp(event)" onclick=" hidedescp(event); if (!edit_mode) { editMode(); }" onmouseleave="hidedescp(event)"><i class="bi bi-arrows-move"></i></a>
-									<a class="a addtodt" win12_title="添加到桌面" onmouseenter="showdescp(event)" onclick="hidedescp(event); widgets.widgets.addToDesktop('calc');" onmouseleave="hidedescp(event)"><i class="bi bi-box-arrow-in-right"></i></a>
+									<a class="a addtodt" win12_title="添加到桌面" onmouseenter="showdescp(event)" onclick="hidedescp(event); widgets.widgets.remove('calc'); widgets.widgets.addToDesktop('calc');" onmouseleave="hidedescp(event)"><i class="bi bi-box-arrow-in-right"></i></a>
 									<a class="a delete" win12_title="删除" onmouseenter="showdescp(event)" onmouseleave="hidedescp(event)" onclick="hidedescp(event); $('.wg.calc>.titbar>.menu').removeClass('show'); widgets.widgets.remove('calc');"><i class="bi bi-trash"></i></a>
 								</div>
 							</div>
@@ -606,13 +606,13 @@ toggletheme() 切换主题
 						</div>
 					</div>
 					<div class="weather">
-						<div class="wg weather">
+						<div class="wg weather template">
 							<div class="titbar">
 								<a win12_title="更多" onmouseenter="showdescp(event)" onmouseleave="hidedescp(event)" class="a more notip" onclick="$('.wg.weather>.titbar>.menu').toggleClass('show')"><i class="bi bi-three-dots"></i></a>
 								<div class="menu">
 									<a class="a move" win12_title="移动" onmouseenter="showdescp(event)" onmouseleave="hidedescp(event)" onclick="hidedescp(event); if (!edit_mode) { editMode() }; "><i class="bi bi-arrows-move"></i></a>
-									<a class="a addtotb" win12_title="添加到任务栏" onmouseenter="showdescp(event)" onmouseleave="hidedescp(event)" onclick="hidedescp(event); widgets.widgets.addToToolbar('weather'); "><i class="bi bi-menu-app"></i></a>
-									<a class="a addtodt" win12_title="添加到桌面" onmouseenter="showdescp(event)" onclick="hidedescp(event); widgets.widgets.addToDesktop('weather'); " onmouseleave="hidedescp(event)"><i class="bi bi-box-arrow-in-right"></i></a>
+									<a class="a addtotb" win12_title="添加到任务栏" onmouseenter="showdescp(event)" onmouseleave="hidedescp(event)" onclick="hidedescp(event); widgets.widgets.remove('weather'); widgets.widgets.addToToolbar('weather'); "><i class="bi bi-menu-app"></i></a>
+									<a class="a addtodt" win12_title="添加到桌面" onmouseenter="showdescp(event)" onclick="hidedescp(event); widgets.widgets.remove('weather'); widgets.widgets.addToDesktop('weather'); " onmouseleave="hidedescp(event)"><i class="bi bi-box-arrow-in-right"></i></a>
 									<a class="a delete" win12_title="删除" onmouseenter="showdescp(event)" onmouseleave="hidedescp(event)" onclick="hidedescp(event); $('.wg.weather>.titbar>.menu').removeClass('show'); widgets.widgets.remove('weather'); "><i class="bi bi-trash"></i></a>
 								</div>
 							</div>
@@ -626,7 +626,7 @@ toggletheme() 切换主题
 						</div>
 					</div>
 					<div class="monitor">
-						<div class="wg monitor">
+						<div class="wg monitor template">
 							<div class="titbar">
 								<a win12_title="更多" onmouseenter="showdescp(event)" onmouseleave="hidedescp(event)" class="a more notip" onclick="$('.wg.monitor>.titbar>.menu').toggleClass('show')"><i class="bi bi-three-dots"></i></a>
 								<div class="menu">
@@ -635,8 +635,8 @@ toggletheme() 切换主题
 									</a>
 									<a class="a chose" win12_title="切换监视器类型" onmouseenter="showdescp(event)" onmouseleave="hidedescp(event)" onclick="showdescp(event); shownotice('widgets.monitor'); "><i class="bi bi-arrow-left-right"></i></a>
 									<a class="a move" win12_title="移动" onmouseenter="showdescp(event)" onmouseleave="hidedescp(event)" onclick="showdescp(event); if (!edit_mode) { editMode(); } "><i class="bi bi-arrows-move"></i></a>
-									<a class="a addtotb" win12_title="添加到任务栏" onmouseenter="showdescp(event)" onmouseleave="hidedescp(event)" onclick="showdescp(event); widgets.widgets.addToToolbar('monitor'); "><i class="bi bi-menu-app"></i></a>
-									<a class="a addtodt" win12_title="添加到桌面" onmouseenter="showdescp(event)" onclick="showdescp(event); widgets.widgets.addToDesktop('monitor'); " onmouseleave="hidedescp(event)"><i class="bi bi-box-arrow-in-right"></i></a>
+									<a class="a addtotb" win12_title="添加到任务栏" onmouseenter="showdescp(event)" onmouseleave="hidedescp(event)" onclick="showdescp(event); widgets.widgets.remove('monitor'); widgets.widgets.addToToolbar('monitor'); "><i class="bi bi-menu-app"></i></a>
+									<a class="a addtodt" win12_title="添加到桌面" onmouseenter="showdescp(event)" onclick="showdescp(event); widgets.widgets.remove('monitor'); widgets.widgets.addToDesktop('monitor'); " onmouseleave="hidedescp(event)"><i class="bi bi-box-arrow-in-right"></i></a>
 									<a class="a delete" win12_title="删除" onmouseenter="showdescp(event)" onmouseleave="hidedescp(event)" onclick="showdescp(event); $('.wg.monitor>.titbar>.menu').removeClass('show'); widgets.widgets.remove('monitor'); "><i class="bi bi-trash"></i></a>
 								</div>
 							</div>

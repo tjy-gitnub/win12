@@ -7,7 +7,7 @@ let widgets = {
                 return;
             }
             $('#widgets>.widgets>.content>.grid')[0].innerHTML += $('#widgets>.widgets>.content>.template>.' + arg).html();
-            $('#widgets>.widgets>.content>.grid>.wg.' + arg).addClass('menu');
+            $('#widgets>.widgets>.content>.grid>.wg.' + arg).removeClass('template').addClass('menu');
             widgets[arg].init();
 
         },
@@ -16,30 +16,33 @@ let widgets = {
             widgets[arg].remove();
         }, 
         addToToolbar: (arg) => {
-            widgets.widgets.remove(arg);
+            // widgets.widgets.remove(arg);
             if ($('.wg.toolbar.' + arg).length != 0) {
                 return;
             }
             $('#toolbar')[0].innerHTML += $('#widgets>.widgets>.content>.template>.' + arg).html();
-            $('#toolbar>.wg.' + arg).addClass('toolbar');
+            $('#toolbar>.wg.' + arg).removeClass('template').addClass('toolbar');
             widgets[arg].init();
         },
         addToDesktop: (arg) => {
-            widgets.widgets.remove(arg);
+            // widgets.widgets.remove(arg);
             if ($('.wg.toolbar.' + arg).length != 0) {
                 return;
             }
             $('#desktop-widgets')[0].innerHTML += $('#widgets>.widgets>.content>.template>.' + arg).html();
-            $('#desktop-widgets>.' + arg).addClass('desktop');
-            widgets[arg].init();
+            $('#desktop-widgets>.' + arg).removeClass('template').addClass('desktop');
+            // setTimeout(() => {
+                widgets[arg].init();
+            // }, 5000);
         }
     },
     calc: {
         init: () => {
-            widgetCalculator = new Calculator($('*:not(.template)>*>.wg.calc>.content>.container>#calc-input-widgets')[0], $('*:not(.template)>*>.wg.calc>.content')[0]);
+            widgetCalculator = new Calculator('.wg.calc:not(.template)>.content>.container>#calc-input-widgets', '.wg.calc:not(.template)>.content');
         },
         remove: () => {
-            $('#calc-input-widgets')[0].value = '0';
+            // $('#calc-input-widgets')[0].value = '0';
+            $('#calc-input-widgets').val('0');
         }
     },
     weather: {
