@@ -1,0 +1,5 @@
+{
+  "tasks": {
+    "build": "# No build commands are necessary for this project."
+  }
+}
