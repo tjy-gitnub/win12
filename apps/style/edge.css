@@ -116,3 +116,7 @@
     stroke: #2983cc;
     stroke-width: 2px;
 }
+
+#voiceBall {
+    aspect-ratio: 1;
+}
