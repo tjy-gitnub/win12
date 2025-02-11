@@ -324,3 +324,17 @@
 /* .wg.monitor.toolbar>.content>.text {
     font-siz
 } */
+
+/* Add styles to prevent the dimmer button from extending outside the widget */
+.dimmer-button {
+    position: absolute;
+    max-width: 100%;
+    max-height: 100%;
+    overflow: hidden;
+}
+
+/* Ensure the dimmer button stays within the widget boundaries */
+.widget {
+    position: relative;
+    overflow: hidden;
+}

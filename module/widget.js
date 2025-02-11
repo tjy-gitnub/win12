@@ -1,5 +1,3 @@
-// 小组件功能
-
 let widgets = {
     widgets: {
         add: (arg) => {
@@ -269,3 +267,40 @@ function widgetsMove(elt, e) {
         page.ontouchcancel = up;
     }
 }
+
+// Ensure the dimmer button stays within the widget boundaries
+function ensureDimmerButtonWithinBounds() {
+    const dimmerButton = document.querySelector('.dimmer-button');
+    const widget = document.querySelector('.widget');
+
+    if (dimmerButton && widget) {
+        const widgetRect = widget.getBoundingClientRect();
+        const dimmerButtonRect = dimmerButton.getBoundingClientRect();
+
+        if (dimmerButtonRect.right > widgetRect.right) {
+            dimmerButton.style.left = `${widgetRect.width - dimmerButtonRect.width}px`;
+        }
+
+        if (dimmerButtonRect.bottom > widgetRect.bottom) {
+            dimmerButton.style.top = `${widgetRect.height - dimmerButtonRect.height}px`;
+        }
+    }
+}
+
+// Add a maximum limit to the brightness slider to prevent it from causing the screen to become completely white
+function limitBrightnessSlider() {
+    const brightnessSlider = document.querySelector('.brightness-slider');
+
+    if (brightnessSlider) {
+        brightnessSlider.max = 100; // Set the maximum limit to 100
+        brightnessSlider.addEventListener('input', () => {
+            if (brightnessSlider.value > 100) {
+                brightnessSlider.value = 100;
+            }
+        });
+    }
+}
+
+// Call the functions to ensure the dimmer button stays within bounds and limit the brightness slider
+ensureDimmerButtonWithinBounds();
+limitBrightnessSlider();
