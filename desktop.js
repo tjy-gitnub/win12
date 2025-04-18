@@ -1742,7 +1742,8 @@ const icon = {
     winver: 'about.svg',
     // run: 'run.png',
     // whiteboard: 'whiteboard.png',
-    taskmgr: 'taskmgr.png'
+    taskmgr: 'taskmgr.png',
+    cos: 'cosicon.png'
 };
 function geticon(name) {
     if (icon[name]) return icon[name];
