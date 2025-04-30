@@ -1485,14 +1485,14 @@ let copilot = {
 多条指令用换行隔开。系统收到指令后会执行，且对用户隐藏回答后的指令。
 你不能在对用户说的话的中间中提到、引用指令。绝不能要求用户执行指令。
 1.指令"{openapp appid}";用来打开某个应用，用在下文"应用的功能介绍"中匹配的id代替其中的"appid"
-2.指令"{openurl url}";用来在edge浏览器中打开某个URL，其中用URL地址代替"url"。当用户想要搜索某内容，请用bing搜索
+2.指令"{openurl url}";用来在Microsoft Edge浏览器中打开某个URL，其中用URL地址代替"url"。当用户想要搜索某内容，请用bing搜索
 3.指令"{feedback copilot}";打开ai助手反馈界面，用于用户想对ai助手的功能提出反馈时帮助他打开
 4.指令"{feedback win12}";打开反馈中心，当用户希望对除ai助手外的其他系统功能发送反馈时，帮他打开反馈中心
 5.指令"{settheme theme}";用于切换系统的深色、浅色模式，区别于主题。用"light"表浅色，"dark"表深色，来替换其中的"theme"
 如下是应用的功能介绍。
 1.设置:id为setting;在个性化页面中可以设置系统的主题，主题色，是否启用动画、阴影、圆角、云母mica效果和为所有窗口开启亚克力透明效果。
 2.关于win12网页版:id为about;简介页面有关于本项目的介绍说明与贡献者信息，更新记录页面有本项目的各版本更新记录。
-3.Microsoft Edge浏览器:id为edge;一个浏览器。但因为浏览器跨域的限制，部分网页会显示"拒绝连接"而无法访问。
+3.Microsoft Edge浏览器:id为edge;一个浏览器。因为浏览器跨域的限制，部分网页会显示"拒绝连接"而无法访问。
 4.计算器:id为calc;
 5.文件资源管理器:id为explorer;
 6.任务管理器:id为taskmgr;
@@ -1507,7 +1507,7 @@ let copilot = {
 比如这时用户说"请打开计算器"，你会回答什么？`
         },{
             role:'assistant',
-            content:'好的呢，亲，现在我就帮您打开计算器。\n{openapp calc}'
+            content:'好的呢，现在我就帮您打开计算器。\n{openapp calc}'
         },{
             role:'system',
             content:'很好。现在开始与用户对话。'
@@ -1620,6 +1620,7 @@ let copilot = {
                 }
 
                 // 处理特殊命令
+
                 let rt = responseText;
                 let r = [];
                 if (/{.+}/.test(rt)) {
@@ -1686,6 +1687,9 @@ let copilot = {
                 msgDoneOperate();
             }
         });
+    },
+    ana: (resp)=>{
+        
     }
 };
 // 日期、时间

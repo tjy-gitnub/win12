@@ -297,6 +297,10 @@ toggletheme() 切换主题
 					<img src="icon/notepad.svg">
 					<p data-i18n="notepad.name">记事本</p>
 				</a>
+				<a oncontextmenu="return showcm(event, 'smlapp', ['copilot', 'Windows 12 Copilot'])" onclick="openapp('copilot');hide_startmenu()">
+					<img src="icon/copilot.svg">
+					<p>Windows 12 Copilot</p>
+				</a>
 				<a oncontextmenu="return showcm(event, 'smlapp', ['edge', 'Microsoft Edge'])" onclick="openapp('edge');hide_startmenu();">
 					<img src="icon/edge.svg">
 					<p>Microsoft Edge</p>
@@ -2224,6 +2228,24 @@ toggletheme() 切换主题
 		</div>
 		<div class="content" id="win-bilibili">
 			<!-- <iframe src="https://bilibili.com/" frameborder="0" style="width: 100%; height: 100%;" loading="lazy"></iframe> -->
+		</div>
+	</div>
+	
+	<div class="window copilot">
+		<div class="resize-bar"></div>
+		<div class="titbar">
+			<img src="icon/copilot.svg" class="icon">
+			<p>Windows 12 Copilot</p>
+			<div>
+				<a class="a wbtg red" onclick="hidewin('copilot')"><i class="bi bi-x-lg"></i></a>
+				<a class="a wbtg max" onclick="maxwin('copilot')"><i class="bi bi-app"></i></a>
+				<a class="a wbtg" onclick="minwin('copilot')"><i class="bi bi-dash-lg"></i></a>
+			</div>
+		</div>
+		<div class="loadback">
+			<img src="icon/copilot.svg" class="icon">
+		</div>
+		<div class="content" id="win-copilot">
 		</div>
 	</div>
 	<div class="window wsa">

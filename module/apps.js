@@ -734,7 +734,7 @@ let apps = {
     },
     // webapp 即将网页嵌套作为应用内容，格式参考 desktop.html 中 vscode, bilibili
     webapps: {
-        apps: ['vscode', 'bilibili'],
+        apps: ['vscode', 'bilibili','copilot'],
         init: () => {
             for (const app of apps.webapps.apps) {
                 apps[app].load();
@@ -756,6 +756,14 @@ let apps = {
         },
         load: () => {
             $('#win-bilibili')[0].insertAdjacentHTML('afterbegin', '<iframe src="https://bilibili.com/" frameborder="0" style="width: 100%; height: 100%;" loading="lazy"></iframe>');
+        }
+    },
+    'copilot': {
+        init: () => {
+            return null;
+        },
+        load: () => {
+            $('#win-copilot')[0].insertAdjacentHTML('afterbegin', '<iframe src="/chatgh/copilot.html" frameborder="0" style="width: 100%; height: 100%;" loading="lazy"></iframe>');
         }
     },
     defender: {
