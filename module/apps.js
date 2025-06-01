@@ -771,7 +771,7 @@ let apps = {
           return null;
         },
         load: () => {
-            $('#win-minesweeper')[0].insertAdjacentHTML('afterbegin', '<iframe src="https://tjy-gitnub.github.io/win12/games/minesweeper.html" frameborder="0" style="width: 100%; height: 100%;" loading="lazy"></iframe>');
+            $('#win-minesweeper')[0].insertAdjacentHTML('afterbegin', '<iframe src="/games/minesweeper.html" frameborder="0" style="width: 100%; height: 100%;" loading="lazy"></iframe>');
         }
     },
     defender: {
