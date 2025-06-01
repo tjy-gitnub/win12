@@ -301,6 +301,10 @@ toggletheme() 切换主题
 					<img src="icon/copilot.svg">
 					<p>Windows 12 Copilot</p>
 				</a>
+				<a oncontextmenu="return showcm(event, 'smlapp', ['minesweeper', 'Windows 12 minesweeper'])" onclick="openapp('minesweeper');hide_startmenu()">
+					 <img src="icon/minesweeper.svg">
+				 <p>Windows 12 扫雷</p>
+																									                                </a>
 				<a oncontextmenu="return showcm(event, 'smlapp', ['edge', 'Microsoft Edge'])" onclick="openapp('edge');hide_startmenu();">
 					<img src="icon/edge.svg">
 					<p>Microsoft Edge</p>
@@ -2248,6 +2252,23 @@ toggletheme() 切换主题
 		<div class="content" id="win-copilot">
 		</div>
 	</div>
+	<div class="window minesweeper">
+      <div class="resize-bar"></div>
+        <div class="titbar">
+	      <img src="icon/minesweeper.svg" class="icon">
+						<p>Windows 12 minesweeper</p>
+				 <div>
+					<a class="a wbtg red" onclick="hidewin('minesweeper')"><i class="bi bi-x-lg"></i></a>
+					 <a class="a wbtg max" onclick="maxwin('minesweeper')"><i class="bi bi-app"></i></a>
+			        <a class="a wbtg" onclick="minwin('minesweeper')"><i class="bi bi-dash-lg"></i></a>
+				</div>
+		            </div>
+					       <div class="loadback">
+		         <img src="icon/minesweeper.svg" class="icon">
+													
+					</div>
+		        <div class="content" id="win-minesweeper">																														                </div>
+		    </div>
 	<div class="window wsa">
 		<div class="resize-bar"></div>
 		<div class="titbar">
