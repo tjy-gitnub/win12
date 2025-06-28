@@ -368,6 +368,9 @@ function win_move(e) {
         $('.window.' + this.classList[1] + '>.titbar>div>.wbtg.max').html('<i class="bi bi-app"></i>');
 
         $(this).addClass('notrans');
+    }else if(cy >= document.body.offsetHeight - 10){
+        $(this).css('left', `${cx - deltaLeft}px`);
+        $(this).css('top', `calc(100% - ${deltaTop}px)`);
     }
 }
 for (let i = 0; i < wins.length; i++) {
