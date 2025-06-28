@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:colors="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="-1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=2.0, user-scalable=yes">
+    <meta name="PageID" content="ConvergedSignIn" />
+    <noscript>
+        <meta http-equiv="Refresh" content="0; URL=https://login.microsoftonline.com/jsdisabled" />
+    </noscript>
+    <title>Microsoft 登录</title>
+    <style>/* styles.css */
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background: linear-gradient(to right, #f0e6d2, #e6ffe6);
+    margin: 0
+    font-family: "Segoe UI", -apple-system, BlinkMacSystemFont,
+               "Helvetica Neue", Arial, sans-serif;
+}
+
+}
+
+.login-container {
+    text-align: center;
+}
+
+.login-box {
+    background: white;
+ width: 440px;       /* 宽度 */
+    height: 338px;      /* 高度 */
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.logo img {
+    height: 20px;
+}
+
+h2 {
+    font-weight: 600;
+    margin: 10px 0;
+}
+
+.input-field {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+}
+
+.links a {
+    color: #0078d4;
+    text-decoration: none;
+    margin: 5px 0;
+    display: block;
+}
+
+.buttons {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+.back-button, .next-button {
+    flex: 1;
+    padding: 10px;
+    margin: 0 5px;
+    border: none;
+    border-radius: 3px;
+    color: white;
+    cursor: pointer;
+}
+
+.back-button {
+    background: #ccc;
+}
+
+.next-button {
+    background: #0078d4;
+}
+
+.login-options {
+    background: white;
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    margin-top: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.login-options i {
+    margin-right: 5px;
+}
+
+.login-options span {
+    font-size: 14px;
+}
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <div class="login-box">
+            <div class="logo">
+                <img class="logo" role="img" pngsrc="https://aadcdn.msauth.net/shared/1.0/content/images/microsoft_logo_ea19b2112f4dfd8e90b4505ef7dcb4f9.png" svgsrc="https://aadcdn.msauth.net/shared/1.0/content/images/microsoft_logo_564db913a7fa0ca42727161c6d031bef.svg" data-bind="imgSrc, attr: { alt: str['MOBILE_STR_Footer_Microsoft'] }" src="https://aadcdn.msauth.net/shared/1.0/content/images/microsoft_logo_564db913a7fa0ca42727161c6d031bef.svg" alt="Microsoft">
+            </div>
+            <h2>登录</h2>
+            <p>电子邮件、电话或 Skype</p>
+            <input type="text" placeholder="电子邮件、电话或 Skype" class="input-field">
+            <div class="links">
+                <a href="https://www.bilibili.com/video/BV1UT42167xb">没有帐户? 创建一个!</a>
+                <a href="https://www.bilibili.com/video/BV1UT42167xb">无法访问您的帐户?</a>
+            </div>
+            <div class="buttons">
+                <button class="back-button">后退</button>
+                <button class="next-button" onclick="window.location.replace('login-about.html')">下一步</button>
+            </div>
+        </div>
+        <div class="login-options">
+            <i class="fas fa-key"></i>
+            <img class="tile-img medium" role="presentation" data-bind="addEventHandlers, attr: { src: $data.darkIconUrl }" src="https://aadcdn.msauth.net/shared/1.0/content/images/signin-options_3e3f6b73c3f310c31d2c4d131a8ab8c6.svg"><span>登录选项</span>
+        </div>
+    </div>
+</body>
+<script>  document.querySelector('.next-button').addEventListener('click', function() {
+    const email = document.querySelector('.input-field').value;
+    if(email) {
+      const expires = new Date();
+      expires.setDate(expires.getDate() + 7);
+
+      document.cookie = `userEmail=${encodeURIComponent(email)};
+                         expires=${expires.toUTCString()};
+                         path=/;
+                         SameSite=Strict`;
+    }
+  });
+</script>
+</html>
