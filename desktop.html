@@ -1368,11 +1368,11 @@ toggletheme() 切换主题
 						</div>
 					</div>
 					<div class="setting-list">
-						<a><icon></icon><div><p>显示</p><p>显示器、亮度、夜间模式、显示描述</p></div><i class="bi bi-chevron-right"></i></a>
+						<a><icon></icon><div><p>屏幕</p><p>显示器、亮度、夜间模式、显示描述</p></div><i class="bi bi-chevron-right"></i></a>
 						<a><icon></icon><div><p>声音</p><p>声音级别、输入、输出、声音设备</p></div><i class="bi bi-chevron-right"></i></a>
 						<a><icon></icon><div><p>通知</p><p>来自系统和应用的警报</p></div><i class="bi bi-chevron-right"></i></a>
-						<a><icon></icon><div><p>专注助手</p><p>通知、自动规则</p></div><i class="bi bi-chevron-right"></i></a>
-						<a><icon class="b">&#xF186;</icon><div><p>电源</p><p>睡眠、电池使用情况、节电模式</p></div><i class="bi bi-chevron-right"></i></a>
+						<a><icon></icon><div><p>专注</p><p>通知、自动规则</p></div><i class="bi bi-chevron-right"></i></a>
+						<a><icon class="b">&#xF186;</icon><div><p>电源和电池</p><p>睡眠、电池使用情况、节电模式</p></div><i class="bi bi-chevron-right"></i></a>
 						<a><icon></icon><div><p>存储</p><p>存储空间、驱动器、配置规则</p></div><i class="bi bi-chevron-right"></i></a>
 						<a><icon></icon><div><p>多任务处理</p><p>贴靠窗口、桌面、任务切换</p></div><i class="bi bi-chevron-right"></i></a>
 						<a><icon></icon><div><p>激活</p><p>激活状态、订阅、产品密钥</p></div><i class="bi bi-chevron-right"></i></a>
@@ -1381,7 +1381,7 @@ toggletheme() 切换主题
 						<a><icon></icon><div><p>投影到此电脑</p><p>权限、配对 PIN、可发现性</p></div><i class="bi bi-chevron-right"></i></a>
 						<a><icon></icon><div><p>远程桌面</p><p>远程桌面用户、连接权限</p></div><i class="bi bi-chevron-right"></i></a>
 						<a><icon></icon><div><p>剪贴板</p><p>剪贴和复制历史记录、同步、清除</p></div><i class="bi bi-chevron-right"></i></a>
-						<a><icon></icon><div><p>关于</p><p>设备规格、重命名电脑、Windows 规格</p></div><i class="bi bi-chevron-right"></i></a>
+						<a><icon></icon><div><p>系统信息</p><p>设备规格、重命名电脑、Windows 规格</p></div><i class="bi bi-chevron-right"></i></a>
 					</div>
 				</div>
 				<!-- 蓝牙与设备  @tangyuan0821 2025-06-28-->
@@ -1595,7 +1595,7 @@ toggletheme() 切换主题
 				<div class="cnt game">
 					<p class="title">游戏</p>
 					<div class="setting-list">
-						<a><icon><i class="bi bi-xbox"></i></icon><div><p>Xbox Game Bar</p><p>控制器和键盘快捷方式</p></div><i class="bi bi-chevron-right"></i></a>
+						<a><icon><i class="bi bi-xbox"></i></icon><div><p>Game Bar</p><p>控制器和键盘快捷方式</p></div><i class="bi bi-chevron-right"></i></a>
 						<a><icon><i class="bi bi-camera"></i></icon><div><p>摄像</p><p>保存位置，录制首选项</p></div><i class="bi bi-chevron-right"></i></a>
 						<a><icon><i class="bi bi-controller"></i></icon><div><p>游戏模式</p><p>优化电脑以便畅玩</p></div><i class="bi bi-chevron-right"></i></a>
 					</div>
@@ -2948,6 +2948,10 @@ toggletheme() 切换主题
 					<div>
 						<h3>窗口管理</h3>
 						<input type="checkbox" id="tsk-setting-topmost" name="tsk-setting-topmost" style="height: 15px;width:15px;color:#fff;" onclick="if(checked){topmost[topmost.length]='taskmgr'}else{topmost.splice(topmost.indexOf('taskmgr',1))};hidewin('taskmgr');apps.taskmgr.page('processes');$('#win-taskmgr>.menu>list.focs>a')[0].click();saveDesktop();$('#tsk-search').val('');setTimeout('openapp(`taskmgr`);apps.taskmgr.generateProcesses();',300);"/><label for="tsk-setting-topmost" style="font-size: 15px;">置于顶层</label>
+					</div>
+					<div>
+						<h3>反馈</h3>
+                        <a class="a jump" onclick="shownotice('feedback')">发送反馈</a>
 					</div>
 				</div>
 			</div>
