@@ -196,4 +196,4 @@ NB-group：
 
 ## 贡献须知
 
-详情请见 [贡献指南](./CONTRIBUTING.md)。
+详情请见 [贡献指南](../CONTRIBUTING.md)。
