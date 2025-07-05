@@ -196,6 +196,6 @@ En raison d'une utilisation abusive constatée récemment, des dispositions supp
 
 ## Note sur les contributions
 
-Veuillez consulter [Guide de contribution(chinois)](./CONTRIBUTING.md)pour plus de détails.
+Veuillez consulter [Guide de contribution(chinois)](../CONTRIBUTING.md)pour plus de détails.
 
 > Traduit par [@Junchen Yi](https://github.com/Jimmy-Effe)
