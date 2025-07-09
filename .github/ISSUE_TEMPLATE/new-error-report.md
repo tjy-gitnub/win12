@@ -18,15 +18,16 @@ assignees: ''
 
 <!-- Please describe what this vulnerability is like -->
 
-<!-- uncomment the following part if you need -->
 
-<!-- ## Reproduction
+
+## Reproduction
 
 The vulnerability can be reproduced by following these steps:
 
-(Please describe the steps to reproduce the vulnerability)
+<!-- Please describe the steps to reproduce the vulnerability) -->
 
-## Screenshots
+<!-- uncomment the following part if you need -->
+<!-- ## Screenshots
 
 (If available, please attach relevant screenshots or videos here)
 
