@@ -17,24 +17,24 @@ assignees: ''
 <!-- Please provide at least the **Problem Description** and **How to Reproduce the Issue** -->
 ## Description
 
-(Please describe what this vulnerability is like)
+<!-- Please describe what this vulnerability is like -->
 
 ## Reproduction
 
 The vulnerability can be reproduced by following these steps:
 
-(Please describe the steps to reproduce the vulnerability)
+<!-- Please describe the steps to reproduce the vulnerability -->
 
 ## Screenshots
 
-(If available, please attach relevant screenshots or videos here)
+ <!-- If available, please attach relevant screenshots or videos here -->
 
 ## Test Environment
 
-Browser: [Please enter the browser you are using here, such as Edge, Chrome, Firefox, Safari, Opera, etc.]
-Browser Version: [Please enter the browser version here]
-Operating System: [Please enter the operating system you are using here, such as iOS 15, Windows 11, Android 13, Ubuntu 22.04.2 LTS, etc.]
+Browser: <!-- Please enter the browser you are using here, such as Edge, Chrome, Firefox, Safari, Opera, etc.-->
+Browser Version: <!-- Please enter the browser version here -->
+Operating System: <!-- Please enter the operating system you are using here, such as iOS 15, Windows 11, Android 13, Ubuntu 22.04.2 LTS, etc. -->
 
 ## Others
 
-(If there is any other content, please add it here)
+<!-- If there is any other content, please add it here -->

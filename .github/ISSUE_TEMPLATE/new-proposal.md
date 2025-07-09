@@ -14,12 +14,12 @@ assignees: ''
 
 ## Description
 
-(Please briefly describe the suggestion)
+ <!-- Please briefly describe the suggestion -->
 
 ## Plan
 
-(Please propose the implementation plan or desired features here)
+<!-- Please propose the implementation plan or desired features here -->
 
 ## Others
 
-(If there is any other content, please add it here)
+<!-- If there is any other content, please add it here -->
