@@ -113,14 +113,17 @@ h2 {
             </div>
             <h2>登录</h2>
             <p>电子邮件、电话或 Skype</p>
-            <input type="text" placeholder="电子邮件、电话或 Skype" class="input-field">
+            <input type="text" placeholder="电子邮件、电话或 Skype" class="input-field" oninput="showSecurityTip()">
+<div class="security-tip" id="securityTip" style="color: #1b5797; background-color: #e8f4ff; padding: 10px; border-radius: 3px; margin-top: 10px; display: none;">
+    <strong>提示：</strong>本页为伪造的微软账户登录页面，请您在生活中加强上网安全意识，不要轻易输入个人账号、密码等敏感信息。
+</div>
             <div class="links">
                 <a href="https://www.bilibili.com/video/BV1UT42167xb">没有帐户? 创建一个!</a>
                 <a href="https://www.bilibili.com/video/BV1UT42167xb">无法访问您的帐户?</a>
             </div>
             <div class="buttons">
                 <button class="back-button">后退</button>
-                <button class="next-button" onclick="window.location.replace('login-about.html')">下一步</button>
+                <button class="next-button" onclick="handleNextButtonClick(event)">下一步</button>
             </div>
         </div>
         <div class="login-options">
@@ -129,17 +132,19 @@ h2 {
         </div>
     </div>
 </body>
-<script>  document.querySelector('.next-button').addEventListener('click', function() {
-    const email = document.querySelector('.input-field').value;
-    if(email) {
-      const expires = new Date();
-      expires.setDate(expires.getDate() + 7);
+<script>
+function handleNextButtonClick(event) {
+    const securityTip = document.getElementById('securityTip');
 
-      document.cookie = `userEmail=${encodeURIComponent(email)};
-                         expires=${expires.toUTCString()};
-                         path=/;
-                         SameSite=Strict`;
-    }
-  });
+    securityTip.style.display = 'block';
+
+    event.preventDefault();
+
+    setTimeout(() => {
+        window.location.replace('https://www.bilibili.com/video/BV1UT42167xb');
+    }, 2000);
+}
+
+
 </script>
 </html>
