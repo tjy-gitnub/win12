@@ -168,30 +168,7 @@ Below are some... um... imaginative thoughts. `~o~)/`：
 - [ ] Rename the project to "550W"
 
 ## Open Source Description
-
-The developer of this project：谭景元（tjy-gitnub）
-
-Link to this item：<https://github.com/tjy-gitnub/win12>
-
-This project is an open-source initiative. It utilizes the EPL v2.0 open-source license. Open-source licenses are legally binding agreements; please voluntarily comply with the open-source license and respect the efforts of others.
-
-Under the license, you are allowed to propagate, distribute, modify, and re-publish this project, including for both personal and commercial purposes. However, we do not encourage any and all commercial uses.
-
-You must give the source code source, **including the author, a link to the project** (see above), etc., and it must be open-sourced using the same protocol.
-
-If the source code for this project is distributed as part of a project with your private source code, you may use other protocols **but declare the contents of the EPL section and state that this section continues to follow the EPL protocol**.
-
-Not on the basis of the project to add, modify, only reference to the source code, do not need open source, but also for learning purposes only.
-
-Due to the large number of abuses detected in the recent past, additional regulations are hereby stipulated:
-
-- Users of this project must include the original author's name and project link in the introduction. Intentionally concealing attribution information, the original author, or project link from the original project is prohibited. Viewing the attribution information, original author, or project link in the original project should not be restricted, and the attribution information in the original project must not be modified.
-
-- Those using this project for commercial purposes must **clearly indicate the original author and project link** and **must**open-source it under the EPL license. The unmodified source code**cannot be used for**commercial purposes.；
-
-- Users of this project are not allowed to remove or intentionally hide, restrict the visibility of this statement.
-
-- Please comply with the above provisions; we reserve the right to pursue legal actions to protect our rights if necessary.
+This project is an open-source initiative. The code is licensed under EPL v2.0, and supplementary terms may apply. For details, refer to the project's [copyright notice(Chinese)](../readme/Copyrights.md).
 
 ## How-To-Contribute
 

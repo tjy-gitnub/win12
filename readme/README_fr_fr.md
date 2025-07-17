@@ -169,30 +169,7 @@ Voici quelques idées farfelues ~o~)/ :
 - [ ] Renommer le projet en "550W"
 
 ## description de l'open source
-
-Auteur de ce projet : Tan Jingyuan (tjy-gitnub)
-
-Lien vers ce projet ：<https://github.com/tjy-gitnub/win12>
-
-Ce projet est open source. Il utilise la licence open source EPL v2.0. Les licences open source sont des contrats juridiquement contraignants, veuillez respecter la licence open source et le travail des autres.
-
-Conformément à la licence, vous pouvez diffuser, distribuer, modifier et publier à nouveau ce projet, à des fins personnelles et commerciales, mais nous ne encourageons pas toutes les utilisations commerciales.
-
-Vous devez fournir la source, **y compris l'auteur, le lien vers le projet** (voir ci-dessus), etc., et vous devez utiliser la même licence open source.
-
-Si le code source de ce projet est publié en même temps que votre code source privé en tant que partie du projet, vous pouvez utiliser une autre licence, **mais vous devez indiquer que la partie EPL continue de suivre la licence EPL**.
-
-Pas utilisé comme base pour ajouter ou modifier le projet, uniquement consulté à partir du code source, n'a pas besoin d'être open source, mais est également destiné à un usage éducatif.
-
-En raison d'une utilisation abusive constatée récemment, des dispositions supplémentaires sont stipulées ici :
-
-- Toute personne utilisant ce projet doit inclure le nom de l'auteur d'origine et le lien vers le projet dans l'introduction. Il est interdit de délibérément dissimuler les informations de crédit, le nom de l'auteur d'origine ou le lien vers le projet, et il est interdit de restreindre l'accès aux informations de crédit, au nom de l'auteur d'origine ou au lien vers le projet dans le projet d'origine, et il est également interdit de modifier les informations de crédit dans le projet d'origine ;
-
-- Toute personne utilisant ce projet à des fins commerciales doit **mentionner l'auteur d'origine ainsi que le lien vers le projet**, et cela doit être open source conformément à la licence EPL. Le code source non modifié ne doit **pas être utilisé à des fins** commerciales ;
-
-- Toute personne utilisant ce projet ne doit pas supprimer ni intentionnellement masquer, restreindre la visibilité de cette déclaration ;
-
-- Nous vous prions de respecter les règles susmentionnées. Nous nous réservons le droit de prendre des mesures légales pour protéger nos droits légitimes.
+Ce projet est un projet open source. Le code est distribué sous la licence EPL v2.0, et des conditions supplémentaires peuvent s'appliquer. Consultez la [déclaration de copyright(chinois)](../readme/Copyrights.md) du projet pour plus de détails.
 
 ## Note sur les contributions
 
