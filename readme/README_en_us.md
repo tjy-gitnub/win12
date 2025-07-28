@@ -1,5 +1,5 @@
 > [!NOTE]
-> Request assistance in translating this project free of charge! Currently only available in English. See [here] (https://tangyuan0821.github.io/windows12-docs/zh-tw/translate) for details.
+> Request assistance in translating this project free of charge! Currently only available in English. See [here](https://tangyuan0821.github.io/windows12-docs/zh-tw/translate) for details.
 
 <p align="center">
     <img src="./../icon/windows12.svg" width="100" height="100">
