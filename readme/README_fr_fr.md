@@ -1,3 +1,5 @@
+> [!NOTE]
+> Demande de traduction gratuite pour nous aider à traduire ce projet ! Actuellement, seul l'anglais est requis. Voir [ici](https://tangyuan0821.github.io/windows12-docs/zh-tw/translate).
 <p align="center">
     <img src="./../icon/windows12.svg" width="100" height="100">
 </p>
@@ -19,7 +21,7 @@
 </p>
 <p align="center" class="language" title="Language selection 语言选择">
   <a href="README_en_us.md">English</a> | 
-  <a href="README_zh_cn.md">简体中文</a> | 
+  <a href="../README.md">简体中文</a> | 
   <b>Français</b>|
   <a href="README_zh_tw.md">繁體中文</a>
 </p>
@@ -33,7 +35,7 @@
 ## Annonces
 ### C’est important !
 Gratuitement, nous demandons sincèrement à tous les utilisateurs compétents de réaliser des vidéos promotionnelles pour nous !
-Pour plus de détails, reportez-vous à [Annonce vidéo promotionnelle(chinois)](https://github.com/tjy-gitnub/win12/wiki/%E5%AE%A3%E4%BC%A0%E7%89%87%E5%85%AC%E5%91%8A)
+Pour plus de détails, reportez-vous à [Annonce vidéo promotionnelle](https://tangyuan0821.github.io/windows12-docs/fr-fr/Promo_Notice)
 
 ---
 
@@ -197,6 +199,6 @@ En raison d'une utilisation abusive constatée récemment, des dispositions supp
 
 ## Note sur les contributions
 
-Veuillez consulter [Guide de contribution(chinois)](../CONTRIBUTING.md)pour plus de détails.
+Veuillez consulter [Guide de contribution](https://tangyuan0821.github.io/windows12-docs/fr-fr/contributing)pour plus de détails.
 
 > Traduit par [@Junchen Yi](https://github.com/Jimmy-Effe)

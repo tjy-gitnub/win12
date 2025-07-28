@@ -1,3 +1,6 @@
+> [!NOTE]
+> Request assistance in translating this project free of charge! Currently only available in English. See [here] (https://tangyuan0821.github.io/windows12-docs/zh-tw/translate) for details.
+
 <p align="center">
     <img src="./../icon/windows12.svg" width="100" height="100">
 </p>
@@ -19,7 +22,7 @@
 </p>
 <p align="center" class="language" title="Language selection 语言选择">
   <b>English</b> | 
-  <a href="README_zh_cn.md">简体中文</a> | 
+  <a href="../README.md">简体中文</a> | 
   <a href="README_fr_fr.md">Français</a>|
   <a href="README_zh_tw.md">繁體中文</a>
 </p>
@@ -33,7 +36,7 @@
 ## Announcement
 ### Important!
 Free of charge, we sincerely ask all capable users to make promotional videos for us!
-For details, please refer to [Promotional Video Announcement(Chinese)](https://github.com/tjy-gitnub/win12/wiki/%E5%AE%A3%E4%BC%A0%E7%89%87%E5%85%AC%E5%91%8A)
+For details, please refer to [Promotional Video Announcement](https://tangyuan0821.github.io/windows12-docs/en-us/Promo_Notice)
 
 
 - [Windows 12 Web Edition](#windows-12-web-edition)
@@ -196,6 +199,6 @@ Due to the large number of abuses detected in the recent past, additional regula
 
 ## How-To-Contribute
 
-For details, please see [How To Contribute(Chinese)](../CONTRIBUTING.md).
+For details, please see [How To Contribute](https://tangyuan0821.github.io/windows12-docs/en-us/contributing).
 
 > Translated by [@Junchen Yi](https://github.com/Jimmy-Effe)

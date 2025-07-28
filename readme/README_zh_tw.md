@@ -1,5 +1,5 @@
 > [!NOTE]
-> 無償請求協助我們翻譯此項目！目前暫僅需英語。詳見[此](lang/readme.md)。
+> 無償請求協助我們翻譯此項目！目前暫僅需英語。詳見[此](https://tangyuan0821.github.io/windows12-docs/zh-tw/translate)。
 
 <p align="center">
     <img src="./../icon/windows12.svg" width="100" height="100">
@@ -21,7 +21,7 @@
 </p>
 <p align="center" class="language" title="Language selection 语言选择">
   <a href="README_en_us.md">English</a> | 
-  <a href="README_zh_cn.md">简体中文</a> | 
+  <a href="../README.md">简体中文</a> | 
   <a href="README_fr_fr.md">Français</a>|
   <b>繁體中文</b>
 </p>
@@ -37,7 +37,7 @@
 ### 重要！
 
 懇請各位有能力的用戶幫忙製作宣傳片！
-詳情請見[宣傳片公告](https://github.com/tjy-gitnub/win12/wiki/%E5%AE%A3%E4%BC%A0%E7%89%87%E5%85%AC%E5%91%8A)
+詳情請見[宣傳片公告](https://tangyuan0821.github.io/windows12-docs/zh-tw/Promo_Notice-zh-tw)
 
 - [Windows 12 網頁版](#windows-12-網頁版)
   - [前前言](#前前言)
@@ -202,8 +202,8 @@ NB-group：
 
 ## 貢獻須知
 
-詳情請見 [貢獻指南](./CONTRIBUTING.md)。
+詳情請見 [貢獻指南](https://tangyuan0821.github.io/windows12-docs/zh-tw/contributing-zh-tw)。
 
 ## AI Copilot 實現
 
-詳情請見 [AI Copilot 實現](./scripts/AI%20Copilot%20service/README.md)
+詳情請見 [AI Copilot 實現](https://tangyuan0821.github.io/windows12-docs/zh-tw/ai)
