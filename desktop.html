@@ -307,7 +307,7 @@ toggletheme() 切换主题
 			    </a>
 				<a oncontextmenu="return showcm(event, 'smlapp', ['edge', 'Microsoft Edge'])" onclick="openapp('edge');hide_startmenu();">
 					<img src="icon/edge.svg">
-					<p>Microsoft Edge</p>
+					<p data-i18n="edge.name">Microsoft Edge</p>
 				</a>
 				<a oncontextmenu="return showcm(event, 'smlapp', ['msstore', 'Microsoft Store'])" onclick="openapp('msstore');hide_startmenu();">
 					<img src="icon/msstore.svg">
@@ -451,7 +451,7 @@ toggletheme() 切换主题
 					</a>
 					<a class="a sm-app enable edge" onclick="openapp('edge');hide_startmenu();" oncontextmenu="return showcm(event,'smapp',['edge','Microsoft Edge'])">
 						<img src="icon/edge.svg">
-						<p>Microsoft Edge</p>
+						<p data-i18n="edge.name">Microsoft Edge</p>
 					</a>
 					<a class="a sm-app enable windows12" onclick="openapp('windows12');hide_startmenu();" oncontextmenu="return showcm(event,'smapp',['windows12','Windows 12'])">
 						<img src="icon/logo.svg">
@@ -2569,26 +2569,26 @@ toggletheme() 切换主题
 			<div class="menu" style="height:100%; display: flex; flex-direction: column;">
 				<a class="fold" onclick="apps.taskmgr.fold()" win12_title="折叠"><i class="bi bi-list"></i></a>
 				<list class="focs">
-					<a class="processes check" onclick="apps.taskmgr.page('processes')" win12_title="进程"><icon class="t-icon"></icon><p><span>进程</span></p></a>
-					<a class="performance" onclick="apps.taskmgr.page('performance')" win12_title="性能"><icon class="s-icon"></icon><p><span>性能</span></p></a>
-					<a class="setting" onclick="apps.taskmgr.page('setting')" style="position: absolute; bottom: 0px;" win12_title="设置"><i class="bi bi-gear"></i><p><span>设置</span></p></a>
+					<a class="processes check" onclick="apps.taskmgr.page('processes')" win12_title="进程"><icon class="t-icon"></icon><p><span data-i18n="taskmgr.processes">进程</span></p></a>
+					<a class="performance" onclick="apps.taskmgr.page('performance')" win12_title="性能"><icon class="s-icon"></icon><p><span data-i18n="taskmgr.performance">性能</span></p></a>
+					<a class="setting" onclick="apps.taskmgr.page('setting')" style="position: absolute; bottom: 0px;" win12_title="设置"><i class="bi bi-gear"></i><p><span data-i18n="taskmgr.settings">设置</span></p></a>
 					<span class="focs" data-type="abs" style="position: absolute;top: -445px; left: 0px;"></span>
 				</list>
 			</div>
 			<div class="main">
 				<div class="cnt processes show">
 					<div class="tit">
-						<p>进程</p>
+						<p data-i18n="taskmgr.processes.title">进程</p>
 						<hr>
 					</div>
 					<table>
 						<thead>
 							<tr class="title">
-								<th>进程名称</th>
-								<th class="align-right" onclick="apps.taskmgr.changeSort(this.childNodes[0], 'cpu');"><i class="bi bi-chevron-down"></i><div class="value">11.4%</div>CPU</th>
-								<th class="align-right" onclick="apps.taskmgr.changeSort(this.childNodes[0], 'memory');"><i class="bi"></i><div class="value">11.4%</div>内存</th>
-								<th class="align-right" onclick="apps.taskmgr.changeSort(this.childNodes[0], 'disk');"><i class="bi"></i><div class="value">11.4%</div>硬盘</th>
-								<th class="power">电源使用情况</th>
+								<th data-i18n="taskmgr.processes.name">进程名称</th>
+								<th class="align-right" onclick="apps.taskmgr.changeSort(this.childNodes[0], 'cpu');"><i class="bi bi-chevron-down"></i><div class="value">11.4%</div><span data-i18n="taskmgr.processes.cpu">CPU</span></th>
+								<th class="align-right" onclick="apps.taskmgr.changeSort(this.childNodes[0], 'memory');"><i class="bi"></i><div class="value">11.4%</div><span data-i18n="taskmgr.processes.memory">内存</span></th>
+								<th class="align-right" onclick="apps.taskmgr.changeSort(this.childNodes[0], 'disk');"><i class="bi"></i><div class="value">11.4%</div><span data-i18n="taskmgr.processes.disk">硬盘</span></th>
+								<th class="power" data-i18n="taskmgr.processes.power">电源使用情况</th>
 							</tr>
 						</thead>
 						<tbody class="view">
@@ -2598,14 +2598,14 @@ toggletheme() 切换主题
 				</div>
 				<div class="cnt 404">
 					<div class="content" style="display: flex; justify-content: center; align-items: center; height: 100%; width: 100%; flex-direction: column; text-align: center">
-						<p><b>无筛选结果</b><br />请尝试使用其他名称、发布者或 PID 键入以进行筛选。</p>
+						<p data-i18n="taskmgr.processes.no-results"><b>无筛选结果</b><br />请尝试使用其他名称、发布者或 PID 键入以进行筛选。</p>
 						<br />
-						<a onclick="$('#tsk-search').val('');apps.taskmgr.generateProcesses()" style="cursor: pointer;color:var(--href);">重置筛选器</a>
+						<a onclick="$('#tsk-search').val('');apps.taskmgr.generateProcesses()" style="cursor: pointer;color:var(--href);" data-i18n="taskmgr.processes.reset-filter">重置筛选器</a>
 					</div>
 				</div>
 				<div class="cnt performance">
 					<div class="tit">
-						<p>性能</p>
+						<p data-i18n="taskmgr.performance.title">性能</p>
 						<hr>
 					</div>
 					<div class="content">
@@ -2627,7 +2627,7 @@ toggletheme() 切换主题
 									<svg class="graph-view-memory" viewBox="0 0 6000 1000" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg"></svg>
 								</div>
 								<div class="right">
-									<div class="tit">内存</div>
+									<div class="tit" data-i18n="taskmgr.performance.memory">内存</div>
 									<div class="data">
 										<div class="value1">11.4 / 100GB</div>
 										<div class="value2">11.4%</div>
@@ -2639,7 +2639,7 @@ toggletheme() 切换主题
 									<svg class="graph-view-disk" viewBox="0 0 6000 1000" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg"></svg>
 								</div>
 								<div class="right">
-									<div class="tit">磁盘</div>
+									<div class="tit" data-i18n="taskmgr.performance.disk">磁盘</div>
 									<div class="data">
 										<div class="tit">SSD</div>
 										<div class="value2">1.14%</div>
@@ -2651,10 +2651,10 @@ toggletheme() 切换主题
 									<svg class="graph-view-wifi" viewBox="0 0 6000 1000" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg"></svg>
 								</div>
 								<div class="right">
-									<div class="tit">Wi-Fi</div>
+									<div class="tit" data-i18n="taskmgr.performance.wifi">Wi-Fi</div>
 									<div class="data">
 										<div class="tit">WLAN</div>
-										<div class="value2">发送: 1145 接收: 1145 Mbps</div>
+										<div class="value2"><span data-i18n="taskmgr.performance.wifi-speed">发送: 1145 接收: 1145 Mbps</span></div>
 									</div>
 								</div>
 							</div>
@@ -2949,16 +2949,16 @@ toggletheme() 切换主题
 				</div>
 				<div class="cnt setting">
 					<div class="tit">
-						<p>设置</p>
+						<p data-i18n="taskmgr.settings.title">设置</p>
 						<hr>
 					</div>
 					<div>
-						<h3>窗口管理</h3>
-						<input type="checkbox" id="tsk-setting-topmost" name="tsk-setting-topmost" style="height: 15px;width:15px;color:#fff;" onclick="if(checked){topmost[topmost.length]='taskmgr'}else{topmost.splice(topmost.indexOf('taskmgr',1))};hidewin('taskmgr');apps.taskmgr.page('processes');$('#win-taskmgr>.menu>list.focs>a')[0].click();saveDesktop();$('#tsk-search').val('');setTimeout('openapp(`taskmgr`);apps.taskmgr.generateProcesses();',300);"/><label for="tsk-setting-topmost" style="font-size: 15px;">置于顶层</label>
+						<h3 data-i18n="taskmgr.settings.window-management">窗口管理</h3>
+						<input type="checkbox" id="tsk-setting-topmost" name="tsk-setting-topmost" style="height: 15px;width:15px;color:#fff;" onclick="if(checked){topmost[topmost.length]='taskmgr'}else{topmost.splice(topmost.indexOf('taskmgr',1))};hidewin('taskmgr');apps.taskmgr.page('processes');$('#win-taskmgr>.menu>list.focs>a')[0].click();saveDesktop();$('#tsk-search').val('');setTimeout('openapp(`taskmgr`);apps.taskmgr.generateProcesses();',300);"/><label for="tsk-setting-topmost" style="font-size: 15px;" data-i18n="taskmgr.settings.stay-on-top">置于顶层</label>
 					</div>
 					<div>
-						<h3>反馈</h3>
-                        <a class="a jump" onclick="shownotice('feedback')">发送反馈</a>
+						<h3 data-i18n="taskmgr.settings.feedback">反馈</h3>
+                        <a class="a jump" onclick="shownotice('feedback')" data-i18n="taskmgr.settings.send-feedback">发送反馈</a>
 					</div>
 				</div>
 			</div>
