@@ -2096,15 +2096,18 @@ function toggletheme() {
     }
 }
 
-if (window.matchMedia('(prefers-color-scheme: dark)').matches) { //是深色
-    $('.dock.theme').toggleClass('dk');
-    $(':root').toggleClass('dark');
-    $('.window.whiteboard>.titbar>p').text('Blackboard');
-    localStorage.setItem('theme', 'dark');
-    isDark = true;
-} else { // 不是深色
-    $('.window.whiteboard>.titbar>p').text('Whiteboard');
-    localStorage.setItem('theme', 'light');
+// Only set theme based on system preference if no user preference is stored
+if (localStorage.getItem('theme') === null) {
+    if (window.matchMedia('(prefers-color-scheme: dark)').matches) { //是深色
+        $('.dock.theme').toggleClass('dk');
+        $(':root').toggleClass('dark');
+        $('.window.whiteboard>.titbar>p').text('Blackboard');
+        localStorage.setItem('theme', 'dark');
+        isDark = true;
+    } else { // 不是深色
+        $('.window.whiteboard>.titbar>p').text('Whiteboard');
+        localStorage.setItem('theme', 'light');
+    }
 }
 
 // 桌面图标的初始化
@@ -2194,7 +2197,17 @@ document.getElementsByTagName('body')[0].onload = () => {
     }, 1000);
     apps.webapps.init();
     //getdata
-    if (localStorage.getItem('theme') == 'dark') $(':root').addClass('dark');
+    if (localStorage.getItem('theme') == 'dark') {
+        $(':root').addClass('dark');
+        $('.dock.theme').addClass('dk');
+        $('.window.whiteboard>.titbar>p').text('Blackboard');
+        isDark = true;
+    } else {
+        $(':root').removeClass('dark');
+        $('.dock.theme').removeClass('dk');
+        $('.window.whiteboard>.titbar>p').text('Whiteboard');
+        isDark = false;
+    }
     if (localStorage.getItem('color1')) {
         $(':root').css('--theme-1', localStorage.getItem('color1'));
         $(':root').css('--theme-2', localStorage.getItem('color2'));
