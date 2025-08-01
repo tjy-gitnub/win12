@@ -79,12 +79,7 @@ let apps = {
                 $('#win-setting>.page>.cnt.update>.setting-list>.update-now').addClass('disabled');
                 $('#win-setting>.page>.cnt.update>.lo>.update-main>div:last-child').addClass('disabled');
             }, 1000);
-                            }, 6000);
-                        }
-                    }
-                });
-            });
-        }
+        },
     },
     msstore: {
         init: () => {
