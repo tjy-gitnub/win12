@@ -167,7 +167,7 @@ toggletheme() 切换主题
 			<svg style="position:absolute;left:calc(50% - 25px);top:72%;" width="50px" height="50px" viewBox="0 0 16 16">
 				<circle cx="8px" cy="8px" r="7px"></circle>
 			</svg>
-			<p id="loadbackupdate" style="position:absolute;top:calc(72% + 55px);left:0;width:100%;text-align:center;color:#fff;font-size: 25px;display:none;" data-i18n="updating">正在更新</p>
+			<p id="loadbackupdate" style="position:absolute;top:calc(72% + 55px);left:0;width:100%;text-align:center;color:#fff;font-size: 25px;display:none;" data-i18n="updating">休对故人思故国，且将新火试新茶<br>正在更新</p>
 		</loading>
 		<script>
 			setTimeout(() => {
@@ -1644,7 +1644,7 @@ toggletheme() 切换主题
 					</div>
 					<div class="setting-list">
 						<div class="update-now"><icon>&#xE794;</icon><div><p>正在检查更新...</p><p></p></div><div class="alr"><a class="a button" style="font-size: 16px;margin-top: -7.5px;" onclick="sendToSw({ head: 'update' }); localStorage.setItem('update', true); shownotice('setting.update')">更新</a></div></div>
-						<a onclick="openapp('about');$('#win-about>.update').addClass('show');$('#win-about>.about').removeClass('show');"><icon>&#xE946;</icon><div><p>历史版本</p><p>查看历史版本功能</p></div><i class="bi bi-chevron-right"></i></a>
+						<a onclick="openapp('about');$('#win-about>.update').addClass('show');$('#win-about>.about').removeClass('show');"><icon>&#xE946;</icon><div><p>更新历史记录</p><p>查看历史版本功能</p></div><i class="bi bi-chevron-right"></i></a>
 						<a onclick="sendToSw({ head: 'update',force:true }); shownotice('setting.down')"><icon>&#xE896;</icon><div><p>下载完整内容</p><p>当更新或系统出现问题，使用此项下载最新完整内容</p></div><i class="bi bi-chevron-right"></i></a>
 						<div><icon></icon><div><p>自动更新</p><p>设置是否启用自动更新</p></div>
 							<div class="alr">
@@ -1872,6 +1872,7 @@ toggletheme() 切换主题
 					<p data-i18n="about.intro.others.p1">&emsp;&emsp;此项目基于目前 Windows 版本创造，与微软的 Windows 12 正式版本不一致。</p>
 					<p data-i18n="about.intro.others.p2">&emsp;&emsp;此项目绝不附属于微软，且不应与微软操作系统或产品混淆，这也不是 Windows365 cloud PC。</p>
 					<p data-i18n="about.intro.others.p3">&emsp;&emsp;本项目中微软、Windows 和其他示范产品是微软公司的商标。本项目中 Android 是谷歌公司的商标。</p>
+					<p data-i18n="about.intro.others.p4">&emsp;&emsp;若您在本项目（网址为tjy-gitnub.github.io/win12/desktop.html）之外的网站看到此页面，那么您可能正在浏览一个镜像网站。若欲造访原始页面，请点击<a onclick="window.open('https://tjy-gitnub.github.io/win12/desktop.html','_blank');" win12_title="https://tjy-gitnub.github.io/win12/desktop.html" class="jump">这里</a>。</p>
 				</div>
 			</div>
 			<div class="cnt update">
@@ -1880,7 +1881,7 @@ toggletheme() 切换主题
 					<details><summary><span>v10.0.5</span>
 					</v10></span> 设置优化</summary><p>
 						&emsp;&emsp;-(更新来自 @tangyuan0821)<br>
-				        &emsp;&emsp;- 对 “设置” 应用中的部分表述进行了优化，使其更契合微软的风格
+				        &emsp;&emsp;- 对 “设置” 应用中的部分表述进行了优化，使其更契合微软的风格<br>
 						&emsp;&emsp;- 在“设置”中增加了“Windows预览体验计划”
 						&emsp;&emsp;- 其他细微之处的更新<br>
 				    </p></details>
