@@ -1639,13 +1639,13 @@ toggletheme() 切换主题
 								<p class="notice">正在检查更新...</p>
 								<p class="detail"></p>
 							</div>
-							<div><a class="a button" style="font-size: 16px;margin-top: -7.5px;" onclick="apps.setting.checkUpdate()">检查更新</a></div>
+							<div><a class="a button disabled" style="font-size: 16px;margin-top: -7.5px; opacity: 0.5; pointer-events: none;">检查更新</a></div>
 						</div>
 					</div>
 					<div class="setting-list">
-						<div class="update-now"><icon>&#xE794;</icon><div><p>正在检查更新...</p><p></p></div><div class="alr"><a class="a button" style="font-size: 16px;margin-top: -7.5px;" onclick="sendToSw({ head: 'update' }); localStorage.setItem('update', true); shownotice('setting.update')">更新</a></div></div>
-						<a onclick="openapp('about');$('#win-about>.update').addClass('show');$('#win-about>.about').removeClass('show');"><icon>&#xE946;</icon><div><p>更新历史记录</p><p>查看历史版本功能</p></div><i class="bi bi-chevron-right"></i></a>
-						<a onclick="sendToSw({ head: 'update',force:true }); shownotice('setting.down')"><icon>&#xE896;</icon><div><p>下载完整内容</p><p>当更新或系统出现问题，使用此项下载最新完整内容</p></div><i class="bi bi-chevron-right"></i></a>
+						<div class="update-now disabled"><icon>&#xE794;</icon><div><p>开发者暂未完善此功能</p><p>Windows 更新已被禁用</p></div><div class="alr"><a class="a button disabled" style="font-size: 16px;margin-top: -7.5px; opacity: 0.5; pointer-events: none;">更新</a></div></div>
+						<a onclick="openapp('about');$('#win-about>.update').addClass('show');$('#win-about>.about').removeClass('show');" style="opacity: 0.5; pointer-events: none;"><icon>&#xE946;</icon><div><p>更新历史记录</p><p>查看历史版本功能</p></div><i class="bi bi-chevron-right"></i></a>
+						<a style="opacity: 0.5; pointer-events: none;"><icon>&#xE896;</icon><div><p>下载完整内容</p><p>当更新或系统出现问题，使用此项下载最新完整内容</p></div><i class="bi bi-chevron-right"></i></a>
 						<div><icon></icon><div><p>自动更新</p><p>设置是否启用自动更新</p></div>
 							<div class="alr">
 								<a class="checkbox checked a" onclick="$(this).toggleClass('checked'); autoUpdate = !autoUpdate; localStorage.setItem('autoUpdate', autoUpdate)"></a>
@@ -2433,7 +2433,7 @@ toggletheme() 切换主题
 				<a class="a wbtg red" onclick="hidewin('whiteboard')"><i class="bi bi-x-lg"></i></a>
 				<a class="a wbtg max" onclick="maxwin('whiteboard')"><i class="bi bi-app"></i></a>
 				<a class="a wbtg" onclick="minwin('whiteboard')"><i class="bi bi-dash-lg"></i></a>
-				<a class="a wbtg" onclick="apps.whiteboard.download()"><i class="bi bi-download"></i></a>
+				<a class="a wbtg" onclick="apps.whiteboard.saveAs()" win12_title="另存为"><i class="bi bi-save"></i></a>
 			</div>
 		</div>
 		<div class="loadback">

@@ -63,36 +63,22 @@ let apps = {
         },
         // 无法正常运行，待调试
         checkUpdate: () => {
-            $('#win-setting>.page>.cnt.update>.lo>.update-main .notice')[0].innerText = '正在检查更新...';
-            $('#win-setting>.page>.cnt.update>.lo>.update-main .detail')[0].innerHTML = '&nbsp;';
+            $('#win-setting>.page>.cnt.update>.lo>.update-main .notice')[0].innerText = '开发者暂未完善此功能';
+            $('#win-setting>.page>.cnt.update>.lo>.update-main .detail')[0].innerHTML = 'Windows 更新已被禁用';
             $('#win-setting>.page>.cnt.update>.setting-list>.update-now').addClass('disabled');
-            $('#win-setting>.page>.cnt.update>.setting-list>.update-now>div>p:first-child')[0].innerText = '正在检查更新...';
-            $('#win-setting>.page>.cnt.update>.setting-list>.update-now>div>p:last-child')[0].innerHTML = '&nbsp;';
+            $('#win-setting>.page>.cnt.update>.setting-list>.update-now>div>p:first-child')[0].innerText = '开发者暂未完善此功能';
+            $('#win-setting>.page>.cnt.update>.setting-list>.update-now>div>p:last-child')[0].innerHTML = 'Windows 更新已被禁用';
             $('#win-setting>.page>.cnt.update>.lo>.update-main>div:last-child').addClass('disabled');
-            api('repos/tjy-gitnub/win12/commits').then(res => {
-                res.json().then(json => {
-                    const sha = localStorage.getItem('sha');
-                    if (sha != json[0].sha) {
-                        let msg = json[0].commit.message.split('\n\n')[0];
-                        if (msg.match(/v[0-9]*\.[0-9]*\.[0-9]*/)) {
-                            msg = msg.match(/v[0-9]*\.[0-9]*\.[0-9]*/)[0];
-                            window.setTimeout(() => {
-                                $('#win-setting>.page>.cnt.update>.lo>.update-main .notice')[0].innerText = 'Windows 12 有更新可用';
-                                $('#win-setting>.page>.cnt.update>.lo>.update-main .detail')[0].innerText = `目前最新版本: ${msg}`;
-                                $('#win-setting>.page>.cnt.update>.lo>.update-main>div:last-child').removeClass('disabled');
-                                $('#win-setting>.page>.cnt.update>.setting-list>.update-now>div>p:first-child')[0].innerText = '更新已就绪';
-                                $('#win-setting>.page>.cnt.update>.setting-list>.update-now>div>p:last-child')[0].innerText = msg;
-                                $('#win-setting>.page>.cnt.update>.setting-list>.update-now').removeClass('disabled');
-                            }, 6000);
-                        }
-                        else {
-                            window.setTimeout(() => {
-                                let da = new Date();
-                                $('#win-setting>.page>.cnt.update>.lo>.update-main .notice')[0].innerText = 'Windows 12 目前是最新版本';
-                                $('#win-setting>.page>.cnt.update>.lo>.update-main .detail')[0].innerText = `上次检查时间: ${da.toLocaleDateString()}，${da.toLocaleTimeString()}`;
-                                $('#win-setting>.page>.cnt.update>.lo>.update-main>div:last-child').removeClass('disabled');
-                                $('#win-setting>.page>.cnt.update>.setting-list>.update-now>div>p:first-child')[0].innerText = '无更新可用';
-                                $('#win-setting>.page>.cnt.update>.setting-list>.update-now>div>p:last-child')[0].innerText = 'Windows 12 目前是最新版本';
+            // Simulate the previous functionality for backward compatibility but disable actual updates
+            setTimeout(() => {
+                $('#win-setting>.page>.cnt.update>.lo>.update-main .notice')[0].innerText = '开发者暂未完善此功能';
+                $('#win-setting>.page>.cnt.update>.lo>.update-main .detail')[0].innerText = 'Windows 更新已被禁用';
+                $('#win-setting>.page>.cnt.update>.setting-list>.update-now>div>p:first-child')[0].innerText = '开发者暂未完善此功能';
+                $('#win-setting>.page>.cnt.update>.setting-list>.update-now>div>p:last-child')[0].innerText = 'Windows 更新已被禁用';
+                // Keep buttons disabled as requested
+                $('#win-setting>.page>.cnt.update>.setting-list>.update-now').addClass('disabled');
+                $('#win-setting>.page>.cnt.update>.lo>.update-main>div:last-child').addClass('disabled');
+            }, 1000);
                             }, 6000);
                         }
                     }
@@ -727,6 +713,22 @@ let apps = {
             const url = apps.whiteboard.canvas.toDataURL();
             $('#win-whiteboard>a.download')[0].href = url;
             $('#win-whiteboard>a.download')[0].click();
+        },
+        saveAs: () => {
+            // Enhanced save functionality with filename prompt
+            const fileName = prompt('请输入文件名:', 'Whiteboard_' + new Date().toISOString().slice(0,10));
+            if (fileName) {
+                const url = apps.whiteboard.canvas.toDataURL();
+                const link = document.createElement('a');
+                link.href = url;
+                link.download = fileName.endsWith('.png') ? fileName : fileName + '.png';
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                
+                // Show confirmation notice
+                shownotice('whiteboard-saved');
+            }
         },
         delete: () => {
             apps.whiteboard.ctx.clearRect(0, 0, apps.whiteboard.canvas.width, apps.whiteboard.canvas.height);
