@@ -1876,7 +1876,7 @@ function openapp(name) {
                 <div style="text-align: center; max-width: 800px; padding: 40px;">
                     <h1 style="font-size: 72px; margin-bottom: 30px;">:(</h1>
                     <h2 style="margin-bottom: 20px;">你的电脑遇到问题，需要重新启动</h2>
-                    <p style="margin-bottom: 20px;">我们只收集某些错误信息，然后为你重新启动。</p>
+                    <p style="margin-bottom: 20px;">我们只假装收集某些错误信息，然后为你重新启动。</p>
                     <p style="font-size: 18px; opacity: 0.8;">停止代码: WINDOW_OVERLOAD_EXCEPTION</p>
                     <p style="font-size: 16px; margin-top: 30px;">打开窗口数量: ${openWindowCount}</p>
                     <div style="margin-top: 40px;">
