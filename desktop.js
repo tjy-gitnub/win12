@@ -44,6 +44,7 @@ let langc={
     'zh-cn':'zh-CN',
     'zh-hans':'zh-CN',
     'zh-Hans':'zh-CN',
+    'zh-TW':'zh-TW',
     'zh-tw':'zh-TW',
     'zh-hant':'zh-TW',
     'zh-Hant':'zh-TW',
@@ -70,7 +71,7 @@ if(localStorage.getItem('lang')!=null){
     if(navigator.language in langc)
         localStorage.setItem('lang',langc[navigator.language]);
     else
-        localStorage.setItem('lang','en-US');
+        localStorage.setItem('lang','en');
 }
 langcode=localStorage.getItem('lang');
 
