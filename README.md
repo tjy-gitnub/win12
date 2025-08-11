@@ -114,9 +114,9 @@
 
 ## 开源声明
 >[!TIP]
->无论您使用何种方式使用本项目，均代表您已仔细阅读并同意遵守本章节的全部内容。
+>无论您以何种方式使用本项目，均代表您已仔细阅读并同意遵守本章节的全部内容。
 
-Wndows12 网页版是自由软件，采用Eclipse基金会发行的Eclipse Public License 2.0（网址:<https://www.eclipse.org/legal/epl-2.0/>）进行许可。
+Wndows12 网页版是自由软件，采用Eclipse基金会发行的Eclipse Public License 2.0许可证（网址:<https://www.eclipse.org/legal/epl-2.0/>）进行许可。
 
 **根据 EPL-2.0 许可，您可以**：
 - 自由使用、复制、修改、分发本项目的源代码。
