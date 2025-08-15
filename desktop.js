@@ -820,13 +820,13 @@ const nts = {
     },
     'whiteboard-saveas': {
         cnt: `
-        <p class="tit">另存为</p>
-        <p>请输入文件名:</p>
+        <p class="tit">${lang('另存为','whiteboard.saveas.title')}</p>
+        <p>${lang('请输入文件名:','whiteboard.saveas.prompt')}</p>
         <input type="text" id="whiteboard-filename" placeholder="Whiteboard_${new Date().toISOString().slice(0,10)}" style="width: 100%; padding: 8px; margin: 10px 0; border: 1px solid #ccc; border-radius: 4px;">
         `,
         btn: [
-            { type: 'main', text: '保存', js: 'apps.whiteboard.doSaveAs();' },
-            { type: 'detail', text: '取消', js: 'closenotice();' }
+            { type: 'main', text: lang('保存','whiteboard.saveas.save'), js: 'apps.whiteboard.doSaveAs();' },
+            { type: 'detail', text: lang('取消','whiteboard.saveas.cancel'), js: 'closenotice();' }
         ]
     }
 };
@@ -884,24 +884,24 @@ function runcmd(cmd, inTerminal=false) {
     else if (cmd === 'help') {
         if (inTerminal) {
             $('#win-terminal>.text-cmd').append(`
-有关某个命令的详细信息，请键入 HELP 命令名
-DIR             显示目录中的文件和子目录列表
-LS              显示目录中的文件和子目录列表 (DIR的别名)
-DEL             删除一个或多个文件
-CD              显示当前目录的名称或将其更改
-CLS             清除屏幕
-HELP            提供 Windows 命令的帮助信息
-SYSTEMINFO      显示系统信息
-SHUTDOWN        关闭计算机
-CMD             打开新的命令提示符窗口
-EXIT            退出命令提示符程序
+${lang('有关某个命令的详细信息，请键入 HELP 命令名','terminal.help.title')}
+DIR             ${lang('显示目录中的文件和子目录列表','terminal.help.dir')}
+LS              ${lang('显示目录中的文件和子目录列表 (DIR的别名)','terminal.help.ls')}
+DEL             ${lang('删除一个或多个文件','terminal.help.del')}
+CD              ${lang('显示当前目录的名称或将其更改','terminal.help.cd')}
+CLS             ${lang('清除屏幕','terminal.help.cls')}
+HELP            ${lang('提供 Windows 命令的帮助信息','terminal.help.help')}
+SYSTEMINFO      ${lang('显示系统信息','terminal.help.systeminfo')}
+SHUTDOWN        ${lang('关闭计算机','terminal.help.shutdown')}
+CMD             ${lang('打开新的命令提示符窗口','terminal.help.cmd')}
+EXIT            ${lang('退出命令提示符程序','terminal.help.exit')}
 
-彩蛋命令:
-HELLO           打个招呼
-MATRIX          黑客帝国特效
-SNOW            下雪特效
-DANCE           让窗口跳舞
-STARWARS        原力觉醒
+${lang('彩蛋命令:','terminal.help.easter')}
+HELLO           ${lang('打个招呼','terminal.help.hello')}
+MATRIX          ${lang('黑客帝国特效','terminal.help.matrix')}
+SNOW            ${lang('下雪特效','terminal.help.snow')}
+DANCE           ${lang('让窗口跳舞','terminal.help.dance')}
+STARWARS        ${lang('原力觉醒','terminal.help.starwars')}
 `);
         }
         return true;
