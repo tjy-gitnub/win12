@@ -141,7 +141,7 @@ Wndows12 网页版是自由软件，采用Eclipse基金会发行的Eclipse Publi
 
 项目贡献者:详见[此处](https://github.com/tjy-gitnub/win12/graphs/contributors)
 
-仓库协作者:tangyuan0821([Weibo](https://weibo.com/u/7736964006)),fzlzjerry
+仓库协作者:tangyuan0821([Bilibili](https://space.bilibili.com/1779461371)),fzlzjerry
 
 ## 资助我们
 
