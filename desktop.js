@@ -1545,9 +1545,14 @@ let copilot = {
         }
         copilot.history.push({ role: role, content: t });
         $('#copilot>.chat').scrollTop($('#copilot>.chat')[0].scrollHeight);
-
+           // 存储uid
+           const uid = localStorage.getItem('copilot_uid') || 
+            (() => {
+              const newUid = Math.floor(100000 + Math.random() * 900000); // 生成 100000-999999 的随机六位数
+              localStorage.setItem('copilot_uid', newUid.toString());
+              return newUid;
+           })();
         // 构建API请求URL
-        const uid = Math.floor(100000 + Math.random() * 900000); // 生成随机数
         const encodedQuestion = encodeURIComponent(t);
         const apiUrl = `https://api.jkyai.top/API/gpt5-nano?question=${encodedQuestion}&system=${encodeURIComponent(copilot.history[0].content)}&uid=${uid}`;
 
