@@ -818,25 +818,15 @@ const nts = {
             { type: 'main', text: '重新启动', js: 'closenotice(); setTimeout(() => {window.location=`reload.html`;},200);' }
         ]
     },
-    'cpu-overload': {
+    'whiteboard-saveas': {
         cnt: `
-        <p class="tit">CPU满载警告</p>
-        <p>您已打开超过50个窗口，CPU接近满载状态。<br />
-        建议关闭一些不必要的窗口以提高系统性能。<br />
-        <span style="color: #ff6b6b;">警告：打开超过100个窗口可能导致系统崩溃！</span></p>
+        <p class="tit">另存为</p>
+        <p>请输入文件名:</p>
+        <input type="text" id="whiteboard-filename" placeholder="Whiteboard_${new Date().toISOString().slice(0,10)}" style="width: 100%; padding: 8px; margin: 10px 0; border: 1px solid #ccc; border-radius: 4px;">
         `,
         btn: [
-            { type: 'main', text: '我知道了', js: 'closenotice();' },
-            { type: 'detail', text: '打开任务管理器', js: 'closenotice(); openapp("taskmgr");' }
-        ]
-    },
-    'whiteboard-saved': {
-        cnt: `
-        <p class="tit">文件已保存</p>
-        <p>您的白板内容已成功保存到本地。</p>
-        `,
-        btn: [
-            { type: 'main', text: '确定', js: 'closenotice();' }
+            { type: 'main', text: '保存', js: 'apps.whiteboard.doSaveAs();' },
+            { type: 'detail', text: '取消', js: 'closenotice();' }
         ]
     }
 };
@@ -896,9 +886,9 @@ function runcmd(cmd, inTerminal=false) {
             $('#win-terminal>.text-cmd').append(`
 有关某个命令的详细信息，请键入 HELP 命令名
 DIR             显示目录中的文件和子目录列表
+LS              显示目录中的文件和子目录列表 (DIR的别名)
 DEL             删除一个或多个文件
 CD              显示当前目录的名称或将其更改
-START           启动程序或打开应用程序
 CLS             清除屏幕
 HELP            提供 Windows 命令的帮助信息
 SYSTEMINFO      显示系统信息
@@ -916,7 +906,7 @@ STARWARS        原力觉醒
         }
         return true;
     }
-    else if (cmd === 'dir') {
+    else if (cmd === 'dir' || cmd === 'ls') {
         if (inTerminal) {
             $('#win-terminal>.text-cmd').append(`
  驱动器 C 中的卷没有标签。
@@ -957,29 +947,6 @@ ${new Date().toLocaleDateString()}  ${new Date().toLocaleTimeString()}    <DIR> 
                 $('#win-terminal>.text-cmd').append(`C:\\\n`);
             } else {
                 $('#win-terminal>.text-cmd').append(`C:\\Windows\\System32\\${path}\n`);
-            }
-        }
-        return true;
-    }
-    else if (cmd.startsWith('start ')) {
-        if (inTerminal) {
-            const program = cmd.substring(6).trim().toLowerCase();
-            if (program === 'explorer' || program === 'explorer.exe') {
-                if (program.includes('.exe') || program.includes('.com') || program.includes('.bat') || 
-                    program.includes('.cmd') || program.includes('.scr')) {
-                    $('#win-terminal>.text-cmd').append(`您没有权限运行此程序。\n`);
-                } else {
-                    $('#win-terminal>.text-cmd').append(`正在启动 ${program}...\n`);
-                    setTimeout(() => openapp('explorer'), 500);
-                }
-            } else if (program === 'notepad' || program === 'notepad.exe') {
-                $('#win-terminal>.text-cmd').append(`正在启动记事本...\n`);
-                setTimeout(() => openapp('notepad'), 500);
-            } else if (program === 'calc' || program === 'calc.exe') {
-                $('#win-terminal>.text-cmd').append(`正在启动计算器...\n`);
-                setTimeout(() => openapp('calc'), 500);
-            } else {
-                $('#win-terminal>.text-cmd').append(`找不到程序 "${program}"。\n`);
             }
         }
         return true;
@@ -1847,58 +1814,7 @@ function geticon(name) {
 }
 
 
-// Window count tracking for CPU overload warnings
-let openWindowCount = 0;
-
 function openapp(name) {
-    // Check current window count and show warnings/crash simulation
-    openWindowCount++;
-    
-    if (openWindowCount >= 100) {
-        // Simulate system crash with custom colored screen
-        document.body.innerHTML = `
-            <div style="
-                position: fixed; 
-                top: 0; 
-                left: 0; 
-                width: 100%; 
-                height: 100%; 
-                background: linear-gradient(45deg, #ff0080, #8000ff, #0080ff);
-                display: flex; 
-                flex-direction: column; 
-                justify-content: center; 
-                align-items: center; 
-                color: white; 
-                font-family: 'Microsoft YaHei', sans-serif; 
-                font-size: 24px; 
-                z-index: 10000;
-            ">
-                <div style="text-align: center; max-width: 800px; padding: 40px;">
-                    <h1 style="font-size: 72px; margin-bottom: 30px;">:(</h1>
-                    <h2 style="margin-bottom: 20px;">你的电脑遇到问题，需要重新启动</h2>
-                    <p style="margin-bottom: 20px;">我们只假装收集某些错误信息，然后为你重新启动。</p>
-                    <p style="font-size: 18px; opacity: 0.8;">停止代码: WINDOW_OVERLOAD_EXCEPTION</p>
-                    <p style="font-size: 16px; margin-top: 30px;">打开窗口数量: ${openWindowCount}</p>
-                    <div style="margin-top: 40px;">
-                        <button onclick="location.reload()" style="
-                            background: rgba(255,255,255,0.2); 
-                            border: 2px solid white; 
-                            color: white; 
-                            padding: 15px 30px; 
-                            font-size: 18px; 
-                            cursor: pointer; 
-                            border-radius: 5px;
-                        ">重新启动</button>
-                    </div>
-                </div>
-            </div>
-        `;
-        return;
-    } else if (openWindowCount >= 50) {
-        // Show CPU overload warning
-        shownotice('cpu-overload');
-    }
-    
     if (taskmgrTasks.findIndex(elt => elt.link == name) > -1 && apps.taskmgr.tasks.findIndex(elt => elt.link == name) == -1) {
         apps.taskmgr.tasks.splice(apps.taskmgr.tasks.length, 0, taskmgrTasks.find(elt => elt.link == name));
     }
@@ -1907,7 +1823,6 @@ function openapp(name) {
             minwin(name);
         }
         focwin(name);
-        openWindowCount--; // Don't count existing windows again
         return;
     }
     $('.window.' + name).addClass('load');

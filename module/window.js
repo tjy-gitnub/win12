@@ -28,11 +28,6 @@ function showwin(name) {
 }
 
 function hidewin(name, arg = 'window') {
-    // Decrement window count when closing windows
-    if (arg == 'window' && openWindowCount > 0) {
-        openWindowCount--;
-    }
-    
     $('.window.' + name).removeClass('notrans');
     $('.window.' + name).removeClass('max');
     $('.window.' + name).removeClass('show');

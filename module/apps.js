@@ -710,20 +710,23 @@ let apps = {
             $('#win-whiteboard>a.download')[0].click();
         },
         saveAs: () => {
-            // Enhanced save functionality with filename prompt
-            const fileName = prompt('请输入文件名:', 'Whiteboard_' + new Date().toISOString().slice(0,10));
-            if (fileName) {
-                const url = apps.whiteboard.canvas.toDataURL();
-                const link = document.createElement('a');
-                link.href = url;
-                link.download = fileName.endsWith('.png') ? fileName : fileName + '.png';
-                document.body.appendChild(link);
-                link.click();
-                document.body.removeChild(link);
-                
-                // Show confirmation notice
-                shownotice('whiteboard-saved');
-            }
+            // Show filename input dialog using notice system
+            shownotice('whiteboard-saveas');
+        },
+        doSaveAs: () => {
+            // Execute the actual save with the filename from the notice input
+            const fileName = document.getElementById('whiteboard-filename').value.trim() || 
+                           `Whiteboard_${new Date().toISOString().slice(0,10)}`;
+            
+            const url = apps.whiteboard.canvas.toDataURL();
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = fileName.endsWith('.png') ? fileName : fileName + '.png';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            
+            closenotice();
         },
         delete: () => {
             apps.whiteboard.ctx.clearRect(0, 0, apps.whiteboard.canvas.width, apps.whiteboard.canvas.height);
