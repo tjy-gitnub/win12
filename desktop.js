@@ -1513,40 +1513,21 @@ let copilot = {
             content:'很好。现在开始与用户对话。'
         },{
             role:'assistant',
-            content:'欢迎使用 Windows 12，有什么可以帮您？'
+            content:'欢迎使用 Windows 12 Copilot AI助手，有什么可以帮您？'
         }],
     init: () => {
         $('#copilot>.chat').html('');
-        // $('#copilot>.chat').append(`<div class="line system"><p class="text">本ai助手间歇性正常工作，如果ai提到一些花括号括起来的指令，请刷新页面后重新开始对话。见谅~</p></div>`);
-        // $('#copilot>.chat').append(`<div class="line system"><p class="text">目前可用功能：<br>
-        // 1.打开设置、edge、关于、计算器四个应用<br>
-        // 2.在浏览器中打开链接、搜索<br>
-        // 3.发送对系统、ai助手的反馈
-        // 注意：请勿滥用本ai助手，否则将下个版本将撤销此功能，影响所有人。</p></div>`);
-        $('#copilot>.chat').append(`<div class="line system"><p class="text">本 AI 助手间歇性正常工作。目前支持以下操作：<br>
+        $('#copilot>.chat').append(`<div class="line system"><p class="text">本 AI 助手已恢复正常工作。目前支持以下操作：<br>
         1.打开除webapp外大多应用<br>
         2.在浏览器中打开链接、搜索<br>
         3.发送对系统、AI助手的反馈<br>
-        4.切换颜色主题<br>
-        <strong>请勿滥用本ai助手！每日对话限 7 条。</strong></p></div>`);
+        4.切换颜色主题</p></div>`);
         setTimeout(() => {
-            if(localStorage.getItem('ailimit')==null || 
-                (localStorage.getItem('ailimitday')!=(new Date()).toDateString())){
-                localStorage.setItem('ailimitday',(new Date()).toDateString());
-                localStorage.setItem('ailimit','0');
-            }
-            if(Number(localStorage.getItem('ailimit'))>=7){
-                $('#copilot>.inputbox').addClass('disable');
-                $('#copilot>.chat').append('<div class="line system"><p class="text">非常抱歉，但已达到本日对话限制 (7句)，请移步到其他 AI 网站 >u-)o</p></div>');
-                $('#copilot>.chat').scrollTop($('#copilot>.chat')[0].scrollHeight);
-                return;
-            }
             $('#copilot>.chat').append(`<div class="line ai"><p class="text">欢迎使用 Windows 12，有什么可以帮您？</p></div>`);
             $('#copilot>.inputbox').removeClass('disable');
             $('#copilot>.chat').scrollTop($('#copilot>.chat')[0].scrollHeight);
         }, 200);
     },
-    ailimit: 7,
     send: (t, showusr = true, role='user') => {
         // 输入验证
         if (t.length == 0) {
@@ -1556,23 +1537,7 @@ let copilot = {
             return;
         }
 
-        if(role=='user'){
-            // if(localStorage.getItem('ailimit')==null || 
-            //     (localStorage.getItem('ailimitday')!=(new Date()).toDateString())){
-            //     localStorage.setItem('ailimitday',(new Date()).toDateString());
-            //     localStorage.setItem('ailimit','0');
-            // }
-            localStorage.setItem('ailimit',(Number(localStorage.getItem('ailimit'))+1).toString());
-        }
-
         $('#copilot>.inputbox').addClass('disable');
-        
-
-        // 历史记录管理
-        // if (copilot.history.length > 3){
-        //     copilot.history.splice(2, 2);
-        //     copilot.history.splice(2, 2);
-        // }
 
         // 显示用户消息
         if (showusr) {
@@ -1581,46 +1546,19 @@ let copilot = {
         copilot.history.push({ role: role, content: t });
         $('#copilot>.chat').scrollTop($('#copilot>.chat')[0].scrollHeight);
 
+        // 构建API请求URL
+        const uid = 123456; // 固定UID用于记忆对话
+        const encodedQuestion = encodeURIComponent(t);
+        const apiUrl = `https://api.jkyai.top/API/gpt5-nano?question=${encodedQuestion}&system=${encodeURIComponent(copilot.history[0].content)}&uid=${uid}`;
+
         // API请求
         $.ajax({
-            url: 'https://api.pearktrue.cn/api/aichat/',
-            method: 'POST',
-            contentType: 'application/json',
-            data: JSON.stringify({
-                url: 'https://copilot-new.nb-group8302.workers.dev/',
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: {
-                    prompt: t,
-                    history: copilot.history
-                }
-            }),
-            success: function(response) {
+            url: apiUrl,
+            method: 'GET',
+            success: function(responseText) {
                 msgDoneOperate();
-                
-                // 处理首次对话
-                // if (isFirstChat) {
-                //     $("#init-message").html(`初始化完成！`);
-                //     isFirstChat = false;
-                // }
-
-                // 解析代理响应
-                let responseText = '';
-                try {
-                    // 解析代理服务器的响应
-                    const proxyResponse = typeof response === 'string' ? JSON.parse(response) : response;
-                    // 获取实际响应内容
-                    const actualResponse = typeof proxyResponse.body === 'string' ? 
-                        JSON.parse(proxyResponse.body) : proxyResponse.body;
-                    responseText = actualResponse.response || actualResponse;
-                } catch (e) {
-                    responseText = response;
-                }
 
                 // 处理特殊命令
-
                 let rt = responseText;
                 let r = [];
                 if (/{.+}/.test(rt)) {
@@ -1666,14 +1604,6 @@ let copilot = {
                 }
 
                 copilot.history.push({ role: 'assistant', content: responseText });
-                
-                if(Number(localStorage.getItem('ailimit'))>=7){
-                    $('#copilot>.inputbox').addClass('disable');
-                    $('#copilot>.chat').append('<div class="line system"><p class="text">非常抱歉，但已达到本日对话限制 (7句)，请移步到其他 AI 网站 >u-)o</p></div>');
-                    $('#copilot>.chat').scrollTop($('#copilot>.chat')[0].scrollHeight);
-                    return;
-                }
-
                 $('#copilot>.chat').scrollTop($('#copilot>.chat')[0].scrollHeight);
                 msgDoneOperate();
             },
@@ -1681,15 +1611,12 @@ let copilot = {
                 console.log(error);
                 $('#copilot>.chat').append('<div class="line system"><p class="text">发生错误，请查看控制台输出或重试</p></div>');
                 $('#copilot>.chat').scrollTop($('#copilot>.chat')[0].scrollHeight);
-
-
-                localStorage.setItem('ailimit',(Number(localStorage.getItem('ailimit'))-1).toString());
                 msgDoneOperate();
             }
         });
     },
     ana: (resp)=>{
-        
+
     }
 };
 // 日期、时间
