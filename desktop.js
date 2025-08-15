@@ -1547,7 +1547,7 @@ let copilot = {
         $('#copilot>.chat').scrollTop($('#copilot>.chat')[0].scrollHeight);
 
         // 构建API请求URL
-        const uid = copilotUID; // 使用每个用户唯一的UID用于记忆对话
+        const uid = Math.floor(100000 + Math.random() * 900000); // 生成随机数
         const encodedQuestion = encodeURIComponent(t);
         const apiUrl = `https://api.jkyai.top/API/gpt5-nano?question=${encodedQuestion}&system=${encodeURIComponent(copilot.history[0].content)}&uid=${uid}`;
 
