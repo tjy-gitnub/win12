@@ -817,6 +817,17 @@ const nts = {
         btn: [
             { type: 'main', text: '重新启动', js: 'closenotice(); setTimeout(() => {window.location=`reload.html`;},200);' }
         ]
+    },
+    'whiteboard-saveas': {
+        cnt: `
+        <p class="tit">${lang('另存为','whiteboard.saveas.title')}</p>
+        <p>${lang('请输入文件名:','whiteboard.saveas.prompt')}</p>
+        <input type="text" id="whiteboard-filename" placeholder="Whiteboard_${new Date().toISOString().slice(0,10)}" style="width: 100%; padding: 8px; margin: 10px 0; border: 1px solid #ccc; border-radius: 4px;">
+        `,
+        btn: [
+            { type: 'main', text: lang('保存','whiteboard.saveas.save'), js: 'apps.whiteboard.doSaveAs();' },
+            { type: 'detail', text: lang('取消','whiteboard.saveas.cancel'), js: 'closenotice();' }
+        ]
     }
 };
 function shownotice(name) {
@@ -873,21 +884,70 @@ function runcmd(cmd, inTerminal=false) {
     else if (cmd === 'help') {
         if (inTerminal) {
             $('#win-terminal>.text-cmd').append(`
-有关某个命令的详细信息，请键入 HELP 命令名
-CLS             清除屏幕
-HELP            提供 Windows 命令的帮助信息
-SYSTEMINFO      显示系统信息
-SHUTDOWN        关闭计算机
-CMD             打开新的命令提示符窗口
-EXIT            退出命令提示符程序
+${lang('有关某个命令的详细信息，请键入 HELP 命令名','terminal.help.title')}
+DIR             ${lang('显示目录中的文件和子目录列表','terminal.help.dir')}
+LS              ${lang('显示目录中的文件和子目录列表 (DIR的别名)','terminal.help.ls')}
+DEL             ${lang('删除一个或多个文件','terminal.help.del')}
+CD              ${lang('显示当前目录的名称或将其更改','terminal.help.cd')}
+CLS             ${lang('清除屏幕','terminal.help.cls')}
+HELP            ${lang('提供 Windows 命令的帮助信息','terminal.help.help')}
+SYSTEMINFO      ${lang('显示系统信息','terminal.help.systeminfo')}
+SHUTDOWN        ${lang('关闭计算机','terminal.help.shutdown')}
+CMD             ${lang('打开新的命令提示符窗口','terminal.help.cmd')}
+EXIT            ${lang('退出命令提示符程序','terminal.help.exit')}
 
-彩蛋命令:
-HELLO           打个招呼
-MATRIX          黑客帝国特效
-SNOW            下雪特效
-DANCE           让窗口跳舞
-STARWARS        原力觉醒
+${lang('彩蛋命令:','terminal.help.easter')}
+HELLO           ${lang('打个招呼','terminal.help.hello')}
+MATRIX          ${lang('黑客帝国特效','terminal.help.matrix')}
+SNOW            ${lang('下雪特效','terminal.help.snow')}
+DANCE           ${lang('让窗口跳舞','terminal.help.dance')}
+STARWARS        ${lang('原力觉醒','terminal.help.starwars')}
 `);
+        }
+        return true;
+    }
+    else if (cmd === 'dir' || cmd === 'ls') {
+        if (inTerminal) {
+            $('#win-terminal>.text-cmd').append(`
+ 驱动器 C 中的卷没有标签。
+ 卷的序列号是 3E47-2B9A
+
+ C:\\Windows\\System32 的目录
+
+${new Date().toLocaleDateString()}  ${new Date().toLocaleTimeString()}    <DIR>          .
+${new Date().toLocaleDateString()}  ${new Date().toLocaleTimeString()}    <DIR>          ..
+2023/10/01  10:30:00             1,024 calc.exe
+2023/10/01  10:30:00               512 cmd.exe
+2023/10/01  10:30:00             2,048 notepad.exe
+2023/10/01  10:30:00             4,096 taskmgr.exe
+2023/10/01  10:30:00               256 winver.exe
+               5 个文件          7,936 字节
+               2 个目录  21,474,836,480 可用字节
+`);
+        }
+        return true;
+    }
+    else if (cmd.startsWith('del ')) {
+        if (inTerminal) {
+            const fileName = cmd.substring(4).trim();
+            if (fileName.toLowerCase().includes('system32') || fileName.toLowerCase().includes('windows') || fileName.toLowerCase().includes('program files')) {
+                $('#win-terminal>.text-cmd').append(`错误: 拒绝访问。无法删除系统关键文件或目录。\n`);
+            } else {
+                $('#win-terminal>.text-cmd').append(`找不到文件 "${fileName}"。\n`);
+            }
+        }
+        return true;
+    }
+    else if (cmd.startsWith('cd ')) {
+        if (inTerminal) {
+            const path = cmd.substring(3).trim();
+            if (path === '..') {
+                $('#win-terminal>.text-cmd').append(`C:\\Windows\n`);
+            } else if (path === '\\' || path === '/') {
+                $('#win-terminal>.text-cmd').append(`C:\\\n`);
+            } else {
+                $('#win-terminal>.text-cmd').append(`C:\\Windows\\System32\\${path}\n`);
+            }
         }
         return true;
     }
