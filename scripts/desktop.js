@@ -753,11 +753,11 @@ const nts = {
     'about-copilot': {
         cnt: `
             <p class="tit">关于 Windows 12 Copilot</p>
-            <p>你可以使用此 AI 助手帮助你更快地完成工作，此AI助手基于GPT-5 nano AI模型 (有人用Win12工作?)<br>
+            <p>你可以使用此 AI 助手帮助你更快地完成工作 (有人用Win12工作?)<br>
             由于所用模型理解力较差，所以间歇性正常工作。<br>
             有任何关于本 AI 的反馈请让 AI 帮你打开 AI Copilot反馈界面<br>
             也请适当使用，不要谈论敏感、违规话题，<br>请有身为一个人类最基本的道德底线。<br>
-            在此特别感谢云智api(api.jkyai.top)提供的公益接口!</p>`,
+            小项目难免会有bug，见谅，后端由 github@NB-Group 提供</p>`,
         btn: [
             { type: 'main', text: lang('确定','ok'), js: 'closenotice();' },
         ]
