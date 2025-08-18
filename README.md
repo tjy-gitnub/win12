@@ -32,83 +32,33 @@
   </a>
 </details>
 
-## 公告
-
-### 重要！
-
-无偿恳请各位有能力的用户为我们制作宣传片！
-详情请见[宣传片公告](https://github.com/tjy-gitnub/win12/wiki/%E5%AE%A3%E4%BC%A0%E7%89%87%E5%85%AC%E5%91%8A)
+## 目录
 
 - [Windows 12 网页版](#windows-12-网页版)
-  - [前前言](#前前言)
   - [前言](#前言)
-    - [特别感谢](#特别感谢)
-  - [效果展示](#效果展示)
   - [在线体验](#在线体验)
-  - [安装和使用](#安装和使用)
+  - [效果展示](#效果展示)
   - [前景规划](#前景规划)
-  - [开源说明](#开源说明)
+  - [开源声明](#开源声明)
   - [贡献须知](#贡献须知)
-  - [AI Copilot 实现](#ai-copilot-实现)
+  - [贡献者](#贡献者)
+  - [资助我们](#资助我们)
     
+
     
-
-## 前前言
-
-最近（不久之前）看到有一些冒充我们的，在此做个声明：
-
-我们项目的核心开发团队是由 tjy-gitnub（初三），NB-group（预备），782（初一），三位开发者组成的！
-
-（如果你要为我们制作宣传视频，也请顺带把我们的b站账号挂一下
-
-我们只在 GitHub、Bilibili 和爱发电上有官方账号！
-
-GitHub：
-
-去贡献者里看一下吧~
-
-Bilibili：
-
-tjy-gitnub：
-
-[![image](https://github.com/tjy-gitnub/win12/assets/121747915/6b13f81a-2a33-4265-abee-44c3796c2817)](https://space.bilibili.com/2010692096/)
-
-NB-group：
-
-[![image](https://github.com/tjy-gitnub/win12/assets/121747915/9dad6cac-e0e7-44b3-975e-41eaf33520dd)](https://space.bilibili.com/1570243738/)
-
-782：
-
-[![image](https://github.com/tjy-gitnub/win12/assets/121747915/e475890f-010d-4e47-9ac6-fd4abad26218)](https://space.bilibili.com/1046361194/)
-
-爱发电：
-
-全世界唯一可以捐款的官方账号！擦亮你的双眼！不要给其他人捐款！
-
-![image](https://github.com/tjy-gitnub/win12/assets/121747915/c4a7e71c-ac41-4ab5-ba87-967d188ca2cc)
-
-链接：<https://afdian.com/a/qstudio>
-
-**我们的项目及源代码绝对不进行强制收费！如果看到倒卖本项目且没有注明原项目链接的，或违反EPL-2.0开源协议及本项目开源说明的，欢迎举报！**
 
 ## 前言
 
-最近（很久以前）看到 Windows 12 概念版（Powered by PowerPoint）后深受启发，决定做一个 Windows 12 网页版，就像 [Windows 11 网页版](https://win11.blueedge.me/) 一样。
+很久以前tjy-gitnub看到 Windows 12 概念版（Powered by PowerPoint）后深受启发，决定做一个 Windows 12 网页版，就像 [Windows 11 网页版](https://win11.blueedge.me/) 一样。 它拥有精美的 ui 设计，流畅丰富的动画，各种高级的功能。
 
-参考 [前景规划](#前景规划)。
+于是就有了这个项目（是的，这个项目的诞生就是这么突然）
 
-精美的 ui 设计，流畅丰富的动画，各种高级的功能（相较于网页版）。
+> 目前移动端适配不太完善，开桌面版网站凑合着用吧 `>v-)o`
 
-> 移动端适配不太完善，开桌面版网站凑合着用吧 `>v-)o`
+## 在线体验
 
-### 特别感谢
+点击[此处](tjy-gitnub.github.io/win12/desktop.html)即可体验。
 
-特别感谢以下赞助者:
-
-- CursoR_光标（<https://afdian.com/a/cursor>）
-- Baymax（<https://afdian.com/u/a131cd504dea11eeb6be5254001e7c00>）
-
-在此对以上赞助者表示公开鸣谢！
 
 ## 效果展示
 
@@ -127,19 +77,7 @@ NB-group：
 *深色模式*
 
 ![image](https://tjy-gitnub.github.io/win12/img/ai-copilot.png)
-
-*AI Copilot*
-
-## 在线体验
-
-[在线预览](https://tjy-gitnub.github.io/win12/desktop.html)
-
-有点慢，稍等一下~
-
-## 安装和使用
-
-下载代码，无需安装，打开 `desktop.html` 即可。
-
+*AI Copilot([实现方法](./scripts/AI%20Copilot%20service/README.md))*
 ## 前景规划
 
 关于该项目的路径规划:
@@ -174,40 +112,39 @@ NB-group：
 - [x] 接入ChatGPT
 - [ ] 将项目更名为 "550W"
 
-## 开源说明
+## 开源声明
+>[!TIP]
+>无论您以何种方式使用本项目，均代表您已仔细阅读并同意遵守本章节的全部内容。
 
-本项目作者：谭景元（tjy-gitnub）
+Wndows12 网页版是自由软件，采用Eclipse基金会发行的Eclipse Public License 2.0许可证（网址:<https://www.eclipse.org/legal/epl-2.0/>）进行许可。
 
-本项目链接：<https://github.com/tjy-gitnub/win12>
+**根据 EPL-2.0 许可，您可以**：
+- 自由使用、复制、修改、分发本项目的源代码。
+- 以源代码或二进制形式分发本项目，需遵守 EPL-2.0 的条款。
+- 将本项目的代码用于商业或非商业用途。
 
-此项目是一个开源项目。此项目使用 EPL v2.0 开源许可。开源许可是具有法律效力的合同，请自觉遵守开源许可，尊重他人劳动。
-
-根据许可，你可以对该项目进行传播、分发、修改以及二次发布，包括个人和商业用途，但我方不鼓励一切商业用途。
-
-您必须给出源码来源，**包括作者，项目链接**（见上）等，必须使用相同的协议开源。
-
-若此项目的源码作为项目的一部分与你私有的源码一起发布时，你可以使用其它协议，**但要声明 EPL 部分的内容并声明此部分继续遵循 EPL 协议**。
-
-不是在该项目基础上进行增加、修改的，仅参考源码的，不需要开源，但也仅供学习用途。
-
-由于近期发现大量滥用行为，在此规定附加条例：
-
-- 任何使用或分享本项目者，必须在介绍里附上原作者及项目链接，不得故意隐瞒原项目中的署名信息、原作者或项目链接，不得限制查看原项目中的署名信息、原作者或项目链接，且不得修改原项目中的署名信息；
-
-- 将本项目用于商业用途者，需要**标明原作者及项目链接**，且**必须**以 EPL-2.0 协议开源。未经修改的源代码**不得用于**商业用途；
-
-- 任何使用或分享本项目者，不得移除或故意隐藏、限制查看本声明；
-
-- 请您遵守上述规定，我方有权通过法律手段进行合法维权。
+**以下是附加条款**:
+1. 任何使用、分享或分发本项目者，必须在项目介绍、文档或相关材料中明确附上原作者信息（谭景元，tjy-gitnub）及原项目链接（<https://github.com/tjy-gitnub/win12>）。**您不得故意隐瞒、移除或修改原项目中的署名信息、作者信息或项目链接；不得限制他人查看这些信息**。
+2. 将本项目用于商业用途者，必须标明原作者及项目链接，并以 EPL-2.0 协议开源全部相关源代码。
+3. 未经修改的源代码不得用于商业用途。
+4. 任何使用或分享本项目者，不得移除、隐藏或限制查看本开源声明。
+5. 用户在发现他人违反前五款所列各项要求时，有义务及时向我们报告，并尽可能及时制止相关内容的发布与传输。
+6. 若您实施侵权行为，我们将根据法律规定保留记录，且保留在任何时间以一切方式采取法律行动、追究法律责任的权利（包括但不限于依法向执法机关提交报告、向司法机关提出控告、配合执法机关和司法机关调查等）。
 
 ## 贡献须知
 
 详情请见 [贡献指南](./CONTRIBUTING.md)。
 
-## AI Copilot 实现
+## 贡献者
 
-详情请见 [AI Copilot 实现](./scripts/AI%20Copilot%20service/README.md)
+核心开发者: tjy-gitnub([Bilibili](https://space.bilibili.com/2010692096/))，NB-group([Bilibili](https://space.bilibili.com/1570243738/))，782([Bilibili](https://space.bilibili.com/1046361194/))（三人均为初中生）
 
+项目贡献者:详见[此处](https://github.com/tjy-gitnub/win12/graphs/contributors)
 
+## 资助我们
 
+可以向我们的[爱发电账户](https://afdian.com/a/qstudio)捐款
 
+特别感谢以下赞助者:
+- CursoR_光标（<https://afdian.com/a/cursor>）
+- Baymax（<https://afdian.com/u/a131cd504dea11eeb6be5254001e7c00>）
