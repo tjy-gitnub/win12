@@ -4,9 +4,9 @@
 
 | 文件名称 | 备注| 
 | --- | --- |
-|disk.png|是上海宽娱数码科技有限公司的商标| 
-|diskwin.png |是微软公司的商标|
-|folder.png|是微软公司的商标|
+|disk.png|无| 
+|diskwin.png |无|
+|folder.png|无|
 |od.png|是微软公司的商标|
 |rb.png|无|
 |thispc.png|无|
