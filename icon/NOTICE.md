@@ -1,22 +1,22 @@
-# 合理使用文件列表
+# 非“自由版权”文件列表
 >[!Important]
->本列表内所列文件受著作权保护！相关文件属合理使用范畴，以任何目的使用相关文件均可能构成侵犯著作权。<br>本列表内所列文件可能含有受商标法或其他类似法律、法规保护的内容。如果对商标的使用侵害到商标所有者的权益，您可能会面临刑事、民事或行政责任，本项目不对此负责。
+>本列表内所列文件受著作权保护！相关文件属合理使用范畴。<br>本列表内所列文件可能含有受商标法或其他类似法律、法规保护的内容。
 
 | 文件名称 | 备注| 
 | --- | --- |
-| bilibili.png | 是上海宽娱数码科技有限公司的商标 | 
-| office.png | 是微软公司的商标|
+|bilibili.png|是上海宽娱数码科技有限公司的商标| 
+|office.png|是微软公司的商标|
 |vscode.png|是微软公司的商标|
-|wsa.png或wsa.svg|是微软公司的商标|
-|excel.png|是微软公司的商标|
-|exefile.png|是微软公司的商标|
-|explorer.png|是微软公司的商标|
-|img.png|是微软公司的商标|
-|music.png|是微软公司的商标|
-|picture.png|是微软公司的商标|
-|ppt.png|是微软公司的商标|
-|txt.png|是微软公司的商标|
-|vidio.png|是微软公司的商标|
-|word.png|是微软公司的商标|
-|excel.png|是微软公司的商标|
-|excel.png|是微软公司的商标|
+|wsa.png|无|
+|excel.png|无|
+|exefile.png|无|
+|explorer.png|无|
+|img.png|无|
+|music.png|无|
+|picture.png|无|
+|ppt.png|无|
+|txt.png|无|
+|vidio.png|无|
+|word.png|无|
+|pythonEditor.svg|是JetBrains s.r.o.的商标|
+|python.svg|是Python软件基金会的商标|
