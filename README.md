@@ -77,7 +77,7 @@
 *深色模式*
 
 ![image](https://tjy-gitnub.github.io/win12/img/ai-copilot.png)
-*AI Copilot([实现方法](./scripts/AI%20Copilot%20service/README.md))*
+*AI Copilot 实现方法见 [此 PR]([./scripts/AI%20Copilot%20service/README.md](https://github.com/tjy-gitnub/win12/pull/644))*
 ## 前景规划
 
 关于该项目的路径规划:
