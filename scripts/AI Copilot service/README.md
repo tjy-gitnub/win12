@@ -1,3 +1,12 @@
+> [!WARNING]
+> ### 警告：此文档已过时
+> 
+> 已采用新的 Copilot 实现，此文档介绍的实现方法已不再采用。
+> 
+> 新的实现方法可以在 [PR #644](https://github.com/tjy-gitnub/win12/pull/644) 中查看。
+
+---
+
 本AI及文档来自 github@NB-Group
 # AI Copilot 后端介绍
 ## 介绍
