@@ -302,10 +302,6 @@ toggletheme() 切换主题
 					<img src="icon/copilot.svg">
 					<p>Windows 12 Copilot</p>
 				</a>
-				<a oncontextmenu="return showcm(event, 'smlapp', ['minesweeper', 'Windows 12 minesweeper'])" onclick="openapp('minesweeper');hide_startmenu()">
-					 <img src="icon/minesweeper.svg">
-				  <p>Windows 12 扫雷</p>
-			    </a>
 				<a oncontextmenu="return showcm(event, 'smlapp', ['edge', 'Microsoft Edge'])" onclick="openapp('edge');hide_startmenu();">
 					<img src="icon/edge.svg">
 					<p data-i18n="edge.name">Microsoft Edge</p>
@@ -339,6 +335,10 @@ toggletheme() 切换主题
 					<p data-i18n="defender.name">Windows 安全中心</p>
 				</a>
 				<p class="text" data-i18n="stmenu-webapp">Web 应用</p>
+				<a oncontextmenu="return showcm(event, 'smlapp', ['minesweeper', 'Windows 12 minesweeper'])" onclick="openapp('minesweeper');hide_startmenu()">
+					 <img src="icon/minesweeper.svg">
+				  <p>扫雷</p>
+			    </a>
 				<a oncontextmenu="return showcm(event, 'smlapp', ['bilibili', '哔哩哔哩'])" onclick="openapp('bilibili');hide_startmenu();">
 					<img src="icon/bilibili.png">
 					<p data-i18n="bilibili.name">哔哩哔哩</p>
@@ -2285,7 +2285,7 @@ toggletheme() 切换主题
       <div class="resize-bar"></div>
         <div class="titbar">
 	      <img src="icon/minesweeper.svg" class="icon">
-						<p>Windows 12 minesweeper</p>
+						<p>扫雷</p>
 				 <div>
 					<a class="a wbtg red" onclick="hidewin('minesweeper')"><i class="bi bi-x-lg"></i></a>
 					 <a class="a wbtg max" onclick="maxwin('minesweeper')"><i class="bi bi-app"></i></a>
