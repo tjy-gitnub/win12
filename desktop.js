@@ -828,7 +828,14 @@ const nts = {
             { type: 'main', text: lang('保存','whiteboard.saveas.save'), js: 'apps.whiteboard.doSaveAs();' },
             { type: 'detail', text: lang('取消','whiteboard.saveas.cancel'), js: 'closenotice();' }
         ]
-    }
+    },
+    'no-files-permission': {
+        cnt: lang(`<p class="tit">文件资源管理器</p>
+            <p>你没有权限打开该文件，请向文件的所有者或管理员申请权限。<br /></p>`),
+        btn: [
+            { type: 'main', text: lang(lang('关闭','close'),'close'), js: 'closenotice();' }
+        ]
+    },
 };
 function shownotice(name) {
     $('#notice>.cnt').html(nts[name].cnt);
