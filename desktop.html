@@ -298,7 +298,7 @@ toggletheme() 切换主题
 					<img src="icon/notepad.svg">
 					<p data-i18n="notepad.name">记事本</p>
 				</a>
-				<a oncontextmenu="return showcm(event, 'smlapp', ['copilot', 'Windows 12 Copilot'])" onclick="openapp('copilot');hide_startmenu()">
+				<a oncontextmenu="return showcm(event, 'smlapp', ['copilot', 'Windows 12 Copilot'])" onclick="$('#copilot').toggleClass('show');hide_startmenu();">
 					<img src="icon/copilot.svg">
 					<p>Windows 12 Copilot</p>
 				</a>
