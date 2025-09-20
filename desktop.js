@@ -840,7 +840,7 @@ const nts = {
         cnt: `
         <p class="tit">重命名你的电脑</p>
         <p>你可以使用字母、连字符和数字的组合</p>
-        <input type="text" id="rename-name" placeholder="Desktop_${Math.floor(Math.random() * 1000000)}" style="width: 100%; padding: 8px; margin: 10px 0; border: 1px solid #ccc; border-radius: 4px;">
+        <input type="text" id="rename-name" placeholder="Desktop-${Math.floor(Math.random() * 1000000)}" style="width: 100%; padding: 8px; margin: 10px 0; border: 1px solid #ccc; border-radius: 4px;">
         `,
         btn: [
             { type: 'detail', text: lang('保存','pc.saveas.save'), js: '' },
