@@ -487,14 +487,6 @@ function showcm(e, cl, arg) {
             if (ret == 'null') {
                 return true;
             };
-            if (ret[1] != `$('#start-btn').addClass('show');
-                if($('#search-win').hasClass('show')){$('#search-btn').removeClass('show');
-                $('#search-win').removeClass('show');setTimeout(() => {$('#search-win').removeClass('show-begin');
-                }, 200);}$('#start-menu').addClass('show-begin');setTimeout(() => {$('#start-menu').addClass('show');
-                }, 0);`) {
-                h += `<a class="a">${ret[1].slice(9, -2)}</a>\n`
-                //h += `<a class="a">${ret[1]}</a>\n`;
-            };
             h += `<a class="a" onmousedown="${ret[1]}">${ret[0]}</a>\n`;
         } else if (typeof (item) == 'string') {
             h += item + '\n';
