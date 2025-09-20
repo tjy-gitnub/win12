@@ -298,14 +298,10 @@ toggletheme() 切换主题
 					<img src="icon/notepad.svg">
 					<p data-i18n="notepad.name">记事本</p>
 				</a>
-				<a oncontextmenu="return showcm(event, 'smlapp', ['copilot', 'Windows 12 Copilot'])" onclick="openapp('copilot');hide_startmenu()">
+				<a oncontextmenu="return showcm(event, 'smlapp', ['copilot', 'Windows 12 Copilot'])" onclick="$('#copilot').toggleClass('show');hide_startmenu();">
 					<img src="icon/copilot.svg">
 					<p>Windows 12 Copilot</p>
 				</a>
-				<a oncontextmenu="return showcm(event, 'smlapp', ['minesweeper', 'Windows 12 minesweeper'])" onclick="openapp('minesweeper');hide_startmenu()">
-					 <img src="icon/minesweeper.svg">
-				  <p>Windows 12 扫雷</p>
-			    </a>
 				<a oncontextmenu="return showcm(event, 'smlapp', ['edge', 'Microsoft Edge'])" onclick="openapp('edge');hide_startmenu();">
 					<img src="icon/edge.svg">
 					<p data-i18n="edge.name">Microsoft Edge</p>
@@ -339,6 +335,10 @@ toggletheme() 切换主题
 					<p data-i18n="defender.name">Windows 安全中心</p>
 				</a>
 				<p class="text" data-i18n="stmenu-webapp">Web 应用</p>
+				<a oncontextmenu="return showcm(event, 'smlapp', ['minesweeper', 'Windows 12 minesweeper'])" onclick="openapp('minesweeper');hide_startmenu()">
+					 <img src="icon/minesweeper.svg">
+				  <p>扫雷</p>
+			    </a>
 				<a oncontextmenu="return showcm(event, 'smlapp', ['bilibili', '哔哩哔哩'])" onclick="openapp('bilibili');hide_startmenu();">
 					<img src="icon/bilibili.png">
 					<p data-i18n="bilibili.name">哔哩哔哩</p>
@@ -1340,7 +1340,7 @@ toggletheme() 切换主题
 						<div>
 							<p style="font-size: 28px;text-overflow: ellipsis;white-space: nowrap;">Desktop-PingGai</p>
 							<p style="color: #7f7f7f;margin:-8px 0 -5px 0;">瓶盖</p>
-							<a style="color: var(--href);text-decoration: underline !important;;" class="a">重命名</a>
+							<a style="color: var(--href);text-decoration: underline !important;;" class="a" onclick="shownotice('rename-pc')">重命名</a>
 						</div>
 					</div>
 					<div class="setting-card">
@@ -1696,7 +1696,6 @@ toggletheme() 切换主题
 				<p class="tit"></p>
 				<div class="search">
 					<input type="text" class="input" placeholder="在这里输入你要搜索的内容" data-i18n-attr="placeholder" data-i18n-key="sch-ph">
-					<input-before class="bi bi-search"></input-before>
 				</div>
 			</div>
 			<div class="page">
@@ -1704,24 +1703,24 @@ toggletheme() 切换主题
 					<div class="card pinned">
 						<p class="title"><span style="font: 15px;">📌</span> <span data-i18n="explorer.pinned">已固定</span></p>
 						<list>
-							<a><img src="apps/icons/explorer/qa.png"><span data-i18n="explorer.quickacc">快速访问</span></a>
-							<a><img src="apps/icons/explorer/od.png">OneDrive</a>
+							<a onclick="shownotice('no-files-permission')"><img src="apps/icons/explorer/qa.png"><span data-i18n="explorer.quickacc">快速访问</span></a>
+							<a onclick="shownotice('no-files-permission')"><img src="apps/icons/explorer/od.png">OneDrive</a>
 							<a class="check" onclick="apps.explorer.reset();"><span
 									style="background:linear-gradient(180deg, var(--theme-1), var(--theme-2));width:4px;height: 19px;border-radius: 10px;margin-left: -12px;margin-right: 8px;margin-top: 1px;"></span>
 								<img src="apps/icons/explorer/thispc.svg"><span data-i18n="explorer.thispc">此电脑</span></a>
-							<a><img src="apps/icons/explorer/rb.png"><span data-i18n="explorer.bin">回收站</span></a>
+							<a onclick="shownotice('no-files-permission')"><img src="apps/icons/explorer/rb.png"><span data-i18n="explorer.bin">回收站</span></a>
 						</list>
 					</div>
 					<div class="card tags">
 						<p class="title"><span style="font: 15px;">🏷</span> <span data-i18n="explorer.tag">标签</span></p>
 						<list>
-							<a><span style="background-color: red;"></span><span data-i18n="explorer.tag.red">红色</span></a>
-							<a><span style="background-color: #3981d9;"></span><span data-i18n="explorer.tag.blue">蓝色</span></a>
-							<a><span style="background-color: yellow;"></span><span data-i18n="explorer.tag.yellow">黄色</span></a>
-							<a><span style="background-color: green;"></span><span data-i18n="explorer.tag.green">绿色</span></a>
-							<a><span style="background-color: #fc9816;"></span><span data-i18n="explorer.tag.orange">橙色</span></a>
-							<a><span style="background-color: purple;"></span><span data-i18n="explorer.tag.purple">紫色</span></a>
-							<a><span style="background-color: #ffcad4;"></span><span data-i18n="explorer.tag.pink">粉色</span></a>
+							<a onclick="shownotice('no-files-permission')"><span style="background-color: red;"></span><span data-i18n="explorer.tag.red">红色</span></a>
+							<a onclick="shownotice('no-files-permission')"><span style="background-color: #3981d9;"></span><span data-i18n="explorer.tag.blue">蓝色</span></a>
+							<a onclick="shownotice('no-files-permission')"><span style="background-color: yellow;"></span><span data-i18n="explorer.tag.yellow">黄色</span></a>
+							<a onclick="shownotice('no-files-permission')"><span style="background-color: green;"></span><span data-i18n="explorer.tag.green">绿色</span></a>
+							<a onclick="shownotice('no-files-permission')"><span style="background-color: #fc9816;"></span><span data-i18n="explorer.tag.orange">橙色</span></a>
+							<a onclick="shownotice('no-files-permission')"><span style="background-color: purple;"></span><span data-i18n="explorer.tag.purple">紫色</span></a>
+							<a onclick="shownotice('no-files-permission')"><span style="background-color: #ffcad4;"></span><span data-i18n="explorer.tag.pink">粉色</span></a>
 						</list>
 					</div>
 				</div>
@@ -2285,7 +2284,7 @@ toggletheme() 切换主题
       <div class="resize-bar"></div>
         <div class="titbar">
 	      <img src="icon/minesweeper.svg" class="icon">
-						<p>Windows 12 minesweeper</p>
+						<p>扫雷</p>
 				 <div>
 					<a class="a wbtg red" onclick="hidewin('minesweeper')"><i class="bi bi-x-lg"></i></a>
 					 <a class="a wbtg max" onclick="maxwin('minesweeper')"><i class="bi bi-app"></i></a>

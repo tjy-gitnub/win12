@@ -267,7 +267,6 @@
 }
 
 #win-explorer>.path>.search>.input {
-    padding-left: 30px;
     white-space: nowrap;
     text-overflow: ellipsis;
 }
