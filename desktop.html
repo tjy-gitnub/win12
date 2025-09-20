@@ -34,6 +34,7 @@
 	<link rel="stylesheet" href="apps/style/defender.css">
 	<link rel="stylesheet" href="apps/style/taskmgr.css">
 	<link rel="stylesheet" href="apps/style/msstore.css">
+	<link rel="stylesheet" href="apps/style/mslogin.css">
 	<!-- 掌声欢迎 Copilot 的 css 引入(bs -->
 	<link rel="stylesheet" href="apps/style/copilot.css">
 	<!--  掌声欢迎 语音识别输入法 的 css 引入(bs -->
@@ -1274,7 +1275,21 @@ toggletheme() 切换主题
 			</div>
 		</div>
 	</div>
-
+	<div class="window mslogin">
+		<div class="resize-bar"></div>
+		<div class="titbar">
+			<img src="icon/mslogin.svg" class="icon">
+			<p data-i18n="mslogin.name">Microsoft账户</p>
+			<div>
+				<a class="a wbtg red" onclick="hidewin('mslogin')"><i class="bi bi-x-lg"></i></a>
+				<a class="a wbtg max" onclick="maxwin('mslogin')"><i class="bi bi-app"></i></a>
+				<a class="a wbtg" onclick="minwin('mslogin')"><i class="bi bi-dash-lg"></i></a>
+			</div>
+		</div>
+		<div class="content" id="win-mslogin">
+			<iframe src="./login.html" style="width:100%;height:100%;border:none;background-color: white;"></iframe>
+		</div>
+	</div>
 	<div class="window setting">
 		<div class="resize-bar"></div>
 		<div class="titbar">
@@ -1331,7 +1346,7 @@ toggletheme() 切换主题
 					<div class="setting-card">
 						<p style="padding: 20px"><icon><img src="apps/icons/setting/ms.png" style="width: 35px; height: 35px;"></icon><br>所有功能尽在 Microsoft 账户<br><span style="font-size: 14px;color:var(--text2)">登录后，即可在设备上使用你最喜爱的 Microsoft 应用和服务。可以备份设备、让设备更安全，并使用 Microsoft 365 应用版和云储存空间。</span><br><img src="apps/icons/setting/ms365.png"></p>
 						<div style="padding:  20px">
-							<a class="a button" onclick="window.location.href='./login.html'">登录</a>
+							<a class="a button" onclick="openapp('mslogin');hide_startmenu();">登录</a>
 						</div>
 					</div>
 					<div class="setting-card">
