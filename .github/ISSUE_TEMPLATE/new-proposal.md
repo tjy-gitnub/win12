@@ -11,6 +11,7 @@ assignees: ''
 - [ ] **I understand that irregular questions may be rejected.**
 - [ ] I have looked it up in opening issue, it's **not** suggested by others.
 - [ ] I have looked it up in closed issue, it's **not refused** by @tjy-gitnub  for some reasons.
+- [ ] I confirm that I am using **the official url** (`tjy-gitnub.github.io/win12`).
 
 ## Description
 
