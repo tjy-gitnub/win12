@@ -486,7 +486,7 @@ function showcm(e, cl, arg) {
             let ret = item(arg);
             if (ret == 'null') {
                 return true;
-            }
+            };
             h += `<a class="a" onmousedown="${ret[1]}">${ret[0]}</a>\n`;
         } else if (typeof (item) == 'string') {
             h += item + '\n';
@@ -828,7 +828,43 @@ const nts = {
             { type: 'main', text: lang('保存','whiteboard.saveas.save'), js: 'apps.whiteboard.doSaveAs();' },
             { type: 'detail', text: lang('取消','whiteboard.saveas.cancel'), js: 'closenotice();' }
         ]
-    }
+    },
+    'no-files-permission': {
+        cnt: lang(`<p class="tit">文件资源管理器</p>
+            <p>你没有权限打开该文件，请向文件的所有者或管理员申请权限<br /></p>`),
+        btn: [
+            { type: 'main', text: lang(lang('关闭','close'),'close'), js: 'closenotice();' }
+        ]
+    },
+    'rename-pc': {
+        cnt: `
+        <p class="tit">重命名你的电脑</p>
+        <p>你可以使用字母、连字符和数字的组合</p>
+        <input type="text" id="rename-name" placeholder="Desktop-${Math.floor(Math.random() * 1000000)}">
+        `,
+        btn: [
+            { type: 'main', text: lang('保存','pc.saveas.save'), js: '' },
+            { type: 'detail', text: lang('取消','pc.saveas.cancel'), js: 'closenotice();' }
+        ]
+    },
+    'no-files-permission': {
+        cnt: lang(`<p class="tit">文件资源管理器</p>
+            <p>你没有权限打开该文件，请向文件的所有者或管理员申请权限<br /></p>`),
+        btn: [
+            { type: 'main', text: lang(lang('关闭','close'),'close'), js: 'closenotice();' }
+        ]
+    },
+    'rename-pc': {
+        cnt: `
+        <p class="tit">重命名你的电脑</p>
+        <p>你可以使用字母、连字符和数字的组合</p>
+        <input type="text" id="rename-name" placeholder="Desktop-${Math.floor(Math.random() * 1000000)}" style="width: 100%; padding: 8px; margin: 10px 0; border: 1px solid #ccc; border-radius: 4px;">
+        `,
+        btn: [
+            { type: 'main', text: lang('保存','pc.saveas.save'), js: 'closenotice();' },
+            { type: 'detail', text: lang('取消','pc.saveas.cancel'), js: 'closenotice();' }
+        ]
+    },
 };
 function shownotice(name) {
     $('#notice>.cnt').html(nts[name].cnt);
