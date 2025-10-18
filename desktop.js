@@ -2017,25 +2017,26 @@ function dragBrightness(e) {
         }
         var _offset = clientX - viewport;
 
-        const limit=2; // 亮度条件限制
+        const limit = 2; // 亮度条件限制
 
         if (_offset < 0) {
             _offset = 0;
         }
-        else if (_offset > limit*width) {
-            _offset = limit*width;
+        else if (_offset > width) {
+            _offset = width;
         }
-        slider.style.marginLeft = _offset + 'px';
-        after.style.left = _offset + 'px';
-        after.style.width = width - _offset + 'px';
-        if (_offset / width > 0.3 && _offset / width < limit) {
-            page.style.filter = `brightness(${_offset / width})`;
-        }
-        else if (_offset / width < limit){
-            page.style.filter = 'brightness(0.3)';
-        }else{
-            page.style.filter = `brightness(${limit})`;
-        }
+
+        const sliderPos = _offset;
+        const progress = sliderPos / width; // 0 ~ 1
+        const mid = 0.5, minBrightness = 0.5, midBrightness = 1, maxBrightness = limit;
+        const brightness = progress <= mid
+            ? minBrightness + (midBrightness - minBrightness) * (progress / mid)
+            : midBrightness + (maxBrightness - midBrightness) * ((progress - mid) / (1 - mid));
+
+        slider.style.marginLeft = sliderPos + 'px';
+        after.style.left = sliderPos + 'px';
+        after.style.width = width - sliderPos + 'px';
+        page.style.filter = `brightness(${brightness})`;
     }
     function up() {
         container.classList.remove('active');

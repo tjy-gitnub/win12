@@ -1734,7 +1734,7 @@ input-before {
     position: relative;
     width: 20px;
     bottom: 12px;
-    margin-left: 100%;
+    margin-left: 50%;
     transform: translateX(-10px);
     border: solid var(--msg);
     border-width: 5px;
