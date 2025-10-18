@@ -15,9 +15,6 @@
   <span href="https://github.com/tjy-gitnub/win12/network" style="text-decoration:none">
     <img src="https://img.shields.io/github/forks/tjy-gitnub/win12.svg" alt="GitHub forks"/>
   </span>
-  <span href="https://github.com/tjy-gitnub/win12/blob/master/LICENSE" style="text-decoration:none">
-    <img src="https://img.shields.io/github/license/tjy-gitnub/win12" alt="GitHub License"/>
-  </pan>
 </p>
 <p align="center" class="language" title="Language selection 语言选择">
   <a href="readme/README_en_us.md">English</a> | 
@@ -132,7 +129,7 @@ Windows12 网页版的媒体文件内容（图形作品、美术作品、视听�
 2. 将本项目用于商业用途者，必须标明原作者及项目链接，并以 EPL-2.0 协议开源全部相关源代码。
 3. 未经修改的源代码不得用于商业用途。
 4. 任何使用或分享本项目者，不得移除、隐藏或限制查看本开源声明。
-5. 您在发现他人违反前四款所列各项要求时，请及时向我们报告，并尽可能及时制止相关内容的发布与传输。
+5. 您在发现他人违反前四款所列各项要求时，请及时[向我们报告](https://github.com/tjy-gitnub/win12/issues)，并尽可能及时制止相关内容的发布与传输。
 6. 若您实施侵权行为，我们将根据法律规定保留记录，且保留在任何时间以一切方式采取法律行动、追究法律责任的权利（包括但不限于依法向执法机关提交报告、向司法机关提出控告、配合执法机关和司法机关调查等）。
 ## 贡献须知
 
