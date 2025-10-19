@@ -1379,7 +1379,7 @@ toggletheme() 切换主题
 						<div>
 							<p style="font-size: 28px;text-overflow: ellipsis;white-space: nowrap;">Desktop-PingGai</p>
 							<p style="color: #7f7f7f;margin:-8px 0 -5px 0;">瓶盖</p>
-							<a style="color: var(--href);text-decoration: underline !important;;" class="a">重命名</a>
+							<a style="color: var(--href);text-decoration: underline !important;;" class="a" onclick="shownotice('rename-pc')">重命名</a>
 						</div>
 					</div>
 					<div class="setting-list">
@@ -1658,7 +1658,6 @@ toggletheme() 切换主题
 						</div>
 					</div>
 					<div class="setting-list">
-						<div class="update-now disabled"><icon></icon><div><p>此功能暂未完善</p><p>Windows 更新已被禁用</p></div><div class="alr"><a class="a button disabled" style="font-size: 16px;margin-top: -7.5px; opacity: 0.5; pointer-events: none;">更新</a></div></div>
 						<a onclick="openapp('about');$('#win-about>.update').addClass('show');$('#win-about>.about').removeClass('show');" style="opacity: 0.5; pointer-events: none;"><icon>&#xE946;</icon><div><p>更新历史记录</p><p>查看历史版本功能</p></div><i class="bi bi-chevron-right"></i></a>
 						<a style="opacity: 0.5; pointer-events: none;"><icon>&#xE896;</icon><div><p>下载完整内容</p><p>当更新或系统出现问题，使用此项下载最新完整内容</p></div><i class="bi bi-chevron-right"></i></a>
 						<div><icon></icon><div><p>自动更新</p><p>设置是否启用自动更新</p></div>
@@ -1840,9 +1839,9 @@ toggletheme() 切换主题
 		</div>
 		<div class="content" id="win-about">
 			<div class="menu">
-				<list class="focs">
-					<a onclick="$('#win-about>.about').addClass('show');$('#win-about>.update').removeClass('show');"><img src="apps/icons/about/info.svg" height="17px" width="19px"><span data-i18n="about.intro">简介</span></a>
-					<a onclick="$('#win-about>.update').addClass('show');$('#win-about>.about').removeClass('show');"><img src="apps/icons/about/update.svg" height="20px" width="18px"><span data-i18n="about.update">更新记录</span></a>
+				<list class="focs about-menu">
+					<a class="enable check about avlb" onclick="$('#win-about>.about').addClass('show');$('.about-menu>.about').addClass('check');$('.about-menu>.update').removeClass('check');$('#win-about>.update').removeClass('show');"><span data-i18n="about.intro">简介</span></a>
+					<a class="enable update avlb" onclick="$('#win-about>.update').addClass('show');$('.about-menu>.update').addClass('check');$('.about-menu>.about').removeClass('check');$('#win-about>.about').removeClass('show');"><span data-i18n="about.update">更新记录</span></a>
 				</list>
 			</div>
 			<div class="cnt about">
@@ -1892,6 +1891,13 @@ toggletheme() 切换主题
 			<div class="cnt update">
 				<h1 class="tit" data-i18n="about.update.name"><span></span>更新记录</h1>
 				<div style="margin-left: 20px;">
+					<details><summary><span>v10.0.7</span> 优化关机后行为和设置的部分UI</summary><p>
+						&emsp;&emsp;-(更新来自 @HHCL233)<br>
+						&emsp;&emsp;-删除设置中Windows更新页的重复元素<br>
+						&emsp;&emsp;-设置中系统页的重命名支持打开重命名窗口<br>
+						&emsp;&emsp;-关于Windows12应用的侧边栏更改为类似设置侧边栏的样式<br>
+						&emsp;&emsp;-支持在关机后按下回车重新开机<br>
+					</p></details>
 					<details><summary><span>v10.0.6</span> 优化部分应用</summary><p>
 						&emsp;&emsp;-(更新来自 @HHCL233)<br>
 						&emsp;&emsp;-添加一个没用的重命名电脑窗口<br>
