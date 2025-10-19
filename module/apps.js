@@ -66,8 +66,6 @@ let apps = {
             $('#win-setting>.page>.cnt.update>.lo>.update-main .notice')[0].innerText = '开发者暂未完善此功能';
             $('#win-setting>.page>.cnt.update>.lo>.update-main .detail')[0].innerHTML = 'Windows 更新已被禁用';
             $('#win-setting>.page>.cnt.update>.setting-list>.update-now').addClass('disabled');
-            $('#win-setting>.page>.cnt.update>.setting-list>.update-now>div>p:first-child')[0].innerText = '开发者暂未完善此功能';
-            $('#win-setting>.page>.cnt.update>.setting-list>.update-now>div>p:last-child')[0].innerHTML = 'Windows 更新已被禁用';
             $('#win-setting>.page>.cnt.update>.lo>.update-main>div:last-child').addClass('disabled');
             // Simulate the previous functionality for backward compatibility but disable actual updates
             setTimeout(() => {
