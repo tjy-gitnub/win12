@@ -1379,7 +1379,7 @@ toggletheme() 切换主题
 						<div>
 							<p style="font-size: 28px;text-overflow: ellipsis;white-space: nowrap;">Desktop-PingGai</p>
 							<p style="color: #7f7f7f;margin:-8px 0 -5px 0;">瓶盖</p>
-							<a style="color: var(--href);text-decoration: underline !important;;" class="a">重命名</a>
+							<a style="color: var(--href);text-decoration: underline !important;;" class="a" onclick="shownotice('rename-pc')">重命名</a>
 						</div>
 					</div>
 					<div class="setting-list">
@@ -1840,9 +1840,9 @@ toggletheme() 切换主题
 		</div>
 		<div class="content" id="win-about">
 			<div class="menu">
-				<list class="focs">
-					<a onclick="$('#win-about>.about').addClass('show');$('#win-about>.update').removeClass('show');"><img src="apps/icons/about/info.svg" height="17px" width="19px"><span data-i18n="about.intro">简介</span></a>
-					<a onclick="$('#win-about>.update').addClass('show');$('#win-about>.about').removeClass('show');"><img src="apps/icons/about/update.svg" height="20px" width="18px"><span data-i18n="about.update">更新记录</span></a>
+				<list class="focs about-menu">
+					<a class="enable check about avlb" onclick="$('#win-about>.about').addClass('show');$('.about-menu>.about').addClass('check');$('.about-menu>.update').removeClass('check');$('#win-about>.update').removeClass('show');"><span data-i18n="about.intro">简介</span></a>
+					<a class="enable update avlb" onclick="$('#win-about>.update').addClass('show');$('.about-menu>.update').addClass('check');$('.about-menu>.about').removeClass('check');$('#win-about>.about').removeClass('show');"><span data-i18n="about.update">更新记录</span></a>
 				</list>
 			</div>
 			<div class="cnt about">
