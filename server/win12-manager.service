@@ -1,0 +1,15 @@
+[Unit]
+Description=win12 Manager (FastAPI)
+After=network.target
+
+[Service]
+Type=simple
+User=win12svc
+Group=win12svc
+WorkingDirectory=/opt/win12-manager
+Environment=WIN12_API_KEY=changeme
+ExecStart=/opt/win12-manager/venv/bin/uvicorn server.app.main:APP --host 0.0.0.0 --port 8000
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
