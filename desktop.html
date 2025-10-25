@@ -35,10 +35,12 @@
 	<link rel="stylesheet" href="apps/style/taskmgr.css">
 	<link rel="stylesheet" href="apps/style/msstore.css">
 	<link rel="stylesheet" href="apps/style/mslogin.css">
+	<link rel="stylesheet" href="apps/style/word.css">
 	<!-- 掌声欢迎 Copilot 的 css 引入(bs -->
 	<link rel="stylesheet" href="apps/style/copilot.css">
 	<!--  掌声欢迎 语音识别输入法 的 css 引入(bs -->
 	<link rel="stylesheet" href="apps/style/recognition.css">
+	
 	
 	<link rel="manifest" href="pwa/manifest.json">
 	<link rel="shortcut icon" href="./pwa/logo.png" type="image/x-icon">
@@ -334,6 +336,10 @@ toggletheme() 切换主题
 					<img src="icon/defender.svg">
 					<p data-i18n="defender.name">Windows 安全中心</p>
 				</a>
+				<a oncontextmenu="return showcm(event, 'smlapp', ['word', 'Word Preview'])" onclick="openapp('word');hide_startmenu();">
+					<img src="icon/word.svg">
+					<p data-i18n="word.name">Word Preview</p>
+				</a>
 				<p class="text" data-i18n="stmenu-webapp">Web 应用</p>
 				<a oncontextmenu="return showcm(event, 'smlapp', ['minesweeper', 'Windows 12 minesweeper'])" onclick="openapp('minesweeper');hide_startmenu()">
 					 <img src="icon/minesweeper.svg">
@@ -475,7 +481,7 @@ toggletheme() 切换主题
 					<a class="a tj-obj act"><img src="icon/files/ppt.png"><div><p data-i18n="stmenu-tj-f1">科学地使用瓶盖.pptx</p><p data-i18n="stmenu-tj-t1">5 分钟前</p></div></a>
 					<a class="a tj-obj act"><img src="icon/files/img.png"><div><p data-i18n="stmenu-tj-f2">可口可乐瓶盖.jpg</p><p data-i18n="stmenu-tj-t2">7 分钟前</p></div></a>
 					<a class="a tj-obj act"><img src="icon/files/img.png"><div><p data-i18n="stmenu-tj-f3">瓶盖构造图.jpg</p><p data-i18n="stmenu-tj-t3">16 分钟前</p></div></a>
-					<a class="a tj-obj act"><img src="icon/files/word.png"><div><p data-i18n="stmenu-tj-f4">瓶盖的构造及作用.docx</p><p data-i18n="stmenu-tj-t4">24 分钟前</p></div></a>
+					<a class="a tj-obj act" onclick="openapp('word');apps.word.edit();hide_startmenu();"><img src="icon/files/word.png"><div><p data-i18n="stmenu-tj-f4">瓶盖的构造及作用.docx</p><p data-i18n="stmenu-tj-t4">24 分钟前</p></div></a>
 					<a class="a tj-obj act"><img src="icon/files/excel.png"><div><p data-i18n="stmenu-tj-f5">可口可乐瓶盖厚度.xlsx</p><p data-i18n="stmenu-tj-t5">35 分钟前</p></div></a>
 				</div>
 			</div>
@@ -2995,6 +3001,82 @@ toggletheme() 切换主题
 					</div>
 				</div>
 			</div>
+		</div>
+	</div>
+
+	<div class="window word" data-min-width="800" style="width: max(800px, 70%)">
+		<div class="resize-bar"></div>
+		<div class="titbar">
+			<img src="icon/word.svg" class="icon">
+			<p data-i18n="word.name">Word Preview</p>
+			<div>
+				<a class="a wbtg red" onclick="hidewin('word')"><i class="bi bi-x-lg"></i></a>
+				<a class="a wbtg max" onclick="maxwin('word')"><i class="bi bi-app"></i></a>
+				<a class="a wbtg" onclick="minwin('word')"><i class="bi bi-dash-lg"></i></a>
+				<a class="a wbtg" onclick="openapp('mslogin');"><i class="bi bi-person"></i></a>
+			</div>
+		</div>
+		<div class="pages">
+		<div class="home show">
+			<div class="content" id="win-word">
+				<div class="app-left">
+					<list class="focs">
+						<a class="back" onclick="apps.word.edit()"><i class="bi bi-arrow-left-circle"></i></a>
+						<a class="home check"><icon class="office-icon"></icon><span class="t2" data-i18n="home">首页</span></a>
+					</list>
+				</div>
+				<div class="app-main">
+					<h3>新建</h3>
+					<div class="card-list">
+						<div class="card" onclick="apps.word.new()">
+							<img border="0" src="img/office-newfile.png">
+							<p>空白文档</p>
+						</div>
+						<div class="card" onclick="apps.word.new()">
+							<img border="0" src="img/office-newfile.png">
+							<p>空白文档</p>
+						</div>
+					</div>
+					<h3>最近</h3>
+					<input type="text" class="input" placeholder="搜索">
+					<p>你最近尚未打开任何文档。</p>
+				</div>
+			</div>
+		</div>
+		<div class="edit">
+			<div class="ribbon">
+				<div class="tab">
+					<a win12_title="暂未完成" data-descp="hide" onclick="apps.word.home()">文件</a>
+					<a>插入</a>
+					<span class="tab-selected"></span>
+				</div>
+				<div class="items">
+					<div class="item" onclick="$('.window.word>.pages>.edit>.content>.doc.homepage').append('默认文本<br>')">
+						<i class="bi bi-text-paragraph"></i>
+						<p>段</p>
+					</div>
+					<div class="item" onclick="$('.window.word>.pages>.edit>.content>.doc.homepage').append('<h1>默认标题</h1>')">
+						<i class="bi bi-text-paragraph"></i>
+						<p>主标题</p>
+					</div>
+					<div class="item" onclick="$(`.window.word>.pages>.edit>.content>.doc.homepage`).append(`<img class='square'>`)">
+						<i class="bi bi-bounding-box"></i>
+						<p>方形</p>
+					</div>
+					<div class="item" onclick="$(`.window.word>.pages>.edit>.content>.doc.homepage`).append(`<table class='table' border='1' contenteditable><tr><th></th><th></th><th></th></tr><tr><th></th><th></th><th></th></tr><tr><th></th><th></th><th></th></tr></table><br>`)">
+						<i class="bi bi-bounding-box"></i>
+						<p>表格</p>
+					</div>
+					<div class="item" onclick='$(`.window.word>.pages>.edit>.content`).append(`<div class="doc" contenteditable></div>`)'>
+						<i class="bi bi-file"></i>
+						<p>空白页</p>
+					</div>
+				</div>
+			</div>
+			<div class="content">
+				<div class="doc homepage" contenteditable></div>
+			</div>
+		</div>
 		</div>
 	</div>
 

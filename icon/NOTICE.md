@@ -21,3 +21,4 @@
 |pythonEditor.svg|是JetBrains s.r.o.的商标|
 |python.svg|是Python软件基金会的商标|
 |mslogin.svg|是微软公司的商标|
+|word.svg|是微软公司的商标|

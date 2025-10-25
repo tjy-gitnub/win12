@@ -865,6 +865,13 @@ const nts = {
             { type: 'detail', text: lang('取消','pc.saveas.cancel'), js: 'closenotice();' }
         ]
     },
+    'word-open-files-fail': {
+        cnt: lang(`<p class="tit">打开失败</p>
+            <p>Word在试图打开文件时遇到错误<br /></p>`),
+        btn: [
+            { type: 'main', text: lang(lang('关闭','close'),'close'), js: 'closenotice();' }
+        ]
+    },
 };
 function shownotice(name) {
     $('#notice>.cnt').html(nts[name].cnt);
