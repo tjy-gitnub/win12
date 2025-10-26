@@ -2041,6 +2041,8 @@ Micrȯsoft Windows [版本 12.0.39035.7324]
     },
     word: {
         init: () => {
+            $('#win-word>.app-left>.focs>.home').css("display", "flex");
+            $('#win-word>.app-left>.focs>.back').css("display", "none");
             $('.window.word>.pages>.edit').removeClass('show');
             $('.window.word>.pages>.home').addClass('show');
             $(`.window.word>.pages>.edit>.content`).empty();
