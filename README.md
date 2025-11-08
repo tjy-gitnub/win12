@@ -1,6 +1,3 @@
-> [!NOTE]
-> 无偿请求帮助我们翻译此项目！目前暂仅需英语。详见[此](lang/readme.md)。
-
 <p align="center">
     <img src="./icon/windows12.svg" width="100" height="100">
 </p>
@@ -134,6 +131,8 @@ Windows12 网页版的媒体文件内容（图形作品、美术作品、视听�
 ## 贡献须知
 
 详情请见 [贡献指南](./CONTRIBUTING.md)。
+
+本项目使用 i18n 库实现多语言，翻译工作依据[翻译贡献指南](lang/readme.md)进行。
 
 ## 贡献者
 

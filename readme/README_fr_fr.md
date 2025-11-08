@@ -1,115 +1,62 @@
-> [!NOTE]
-> Demande de traduction gratuite pour nous aider à traduire ce projet ! Actuellement, seul l'anglais est requis. Voir [ici](https://tangyuan0821.github.io/windows12-docs/zh-tw/translate).
 <p align="center">
-    <img src="./../icon/windows12.svg" width="100" height="100">
+    <img src="./icon/windows12.svg" width="100" height="100">
 </p>
-<h1 align="center">Windows 12 Online</h1>
+<h1 align="center">Windows 12 version Web</h1>
 <p align="center" class="shields">
-  <a href="https://github.com/tjy-gitnub/win12/issues" style="text-decoration:none">
-    <img src="https://img.shields.io/github/issues/tjy-gitnub/win12.svg" alt="GitHub issues"/>
-  </a>
-  <a href="https://github.com/tjy-gitnub/win12/stargazers" style="text-decoration:none">
+  <span href="https://github.com/tjy-gitnub/win12/issues" style="text-decoration:none">
+    <img src="https://img.shields.io/github/issues/tjy-gitnub/win12.svg" alt="Problèmes GitHub"/>
+  </span>
+<span href="https://github.com/tjy-gitnub/win12/stargazers" style="text-decoration:none">
     <img src="https://img.shields.io/github/stars/tjy-gitnub/win12.svg" alt="GitHub stars"/>
-  </a>
-  <a href="https://github.com/tjy-gitnub/win12/network" style="text-decoration:none">
-    <img src="https://img.shields.io/github/forks/tjy-gitnub/win12.svg" alt="GitHub forks"/>
-  </a>
-  </a>
-  <a href="https://github.com/tjy-gitnub/win12/blob/master/LICENSE" style="text-decoration:none">
-    <img src="https://img.shields.io/github/license/tjy-gitnub/win12" alt="GitHub License"/>
-  </a>
+  </span>
+  <span href="https://github.com/tjy-gitnub/win12/network" style="text-decoration:none">
+<img src="https://img.shields.io/github/forks/tjy-gitnub/win12.svg" alt="Fourches GitHub"/>
+  </span>
 </p>
-<p align="center" class="language" title="Language selection 语言选择">
-  <a href="README_en_us.md">English</a> | 
-  <a href="../README.md">简体中文</a> | 
-  <b>Français</b>|
-  <a href="README_zh_tw.md">繁體中文</a>
+<p align="center" class="language" title="Sélection de la langue 语言选择">
+<a href="readme/README_en_us.md">English</a> | 
+  <b>简体中文</b> | 
+  <a href="readme/README_fr_fr.md">Français</a>|
+  <a href="readme/README_zh_tw.md">繁體中文</a>
 </p>
 <details align="center">
-  <summary>Star History</summary>
+  <summary>Historique des étoiles</summary>
   <a href="https://star-history.com/#tjy-gitnub/win12&Date" style="text-decoration:none">
-    <img src="https://api.star-history.com/svg?repos=tjy-gitnub/win12&type=Date" alt="Star History Chart">
+<img src="https://api.star-history.com/svg?repos=tjy-gitnub/win12&type=Date" alt="Star History Chart">
   </a>
 </details>
 
-## Annonces
-### C’est important !
-Gratuitement, nous demandons sincèrement à tous les utilisateurs compétents de réaliser des vidéos promotionnelles pour nous !
-Pour plus de détails, reportez-vous à [Annonce vidéo promotionnelle](https://tangyuan0821.github.io/windows12-docs/fr-fr/Promo_Notice)
+## Table des matières
 
----
+- [Windows 12 version web](#windows-12-网页版)
+  - [Avant-propos](#前言)
+  - [Expérience en ligne](#在线体验)
+  - [Démonstration des effets](#效果展示)
+- [Planification à venir](#前景规划)
+  - [Déclaration d'ouverture](#开源声明)
+  - [Instructions pour contribuer](#贡献须知)
+  - [Contributeurs](#贡献者)
+- [资助我们](#资助我们)
+    
 
-- [Windows 12 Web Edition](#windows-12-web-edition)
-	- [préface précédente](#préface-précédente)
-	- [préface](#préface)
-		- [remerciements spéciaux](#remerciements-spéciaux)
-	- [affichage des effets](#affichage-des-effets)
-	- [expérience en ligne](#expérience-en-ligne)
-	- [installation et utilisation](#installation-et-utilisation)
-	- [planification des perspectives](#planification-des-perspectives)
-	- [description de l'Open Source](#description-de-lopen-source)
-	- [Note sur les contributions](#note-sur-les-contributions)
+    
 
-## préface précédente
+## Avant-propos
 
-Récemment (pas longtemps auparavant), nous avons remarqué qu'il y avait quelques imposteurs, nous tenons donc à faire une déclaration :
+Il y a longtemps, après avoir vu la version conceptuelle de Windows 12 (Powered by PowerPoint), tjy-gitnub a été profondément inspiré et a décidé de créer une version web de Windows 12, à l'instar de [Windows 11 网页版](https://win11.blueedge.me/). Elle présente un design d'interface élégant, des animations fluides et riches, ainsi que diverses fonctionnalités avancées.
 
-Notre projet est développé conjointement par tjy-gitnub (troisième), NB-group (préparation), 782 (première année), les trois développeurs !
+C'est ainsi que ce projet est né (oui, la naissance de ce projet a été aussi soudaine).
 
-(Si vous souhaitez créer une vidéo promotionnelle pour nous, veuillez également inclure nos comptes Bilibili)
+> L'adaptation pour mobile n'est pas encore très aboutie, utilisez la version bureau du site pour dépanner `>v-)o`
 
-Nous n'avons de comptes officiels que sur GitHub, Bilibili et Aifadian !
+## Expérience en ligne
 
-GitHub：
+Cliquez [ici](tjy-gitnub.github.io/win12/desktop.html) pour essayer.
 
-Allez voir dans les contributeurs~
 
-Bilibili：
+## Présentation des résultats
 
-tjy-gitnub：
-
-![image](https://github.com/tjy-gitnub/win12/assets/121747915/6b13f81a-2a33-4265-abee-44c3796c2817)
-
-NB-group：
-
-![image](https://github.com/tjy-gitnub/win12/assets/121747915/9dad6cac-e0e7-44b3-975e-41eaf33520dd)
-
-782：
-
-![image](https://github.com/tjy-gitnub/win12/assets/121747915/e475890f-010d-4e47-9ac6-fd4abad26218)
-
-afdian.com：
-
-Le seul compte officiel au monde où vous pouvez faire un don ! Ouvrez bien vos yeux ! Ne faites pas de dons à d'autres personnes !
-
-![image](https://github.com/tjy-gitnub/win12/assets/121747915/c4a7e71c-ac41-4ab5-ba87-967d188ca2cc)
-
-URL：<https://afdian.com/a/qstudio>
-
-**Notre projet et notre code source ne sont absolument pas soumis à des frais obligatoires ! Si vous voyez que ce projet est vendu sans mentionner le lien vers le projet d'origine, ou s'il enfreint la licence open source EPL-2.0 et les instructions open source de ce projet, n'hésitez pas à le signaler !**
-
-## préface
-
-Récemment (il y a longtemps), inspiré par la version conceptuelle de Windows 12 (Powered by PowerPoint), j'ai décidé de créer une version Web de Windows 12, comme  [Win11 in React](https://win11.blueedge.me/).
-
-Référence [planification des perspectives](#planification-des-perspectives)
-
-Un design d'interface utilisateur élégant, des animations fluides et riches, toutes sortes de fonctionnalités avancées (par rapport à la version Web).
-
-> L'adaptation pour les appareils mobiles n'est pas très optimale, utilisez plutôt la version de bureau du site >v-)o
-
-### remerciements spéciaux
-
-Un grand merci aux sponsors suivants :
-
-- CursoR_光标（<https://afdian.com/a/cursor>）
-- Baymax（<https://afdian.com/u/a131cd504dea11eeb6be5254001e7c00>）
-
-Nous tenons à remercier publiquement ces sponsors !
-
-## affichage des effets
-
-> La nouvelle version a beaucoup de changements, à titre indicatif seulement, veuillez vous référer à la réalité （cliquez [cic](https://tjy-gitnub.github.io/win12/desktop.html) , ce n'est pas compliqué -_-)o
+La nouvelle version comporte de nombreux changements, à titre indicatif seulement ; veuillez vous référer à l’objet réel (cliquez [ici](https://tjy-gitnub.github.io/win12/desktop.html) et vous verrez, ce n’est pas compliqué `-_-)o`)
 
 ![image](https://tjy-gitnub.github.io/win12/img/start-menu.png)
 
@@ -117,88 +64,86 @@ Nous tenons à remercier publiquement ces sponsors !
 
 ![image](https://tjy-gitnub.github.io/win12/img/colorful-apps.png)
 
-*Applications colorées*
+*Applications riches*
 
 ![image](https://tjy-gitnub.github.io/win12/img/dark-mode.png)
 
 *Mode sombre*
 
 ![image](https://tjy-gitnub.github.io/win12/img/ai-copilot.png)
+*AI Copilot([实现方法](./scripts/AI%20Copilot%20service/README.md))*
+## Planification future
 
-*AI Copilot*
+Concernant la feuille de route de ce projet :
 
-## expérience en ligne
-
-[Aperçu en ligne](https://tjy-gitnub.github.io/win12/desktop.html)
-
-Cela peut être un peu lent, veuillez patienter~
-
-## installation et utilisation
-
-Téléchargez le code, aucune installation requise, ouvrez `desktop.html`.
-
-## planification des perspectives
-
-Concernant la planification de ce projet :
-
-- [x] Fonctions de base et applications
-- [x] Optimisation générale de l'interface
+- [x] Fonctionnalités de base et application
+- [x] Optimisation globale de l'apparence
 - [x] Ajout d'effets spéciaux
-- [x] Fonctionnalités de fenêtre
-- [x] Amélioration des applications
-- [x] Ajout de paramètres de personnalisation
-- [x] Ajout de l'application Edge
-- [ ] Ajout d'onglets pour plus d'applications
-- [x] Amélioration des widgets, ajout sur le bureau, etc.
+- [x] Fonctionnalités de la fenêtre
+- [x] Application améliorée
+- [x] Ajouter plus d'options de personnalisation
+- [x] Ajouter l'application Edge
+- [ ] Ajouter des onglets pour plus d'applications
+- [x] Améliorer les widgets, ajouter la fonctionnalité d'intégration au bureau
 - [x] Fond d'écran dynamique
-- [ ] Personnalisation avancée de la barre des tâches
-- [ ] Expansion de l'écosystème d'applications, ajout de la Microsoft Store
-- [ ] Amélioration des paramètres et des mises à jour de Windows
+- [ ] Plus de personnalisation de la barre des tâches
+- [ ] Enrichir l'écosystème d'applications, ajouter Microsoft Store
+- [ ] Améliorer les Paramètres et Windows Update
 
-Voici quelques idées farfelues ~o~)/ :
+Voici quelques... euh... rêvasseries `~o~)/` :
 
-- [x] Création du système de fichiers
-- [ ] Création de son propre mécanisme de fichiers exécutables
-- [ ] Conversion et exécution des fichiers .exe
-- [ ] Fourniture de plus d'API pour les applications
-- [x] Noyau de navigateur intégré, devenant une application
+- [x] Établir un système de fichiers
+- [ ] Mettre en place son propre mécanisme d'exécutables
+- [ ] Convertir et exécuter des fichiers .exe
+- [ ] Fournir plus d'API pour les appels par les applications
+- [x] Intégrer un moteur de navigateur, devenir une application
 - [ ] Renommer le projet en "Windows 12"
-- [ ] Intégration dans le système Windows
-- [ ] Définir le programme de démarrage comme cette application
-- [ ] Supprimer les fonctionnalités système superflues, les encapsuler dans un système d'exploitation indépendant
+- [ ] Emballer dans le système Windows
+- [ ] Définir ce programme comme lanceur de cette application
+- [ ] Supprimer les fonctions système superflues et les encapsuler en un système d'exploitation indépendant
 - [ ] Renommer le projet en "Doswin 1.0"
-- [ ] Adaptation aux ordinateurs quantiques
-- [x] Intégration de ChatGPT
+- [ ] Adapter aux ordinateurs quantiques
+- [x] Intégrer ChatGPT
 - [ ] Renommer le projet en "550W"
 
-## description de l'open source
+## Déclaration open source
+>[!TIP]
+Quelle que soit la manière dont vous utilisez ce projet, vous déclarez avoir lu attentivement et accepté de vous conformer à l’intégralité des dispositions de ce chapitre.
 
-Auteur de ce projet : Tan Jingyuan (tjy-gitnub)
+Le contenu de la version Web de Windows12 est mis à la disposition du public sous une licence de droit d’auteur relativement permissive.
 
-Lien vers ce projet ：<https://github.com/tjy-gitnub/win12>
+### Code source des programmes informatiques
+Wndows12 网页版 est un logiciel libre, distribué sous la licence Eclipse Public License 2.0 de la Fondation Eclipse (URL : <https://www.eclipse.org/legal/epl-2.0/>). Dans le respect de cette licence, vous êtes libre d’utiliser le code source de ce projet.
 
-Ce projet est open source. Il utilise la licence open source EPL v2.0. Les licences open source sont des contrats juridiquement contraignants, veuillez respecter la licence open source et le travail des autres.
+### Fichiers multimédias
 
-Conformément à la licence, vous pouvez diffuser, distribuer, modifier et publier à nouveau ce projet, à des fins personnelles et commerciales, mais nous ne encourageons pas toutes les utilisations commerciales.
+Les fichiers multimédias de la version Web de Windows12 (œuvres graphiques, œuvres d'art, œuvres audiovisuelles) sont publiés sous licence Creative Commons Attribution-Partage dans les Mêmes Conditions 4.0 International (CC BY-SA 4.0) (sauf indications contraires) ; sous réserve du respect de cette licence, vous pouvez utiliser librement les fichiers multimédias de ce projet.
 
-Vous devez fournir la source, **y compris l'auteur, le lien vers le projet** (voir ci-dessus), etc., et vous devez utiliser la même licence open source.
+Les fichiers concernés relèvent de l'utilisation raisonnable ; il convient de noter qu'il existe des risques juridiques liés à l'utilisation de certains fichiers multimédias. Veuillez consulter les lois et règlements sur le droit d'auteur avant utilisation.
 
-Si le code source de ce projet est publié en même temps que votre code source privé en tant que partie du projet, vous pouvez utiliser une autre licence, **mais vous devez indiquer que la partie EPL continue de suivre la licence EPL**.
+### Conditions supplémentaires
+1. Toute personne utilisant, partageant ou distribuant ce projet doit mentionner clairement les informations de l'auteur original (谭景元, tjy-gitnub) et le lien du projet original (<https://github.com/tjy-gitnub/win12>) dans la présentation du projet, la documentation ou les documents connexes. Vous ne devez pas dissimuler, supprimer ou modifier délibérément les informations de signature, les informations d'auteur ou le lien du projet dans le projet original ; vous ne devez pas restreindre l'accès de tiers à ces informations.
+2. Toute personne utilisant ce projet à des fins commerciales doit indiquer l'auteur original et le lien du projet, et publier en open source la totalité du code source concerné sous la licence EPL-2.0.
+3. Le code source non modifié ne peut pas être utilisé à des fins commerciales.
+4. Toute personne utilisant ou partageant ce projet ne doit pas retirer, cacher ou restreindre l'accès à cette déclaration open source.
+5. Si vous découvrez qu'une autre personne enfreint l'une quelconque des exigences énoncées dans les quatre alinéas précédents, veuillez-nous en [signaler](https://github.com/tjy-gitnub/win12/issues) immédiatement et, dans la mesure du possible, empêcher promptement la publication et la diffusion des contenus concernés.
+6. Si vous commettez un acte de contrefaçon, nous conserverons des enregistrements conformément aux dispositions légales et nous réservons le droit, à tout moment et par tous moyens, d'engager des actions en justice et de demander réparation (y compris, sans s'y limiter, signaler l'affaire aux organismes chargés de l'application de la loi, porter plainte devant les autorités judiciaires, collaborer aux enquêtes des autorités compétentes, etc.).
+## Instructions pour les contributions
 
-Pas utilisé comme base pour ajouter ou modifier le projet, uniquement consulté à partir du code source, n'a pas besoin d'être open source, mais est également destiné à un usage éducatif.
+Pour plus de détails, veuillez consulter le [guide de contribution](./CONTRIBUTING.md).
 
-En raison d'une utilisation abusive constatée récemment, des dispositions supplémentaires sont stipulées ici :
+Ce projet utilise la bibliothèque i18n pour fournir la fonctionnalité multilingue; le travail de traduction suit le [guide de contribution pour les traductions](lang/readme.md).
 
-- Toute personne utilisant ce projet doit inclure le nom de l'auteur d'origine et le lien vers le projet dans l'introduction. Il est interdit de délibérément dissimuler les informations de crédit, le nom de l'auteur d'origine ou le lien vers le projet, et il est interdit de restreindre l'accès aux informations de crédit, au nom de l'auteur d'origine ou au lien vers le projet dans le projet d'origine, et il est également interdit de modifier les informations de crédit dans le projet d'origine ;
+## Contributeurs
 
-- Toute personne utilisant ce projet à des fins commerciales doit **mentionner l'auteur d'origine ainsi que le lien vers le projet**, et cela doit être open source conformément à la licence EPL. Le code source non modifié ne doit **pas être utilisé à des fins** commerciales ;
+Développeurs principaux : tjy-gitnub([Bilibili](https://space.bilibili.com/2010692096/)), NB-group([Bilibili](https://space.bilibili.com/1570243738/)), 782([Bilibili](https://space.bilibili.com/1046361194/)) (les trois sont collégiens)
 
-- Toute personne utilisant ce projet ne doit pas supprimer ni intentionnellement masquer, restreindre la visibilité de cette déclaration ;
+Contributeurs du projet : voir [ici](https://github.com/tjy-gitnub/win12/graphs/contributors) (merci à nos excellents contributeurs ! )
 
-- Nous vous prions de respecter les règles susmentionnées. Nous nous réservons le droit de prendre des mesures légales pour protéger nos droits légitimes.
+## Soutenez-nous
 
-## Note sur les contributions
+Vous pouvez faire un don via notre [compte Afdian](https://afdian.com/a/qstudio)
 
-Veuillez consulter [Guide de contribution](https://tangyuan0821.github.io/windows12-docs/fr-fr/contributing)pour plus de détails.
-
-> Traduit par [@Junchen Yi](https://github.com/Jimmy-Effe)
+Remerciements particuliers aux sponsors suivants :
+- CursoR_光标（<https://afdian.com/a/cursor>）
+- Baymax（<https://afdian.com/u/a131cd504dea11eeb6be5254001e7c00>）
