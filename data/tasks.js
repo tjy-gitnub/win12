@@ -63,6 +63,11 @@ let taskmgrTasks = [
         link: 'terminal'
     },
     {
+        name: 'Microsoft Word Preview',
+        icon: 'icon/word.svg',
+        link: 'word'
+    },
+    {
         name: 'Visual Studio Code',
         icon: 'icon/vscode.png',
         link: 'vscode'
