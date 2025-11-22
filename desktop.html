@@ -34,7 +34,6 @@
 	<link rel="stylesheet" href="apps/style/defender.css">
 	<link rel="stylesheet" href="apps/style/taskmgr.css">
 	<link rel="stylesheet" href="apps/style/msstore.css">
-	<link rel="stylesheet" href="apps/style/mslogin.css">
 	<link rel="stylesheet" href="apps/style/word.css">
 	<!-- 掌声欢迎 Copilot 的 css 引入(bs -->
 	<link rel="stylesheet" href="apps/style/copilot.css">
@@ -867,9 +866,8 @@ toggletheme() 切换主题
 		</div>
 	</div>
 	<div id="desktop">
-		<h1>请使用相对正常的浏览器访问。(出现错误：无法处理桌面图标)</h1>
-		<h1>請使用相對正常的瀏覽器訪問。</h1>
-		<h1>Please use a common browser to access.</h1>
+		<h1>无法处理桌面图标，请使用相对正常的浏览器访问。</h1>
+		<h1>Cannot process desktop icons, please use a relatively normal browser to access</h1>
 		<span class="choose">
 		</span>
 		<p style="background-color: rgba(11,45,14,0);z-index:1;position: absolute;top:0px;left:0px;height:100%;width:100%" oncontextmenu="return showcm(event,'desktop');"></p>
@@ -3003,7 +3001,7 @@ toggletheme() 切换主题
 				<a class="a wbtg red" onclick="hidewin('word')"><i class="bi bi-x-lg"></i></a>
 				<a class="a wbtg max" onclick="maxwin('word')"><i class="bi bi-app"></i></a>
 				<a class="a wbtg" onclick="minwin('word')"><i class="bi bi-dash-lg"></i></a>
-				<a class="a wbtg" onclick="openapp('mslogin');"><i class="bi bi-person"></i></a>
+				<a class="a wbtg" onclick="window.location.href='bluescreen.html';"><i class="bi bi-person"></i></a>
 			</div>
 		</div>
 		<div class="pages">

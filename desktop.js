@@ -1998,9 +1998,11 @@ function controlStatus(name) {
     }
     if (name == 'dark') { 
         $('html').toggleClass('night');
-        setTimeout(() => {
-            alert('别看电脑了，去休息眼睛吧~');
-        }, 200);
+        if ($('html').hasClass('night')) {
+            setTimeout(() => {
+                alert('别看屏幕了，去休息眼睛吧~');
+            }, 200);
+        }
     }
 }
 // 控制面板 亮度调整
