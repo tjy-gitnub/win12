@@ -2,7 +2,7 @@
 name: New Proposal
 about: Please provide us with your valuable suggestions
 title: "[NP]"
-labels: enhancement
+labels: 增强
 assignees: ''
 
 ---

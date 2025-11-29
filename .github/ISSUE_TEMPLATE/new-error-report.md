@@ -2,7 +2,7 @@
 name: Error Report
 about: Please report any vulnerabilities you discover during use to us
 title: "[Bug]"
-labels: bug
+labels: 漏洞
 assignees: ''
 
 ---
