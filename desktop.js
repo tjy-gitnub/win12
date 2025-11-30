@@ -659,10 +659,10 @@ const nts = {
             <p>Windows 12 网页版是一个开放源项目,<br />
             希望让用户在网络上预先体验 Windows 12,<br />
             内容可能与 Windows 12 正式版本不一致。<br />
-            使用标准网络技术,例如 HTML, CSS 和 JS<br />
-            此项目绝不附属于微软,且不应与微软操作系统或产品混淆,<br />
-            这也不是 Windows365 cloud PC<br />
-            本项目中微软、Windows和其他示范产品是微软公司的商标<br />
+            使用标准网络技术,例如 HTML, CSS 和 JS。<br />
+            此项目绝不附属于微软,且不应与微软操作系统或产品混淆。<br />
+            这也不是 Windows365 cloud PC。<br />
+            本项目中微软、Windows和其他示范产品是微软公司的商标。<br />
             本项目中 Android 是谷歌公司的商标。</p>`,'nts.about'),
         btn: [
             { type: 'main', text: lang(lang('关闭','close'),'close'), js: 'closenotice();' },
@@ -753,18 +753,20 @@ const nts = {
     'about-copilot': {
         cnt: `
             <p class="tit">关于 Windows 12 Copilot</p>
-            <p>你可以使用此 AI 助手帮助你更快地完成工作，此AI助手基于GPT-5 nano AI模型 (有人用Win12工作?)<br>
+            <p>你可以使用此 AI 助手帮助你更快地完成工作，此AI助手使用的是GPT-5 nano AI模型 (有人用Win12工作?)<br>
             由于所用模型理解力较差，所以间歇性正常工作。<br>
             有任何关于本 AI 的反馈请让 AI 帮你打开 AI Copilot反馈界面<br>
             也请适当使用，不要谈论敏感、违规话题，<br>请有身为一个人类最基本的道德底线。<br>
-            在此特别感谢云智api(api.jkyai.top)提供的公益接口!</p>`,
+            在此特别感谢
+            <a class="a" onclick="window.open('https://api.jkyai.top/','_blank');" win12_title="在浏览器新窗口打开链接" onmouseenter="showdescp(event)" onmouseleave="hidedescp(event)">云智api</a>
+            提供的公益接口!</p>`,
         btn: [
             { type: 'main', text: lang('确定','ok'), js: 'closenotice();' },
         ]
     },
     'feedback-copilot': {
         cnt: `<p class="tit">反馈 Windows 12 Copilot</p>
-        <p>我们非常注重用户的体验与反馈，非常感谢对AI Copilot的建议</p>
+        <p>我们非常注重用户的体验与反馈，非常感谢您对AI Copilot的建议</p>
         <list class="new">
             <a class="a" onclick="window.open('https://github.com/tjy-gitnub/win12/issues','_blank');" win12_title="在浏览器新窗口打开链接" onmouseenter="showdescp(event)" onmouseleave="hidedescp(event)">在github上提交issue (需要github账户，会得到更高重视)</a>
             <a class="a" onclick="window.open('https://forms.office.com/Pages/ResponsePage.aspx?id=DQSIkWdsW0yxEjajBLZtrQAAAAAAAAAAAAO__SDw7SZURjUzOUo0VEVXU1pMWlFTSUVGWDNYWU1EWS4u','_blank');" win12_title="在浏览器新窗口打开链接" onmouseenter="showdescp(event)" onmouseleave="hidedescp(event)">在Microsoft Forms上发送反馈(不需要账户，也会重视)</a>
@@ -795,14 +797,14 @@ const nts = {
     'recognition' : {
         cnt: `
         <p class="tit">语音输入法使用须知</p>
-        <p>本语音输入法由@nb-group开发<br>
-        使用的语音识别api 仅可在使用 Chromium 内核的浏览器上使用，<br>
+        <p>本语音输入法由@NB-group开发<br>
+        使用的语音识别 API 仅可在使用 Chromium 内核的浏览器上使用，<br>
         包括Microsoft Edge，Google Chrome等，<br>
-        api（理论上）完全离线.<br>
+        API（理论上）完全离线.<br>
         我们绝不会窃取您的输入信息，请放心使用。<br><br>
         每次语音识别都会重新申请一下麦克风，这是浏览器的问题，<br>
         可以在浏览器设置里选择始终允许。<br><br>
-        哦对了，关掉提示窗口之后再点一次语音球才能开始识别。
+        哦，对了，关掉提示窗口之后再点一次语音球才能开始识别。
         </p>
          `,
         btn: [
@@ -847,13 +849,16 @@ const nts = {
             { type: 'detail', text: lang('取消','pc.saveas.cancel'), js: 'closenotice();' }
         ]
     },
-    'no-files-permission': {
+
+    // 这个函数重复了，予以删除
+    /*'no-files-permission': {
         cnt: lang(`<p class="tit">文件资源管理器</p>
             <p>你没有权限打开该文件，请向文件的所有者或管理员申请权限<br /></p>`),
         btn: [
             { type: 'main', text: lang(lang('关闭','close'),'close'), js: 'closenotice();' }
         ]
-    },
+    },*/
+
     'rename-pc': {
         cnt: `
         <p class="tit">重命名你的电脑</p>
@@ -1215,7 +1220,7 @@ ${new Date().toLocaleDateString()}  ${new Date().toLocaleTimeString()}    <DIR> 
             const d = new Date();
             $('#win-terminal>.text-cmd').append(`
 主机名:                 WIN12-WEB
-OS 名称:               Microsoft Windows 12 网页版
+OS 名称:               Windows 12 网页版
 OS 版本:               12.0.39035.7324
 OS 制造商:             Microsoft Corporation
 OS 配置:               主要工作站
@@ -1233,9 +1238,9 @@ BIOS 版本:             Web Browser Virtual BIOS
 Windows 目录:          C:\\Windows
 系统目录:              C:\\Windows\\System32
 启动设备:              \\Device\\HarddiskVolume1
-系统区域设置:          zh-cn;中文(中国)
-输入法区域设置:        zh-cn;中文(中国)
-时区:                  (UTC+08:00)北京，重庆，香港特别行政区，乌鲁木齐
+系统区域设置:          zh-CN;中文(中国)
+输入法区域设置:        zh-CN;中文(中国)
+时区:                  (UTC+08:00)北京，重庆，香港特别行政区
 物理内存总量:          8,192 MB
 可用的物理内存:        4,096 MB
 虚拟内存: 最大值:      16,384 MB
@@ -1594,7 +1599,7 @@ let copilot = {
 5.指令"{settheme theme}";用于切换系统的深色、浅色模式，区别于主题。用"light"表浅色，"dark"表深色，来替换其中的"theme"
 如下是应用的功能介绍。
 1.设置:id为setting;在个性化页面中可以设置系统的主题，主题色，是否启用动画、阴影、圆角、云母mica效果和为所有窗口开启亚克力透明效果。
-2.关于win12网页版:id为about;简介页面有关于本项目的介绍说明与贡献者信息，更新记录页面有本项目的各版本更新记录。
+2.关于Windows 12网页版:id为about;简介页面有关于本项目的介绍说明与贡献者信息，更新记录页面有本项目的各版本更新记录。
 3.Microsoft Edge浏览器:id为edge;一个浏览器。因为浏览器跨域的限制，部分网页会显示"拒绝连接"而无法访问。
 4.计算器:id为calc;
 5.文件资源管理器:id为explorer;
@@ -1603,10 +1608,10 @@ let copilot = {
 8.记事本:id为notepad;
 9.python:id为python;
 仅有以下关于此项目的信息。
-1.Windows 12 网页版是一个开源项目，由谭景元原创, 使用Html,css,js，在网络上模拟、创新操作系统
+1.Windows 12 网页版是一个开源项目，由谭景元原创, 使用HTML, CSS, JS，在网络上模拟、创新操作系统
 2.项目的Github地址是https://github.com/tjy-gitnub/win12
 3.此项目使用EPL v2.0开源许可
-当用户询问更多项目信息时，帮助他打开"关于win12网页版"应用。
+当用户询问更多项目信息时，帮助他打开"关于Windows 12网页版"应用。
 比如这时用户说"请打开计算器"，你会回答什么？`
         },{
             role:'assistant',
