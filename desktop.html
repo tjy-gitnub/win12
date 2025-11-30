@@ -189,6 +189,39 @@ toggletheme() 切换主题
 		<div class="user"></div>
 		<div class="name">Administrator</div>
 		
+		<input style="display: flex;align-items: center;color: aliceblue;" placeholder="输入密码..." onkeyup="loginByPasswotd(event)">
+
+		<script>
+			function loginByPasswotd(event) {
+            // 如果按下的是回车键
+            if (event.keyCode === 13) {
+                // 获取输入框的值
+                var inputValue = event.target.value;
+                // 判断是否为正确密码
+                if (inputValue == '123456') {
+                    // 登录
+                    $(this).css('opacity','0');$('#login-welc').css('opacity','1');
+					setTimeout(() => {
+					$('#loginback').addClass('close');
+					setTimeout(() => {
+						$('#loginback').css('opacity', '0');
+					}, 500);
+					setTimeout(() => {
+						$('#loginback').css('display', 'none');
+					}, 2000);
+					if(use_music){
+						document.querySelector('audio#startup-music').play();
+					}
+					}, 2000);
+
+					//消除登录按钮
+					var loginBtn=document.getElementById('login');
+					loginBtn.innerHTML=``;
+                }
+            }
+        }
+		</script>
+
 		<div id="login" onclick="$(this).css('opacity','0');$('#login-welc').css('opacity','1');
 			setTimeout(() => {
 				$('#loginback').addClass('close');
@@ -202,7 +235,7 @@ toggletheme() 切换主题
 					document.querySelector('audio#startup-music').play();
 				}
 			}, 2000);" data-i18n="login">
-			登录
+			直接登录
 		</div>
 		<div id="login-welc" style="opacity: 0;">
 			<loading>
