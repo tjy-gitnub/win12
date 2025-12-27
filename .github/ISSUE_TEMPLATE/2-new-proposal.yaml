@@ -1,0 +1,41 @@
+name: New Proposal / 提出建议
+description: Please provide us with your valuable suggestions / 请向我们提出宝贵的建议
+title: "[New Proposal] "
+body:
+  - type: markdown
+    id: introduction
+    attributes:
+      value: |
+        欢迎向 Windows12 网页版 提出建议。您的建议将帮助本项目变得更好。
+        Welcome to submit suggestions to Windows12 Online. Your suggestions will help this project become better.
+  - type: checkboxes
+    id: prerequisites
+    attributes:
+      label: 先决条件 (Prerequisites)
+      options:
+        - label: |
+            我已确认这个问题没有在[其他 issues](https://github.com/tjy-gitnub/win12/issues)中提出过。
+            I am sure that this problem has NEVER been discussed in [other issues](https://github.com/tjy-gitnub/win12/issues).
+          required: true
+        - label: |
+            我确认我正在使用官方地址 (tjy-gitnub.github.io/win12)。
+            I confirm that I am using the official url (tjy-gitnub.github.io/win12).
+          required: true
+  - type: textarea
+    id: name
+    attributes:
+      label: 简述一下您的想法(What's your idea?)
+    validations:
+      required: true
+  - type: textarea
+    id: upstream
+    attributes:
+      label: 您认为应如何实现这个想法(How would you implement this idea?)
+    validations:
+      required: true
+  - type: textarea
+    id: more_info
+    attributes:
+      label: 备注 (Note)
+    validations:
+      required: false
