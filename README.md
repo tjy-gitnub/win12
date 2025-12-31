@@ -1,150 +1,134 @@
-<p align="center">
-    <img src="./icon/windows12.svg" width="100" height="100">
-</p>
-<h1 align="center">Windows 12 网页版</h1>
-<p align="center" class="shields">
-  <span href="https://github.com/tjy-gitnub/win12/issues" style="text-decoration:none">
-    <img src="https://img.shields.io/github/issues/tjy-gitnub/win12.svg" alt="GitHub issues"/>
-  </span>
-  <span href="https://github.com/tjy-gitnub/win12/stargazers" style="text-decoration:none">
-    <img src="https://img.shields.io/github/stars/tjy-gitnub/win12.svg" alt="GitHub stars"/>
-  </span>
-  <span href="https://github.com/tjy-gitnub/win12/network" style="text-decoration:none">
-    <img src="https://img.shields.io/github/forks/tjy-gitnub/win12.svg" alt="GitHub forks"/>
-  </span>
-</p>
-<p align="center" class="language" title="Language selection 语言选择">
-  <a href="readme/README_en_us.md">English</a> | 
-  <b>简体中文</b> | 
-  <a href="readme/README_fr_fr.md">Français</a>|
-  <a href="readme/README_zh_tw.md">繁體中文</a>
-</p>
-<details align="center">
-  <summary>Star History</summary>
-  <a href="https://star-history.com/#tjy-gitnub/win12&Date" style="text-decoration:none">
-    <img src="https://api.star-history.com/svg?repos=tjy-gitnub/win12&type=Date" alt="Star History Chart">
-  </a>
-</details>
+<p align="center"> <img src="./icon/windows12.svg" width="100" height="100"> </p> <h1 align="center">Windows 12 Web Edition</h1> <p align="center" class="shields"> <span href="https://github.com/tjy-gitnub/win12/issues" style="text-decoration:none"> <img src="https://img.shields.io/github/issues/tjy-gitnub/win12.svg" alt="GitHub issues"/> </span> <span href="https://github.com/tjy-gitnub/win12/stargazers" style="text-decoration:none"> <img src="https://img.shields.io/github/stars/tjy-gitnub/win12.svg" alt="GitHub stars"/> </span> <span href="https://github.com/tjy-gitnub/win12/network" style="text-decoration:none"> <img src="https://img.shields.io/github/forks/tjy-gitnub/win12.svg" alt="GitHub forks"/> </span> </p> <p align="center" class="language" title="Language selection"> <b>English</b> | <a href="README.md">简体中文</a> | <a href="readme/README_fr_fr.md">Français</a>| <a href="readme/README_zh_tw.md">繁體中文</a> </p> <details align="center"> <summary>Star History</summary> <a href="https://star-history.com/#tjy-gitnub/win12&Date" style="text-decoration:none"> <img src="https://api.star-history.com/svg?repos=tjy-gitnub/win12&type=Date" alt="Star History Chart"> </a> </details>
 
-## 目录
+Table of Contents
+Introduction
 
-- [Windows 12 网页版](#windows-12-网页版)
-  - [前言](#前言)
-  - [在线体验](#在线体验)
-  - [效果展示](#效果展示)
-  - [前景规划](#前景规划)
-  - [开源声明](#开源声明)
-  - [贡献须知](#贡献须知)
-  - [贡献者](#贡献者)
-  - [资助我们](#资助我们)
-    
+Online Experience
 
-    
+Preview
 
-## 前言
+Roadmap
 
-很久以前tjy-gitnub看到 Windows 12 概念版（Powered by PowerPoint）后深受启发，决定做一个 Windows 12 网页版，就像 [Windows 11 网页版](https://win11.blueedge.me/) 一样。 它拥有精美的 ui 设计，流畅丰富的动画，各种高级的功能。
+Open Source License
 
-于是就有了这个项目（是的，这个项目的诞生就是这么突然）
->[!NOTE]
-> 目前移动端适配不太完善，开桌面版网站凑合着用吧 `>v-)o`
+Contribution Guidelines
 
-## 在线体验
+Contributors
 
-点击[此处](tjy-gitnub.github.io/win12/desktop.html)即可体验。
+Support Us
 
+Introduction
+Long ago, after seeing the Windows 12 Concept Edition (Powered by PowerPoint), the author tjy-gitnub was deeply inspired and decided to create a Windows 12 Web Edition, similar to Windows 11 Web. It features a beautiful UI design, smooth animations, and various advanced functions.
 
-## 效果展示
+Thus, this project was born (yes, it started quite suddenly).
 
-> 新的版本有很多变化，仅供参考，请以实物为准（你点一下 [这里](https://tjy-gitnub.github.io/win12/desktop.html) 就知道了啊，不麻烦`-_-)o` ）
+[!NOTE]
 
-![image](https://tjy-gitnub.github.io/win12/img/start-menu.png)
+Mobile adaptation is currently incomplete. For now, please use the "Desktop Site" mode on your mobile browser. >v-)o
 
-*开始菜单*
+Online Experience
+Click here to experience it online.
 
-![image](https://tjy-gitnub.github.io/win12/img/colorful-apps.png)
+Preview
+Newer versions change frequently. The following is for reference only; please refer to the live site for the current version (just click here—it's not that much trouble -_-)o).
 
-*丰富的应用*
+Start Menu
 
-![image](https://tjy-gitnub.github.io/win12/img/dark-mode.png)
+Rich Applications
 
-*深色模式*
+Dark Mode
 
-![image](https://tjy-gitnub.github.io/win12/img/ai-copilot.png)
-*AI Copilot([实现方法](./scripts/AI%20Copilot%20service/README.md))*
-## 前景规划
+AI Copilot (Implementation details)
 
-关于该项目的路径规划:
+Roadmap
+Project development path:
 
-- [x] 基本功能与应用
-- [x] 外观整体优化
-- [x] 加入特效
-- [x] 窗口功能
-- [x] 应用完善
-- [x] 添加更多个性化方面的设置
-- [x] 添加 Edge 应用
-- [ ] 为更多应用添加标签页
-- [x] 完善小组件，添加到桌面等功能
-- [x] 动态壁纸
-- [ ] 更多任务栏的自定义
-- [ ] 丰富应用生态，添加 Microsoft Store
-- [ ] 完善设置及 Windows 更新
+[x] Basic functions and applications
 
-下面是一些...呃......畅..想 `~o~)/`：
+[x] Overall appearance optimization
 
-- [x] 建立文件系统
-- [ ] 建立自己的可执行文件机制
-- [ ] 将 .exe 文件转化并执行
-- [ ] 提供更多 api 供应用调用
-- [x] 内置浏览器内核，成为应用
-- [ ] 将项目更名为 "Windows 12"
-- [ ] 封装到 Windows 系统中
-- [ ] 将启动程序设为此应用
-- [ ] 去除多余系统功能，封装成独立的操作系统
-- [ ] 将项目更名为 "Doswin 1.0"
-- [ ] 适配量子计算机
-- [x] 接入ChatGPT
-- [ ] 将项目更名为 "550W"
+[x] Add visual effects
 
-## 开源声明
+[x] Windowing system
 
-Windows12 网页版的内容均采用较为宽松的著作权许可协议授权社会公众使用。
+[x] Application refinement
 
-### 计算机程序源代码
-Wndows12 网页版是自由软件，采用Eclipse基金会发行的Eclipse Public License 2.0许可证（网址:<https://www.eclipse.org/legal/epl-2.0/>）进行许可。在遵守该许可证的前提下，您可以自由使用本项目的源代码。
+[x] Add more personalization settings
 
-### 媒体文件
+[x] Add Edge browser app
 
-Windows12 网页版的媒体文件内容（图形作品、美术作品、视听作品）依照依照知识共享 署名-相同方式共享 4.0 协议国际版（CC BY-SA 4.0）公开发表（另有声明的部分除外）；在遵守该许可协议的前提下，您可以自由使用本项目内的媒体文件。
+[ ] Add tabs for more applications
 
-相关文件属于合理使用的范畴，应注意使用相关的媒体文件存在法律风险，请在使用前查阅著作权法律法规之规定。
+[x] Improve widgets and "add to desktop" features
 
-### 附加条款
+[x] Dynamic wallpapers
 
->[!CAUTION]<br> 以下条款适用于中华人民共和国（不含香港特别行政区、澳门特别行政区、台湾地区）以及“Windows12 网页版”项目服务器所在地的相关法律、法规、政府规章和其他具有强制性的规定。
+[ ] More taskbar customization
 
-1. 任何使用、分享或分发本项目者，必须在项目介绍、文档或相关材料中明确附上原作者信息（谭景元，tjy-gitnub）及原项目链接（<https://github.com/tjy-gitnub/win12>）。**您不得故意隐瞒、移除或修改原项目中的署名信息、作者信息或项目链接等；不得限制他人查看这些信息**。
-2. 将本项目用于商业用途者，必须标明原作者及项目链接，并以 EPL-2.0 协议开源全部相关源代码。
-3. 未经修改的源代码不得用于商业用途。
-4. 任何使用或分享本项目者，不得移除、隐藏或限制查看本开源声明。
-5. 您在发现他人违反前四款所列各项要求时，请及时[向我们报告](https://github.com/tjy-gitnub/win12/issues)，并尽可能及时制止相关内容的发布与传输。
-6. 若您实施侵权行为，我们将根据法律规定保留记录，且保留在任何时间以一切方式采取法律行动、追究法律责任的权利（包括但不限于依法向执法机关提交报告、向司法机关提出控告、配合执法机关和司法机关调查等）。
-## 贡献须知
+[ ] Enrich app ecosystem / Add Microsoft Store
 
-详情请见 [贡献指南](./CONTRIBUTING.md)。
+[ ] Complete Settings and Windows Update
 
-本项目使用 i18n 库实现多语言，翻译工作依据[翻译贡献指南](lang/readme.md)进行。
+Below are some... well... "visions" ~o~)/:
 
-## 贡献者
+[x] Build a file system
 
-核心开发者: tjy-gitnub([Bilibili](https://space.bilibili.com/2010692096/))，NB-group([Bilibili](https://space.bilibili.com/1570243738/))，782([Bilibili](https://space.bilibili.com/1046361194/))（三人均为初中生）
+[ ] Create a custom executable mechanism
 
-项目贡献者:详见[此处](https://github.com/tjy-gitnub/win12/graphs/contributors)（感谢我们出色的贡献者！）
+[ ] Convert and execute .exe files
 
-## 资助我们
+[ ] Provide more APIs for app calls
 
-可以向我们的[爱发电账户](https://afdian.com/a/qstudio)捐款
+[x] Built-in browser core as an app
 
-特别感谢以下赞助者:
-- CursoR_光标（<https://afdian.com/a/cursor>）
-- Baymax（<https://afdian.com/u/a131cd504dea11eeb6be5254001e7c00>）
+[ ] Rename the project to "Windows 12"
+
+[ ] Encapsulate into a Windows system
+
+[ ] Set the launcher as this app
+
+[ ] Remove redundant system functions to create a standalone OS
+
+[ ] Rename the project to "Doswin 1.0"
+
+[ ] Adapt for quantum computers
+
+[x] Integrate ChatGPT
+
+[ ] Rename project to "550W" (MOSS reference)
+
+Open Source License
+The content of Windows 12 Web Edition is licensed to the public under relatively loose copyright licenses.
+
+Source Code
+Windows 12 Web Edition is free software, licensed under the Eclipse Public License 2.0 (EPL-2.0). You are free to use the source code of this project provided you comply with this license.
+
+Media Files
+The media files (graphics, artwork, audiovisual works) are published under the Creative Commons Attribution-ShareAlike 4.0 International License (CC BY-SA 4.0), unless otherwise stated.
+
+Note: Some files may fall under "fair use." Please be aware of legal risks when using certain media files and consult copyright laws before use.
+
+Additional Terms
+[!CAUTION]
+
+The following terms apply to the People's Republic of China (excluding HK, Macau, and Taiwan) and the laws/regulations of the region where the project server is located.
+
+Anyone using or distributing this project must clearly include the original author's information (Tan Jingyuan, tjy-gitnub) and the original project link (https://github.com/tjy-gitnub/win12). You must not intentionally hide, remove, or modify attribution info.
+
+Commercial users must credit the author/link and open-source all related code under the EPL-2.0 protocol.
+
+Unmodified source code may not be used for commercial purposes.
+
+Do not remove or hide this open-source statement.
+
+If you find violations of these terms, please report them to us.
+
+We reserve the right to take legal action against infringements.
+
+Contribution Guidelines
+For details, please see the Contribution Guide. This project uses the i18n library for multi-language support. Translation work follows the Translation Guide.
+
+Contributors
+Core Developers: tjy-gitnub, NB-group, 782 (All three are middle school students).
+
+Project Contributors: See the full list here. Thank you to our amazing contributors!
