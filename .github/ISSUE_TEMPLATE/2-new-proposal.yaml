@@ -24,18 +24,21 @@ body:
   - type: textarea
     id: name
     attributes:
-      label: 简述一下您的想法(What's your idea?)
+      label: 描述
+      description: 请简述您的建议 Please briefly describe your proposal
     validations:
       required: true
   - type: textarea
     id: upstream
     attributes:
-      label: 您认为应如何实现这个想法(How would you implement this idea?)
+      label: 方案
+      description: 请简述您建议的实现方案 Please briefly describe your proposed implementation
     validations:
       required: true
   - type: textarea
     id: more_info
     attributes:
       label: 备注 (Note)
+      description: 其他补充信息 Additional information
     validations:
       required: false
