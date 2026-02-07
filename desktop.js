@@ -1657,7 +1657,8 @@ let copilot = {
            })();
         // 构建API请求URL
         const encodedQuestion = encodeURIComponent(t);
-        const apiUrl = `https://api.jkyai.top/API/gpt5-nano?question=${encodedQuestion}&system=${encodeURIComponent(copilot.history[0].content)}&uid=${uid}`;
+        const YUNZHI_API_URL = "https://vercel-proxy-lilac-five.vercel.app/api/copilot";
+        const apiUrl = YUNZHI_API_URL;
 
         // API请求
         $.ajax({
