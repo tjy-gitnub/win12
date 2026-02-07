@@ -753,25 +753,14 @@ const nts = {
     'about-copilot': {
         cnt: `
             <p class="tit">关于 Windows 12 Copilot</p>
-            <p>你可以使用此 AI 助手帮助你更快地完成工作，此AI助手基于GPT-5 nano AI模型 (有人用Win12工作?)<br>
-            由于所用模型理解力较差，所以间歇性正常工作。<br>
-            有任何关于本 AI 的反馈请让 AI 帮你打开 AI Copilot反馈界面<br>
+             <p>你可以使用此 AI 助手帮助你更快地完成工作，此AI助手基于 Qwen3-Max 模型 (有人用Win12工作?)<br>
             也请适当使用，不要谈论敏感、违规话题，<br>请有身为一个人类最基本的道德底线。<br>
-            在此特别感谢云智api(api.jkyai.top)提供的公益接口!</p>`,
+            在此特别感谢云智api(yunzhiapi.cn)为本项目提供赞助！</p>
+            <a class="a" onclick="window.open('https://status.tangyuan0821.com/status/win12/','_blank');" win12_title="在浏览器新窗口打开链接">状态监测</a><br>
+            <a class="a" onclick="window.open('https://www.yunzhiapi.cn/','_blank');" win12_title="在浏览器新窗口打开链接">云智API官网</a>
+        `,
         btn: [
             { type: 'main', text: lang('确定','ok'), js: 'closenotice();' },
-        ]
-    },
-    'feedback-copilot': {
-        cnt: `<p class="tit">反馈 Windows 12 Copilot</p>
-        <p>我们非常注重用户的体验与反馈，非常感谢对AI Copilot的建议</p>
-        <list class="new">
-            <a class="a" onclick="window.open('https://github.com/tjy-gitnub/win12/issues','_blank');" win12_title="在浏览器新窗口打开链接" onmouseenter="showdescp(event)" onmouseleave="hidedescp(event)">在github上提交issue (需要github账户，会得到更高重视)</a>
-            <a class="a" onclick="window.open('https://forms.office.com/Pages/ResponsePage.aspx?id=DQSIkWdsW0yxEjajBLZtrQAAAAAAAAAAAAO__SDw7SZURjUzOUo0VEVXU1pMWlFTSUVGWDNYWU1EWS4u','_blank');" win12_title="在浏览器新窗口打开链接" onmouseenter="showdescp(event)" onmouseleave="hidedescp(event)">在Microsoft Forms上发送反馈(不需要账户，也会重视)</a>
-        </list>
-            `,
-        btn: [
-            { type: 'main', text: lang('关闭','close'), js: 'closenotice();' }
         ]
     },
     'shutdown': {
@@ -1620,11 +1609,12 @@ let copilot = {
         }],
     init: () => {
         $('#copilot>.chat').html('');
-        $('#copilot>.chat').append(`<div class="line system"><p class="text">本 AI 助手已恢复正常工作。目前支持以下操作：<br>
+        $('#copilot>.chat').append(`<div class="line system"><p class="text">本 AI 助手基于Qwen3-max模型，目前支持以下操作：<br>
         1.打开除webapp外大多应用<br>
         2.在浏览器中打开链接、搜索<br>
         3.发送对系统、AI助手的反馈<br>
-        4.切换颜色主题</p></div>`);
+        4.切换颜色主题<br>
+        若您在使用中出现异常可先至状态监测页面（https://status.tangyuan0821.com/status/win12/）查看状态，若确有异常请及时向我们反馈。</p></div>`);
         setTimeout(() => {
             $('#copilot>.chat').append(`<div class="line ai"><p class="text">欢迎使用 Windows 12，有什么可以帮您？</p></div>`);
             $('#copilot>.inputbox').removeClass('disable');
@@ -1634,7 +1624,7 @@ let copilot = {
     send: (t, showusr = true, role='user') => {
         // 输入验证
         if (t.length == 0) {
-            $('#copilot>.chat').append('<div class="line system"><p class="text">系统表示请发一些有意义的东西</p></div>');
+            $('#copilot>.chat').append('<div class="line system"><p class="text">请发一些有意义的东西</p></div>');
             $('#copilot>.chat').scrollTop($('#copilot>.chat')[0].scrollHeight);
             msgDoneOperate();
             return;
@@ -1657,8 +1647,7 @@ let copilot = {
            })();
         // 构建API请求URL
         const encodedQuestion = encodeURIComponent(t);
-        const YUNZHI_API_URL = "https://vercel-proxy-lilac-five.vercel.app/api/copilot";
-        const apiUrl = YUNZHI_API_URL;
+        const apiUrl = `https://yunzhiapi.cn/vip/win12/qwen3-max/index.php?question=${encodedQuestion}&system=${encodeURIComponent(copilot.history[0].content)}&uid=${uid}`;
 
         // API请求
         $.ajax({
