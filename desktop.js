@@ -1647,7 +1647,7 @@ let copilot = {
            })();
         // 构建API请求URL
         const encodedQuestion = encodeURIComponent(t);
-        const apiUrl = `https://yunzhiapi.cn/vip/win12/qwen3-max/index.php?question=${encodedQuestion}&system=${encodeURIComponent(copilot.history[0].content)}&uid=${uid}`;
+        const apiUrl = `https://vercel-proxy-lilac-five.vercel.app/api/copilot/?question=${encodedQuestion}&system=${encodeURIComponent(copilot.history[0].content)}&uid=${uid}`;
 
         // API请求
         $.ajax({
