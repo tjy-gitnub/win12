@@ -12,6 +12,9 @@
   <span href="https://github.com/tjy-gitnub/win12/network" style="text-decoration:none">
     <img src="https://img.shields.io/github/forks/tjy-gitnub/win12.svg" alt="GitHub forks"/>
   </span>
+    <span href="https://tjy-gitnub.github.io/win12/desktop.html" style="text-decoration:none">
+    <img src="https://status.tangyuan0821.com/api/badge/5/status" alt="Status"/>
+  </span>
 </p>
 <p align="center" class="language" title="Language selection 语言选择">
   <a href="readme/README_en_us.md">English</a> | 
