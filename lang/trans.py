@@ -1,4 +1,4 @@
- # Windows 12 网页版是一个开放源项目,希望让用户在网络上预先体验 Windows 12,
+ # Windows 12 网页版是一个开放源项目,希望让用户在网络上预先体验 Windows 12.
  # @author tangyuan0821 <tangyuan0821@email.cn>  tjy-gitnub <starry-source@outlook.com>
  # @license EPL v2
  # @link <https://github.com/tjy-gitnub/win12>

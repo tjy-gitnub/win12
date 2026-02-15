@@ -42,5 +42,5 @@ app.title=Windows 12
 app.title=Windows 12
 ```
 ## 反馈 / Feedback
-如若发现任何问题，欢迎通过issues向我们提交反馈。
+如若发现任何问题，欢迎通过提交issues向我们提交反馈。
 <br>If you find any issues, feel free to submit feedback to us via GitHub Issues.
