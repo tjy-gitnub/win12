@@ -1,0 +1,32 @@
+name: 通知下游仓库部署 PR 预览
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+# 最小权限原则：此 workflow 不需要默认 GITHUB_TOKEN 的任何权限
+permissions: {}
+
+jobs:
+  notify-downstream:
+    name: 触发下游预览部署
+    runs-on: ubuntu-latest
+    # 跳过草稿 PR
+    if: github.event.pull_request.draft == false
+    steps:
+      - name: 发送 repository_dispatch 到下游仓库
+        env:
+          GH_TOKEN: ${{ secrets.DOWNSTREAM_DISPATCH_PAT }}
+        run: |
+          # 将 PR 事件类型映射为下游 dispatch 事件类型
+          # opened -> upstream-pr-opened
+          # synchronize -> upstream-pr-synchronize
+          # reopened -> upstream-pr-reopened
+          EVENT_TYPE="upstream-pr-${{ github.event.action }}"
+
+          gh api \
+            --method POST \
+            /repos/tangyuan0821/win12-pr-preview/dispatches \
+            -f "event_type=${EVENT_TYPE}" \
+            -f "client_payload[pr_number]=${{ github.event.pull_request.number }}" \
+            -f "client_payload[sha]=${{ github.event.pull_request.head.sha }}"
