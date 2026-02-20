@@ -1,10 +1,10 @@
-name: 通知下游仓库部署 PR 预览
+name: 部署 PR 预览
+
 
 on:
-  pull_request:
+  pull_request_target:
     types: [opened, synchronize, reopened]
 
-# 最小权限原则：此 workflow 不需要默认 GITHUB_TOKEN 的任何权限
 permissions: {}
 
 jobs:
