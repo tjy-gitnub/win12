@@ -1774,7 +1774,8 @@ input-before {
     line-height: 50px;
 }
 
-#datebox>.tit>.date {
+#datebox>.tit>.date,
+#datebox>.tit>#lunar {
     margin-left: 5px;
 }
 
