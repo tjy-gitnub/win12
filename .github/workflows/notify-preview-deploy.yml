@@ -2,7 +2,7 @@
 name: PR 预览部署
 
 on:
-  pull_request:
+  pull_request_target:
     types: [opened, synchronize, reopened]
 
 
