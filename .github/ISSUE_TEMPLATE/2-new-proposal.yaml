@@ -1,6 +1,6 @@
 name: New Proposal / 提出建议
 description: Please provide us with your valuable suggestions / 请向我们提出宝贵的建议
-title: "[New Proposal] "
+title: "[建议] "
 body:
   - type: markdown
     id: introduction
