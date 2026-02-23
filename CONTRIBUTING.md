@@ -3,7 +3,7 @@
 
 若您想贡献本仓库，那您必须仔细阅读本指南的所有内容。您还应当注意本指南中**加粗的文字**和[开发规范](#开发规范)章节的内容。
 
-本仓库仍有很多问题待解决，Issue列表长期处于积压状态。您可以先试着解决[Issue列表](https://tangyuan0821.github.io/win12-issues-help/index.html)中的已知问题和功能请求。
+本仓库仍有很多问题待解决，Issue列表长期处于积压状态。您可以先试着解决[Issue列表](https://github.com/tjy-gitnub/win12/issues)中的已知问题和功能请求。
 
 ## 基本流程
 

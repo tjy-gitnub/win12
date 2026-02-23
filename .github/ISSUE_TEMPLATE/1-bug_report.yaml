@@ -21,10 +21,6 @@ body:
             我确认我正在使用官方地址 (tjy-gitnub.github.io/win12)。
             I confirm that I am using the official url (tjy-gitnub.github.io/win12).
           required: true
-        - label: |
-            我已阅读[常见问题](https://tangyuan0821.github.io/win12-issues-help/frequently-asked-questions.html)文档
-            I have read the [Frequently Asked Questions document](https://tangyuan0821.github.io/win12-issues-help/frequently-asked-questions.html).
-          required: true
   - type: textarea
     id: what_happened
     attributes:
