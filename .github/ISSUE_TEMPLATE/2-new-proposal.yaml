@@ -22,7 +22,7 @@ body:
             I confirm that I am using the official url (tjy-gitnub.github.io/win12).
           required: true
         - label: |
-            我有遵守行为准则
+            我确保我遵守行为准则
             I have followed the code of conduct
           required: true
   - type: textarea
