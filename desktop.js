@@ -2452,6 +2452,33 @@ function checkOrientation() {
     }
 }
 
+function handleIconInteraction(iconElement, callback) {
+    if (isMobileDevice()) {
+        iconElement.addEventListener('click', callback);
+    } else {
+        iconElement.addEventListener('dblclick', callback);
+    }
+}
+
+// 初始位置优化
+function getInitialPosition() {
+    if (isMobileDevice()) {
+        return {
+            x: window.innerWidth * 0.05,
+            y: 20,
+            width: "90%",
+            height: "75%"
+        };
+    }
+    return { x: 100, y: 100, width: "800px", height: "600px" };
+}
+
+window.addEventListener('contextmenu', function (e) {
+    e.preventDefault();
+    renderWin12ContextMenu(e.clientX, e.clientY);
+});
+
+
 // 监听屏幕方向变化
 window.addEventListener("resize", checkOrientation);
 window.addEventListener("orientationchange", checkOrientation);
