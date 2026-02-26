@@ -2173,64 +2173,106 @@ function saveDesktop() {
     });
 }
 
+const defaultIcons = [
+    { id: 'explorer', icon: 'apps/icons/explorer/thispc.svg', name: lang('此电脑','explorer.thispc') },
+    { id: 'setting', icon: 'icon/setting.svg', name: lang('设置','setting.name') },
+    { id: 'about', icon: 'icon/about.svg', name: lang('关于 Win12 网页版','about.name') },
+    { id: 'edge', icon: 'icon/edge.svg', name: 'Microsoft Edge' },
+    { id: 'feedback', icon: 'icon/feedback.svg', name: lang('反馈中心','feedback.name'), isNotice: true }
+];
+
 function setIcon() {
-    // return;
-    if (!Array.isArray(JSON.parse(localStorage.getItem('desktop')))){
-        setData('desktop','[]')
+    // 初始化桌面数据存储
+    if (!Array.isArray(JSON.parse(localStorage.getItem('desktop')))) {
+        setData('desktop', '[]');
     }
-    if (Array.isArray(JSON.parse(localStorage.getItem('desktop')))) {
-        $('#desktop')[0].innerHTML = `<div ondblclick="openapp('explorer');" ontouchstart="openapp('explorer');" oncontextmenu="return showcm(event,'desktop.icon',['explorer',-1]);" appname="explorer">
-        <img src="apps/icons/explorer/thispc.svg">
-        <p>${lang('此电脑','explorer.thispc')}</p>
-    </div>
-    <div class="b" ondblclick="openapp('setting');" ontouchstart="openapp('setting');" oncontextmenu="return showcm(event,'desktop.icon',['setting',-1]);" appname="setting">
-        <img src="icon/setting.svg">
-        <p>${lang('设置','setting.name')}</p>
-    </div>
-    <div class="b" ondblclick="openapp('about');" ontouchstart="openapp('about');" oncontextmenu="return showcm(event,'desktop.icon',['about',-1]);" appname="about">
-        <img src="icon/about.svg">
-        <p>${lang('关于 Win12 网页版','about.name')}</p>
-    </div>
-    <div class="b" ondblclick="openapp('edge');" ontouchstart="openapp('edge');" oncontextmenu="return showcm(event,'desktop.icon',['edge',-1]);" appname="edge">
-        <img src="icon/edge.svg">
-        <p>Microsoft Edge</p>
-    </div>
-    <div class="b" ondblclick="shownotice('feedback');" ontouchstart="shownotice('feedback');;">
-        <img src="icon/feedback.svg">
-        <p>${lang('反馈中心','feedback.name')}</p>
-    </div>
-    <span class="choose">
-    </span>
-    <p style="background-color: rgba(11,45,14,0);z-index:1;position: absolute;top:0px;left:0px;height:100%;width:100%" oncontextmenu="return showcm(event,'desktop');"></p>`;
-        desktopItem = JSON.parse(localStorage.getItem('desktop'));
-        desktopItem.forEach((item) => {
-            $('#desktop')[0].innerHTML += item;
+
+    const $desktop = $('#desktop')[0];
+    if (!$desktop) return;
+
+    // 清空桌面以重新渲染
+    $desktop.innerHTML = '';
+
+    // 定义默认图标配置（将原始 HTML 逻辑数据化）
+    const defaultIcons = [
+        { id: 'explorer', icon: 'apps/icons/explorer/thispc.svg', name: lang('此电脑','explorer.thispc'), action: () => openapp('explorer') },
+        { id: 'setting', icon: 'icon/setting.svg', name: lang('设置','setting.name'), action: () => openapp('setting') },
+        { id: 'about', icon: 'icon/about.svg', name: lang('关于 Win12 网页版','about.name'), action: () => openapp('about') },
+        { id: 'edge', icon: 'icon/edge.svg', name: 'Microsoft Edge', action: () => openapp('edge') },
+        { id: 'feedback', icon: 'icon/feedback.svg', name: lang('反馈中心','feedback.name'), action: () => shownotice('feedback') }
+    ];
+
+    // 渲染并绑定默认图标
+    defaultIcons.forEach(item => {
+        const iconDiv = document.createElement('div');
+        iconDiv.className = 'b desktop-icon';
+        iconDiv.setAttribute('appname', item.id);
+        iconDiv.innerHTML = `
+            <img src="${item.icon}">
+            <p>${item.name}</p>
+        `;
+
+        // 适配函数
+        handleIconInteraction(iconDiv, item.action);
+
+        // 绑定右键菜单
+        iconDiv.oncontextmenu = (e) => {
+            return showcm(e, 'desktop.icon', [item.id, -1]);
+        };
+
+        $desktop.appendChild(iconDiv);
+    });
+
+    // 插入背景功能层
+    const chooseSpan = document.createElement('span');
+    chooseSpan.className = 'choose';
+    $desktop.appendChild(chooseSpan);
+
+    const bgLayer = document.createElement('p');
+    bgLayer.style.cssText = "background-color: rgba(0,0,0,0); z-index:1; position: absolute; top:0; left:0; height:100%; width:100%";
+    bgLayer.oncontextmenu = (e) => showcm(e, 'desktop');
+    $desktop.appendChild(bgLayer);
+
+    const desktopItem = JSON.parse(localStorage.getItem('desktop'));
+    if (Array.isArray(desktopItem)) {
+        desktopItem.forEach((itemHtml) => {
+            const temp = document.createElement('div');
+            temp.innerHTML = itemHtml;
+            if (temp.firstElementChild) {
+                $desktop.appendChild(temp.firstElementChild);
+            }
         });
         addMenu();
     }
+
     if (Array.isArray(JSON.parse(localStorage.getItem('topmost')))) {
-        topmost = JSON.parse(localStorage.getItem('topmost'));
+        const topmost = JSON.parse(localStorage.getItem('topmost'));
         if (topmost.includes('taskmgr')) {
-            $('#tsk-setting-topmost')[0].checked = true;
+            const taskmgrCheck = $('#tsk-setting-topmost')[0];
+            if (taskmgrCheck) taskmgrCheck.checked = true;
         }
     }
+
     if (Array.isArray(JSON.parse(localStorage.getItem('sys_setting')))) {
-        var sys_setting_back = JSON.parse(localStorage.getItem('sys_setting'));
-        if (/^(1|0)+$/.test(sys_setting_back.join(''))/* 只含有0和1 */) {
-            sys_setting = sys_setting_back;
-            for (var i = 0; i < sys_setting.length; i++) {
-                document.getElementById('sys_setting_' + (i + 1))?.setAttribute("class", 'a checkbox' + (sys_setting[i] ? ' checked' : '')); //设置class属性
-                if (i == 5) {
-                    use_music = sys_setting[i] ? true : false;
+        const sys_setting_back = JSON.parse(localStorage.getItem('sys_setting'));
+        if (/^(1|0)+$/.test(sys_setting_back.join(''))) {
+            const sys_setting = sys_setting_back;
+            for (let i = 0; i < sys_setting.length; i++) {
+                const target = document.getElementById('sys_setting_' + (i + 1));
+                if (target) {
+                    target.setAttribute("class", 'a checkbox' + (sys_setting[i] ? ' checked' : ''));
                 }
-                if (i == 6) {
-                    use_mic_voice = sys_setting[i] ? true : false;
-                }
+                if (i == 5) use_music = !!sys_setting[i];
+                if (i == 6) use_mic_voice = !!sys_setting[i];
             }
         }
     }
+
     if (localStorage.getItem('root_class')) {
-        $(':root')[0].className = localStorage.getItem('root_class') + ' ' + (isDark ? 'dark' : '');
+        const root = $(':root')[0];
+        if (root) {
+            root.className = localStorage.getItem('root_class') + ' ' + (isDark ? 'dark' : '');
+        }
     }
 }
 
@@ -2451,9 +2493,17 @@ function checkOrientation() {
 
 function handleIconInteraction(iconElement, callback) {
     if (isMobileDevice()) {
-        iconElement.addEventListener('click', callback);
-    } else {
-        iconElement.addEventListener('dblclick', callback);
+        element.onclick = (e) => {
+            e.preventDefault();
+            callback();
+        };else element.onclick = () => {
+            $('.desktop-icon').removeClass('selected');
+            element.classList.add('selected');
+        };
+        element.ondblclick = (e) => {
+            e.preventDefault();
+            callback();
+        };
     }
 }
 
