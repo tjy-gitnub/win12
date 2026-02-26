@@ -2827,3 +2827,27 @@ body > .container > .image-container > .svg {
     object-fit: cover;
     pointer-events: none;
 }
+
+body.mobile-mode {
+    -webkit-user-select: none; 
+}
+
+body.mobile-mode .win-window {
+    min-width: 300px !important;
+    min-height: 200px !important;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
+}
+
+body.mobile-mode .taskbar-icon-container {
+    gap: 15px !important; 
+}
+
+body.mobile-mode .window-controls i {
+    padding: 10px 15px !important;
+    font-size: 1.2rem;
+}
+
+body.mobile-mode #desktop {
+    overflow: hidden;
+    touch-action: none;
+}
