@@ -2833,7 +2833,6 @@ body > .container > .image-container > .svg {
     height: 600px;
 }
 
-@media (max-width: 768px) {
 .desktop-icon.selected {
     background: rgba(255, 255, 255, 0.2);
     border: 1px solid rgba(255, 255, 255, 0.3);
