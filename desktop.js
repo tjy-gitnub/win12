@@ -2444,9 +2444,6 @@ function checkOrientation() {
     const isPortrait = window.matchMedia("(orientation: portrait)").matches;
     if (isMobileDevice() && isPortrait) {
         container.style.display = "flex"; // 显示提示
-            }
-        }, { passive: false });
-
     } else {
         container.style.display = "none"; // 隐藏提示
     }
@@ -2472,12 +2469,6 @@ function getInitialPosition() {
     }
     return { x: 100, y: 100, width: "800px", height: "600px" };
 }
-
-window.addEventListener('contextmenu', function (e) {
-    e.preventDefault();
-    renderWin12ContextMenu(e.clientX, e.clientY);
-});
-
 
 // 监听屏幕方向变化
 window.addEventListener("resize", checkOrientation);
