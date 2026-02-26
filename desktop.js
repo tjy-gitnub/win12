@@ -2182,46 +2182,74 @@ const defaultIcons = [
 ];
 
 function setIcon() {
-    // 初始化桌面数据存储
+   function setIcon() {
     if (!Array.isArray(JSON.parse(localStorage.getItem('desktop')))) {
         setData('desktop', '[]');
     }
 
     const $desktop = $('#desktop')[0];
     if (!$desktop) return;
-
-    // 清空桌面以重新渲染
-    $desktop.innerHTML = '';
-
-    // 定义默认图标配置（将原始 HTML 逻辑数据化）
+    
+    // 預設圖標數據 (保留「此電腦」的特殊屬性)
     const defaultIcons = [
-        { id: 'explorer', icon: 'apps/icons/explorer/thispc.svg', name: lang('此电脑','explorer.thispc'), action: () => openapp('explorer') },
-        { id: 'setting', icon: 'icon/setting.svg', name: lang('设置','setting.name'), action: () => openapp('setting') },
-        { id: 'about', icon: 'icon/about.svg', name: lang('关于 Win12 网页版','about.name'), action: () => openapp('about') },
-        { id: 'edge', icon: 'icon/edge.svg', name: 'Microsoft Edge', action: () => openapp('edge') },
-        { id: 'feedback', icon: 'icon/feedback.svg', name: lang('反馈中心','feedback.name'), action: () => shownotice('feedback') }
+        { id: 'explorer', icon: 'apps/icons/explorer/thispc.svg', name: lang('此电脑','explorer.thispc'), specialClass: '' }, // 這裡可以根據需要加特殊類
+        { id: 'setting', icon: 'icon/setting.svg', name: lang('设置','setting.name'), specialClass: 'b' },
+        { id: 'about', icon: 'icon/about.svg', name: lang('关于 Win12 网页版','about.name'), specialClass: 'b' },
+        { id: 'edge', icon: 'icon/edge.svg', name: 'Microsoft Edge', specialClass: 'b' },
+        { id: 'feedback', icon: 'icon/feedback.svg', name: lang('反馈中心','feedback.name'), specialClass: 'b', isNotice: true }
     ];
 
-    // 渲染并绑定默认图标
+    let htmlBuffer = "";
     defaultIcons.forEach(item => {
-        const iconDiv = document.createElement('div');
-        iconDiv.className = 'b desktop-icon';
-        iconDiv.setAttribute('appname', item.id);
-        iconDiv.innerHTML = `
-            <img src="${item.icon}">
-            <p>${item.name}</p>
-        `;
-
-        // 适配函数
-        handleIconInteraction(iconDiv, item.action);
-
-        // 绑定右键菜单
-        iconDiv.oncontextmenu = (e) => {
-            return showcm(e, 'desktop.icon', [item.id, -1]);
-        };
-
-        $desktop.appendChild(iconDiv);
+        // 拼接 HTML，保持與原代碼結構一致
+        htmlBuffer += `
+            <div class="${item.specialClass} desktop-icon" 
+                 data-id="${item.id}" 
+                 appname="${item.id}">
+                <img src="${item.icon}">
+                <p>${item.name}</p>
+            </div>`;
     });
+
+    // 加上背景層和選擇框
+    htmlBuffer += `
+        <span class="choose"></span>
+        <p class="desktop-bg-layer" style="background-color:rgba(0,0,0,0);z-index:1;position:absolute;top:0;left:0;height:100%;width:100%"></p>`;
+
+    $desktop.innerHTML = htmlBuffer;
+
+    // --- 事件綁定：解決 Contributor 說的「element 是什麼」的問題 ---
+    $( $desktop ).find('.desktop-icon').each(function() {
+        const $this = $(this);
+        const appId = $this.attr('data-id');
+
+        // 移動端適配
+        if (isMobileDevice()) {
+            $this.on('click', () => {
+                if (appId === 'feedback') shownotice('feedback');
+                else openapp(appId);
+            });
+        } else {
+            // 桌面端選中
+            $this.on('click', (e) => {
+                e.stopPropagation();
+                $('.desktop-icon').removeClass('selected');
+                $this.addClass('selected');
+            });
+            // 桌面端打開
+            $this.on('dblclick', () => {
+                if (appId === 'feedback') shownotice('feedback');
+                else openapp(appId);
+            });
+        }
+
+        // 右鍵選單
+        $this[0].oncontextmenu = (e) => showcm(e, 'desktop.icon', [appId, -1]);
+    });
+
+    // 點擊桌面空白處取消選中
+    $('.desktop-bg-layer').on('click', () => $('.desktop-icon').removeClass('selected'));
+
 
     // 插入背景功能层
     const chooseSpan = document.createElement('span');
@@ -2488,22 +2516,6 @@ function checkOrientation() {
         container.style.display = "flex"; // 显示提示
     } else {
         container.style.display = "none"; // 隐藏提示
-    }
-}
-
-function handleIconInteraction(iconElement, callback) {
-    if (isMobileDevice()) {
-        element.onclick = (e) => {
-            e.preventDefault();
-            callback();
-        };else element.onclick = () => {
-            $('.desktop-icon').removeClass('selected');
-            element.classList.add('selected');
-        };
-        element.ondblclick = (e) => {
-            e.preventDefault();
-            callback();
-        };
     }
 }
 
