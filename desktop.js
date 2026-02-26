@@ -2444,9 +2444,38 @@ function checkOrientation() {
     const isPortrait = window.matchMedia("(orientation: portrait)").matches;
     if (isMobileDevice() && isPortrait) {
         container.style.display = "flex"; // 显示提示
+		document.body.classList.add('mobile-display-mode');//接入CSS
+        document.addEventListener('touchmove', (e) => {
+            if (e.target.closest('.win-window-titlebar')) {
+                e.preventDefault(); 
+            }
+        }, { passive: false });
+
+        //长按触发右键
+        setupLongPressContextMenu();
+
     } else {
         container.style.display = "none"; // 隐藏提示
     }
+}
+
+function setupLongPressContextMenu() {
+    let timer = null;
+    document.addEventListener('touchstart', (e) => {
+        timer = setTimeout(() => {
+            const touch = e.touches[0];
+            const event = new MouseEvent('contextmenu', {
+                clientX: touch.clientX,
+                clientY: touch.clientY,
+                bubbles: true,
+                cancelable: true
+            });
+            e.target.dispatchEvent(event);
+        }, 600); //
+    });
+
+    document.addEventListener('touchend', () => clearTimeout(timer));
+    document.addEventListener('touchmove', () => clearTimeout(timer));
 }
 
 // 监听屏幕方向变化
