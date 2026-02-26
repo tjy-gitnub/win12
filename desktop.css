@@ -2828,26 +2828,26 @@ body > .container > .image-container > .svg {
     pointer-events: none;
 }
 
-body.mobile-mode {
+body.mobile-display-mode {
     -webkit-user-select: none; 
 }
 
-body.mobile-mode .win-window {
-    min-width: 300px !important;
-    min-height: 200px !important;
+body.mobile-display-mode .win-window {
+    min-width: 300px;
+    min-height: 200px;
     box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
 }
 
-body.mobile-mode .taskbar-icon-container {
-    gap: 15px !important; 
+body.mobile-display-mode .taskbar-icon-container {
+    gap: 15px; 
 }
 
-body.mobile-mode .window-controls i {
-    padding: 10px 15px !important;
+body.mobile-display-mode .window-controls i {
+    padding: 10px 15px;
     font-size: 1.2rem;
 }
 
-body.mobile-mode #desktop {
+body.mobile-display-mode #desktop {
     overflow: hidden;
     touch-action: none;
 }
