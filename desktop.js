@@ -2172,7 +2172,7 @@ function saveDesktop() {
         localStorage.setItem(key, value);
     });
 }
-
+//这段上古代码终于改了
 const defaultIcons = [
     { id: 'explorer', icon: 'apps/icons/explorer/thispc.svg', name: lang('此电脑','explorer.thispc') },
     { id: 'setting', icon: 'icon/setting.svg', name: lang('设置','setting.name') },
@@ -2190,7 +2190,7 @@ function setIcon() {
     const $desktop = $('#desktop')[0];
     if (!$desktop) return;
     
-    // 預設圖標數據 (保留「此電腦」的特殊屬性)
+    // 预设图标
     const defaultIcons = [
         { id: 'explorer', icon: 'apps/icons/explorer/thispc.svg', name: lang('此电脑','explorer.thispc'), specialClass: '' }, // 這裡可以根據需要加特殊類
         { id: 'setting', icon: 'icon/setting.svg', name: lang('设置','setting.name'), specialClass: 'b' },
@@ -2201,7 +2201,7 @@ function setIcon() {
 
     let htmlBuffer = "";
     defaultIcons.forEach(item => {
-        // 拼接 HTML，保持與原代碼結構一致
+        // 拼接 HTML
         htmlBuffer += `
             <div class="${item.specialClass} desktop-icon" 
                  data-id="${item.id}" 
@@ -2211,43 +2211,42 @@ function setIcon() {
             </div>`;
     });
 
-    // 加上背景層和選擇框
+    // 背景层和选择框
     htmlBuffer += `
         <span class="choose"></span>
         <p class="desktop-bg-layer" style="background-color:rgba(0,0,0,0);z-index:1;position:absolute;top:0;left:0;height:100%;width:100%"></p>`;
 
     $desktop.innerHTML = htmlBuffer;
 
-    // --- 事件綁定：解決 Contributor 說的「element 是什麼」的問題 ---
+    // 修复element问题
     $( $desktop ).find('.desktop-icon').each(function() {
         const $this = $(this);
         const appId = $this.attr('data-id');
 
-        // 移動端適配
+        // 移动端适配
         if (isMobileDevice()) {
             $this.on('click', () => {
                 if (appId === 'feedback') shownotice('feedback');
                 else openapp(appId);
             });
         } else {
-            // 桌面端選中
+            // 桌面端选中
             $this.on('click', (e) => {
                 e.stopPropagation();
                 $('.desktop-icon').removeClass('selected');
                 $this.addClass('selected');
             });
-            // 桌面端打開
+            // 桌面端打开
             $this.on('dblclick', () => {
                 if (appId === 'feedback') shownotice('feedback');
                 else openapp(appId);
             });
         }
 
-        // 右鍵選單
         $this[0].oncontextmenu = (e) => showcm(e, 'desktop.icon', [appId, -1]);
     });
 
-    // 點擊桌面空白處取消選中
+    // 点击桌面空白处取消选中
     $('.desktop-bg-layer').on('click', () => $('.desktop-icon').removeClass('selected'));
 
 
