@@ -2182,34 +2182,33 @@ const defaultIcons = [
 ];
 
 function setIcon() {
-   function setIcon() {
-    if (!Array.isArray(JSON.parse(localStorage.getItem('desktop')))) {
-        setData('desktop', '[]');
-    }
+if (!Array.isArray(JSON.parse(localStorage.getItem('desktop')))) {
+     setData('desktop', '[]');
+}
 
-    const $desktop = $('#desktop')[0];
-    if (!$desktop) return;
+ const $desktop = $('#desktop')[0];
+ if (!$desktop) return;
     
-    // 预设图标
-    const defaultIcons = [
-        { id: 'explorer', icon: 'apps/icons/explorer/thispc.svg', name: lang('此电脑','explorer.thispc'), specialClass: '' }, // 這裡可以根據需要加特殊類
-        { id: 'setting', icon: 'icon/setting.svg', name: lang('设置','setting.name'), specialClass: 'b' },
-        { id: 'about', icon: 'icon/about.svg', name: lang('关于 Win12 网页版','about.name'), specialClass: 'b' },
-        { id: 'edge', icon: 'icon/edge.svg', name: 'Microsoft Edge', specialClass: 'b' },
-        { id: 'feedback', icon: 'icon/feedback.svg', name: lang('反馈中心','feedback.name'), specialClass: 'b', isNotice: true }
-    ];
+ // 预设图标
+ const defaultIcons = [
+    { id: 'explorer', icon: 'apps/icons/explorer/thispc.svg', name: lang('此电脑','explorer.thispc'), specialClass: '' }, // 這裡可以根據需要加特殊類
+    { id: 'setting', icon: 'icon/setting.svg', name: lang('设置','setting.name'), specialClass: 'b' },
+    { id: 'about', icon: 'icon/about.svg', name: lang('关于 Win12 网页版','about.name'), specialClass: 'b' },
+    { id: 'edge', icon: 'icon/edge.svg', name: 'Microsoft Edge', specialClass: 'b' },
+    { id: 'feedback', icon: 'icon/feedback.svg', name: lang('反馈中心','feedback.name'), specialClass: 'b', isNotice: true }
+ ];
 
-    let htmlBuffer = "";
-    defaultIcons.forEach(item => {
-        // 拼接 HTML
-        htmlBuffer += `
-            <div class="${item.specialClass} desktop-icon" 
-                 data-id="${item.id}" 
-                 appname="${item.id}">
-                <img src="${item.icon}">
-                <p>${item.name}</p>
-            </div>`;
-    });
+ let htmlBuffer = "";
+defaultIcons.forEach(item => {
+    // 拼接 HTML
+    htmlBuffer += `
+        <div class="${item.specialClass} desktop-icon" 
+             data-id="${item.id}" 
+                appname="${item.id}">
+             <img src="${item.icon}">
+             <p>${item.name}</p>
+        </div>`;
+ });
 
     // 背景层和选择框
     htmlBuffer += `
