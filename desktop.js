@@ -2157,6 +2157,9 @@ if (localStorage.getItem('theme') === null) {
     }
 }
 
+//处理iPad
+checkIpad()
+
 // 桌面图标的初始化
 let desktopItem = [];
 
@@ -2502,7 +2505,7 @@ function setupGlobalKey(){
 
 setupGlobalKey();
 
-function() {
+function checkIpad() {
     const isIPad = /iPad/.test(navigator.platform) || 
                    (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
 }
