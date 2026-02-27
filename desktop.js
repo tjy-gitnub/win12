@@ -2237,8 +2237,10 @@ defaultIcons.forEach(item => {
             });
             // 桌面端打开
             $this.on('dblclick', (e) => {
-                if (appId === 'feedback') shownotice('feedback');
-                else openapp(appId);
+                if (appId === 'feedback') 
+					shownotice('feedback');
+                else 
+					openapp(appId);
             });
         }
 
