@@ -2236,11 +2236,9 @@ defaultIcons.forEach(item => {
                 $this.addClass('selected');
             });
             // 桌面端打开
-            $this.on('dblclick', (e) => {
-                if (appId === 'feedback') 
-					shownotice('feedback');
-                else 
-					openapp(appId);
+            $this.on('dblclick', () => {
+                if (appId === 'feedback') shownotice('feedback');
+                else openapp(appId);
             });
         }
 
