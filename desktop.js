@@ -2191,7 +2191,7 @@ if (!Array.isArray(JSON.parse(localStorage.getItem('desktop')))) {
     
  // 预设图标
  const defaultIcons = [
-    { id: 'explorer', icon: 'apps/icons/explorer/thispc.svg', name: lang('此电脑','explorer.thispc'), specialClass: '' }, // 這裡可以根據需要加特殊類
+    { id: 'explorer', icon: 'apps/icons/explorer/thispc.svg', name: lang('此电脑','explorer.thispc'), specialClass: '' },
     { id: 'setting', icon: 'icon/setting.svg', name: lang('设置','setting.name'), specialClass: 'b' },
     { id: 'about', icon: 'icon/about.svg', name: lang('关于 Win12 网页版','about.name'), specialClass: 'b' },
     { id: 'edge', icon: 'icon/edge.svg', name: 'Microsoft Edge', specialClass: 'b' },
