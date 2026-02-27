@@ -2223,7 +2223,7 @@ defaultIcons.forEach(item => {
         const appId = $this.attr('data-id');
 
         // 移动端适配
-        if (isMobileDevice()) {
+        if (isMobileDevice() || isIpad) {
             $this.on('click', () => {
                 if (appId === 'feedback') shownotice('feedback');
                 else openapp(appId);
@@ -2502,6 +2502,10 @@ function setupGlobalKey(){
 
 setupGlobalKey();
 
+function() {
+    const isIPad = /iPad/.test(navigator.platform) || 
+                   (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+}
 
 function isMobileDevice() {
     return /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
