@@ -59,7 +59,8 @@ let langc={
 	'zh-Hans-SG':'zh-CN',
 	'zh-Hant-SG':'zh-TW',
 	'zh-Hant-TW':'zh-TW',
-	'zh-Hant-HK':'zh-TW'
+	'zh-Hant-HK':'zh-TW',
+	'zh-Hant-MO':'zh-TW',
 	
     'en':'en',
     'en-US':'en',
@@ -71,7 +72,18 @@ let langc={
 	'en-AU':'en',
 	'en-au':'en',
 	'en-CA':'en',
-	'en-ca':'en'
+	'en-ca':'en',
+	'en-IN':'en',
+	'en-in':'en',
+	'en-HK':'en',
+	'en-hk':'en',
+	'en-SG':'en',
+	'en-sg':'en',
+	'en-IE':'en',
+	'en-ie':'en',
+	'en-ZA':'en',
+	'en-za':'en',
+	'en-001':'en'
 }
 
 let langcode,lang=(txt,id)=>{
