@@ -51,12 +51,27 @@ let langc={
     'zh-HK':'zh-TW',
     'zh-hk':'zh-TW',
     'zh':'zh-CN',
-
+    'zh-mo':'zh-TW',
+	'zh-MO':'zh-TW',
+	'zh-Mo':'zh-TW',
+	'zh-sg':'zh-CN',
+	'zh-SG':'zh-CN',
+	'zh-Hans-SG':'zh-CN',
+	'zh-Hant-SG':'zh-TW',
+	'zh-Hant-TW':'zh-TW',
+	'zh-Hant-HK':'zh-TW'
+	
     'en':'en',
     'en-US':'en',
     'en-us':'en',
     'en-GB':'en',
-    'en-gb':'en'
+    'en-gb':'en',
+	'en-UK':'en',
+	'en-uk':'en',
+	'en-AU':'en',
+	'en-au':'en',
+	'en-CA':'en',
+	'en-ca':'en'
 }
 
 let langcode,lang=(txt,id)=>{
@@ -2185,9 +2200,7 @@ const defaultIcons = [
 ];
 
 function setIcon() {
-if (!Array.isArray(JSON.parse(localStorage.getItem('desktop')))) {
-     setData('desktop', '[]');
-}
+if (!Array.isArray(JSON.parse(localStorage.getItem('desktop')))) {setData('desktop', '[]');}
 
  const $desktop = $('#desktop')[0];
  if (!$desktop) return;
