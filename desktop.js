@@ -61,6 +61,9 @@ let langc={
 	'zh-Hant-TW':'zh-TW',
 	'zh-Hant-HK':'zh-TW',
 	'zh-Hant-MO':'zh-TW',
+	'zh-my':'zh-CN',
+	'zh-MY':'zh-CN',
+	'zh-Hans-MY':'zh-CN',
 	
     'en':'en',
     'en-US':'en',
