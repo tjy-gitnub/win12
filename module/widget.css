@@ -245,9 +245,13 @@
     font-size: 19px;
 }
 
-.wg.music163>.content {
-    height: 55px;
-    width: 120px;
+.wg.music163 {
+    height: 150px;
+    width: 280px;
+}
+
+.wg>.titbar>.more:hover>.bi {
+    background: var(--hover);
 }
 
 .wg.music163>.content>.text {
