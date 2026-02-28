@@ -2844,13 +2844,17 @@ body > .container > .image-container > .svg {
         width: 92vw !important;
         height: 75vh !important;
     }
-}
+
 
     body .taskbar-icon {
         padding: 0 10px;
     }
 
     body ::-webkit-scrollbar {
+        width: 4px;
+    }
+
+    body scrollbar-* {
         width: 4px;
     }
 }
