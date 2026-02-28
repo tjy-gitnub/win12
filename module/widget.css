@@ -245,6 +245,17 @@
     font-size: 19px;
 }
 
+.wg.music163>.content {
+    height: 55px;
+    width: 120px;
+}
+
+.wg.music163>.content>.text {
+    padding-top: 10px;
+    text-align: center;
+    padding-top: 10px;
+}
+
 .wg.monitor {
     grid-column: auto / span 3;
     grid-row: auto / span 1;
