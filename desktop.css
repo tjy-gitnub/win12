@@ -2854,7 +2854,7 @@ body > .container > .image-container > .svg {
         width: 4px;
     }
 
-    body scrollbar-* {
-        width: 4px;
+    html {
+      scrollbar-width: thin; 
     }
 }
