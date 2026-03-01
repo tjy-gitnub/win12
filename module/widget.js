@@ -56,7 +56,9 @@ let widgets = {
             $('.wg.music163>.content').html(
                 `<p class="text">网易云音乐插件使用步骤</p>
                 <p class="text">1. 打开网易云音乐，找到你喜欢的歌曲</p>
-                <p class="text">2. 通过<a onclick="openUrl('https://yunzhiapi.cn/?action=doc&id=52')">云智API</a>获取音乐ID</a>
+                 <a onclick="window.open('https://yunzhiapi.cn/?action=doc&id=52','_blank');"
+     win12_title="https://yunzhiapi.cn/?action=doc&id=52"
+     class="jump">云智api</a>。
                 <input type="text" id="music163-input" placeholder="3.在这里粘贴音乐ID，回车确认" onkeydown="goMusic(event)">`
             )
             
