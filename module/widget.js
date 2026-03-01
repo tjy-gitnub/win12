@@ -56,9 +56,7 @@ let widgets = {
             $('.wg.music163>.content').html(
                 `<p class="text">网易云音乐插件使用步骤</p>
                 <p class="text">1. 打开网易云音乐，找到你喜欢的歌曲</p>
-                 <a onclick="window.open('https://yunzhiapi.cn/?action=doc&id=52','_blank');"
-     win12_title="https://yunzhiapi.cn/?action=doc&id=52"
-     class="jump">云智api</a>。
+                <p class="text">2.通过<a onclick="window.open('https://yunzhiapi.cn/?action=doc&id=52','_blank');“win12_title="获取音乐ID API - 云智API"class="jump">云智api</a>获取音乐ID</p>
                 <input type="text" id="music163-input" placeholder="3.在这里粘贴音乐ID，回车确认" onkeydown="goMusic(event)">`
             )
             
@@ -214,7 +212,7 @@ function goMusic(event){
         var musicId = $('.wg.music163>.content>.music163-input').val();
         $('.wg.music163>.content').html(
             `<iframe frameborder="no" marginwidth="0" marginheight="0" src="https://music.163.com/outchain/player?type=2&id=${musicId}&auto=1&height=66"></iframe>
-            <button onclick='wigets.music163.update'>返回上一步</button>`);
+            <button onclick='widgets.music163.update'>返回上一步</button>`);
     }
 }
 
