@@ -2827,3 +2827,34 @@ body > .container > .image-container > .svg {
     object-fit: cover;
     pointer-events: none;
 }
+
+.win-window {
+    width: 800px;
+    height: 600px;
+}
+
+.desktop-icon.selected {
+    background: rgba(255, 255, 255, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 4px;
+}
+
+@media screen and (max-width: 768px) {
+    body .window {
+        width: 92vw !important;
+        height: 75vh !important;
+    }
+
+
+    body .taskbar-icon {
+        padding: 0 10px;
+    }
+
+    body ::-webkit-scrollbar {
+        width: 4px;
+    }
+
+    html {
+      scrollbar-width: thin; 
+    }
+}

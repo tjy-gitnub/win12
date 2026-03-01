@@ -51,12 +51,42 @@ let langc={
     'zh-HK':'zh-TW',
     'zh-hk':'zh-TW',
     'zh':'zh-CN',
-
+    'zh-mo':'zh-TW',
+	'zh-MO':'zh-TW',
+	'zh-Mo':'zh-TW',
+	'zh-sg':'zh-CN',
+	'zh-SG':'zh-CN',
+	'zh-Hans-SG':'zh-CN',
+	'zh-Hant-SG':'zh-TW',
+	'zh-Hant-TW':'zh-TW',
+	'zh-Hant-HK':'zh-TW',
+	'zh-Hant-MO':'zh-TW',
+	'zh-my':'zh-CN',
+	'zh-MY':'zh-CN',
+	'zh-Hans-MY':'zh-CN',
+	
     'en':'en',
     'en-US':'en',
     'en-us':'en',
     'en-GB':'en',
-    'en-gb':'en'
+    'en-gb':'en',
+	'en-UK':'en',
+	'en-uk':'en',
+	'en-AU':'en',
+	'en-au':'en',
+	'en-CA':'en',
+	'en-ca':'en',
+	'en-IN':'en',
+	'en-in':'en',
+	'en-HK':'en',
+	'en-hk':'en',
+	'en-SG':'en',
+	'en-sg':'en',
+	'en-IE':'en',
+	'en-ie':'en',
+	'en-ZA':'en',
+	'en-za':'en',
+	'en-001':'en'
 }
 
 let langcode,lang=(txt,id)=>{
@@ -2172,65 +2202,132 @@ function saveDesktop() {
         localStorage.setItem(key, value);
     });
 }
+//这段上古代码终于改了
+const defaultIcons = [
+    { id: 'explorer', icon: 'apps/icons/explorer/thispc.svg', name: lang('此电脑','explorer.thispc') },
+    { id: 'setting', icon: 'icon/setting.svg', name: lang('设置','setting.name') },
+    { id: 'about', icon: 'icon/about.svg', name: lang('关于 Win12 网页版','about.name') },
+    { id: 'edge', icon: 'icon/edge.svg', name: 'Microsoft Edge' },
+    { id: 'feedback', icon: 'icon/feedback.svg', name: lang('反馈中心','feedback.name'), isNotice: true }
+];
 
 function setIcon() {
-    // return;
-    if (!Array.isArray(JSON.parse(localStorage.getItem('desktop')))){
-        setData('desktop','[]')
-    }
-    if (Array.isArray(JSON.parse(localStorage.getItem('desktop')))) {
-        $('#desktop')[0].innerHTML = `<div ondblclick="openapp('explorer');" ontouchstart="openapp('explorer');" oncontextmenu="return showcm(event,'desktop.icon',['explorer',-1]);" appname="explorer">
-        <img src="apps/icons/explorer/thispc.svg">
-        <p>${lang('此电脑','explorer.thispc')}</p>
-    </div>
-    <div class="b" ondblclick="openapp('setting');" ontouchstart="openapp('setting');" oncontextmenu="return showcm(event,'desktop.icon',['setting',-1]);" appname="setting">
-        <img src="icon/setting.svg">
-        <p>${lang('设置','setting.name')}</p>
-    </div>
-    <div class="b" ondblclick="openapp('about');" ontouchstart="openapp('about');" oncontextmenu="return showcm(event,'desktop.icon',['about',-1]);" appname="about">
-        <img src="icon/about.svg">
-        <p>${lang('关于 Win12 网页版','about.name')}</p>
-    </div>
-    <div class="b" ondblclick="openapp('edge');" ontouchstart="openapp('edge');" oncontextmenu="return showcm(event,'desktop.icon',['edge',-1]);" appname="edge">
-        <img src="icon/edge.svg">
-        <p>Microsoft Edge</p>
-    </div>
-    <div class="b" ondblclick="shownotice('feedback');" ontouchstart="shownotice('feedback');;">
-        <img src="icon/feedback.svg">
-        <p>${lang('反馈中心','feedback.name')}</p>
-    </div>
-    <span class="choose">
-    </span>
-    <p style="background-color: rgba(11,45,14,0);z-index:1;position: absolute;top:0px;left:0px;height:100%;width:100%" oncontextmenu="return showcm(event,'desktop');"></p>`;
-        desktopItem = JSON.parse(localStorage.getItem('desktop'));
-        desktopItem.forEach((item) => {
-            $('#desktop')[0].innerHTML += item;
+if (!Array.isArray(JSON.parse(localStorage.getItem('desktop')))) 
+	{setData('desktop', '[]');}
+
+ const $desktop = $('#desktop')[0];
+ if (!$desktop) return;
+    
+ // 预设图标
+ const defaultIcons = [
+    { id: 'explorer', icon: 'apps/icons/explorer/thispc.svg', name: lang('此电脑','explorer.thispc'), specialClass: '' },
+    { id: 'setting', icon: 'icon/setting.svg', name: lang('设置','setting.name'), specialClass: 'b' },
+    { id: 'about', icon: 'icon/about.svg', name: lang('关于 Win12 网页版','about.name'), specialClass: 'b' },
+    { id: 'edge', icon: 'icon/edge.svg', name: 'Microsoft Edge', specialClass: 'b' },
+    { id: 'feedback', icon: 'icon/feedback.svg', name: lang('反馈中心','feedback.name'), specialClass: 'b', isNotice: true }
+ ];
+
+ let htmlBuffer = "";
+defaultIcons.forEach(item => {
+    // 拼接 HTML
+    htmlBuffer += `
+        <div class="${item.specialClass} desktop-icon" 
+             data-id="${item.id}" 
+                appname="${item.id}">
+             <img src="${item.icon}">
+             <p>${item.name}</p>
+        </div>`;
+ });
+
+    // 背景层和选择框
+    htmlBuffer += `
+        <span class="choose"></span>
+        <p class="desktop-bg-layer" style="background-color:rgba(0,0,0,0);z-index:1;position:absolute;top:0;left:0;height:100%;width:100%"></p>`;
+
+    $desktop.innerHTML = htmlBuffer;
+
+    // 修复element问题
+    $( $desktop ).find('.desktop-icon').each(function() {
+        const $this = $(this);
+        const appId = $this.attr('data-id');
+
+        // 移动端适配
+        if (isMobileDevice() || isIpad() || hasCoarsePointerAvailable()){
+            $this.on('click', () => {
+                if (appId === 'feedback') shownotice('feedback');
+                else openapp(appId);
+            });
+        } else {
+            // 桌面端选中
+            $this.on('click', (e) => {
+                e.stopPropagation();
+                $('.desktop-icon').removeClass('selected');
+                $this.addClass('selected');
+            });
+            // 桌面端打开
+            $this.on('dblclick', () => {
+                if (appId === 'feedback') shownotice('feedback');
+                else openapp(appId);
+            });
+        }
+
+        $this[0].oncontextmenu = (e) => showcm(e, 'desktop.icon', [appId, -1]);
+    });
+
+    // 点击桌面空白处取消选中
+    $('.desktop-bg-layer').on('click', () => $('.desktop-icon').removeClass('selected'));
+
+
+    // 插入背景功能层
+    const chooseSpan = document.createElement('span');
+    chooseSpan.className = 'choose';
+    $desktop.appendChild(chooseSpan);
+
+    const bgLayer = document.createElement('p');
+    bgLayer.style.cssText = "background-color: rgba(0,0,0,0); z-index:1; position: absolute; top:0; left:0; height:100%; width:100%";
+    bgLayer.oncontextmenu = (e) => showcm(e, 'desktop');
+    $desktop.appendChild(bgLayer);
+
+    const desktopItem = JSON.parse(localStorage.getItem('desktop'));
+    if (Array.isArray(desktopItem)) {
+        desktopItem.forEach((itemHtml) => {
+            const temp = document.createElement('div');
+            temp.innerHTML = itemHtml;
+            if (temp.firstElementChild) {
+                $desktop.appendChild(temp.firstElementChild);
+            }
         });
         addMenu();
     }
+
     if (Array.isArray(JSON.parse(localStorage.getItem('topmost')))) {
-        topmost = JSON.parse(localStorage.getItem('topmost'));
+        const topmost = JSON.parse(localStorage.getItem('topmost'));
         if (topmost.includes('taskmgr')) {
-            $('#tsk-setting-topmost')[0].checked = true;
+            const taskmgrCheck = $('#tsk-setting-topmost')[0];
+            if (taskmgrCheck) taskmgrCheck.checked = true;
         }
     }
+
     if (Array.isArray(JSON.parse(localStorage.getItem('sys_setting')))) {
-        var sys_setting_back = JSON.parse(localStorage.getItem('sys_setting'));
-        if (/^(1|0)+$/.test(sys_setting_back.join(''))/* 只含有0和1 */) {
-            sys_setting = sys_setting_back;
-            for (var i = 0; i < sys_setting.length; i++) {
-                document.getElementById('sys_setting_' + (i + 1))?.setAttribute("class", 'a checkbox' + (sys_setting[i] ? ' checked' : '')); //设置class属性
-                if (i == 5) {
-                    use_music = sys_setting[i] ? true : false;
+        const sys_setting_back = JSON.parse(localStorage.getItem('sys_setting'));
+        if (/^(1|0)+$/.test(sys_setting_back.join(''))) {
+            const sys_setting = sys_setting_back;
+            for (let i = 0; i < sys_setting.length; i++) {
+                const target = document.getElementById('sys_setting_' + (i + 1));
+                if (target) {
+                    target.setAttribute("class", 'a checkbox' + (sys_setting[i] ? ' checked' : ''));
                 }
-                if (i == 6) {
-                    use_mic_voice = sys_setting[i] ? true : false;
-                }
+                if (i == 5) use_music = !!sys_setting[i];
+                if (i == 6) use_mic_voice = !!sys_setting[i];
             }
         }
     }
+
     if (localStorage.getItem('root_class')) {
-        $(':root')[0].className = localStorage.getItem('root_class') + ' ' + (isDark ? 'dark' : '');
+        const root = $(':root')[0];
+        if (root) {
+            root.className = localStorage.getItem('root_class') + ' ' + (isDark ? 'dark' : '');
+        }
     }
 }
 
@@ -2434,9 +2531,21 @@ function setupGlobalKey(){
 
 setupGlobalKey();
 
+function isIpad() {
+    return (/macintosh|mac os x/i.test(navigator.userAgent) && window.screen.height > window.screen.width && !navigator.userAgent.match(/(iPhone\sOS)\s([\d_]+)/)) || navigator.userAgent.match(/(iPad).*OS\s([\d_]+)/);
+
+//作者：OumCc
+//链接：https://juejin.cn/post/7124303738298171422
+//来源：稀土掘金
+//著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。
+}
 
 function isMobileDevice() {
     return /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+}
+
+function hasCoarsePointerAvailable() {
+  return window.matchMedia("(any-pointer: coarse)").matches;
 }
 
 function checkOrientation() {
@@ -2447,6 +2556,19 @@ function checkOrientation() {
     } else {
         container.style.display = "none"; // 隐藏提示
     }
+}
+
+// 初始位置优化
+function getInitialPosition() {
+    if (isMobileDevice()) {
+        return {
+            x: window.innerWidth * 0.05,
+            y: 20,
+            width: "90%",
+            height: "75%"
+        };
+    }
+    return { x: 100, y: 100, width: "800px", height: "600px" };
 }
 
 // 监听屏幕方向变化
