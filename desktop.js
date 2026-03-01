@@ -2215,7 +2215,8 @@ const defaultIcons = [
 ];
 
 function setIcon() {
-if (!Array.isArray(JSON.parse(localStorage.getItem('desktop')))) {setData('desktop', '[]');}
+if (!Array.isArray(JSON.parse(localStorage.getItem('desktop')))) 
+	{setData('desktop', '[]');}
 
  const $desktop = $('#desktop')[0];
  if (!$desktop) return;
@@ -2254,7 +2255,7 @@ defaultIcons.forEach(item => {
         const appId = $this.attr('data-id');
 
         // 移动端适配
-        if (isMobileDevice() || isIpad) {
+        if (isMobileDevice() || isIpad()) {
             $this.on('click', () => {
                 if (appId === 'feedback') shownotice('feedback');
                 else openapp(appId);
@@ -2533,9 +2534,13 @@ function setupGlobalKey(){
 
 setupGlobalKey();
 
-function checkIpad() {
-    const isIPad = /iPad/.test(navigator.platform) || 
-                   (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+function isIpad() {
+    return (/macintosh|mac os x/i.test(navigator.userAgent) && window.screen.height > window.screen.width && !navigator.userAgent.match(/(iPhone\sOS)\s([\d_]+)/)) || navigator.userAgent.match(/(iPad).*OS\s([\d_]+)/);
+
+//作者：OumCc
+//链接：https://juejin.cn/post/7124303738298171422
+//来源：稀土掘金
+//著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。
 }
 
 function isMobileDevice() {
