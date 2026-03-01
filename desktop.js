@@ -2187,9 +2187,6 @@ if (localStorage.getItem('theme') === null) {
     }
 }
 
-//处理iPad
-checkIpad()
-
 // 桌面图标的初始化
 let desktopItem = [];
 
@@ -2255,7 +2252,7 @@ defaultIcons.forEach(item => {
         const appId = $this.attr('data-id');
 
         // 移动端适配
-        if (isMobileDevice() || isIpad()) {
+        if (isMobileDevice() || isIpad() || hasCoarsePointerAvailable()){
             $this.on('click', () => {
                 if (appId === 'feedback') shownotice('feedback');
                 else openapp(appId);
@@ -2545,6 +2542,10 @@ function isIpad() {
 
 function isMobileDevice() {
     return /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+}
+
+function hasCoarsePointerAvailable() {
+  return window.matchMedia("(any-pointer: coarse)").matches;
 }
 
 function checkOrientation() {
