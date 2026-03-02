@@ -2549,7 +2549,9 @@ function isTouchDevice() {
 	window.matchMedia("(pointer: coarse)").matches || 
     window.matchMedia("(any-pointer: coarse)").matches || 
 	'ontouchstart' in window || 
-  	'ontouchstart' in document.documentElement);
+  	'ontouchstart' in document.documentElement) || 
+	'ontouchend' in window || 
+  	'ontouchend' in document.documentElement;
 }
 
 function checkOrientation() {
