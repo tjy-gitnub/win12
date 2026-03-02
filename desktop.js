@@ -2532,12 +2532,12 @@ function setupGlobalKey(){
 setupGlobalKey();
 
 function isIpad() {
-    return (/macintosh|mac os x/i.test(navigator.userAgent) && window.screen.height > window.screen.width && !navigator.userAgent.match(/(iPhone\sOS)\s([\d_]+)/)) || navigator.userAgent.match(/(iPad).*OS\s([\d_]+)/);
+// Source - https://stackoverflow.com/a/62979491
+// Posted by GuyC, modified by community. See post 'Timeline' for change history
+// Retrieved 2026-03-02, License - CC BY-SA 4.0
 
-//作者：OumCc
-//链接：https://juejin.cn/post/7124303738298171422
-//来源：稀土掘金
-//著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。
+ return(!!(navigator.userAgent.match(/(iPad)/)
+  || (navigator.platform === "MacIntel" && typeof navigator.standalone !== "undefined")));
 }
 
 function isMobileDevice() {
