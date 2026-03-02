@@ -103,6 +103,7 @@ toggletheme() 切换主题
 	<link rel="stylesheet" href="apps/style/word.css">
 	<link rel="stylesheet" href="apps/style/copilot.css">
 	<link rel="stylesheet" href="apps/style/recognition.css">
+		<link rel="stylesheet" href="apps/style/exelauncher.css">
 	
 	
 	<link rel="manifest" href="pwa/manifest.json">
@@ -354,6 +355,10 @@ toggletheme() 切换主题
 					<img src="icon/logo.svg">
 					<p>Windows 12</p>
 				</a>
+				<a oncontextmenu="return showcm(event, 'smlapp', ['exelauncher', 'EXE 运行器'])" onclick="openapp('exelauncher');hide_startmenu();">
+					<img src="icon/exelauncher.svg">
+					<p data-i18n="exelauncher.name">EXE 运行器</p>
+				</a>
 			</list>
 		</div>
 		<div id="s-m-r">
@@ -454,6 +459,10 @@ toggletheme() 切换主题
 					<a class="a sm-app enable windows12" onclick="openapp('windows12');hide_startmenu();" oncontextmenu="return showcm(event,'smapp',['windows12','Windows 12'])">
 						<img src="icon/logo.svg">
 						<p>Windows 12</p>
+					</a>
+					<a class="a sm-app enable exelauncher" onclick="openapp('exelauncher');hide_startmenu();" oncontextmenu="return showcm(event,'smapp',['exelauncher','EXE 运行器'])">
+						<img src="icon/exelauncher.svg">
+						<p data-i18n="exelauncher.name">EXE 运行器</p>
 					</a>
 					<a class="a sm-app enable terminal" onclick="openapp('terminal');hide_startmenu();" oncontextmenu="return showcm(event,'smapp',['terminal','终端'])">
 						<img src="icon/terminal.svg">
@@ -3043,6 +3052,87 @@ toggletheme() 切换主题
 		</div>
 		</div>
 	</div>
+	<div class="window exelauncher" data-min-width="900" data-min-height="700">
+		<div class="resize-bar"></div>
+		<div class="titbar">
+			<img src="icon/exelauncher.svg" class="icon">
+			<p data-i18n="exelauncher.name">EXE 运行器 (v86)</p>
+			<div>
+				<a class="a wbtg red" onclick="hidewin('exelauncher')"><i class="bi bi-x-lg"></i></a>
+				<a class="a wbtg max" onclick="maxwin('exelauncher')"><i class="bi bi-app"></i></a>
+				<a class="a wbtg" onclick="minwin('exelauncher')"><i class="bi bi-dash-lg"></i></a>
+			</div>
+		</div>
+		<div class="loadback">
+			<img src="icon/exelauncher.svg" class="icon">
+		</div>
+		<div class="content" id="win-exelauncher">
+			<div class="exelauncher-container v86-mode">
+				<div class="toolbar">
+					<div class="btn-group">
+						<a class="a button act" onclick="apps.exelauncher.selectFile()">
+							<i class="bi bi-folder-open"></i> <span data-i18n="exelauncher.open">加载程序</span>
+						</a>
+						<a class="a button act primary" onclick="apps.exelauncher.startVM()">
+							<i class="bi bi-power"></i> <span data-i18n="exelauncher.start">启动 DOS</span>
+						</a>
+						<a class="a button act danger" onclick="apps.exelauncher.stopVM()">
+							<i class="bi bi-stop-fill"></i> <span data-i18n="exelauncher.stop">停止</span>
+						</a>
+						<a class="a button act" onclick="apps.exelauncher.reset()">
+							<i class="bi bi-arrow-clockwise"></i> <span data-i18n="exelauncher.reset">重置</span>
+						</a>
+					</div>
+					<div class="file-info" id="exelauncher-fileinfo">
+						<span data-i18n="exelauncher.nofile">未加载程序</span>
+					</div>
+				</div>
+				<div class="main-content">
+					<div class="drop-zone" id="exelauncher-dropzone" ondragover="apps.exelauncher.dragOver(event)" ondragleave="apps.exelauncher.dragLeave(event)" ondrop="apps.exelauncher.drop(event)">
+						<div class="drop-content">
+							<i class="bi bi-cpu"></i>
+							<p data-i18n="exelauncher.drop">拖放 DOS 程序到此处</p>
+							<p class="hint">支持 .exe, .com, .bat 文件</p>
+							<a class="a button act" onclick="apps.exelauncher.selectFile()" data-i18n="exelauncher.browse">选择文件</a>
+							<input type="file" id="exelauncher-fileinput" accept=".exe,.com,.bat" style="display:none" onchange="apps.exelauncher.fileSelected(event)">
+						</div>
+					</div>
+					<div class="emulator-panel" id="exelauncher-emulator" style="display:none">
+						<div class="emulator-header">
+							<span class="status" id="exelauncher-status"><i class="bi bi-circle-fill"></i> <span data-i18n="exelauncher.offline">离线</span></span>
+							<span class="performance" id="exelauncher-performance"></span>
+							<div class="controls">
+								<a class="a" onclick="apps.exelauncher.sendCtrlAltDel()" title="Ctrl+Alt+Del"><i class="bi bi-keyboard"></i></a>
+								<a class="a" onclick="apps.exelauncher.toggleFullscreen()" title="全屏"><i class="bi bi-fullscreen"></i></a>
+							</div>
+						</div>
+						<div class="v86-container" id="v86-container">
+							<div class="v86-loading" id="v86-loading">
+								<div class="loading-spinner"></div>
+								<p>正在初始化 x86 模拟器...</p>
+							</div>
+							<canvas id="v86-screen" style="display:none"></canvas>
+						</div>
+					</div>
+				</div>
+				<div class="info-panel">
+					<div class="info-card">
+						<h4><i class="bi bi-info-circle"></i> <span data-i18n="exelauncher.info.title">真实 x86 模拟器</span></h4>
+						<p data-i18n="exelauncher.info.desc">基于 v86 项目，这是一个真实的 x86 CPU 模拟器，可以在浏览器中运行真实的 DOS 程序。</p>
+						<div class="supported-list">
+							<p data-i18n="exelauncher.info.supported">支持：</p>
+							<ul>
+								<li><i class="bi bi-check-circle-fill"></i> 真实 DOS 环境</li>
+								<li><i class="bi bi-check-circle-fill"></i> DOS .com 程序 (实模式)</li>
+								<li><i class="bi bi-check-circle-fill"></i> DOS .exe 程序 (MZ 格式)</li>
+								<li><i class="bi bi-check-circle-fill"></i> 批处理脚本</li>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 
 	<script defer src="data/tasks.js"></script>
 	<script defer src="scripts/utils.js"></script>
@@ -3063,6 +3153,8 @@ toggletheme() 切换主题
 	<script defer src='https://cdnjs.cloudflare.com/ajax/libs/big.js/6.2.1/big.min.js'></script>
 	<script defer src="./scripts/calculator_kernel.js"></script>
 	<script defer src='https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.js'></script>
+	<script defer src="https://cdn.jsdelivr.net/npm/v86@1.0.0/build/libv86.js"></script>
+	<script defer src="scripts/exelauncher_helper.js"></script>
 
 </body>
 
