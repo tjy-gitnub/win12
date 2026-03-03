@@ -1,0 +1,403 @@
+/* EXE 运行器样式 - v86 真实模拟器模式 */
+#win-exelauncher {
+    display: flex !important;
+    flex-direction: column;
+    height: 100%;
+    overflow: hidden;
+}
+
+.exelauncher-container {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    background: var(--bg20);
+}
+
+.exelauncher-container.v86-mode {
+    background: #1a1a1a;
+}
+
+/* 工具栏 */
+.toolbar {
+    display: flex;
+    align-items: center;
+    padding: 10px 15px;
+    background: var(--bg30);
+    border-bottom: 1px solid var(--bd);
+    gap: 15px;
+}
+
+.v86-mode .toolbar {
+    background: #2d2d2d;
+    border-color: #444;
+}
+
+.toolbar .btn-group {
+    display: flex;
+    gap: 8px;
+}
+
+.toolbar .button {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 8px 16px;
+    background: #444;
+    color: #fff;
+    border-radius: 4px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.2s;
+    border: none;
+}
+
+.toolbar .button:hover {
+    background: #555;
+    transform: translateY(-1px);
+}
+
+.toolbar .button.primary {
+    background: #28a745;
+}
+
+.toolbar .button.primary:hover {
+    background: #218838;
+}
+
+.toolbar .button.danger {
+    background: #dc3545;
+}
+
+.toolbar .button.danger:hover {
+    background: #c82333;
+}
+
+.toolbar .button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.toolbar .file-info {
+    flex: 1;
+    font-size: 13px;
+    color: var(--text);
+    opacity: 0.8;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.v86-mode .toolbar .file-info {
+    color: #ccc;
+}
+
+/* 主内容区 */
+.main-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    padding: 15px;
+    overflow: hidden;
+}
+
+/* 拖放区域 */
+.drop-zone {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px dashed var(--bd);
+    border-radius: 10px;
+    background: var(--bg30);
+    transition: all 0.3s;
+    min-height: 300px;
+}
+
+.v86-mode .drop-zone {
+    background: #2d2d2d;
+    border-color: #555;
+}
+
+.drop-zone.drag-over {
+    border-color: #28a745;
+    background: rgba(40, 167, 69, 0.1);
+    transform: scale(1.02);
+}
+
+.drop-content {
+    text-align: center;
+    padding: 40px;
+}
+
+.drop-content i {
+    font-size: 72px;
+    color: var(--theme-1);
+    margin-bottom: 20px;
+}
+
+.v86-mode .drop-content i {
+    color: #28a745;
+}
+
+.drop-content p {
+    font-size: 20px;
+    color: var(--text);
+    margin: 8px 0;
+}
+
+.v86-mode .drop-content p {
+    color: #ddd;
+}
+
+.drop-content .hint {
+    font-size: 14px;
+    opacity: 0.6;
+    color: #888;
+}
+
+.drop-content .button {
+    display: inline-block;
+    margin-top: 20px;
+    padding: 10px 24px;
+    background: var(--theme-1);
+    color: #fff;
+    border-radius: 4px;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+/* 模拟器面板 */
+.emulator-panel {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    border: 1px solid #444;
+    border-radius: 8px;
+    overflow: hidden;
+    background: #000;
+}
+
+.emulator-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 15px;
+    background: #2d2d2d;
+    border-bottom: 1px solid #444;
+}
+
+.emulator-header .status {
+    font-size: 13px;
+    color: #ccc;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.emulator-header .status i {
+    font-size: 10px;
+    color: #28a745;
+}
+
+.emulator-header .status.offline i {
+    color: #666;
+}
+
+.emulator-header .status.running i {
+    color: #ffc107;
+    animation: pulse 1s infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+}
+
+.emulator-header .performance {
+    font-size: 12px;
+    color: #888;
+    font-family: monospace;
+}
+
+.emulator-header .controls {
+    display: flex;
+    gap: 10px;
+}
+
+.emulator-header .controls a {
+    color: #ccc;
+    cursor: pointer;
+    padding: 6px 10px;
+    border-radius: 4px;
+    transition: all 0.2s;
+}
+
+.emulator-header .controls a:hover {
+    background: #444;
+    color: #fff;
+}
+
+/* v86 容器 */
+.v86-container {
+    flex: 1;
+    position: relative;
+    overflow: auto;
+    background: #000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.v86-loading {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    color: #ccc;
+}
+
+.loading-spinner {
+    width: 50px;
+    height: 50px;
+    border: 3px solid #333;
+    border-top-color: #28a745;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin: 0 auto 15px;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+#v86-screen {
+    display: block;
+    max-width: 100%;
+    max-height: 100%;
+    image-rendering: pixelated;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+}
+
+/* 信息面板 */
+.info-panel {
+    padding: 12px 15px;
+    background: var(--bg30);
+    border-top: 1px solid var(--bd);
+}
+
+.v86-mode .info-panel {
+    background: #2d2d2d;
+    border-color: #444;
+}
+
+.info-card {
+    background: var(--bg20);
+    border-radius: 8px;
+    padding: 12px 15px;
+    border: 1px solid var(--bd);
+}
+
+.v86-mode .info-card {
+    background: #252525;
+    border-color: #444;
+}
+
+.info-card h4 {
+    margin: 0 0 8px 0;
+    font-size: 14px;
+    color: var(--text);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.v86-mode .info-card h4 {
+    color: #ddd;
+}
+
+.info-card h4 i {
+    color: var(--theme-1);
+}
+
+.v86-mode .info-card h4 i {
+    color: #28a745;
+}
+
+.info-card p {
+    margin: 0 0 8px 0;
+    font-size: 12px;
+    color: var(--text);
+    opacity: 0.8;
+    line-height: 1.5;
+}
+
+.v86-mode .info-card p {
+    color: #aaa;
+}
+
+.supported-list {
+    margin-top: 8px;
+}
+
+.supported-list p {
+    margin: 0 0 5px 0;
+    font-weight: 500;
+    font-size: 12px;
+}
+
+.supported-list ul {
+    margin: 0;
+    padding-left: 0;
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.supported-list li {
+    font-size: 12px;
+    color: var(--text);
+    opacity: 0.8;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.v86-mode .supported-list li {
+    color: #aaa;
+}
+
+.supported-list li i {
+    color: #28a745;
+    font-size: 11px;
+}
+
+/* 全屏模式 */
+.window.exelauncher.max .v86-container {
+    background: #000;
+}
+
+/* 响应式调整 */
+@media (max-width: 768px) {
+    .toolbar {
+        flex-wrap: wrap;
+    }
+    
+    .toolbar .btn-group {
+        width: 100%;
+        justify-content: center;
+    }
+    
+    .drop-content {
+        padding: 20px;
+    }
+    
+    .drop-content i {
+        font-size: 48px;
+    }
+    
+    .drop-content p {
+        font-size: 16px;
+    }
+}
