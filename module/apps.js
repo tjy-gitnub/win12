@@ -2064,5 +2064,232 @@ Micrȯsoft Windows [版本 12.0.39035.7324]
             $('.window.word>.pages>.home').removeClass('show');
             $('.window.word>.pages>.edit').addClass('show');
         },
+    },
+    exelauncher: {
+        currentFile: null,
+        fileContent: null,
+        emulator: null,
+        isRunning: false,
+        isVMReady: false,
+        
+        init: () => {
+            apps.exelauncher.reset();
+        },
+        
+        selectFile: () => {
+            document.getElementById('exelauncher-fileinput').click();
+        },
+        
+        fileSelected: (event) => {
+            const file = event.target.files[0];
+            if (file) {
+                apps.exelauncher.loadFile(file);
+            }
+        },
+        
+        loadFile: (file) => {
+            apps.exelauncher.currentFile = file;
+            const fileInfo = document.getElementById('exelauncher-fileinfo');
+            fileInfo.innerHTML = `<i class="bi bi-file-earmark-binary"></i> ${file.name} (${(file.size / 1024).toFixed(2)} KB)`;
+            
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                apps.exelauncher.fileContent = new Uint8Array(e.target.result);
+                apps.exelauncher.showEmulator();
+                
+                if (!apps.exelauncher.isVMReady) {
+                    apps.exelauncher.startVM();
+                }
+            };
+            reader.readAsArrayBuffer(file);
+        },
+        
+        dragOver: (event) => {
+            event.preventDefault();
+            event.stopPropagation();
+            document.getElementById('exelauncher-dropzone').classList.add('drag-over');
+        },
+        
+        dragLeave: (event) => {
+            event.preventDefault();
+            event.stopPropagation();
+            document.getElementById('exelauncher-dropzone').classList.remove('drag-over');
+        },
+        
+        drop: (event) => {
+            event.preventDefault();
+            event.stopPropagation();
+            document.getElementById('exelauncher-dropzone').classList.remove('drag-over');
+            
+            const files = event.dataTransfer.files;
+            if (files.length > 0) {
+                const file = files[0];
+                if (file.name.endsWith('.exe') || file.name.endsWith('.com') || file.name.endsWith('.bat')) {
+                    apps.exelauncher.loadFile(file);
+                } else {
+                    alert('仅支持 .exe, .com, .bat 文件');
+                }
+            }
+        },
+        
+        showEmulator: () => {
+            document.getElementById('exelauncher-dropzone').style.display = 'none';
+            document.getElementById('exelauncher-emulator').style.display = 'flex';
+        },
+        
+        showDropZone: () => {
+            document.getElementById('exelauncher-dropzone').style.display = 'flex';
+            document.getElementById('exelauncher-emulator').style.display = 'none';
+        },
+        
+        startVM: () => {
+            if (apps.exelauncher.emulator) {
+                return;
+            }
+            
+            const loadingEl = document.getElementById('v86-loading');
+            const canvasEl = document.getElementById('v86-screen');
+            
+            loadingEl.style.display = 'block';
+            canvasEl.style.display = 'none';
+            
+            apps.exelauncher.updateStatus('running');
+            
+            try {
+                const config = {
+                    wasm_path: "https://cdn.jsdelivr.net/npm/v86@1.0.0/build/v86.wasm",
+                    memory_size: 32 * 1024 * 1024,
+                    vga_memory_size: 2 * 1024 * 1024,
+                    screen_container: document.getElementById("v86-container"),
+                    bios: {
+                        url: "https://cdn.jsdelivr.net/npm/v86@1.0.0/bios/seabios.bin"
+                    },
+                    vga_bios: {
+                        url: "https://cdn.jsdelivr.net/npm/v86@1.0.0/bios/vgabios.bin"
+                    },
+                    cdrom: {
+                        url: "https://copy.sh/v86/images/freedos722.img",
+                        size: 737280
+                    },
+                    autostart: true,
+                    disable_keyboard: false,
+                    disable_mouse: true
+                };
+                
+                apps.exelauncher.emulator = new V86Starter(config);
+                
+                apps.exelauncher.emulator.add_listener("emulator-ready", () => {
+                    loadingEl.style.display = 'none';
+                    canvasEl.style.display = 'block';
+                    apps.exelauncher.isVMReady = true;
+                    apps.exelauncher.updateStatus('ready');
+                    
+                    // 如果有预加载的文件，将其复制到虚拟磁盘中
+                    if (apps.exelauncher.currentFile && apps.exelauncher.fileContent) {
+                        setTimeout(() => {
+                            apps.exelauncher.copyFileToVM();
+                        }, 2000);
+                    }
+                });
+                
+                apps.exelauncher.emulator.add_listener("emulator-stopped", () => {
+                    apps.exelauncher.isRunning = false;
+                    apps.exelauncher.updateStatus('offline');
+                });
+                
+                // 性能监控
+                setInterval(() => {
+                    if (apps.exelauncher.emulator && apps.exelauncher.isVMReady) {
+                        const stats = apps.exelauncher.emulator.get_stats();
+                        if (stats) {
+                            const perfEl = document.getElementById('exelauncher-performance');
+                            if (perfEl) {
+                                perfEl.textContent = `IPS: ${(stats.ips / 1000000).toFixed(1)}M`;
+                            }
+                        }
+                    }
+                }, 1000);
+                
+            } catch (error) {
+                console.error('Failed to start VM:', error);
+                loadingEl.innerHTML = `<p style="color: #dc3545;">启动失败: ${error.message}</p>`;
+                apps.exelauncher.updateStatus('error');
+            }
+        },
+        
+        stopVM: () => {
+            if (apps.exelauncher.emulator) {
+                apps.exelauncher.emulator.stop();
+                apps.exelauncher.emulator = null;
+                apps.exelauncher.isVMReady = false;
+                apps.exelauncher.isRunning = false;
+                
+                document.getElementById('v86-loading').style.display = 'block';
+                document.getElementById('v86-screen').style.display = 'none';
+                apps.exelauncher.updateStatus('offline');
+            }
+        },
+        
+        copyFileToVM: () => {
+            if (!apps.exelauncher.emulator || !apps.exelauncher.isVMReady || !apps.exelauncher.fileContent) {
+                return;
+            }
+            
+            try {
+                const fs = apps.exelauncher.emulator.fs;
+                if (fs) {
+                    const fileName = apps.exelauncher.currentFile.name.toUpperCase();
+                    fs.write_file(`C:\\\\${fileName}`, apps.exelauncher.fileContent);
+                    
+                    // 在 DOS 中显示提示
+                    apps.exelauncher.emulator.keyboard_send_text(`\nREM File ${fileName} loaded to C:\\\n`);
+                }
+            } catch (error) {
+                console.error('Failed to copy file to VM:', error);
+            }
+        },
+        
+        sendCtrlAltDel: () => {
+            if (apps.exelauncher.emulator && apps.exelauncher.isVMReady) {
+                apps.exelauncher.emulator.keyboard_send_scancodes([0x1D, 0x38, 0x53, 0xD3, 0xB8, 0x9D]);
+            }
+        },
+        
+        updateStatus: (status) => {
+            const statusEl = document.getElementById('exelauncher-status');
+            const statusText = {
+                'ready': '<i class="bi bi-circle-fill"></i> 就绪',
+                'running': '<i class="bi bi-circle-fill"></i> 运行中',
+                'offline': '<i class="bi bi-circle-fill"></i> 离线',
+                'error': '<i class="bi bi-circle-fill"></i> 错误'
+            };
+            statusEl.innerHTML = statusText[status] || statusText['offline'];
+            statusEl.className = 'status ' + status;
+        },
+        
+        reset: () => {
+            if (apps.exelauncher.emulator) {
+                apps.exelauncher.stopVM();
+            }
+            
+            apps.exelauncher.currentFile = null;
+            apps.exelauncher.fileContent = null;
+            apps.exelauncher.isRunning = false;
+            apps.exelauncher.isVMReady = false;
+            
+            document.getElementById('exelauncher-fileinfo').innerHTML = '<span>未加载程序</span>';
+            document.getElementById('exelauncher-fileinput').value = '';
+            document.getElementById('v86-loading').innerHTML = `
+                <div class="loading-spinner"></div>
+                <p>正在初始化 x86 模拟器...</p>
+            `;
+            
+            apps.exelauncher.showDropZone();
+            apps.exelauncher.updateStatus('offline');
+        },
+        
+        toggleFullscreen: () => {
+            maxwin('exelauncher');
+        }
     }
 };
