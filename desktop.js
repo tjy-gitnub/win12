@@ -2202,7 +2202,7 @@ function saveDesktop() {
         localStorage.setItem(key, value);
     });
 }
-//这段上古代码终于改了
+//这段上古代码终于改了 @freedom-323
 const defaultIcons = [
     { id: 'explorer', icon: 'apps/icons/explorer/thispc.svg', name: lang('此电脑','explorer.thispc') },
     { id: 'setting', icon: 'icon/setting.svg', name: lang('设置','setting.name') },
@@ -2532,6 +2532,10 @@ function setupGlobalKey(){
 setupGlobalKey();
 
 //@CsabaConsulting
+function getUserAgent() {
+    return navigator.userAgent || navigator.vendor || window.opera;
+}
+
 function isMobileDevice() {
     var userAgent = getUserAgent();
         document.getElementById("userAgent").innerText = userAgent;
@@ -2560,7 +2564,7 @@ function isMobileDevice() {
             }
           }
         } catch(err) {
-          document.getElementById("error").innerText = error.message;
+          document.getElementById("error").innerText = err.message;
         }
 
         return false;
