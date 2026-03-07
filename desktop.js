@@ -51,12 +51,42 @@ let langc={
     'zh-HK':'zh-TW',
     'zh-hk':'zh-TW',
     'zh':'zh-CN',
-
+    'zh-mo':'zh-TW',
+	'zh-MO':'zh-TW',
+	'zh-Mo':'zh-TW',
+	'zh-sg':'zh-CN',
+	'zh-SG':'zh-CN',
+	'zh-Hans-SG':'zh-CN',
+	'zh-Hant-SG':'zh-TW',
+	'zh-Hant-TW':'zh-TW',
+	'zh-Hant-HK':'zh-TW',
+	'zh-Hant-MO':'zh-TW',
+	'zh-my':'zh-CN',
+	'zh-MY':'zh-CN',
+	'zh-Hans-MY':'zh-CN',
+	
     'en':'en',
     'en-US':'en',
     'en-us':'en',
     'en-GB':'en',
-    'en-gb':'en'
+    'en-gb':'en',
+	'en-UK':'en',
+	'en-uk':'en',
+	'en-AU':'en',
+	'en-au':'en',
+	'en-CA':'en',
+	'en-ca':'en',
+	'en-IN':'en',
+	'en-in':'en',
+	'en-HK':'en',
+	'en-hk':'en',
+	'en-SG':'en',
+	'en-sg':'en',
+	'en-IE':'en',
+	'en-ie':'en',
+	'en-ZA':'en',
+	'en-za':'en',
+	'en-001':'en'
 }
 
 let langcode,lang=(txt,id)=>{
@@ -2172,65 +2202,132 @@ function saveDesktop() {
         localStorage.setItem(key, value);
     });
 }
+//这段上古代码终于改了 @freedom-323
+const defaultIcons = [
+    { id: 'explorer', icon: 'apps/icons/explorer/thispc.svg', name: lang('此电脑','explorer.thispc') },
+    { id: 'setting', icon: 'icon/setting.svg', name: lang('设置','setting.name') },
+    { id: 'about', icon: 'icon/about.svg', name: lang('关于 Win12 网页版','about.name') },
+    { id: 'edge', icon: 'icon/edge.svg', name: 'Microsoft Edge' },
+    { id: 'feedback', icon: 'icon/feedback.svg', name: lang('反馈中心','feedback.name'), isNotice: true }
+];
 
 function setIcon() {
-    // return;
-    if (!Array.isArray(JSON.parse(localStorage.getItem('desktop')))){
-        setData('desktop','[]')
-    }
-    if (Array.isArray(JSON.parse(localStorage.getItem('desktop')))) {
-        $('#desktop')[0].innerHTML = `<div ondblclick="openapp('explorer');" ontouchstart="openapp('explorer');" oncontextmenu="return showcm(event,'desktop.icon',['explorer',-1]);" appname="explorer">
-        <img src="apps/icons/explorer/thispc.svg">
-        <p>${lang('此电脑','explorer.thispc')}</p>
-    </div>
-    <div class="b" ondblclick="openapp('setting');" ontouchstart="openapp('setting');" oncontextmenu="return showcm(event,'desktop.icon',['setting',-1]);" appname="setting">
-        <img src="icon/setting.svg">
-        <p>${lang('设置','setting.name')}</p>
-    </div>
-    <div class="b" ondblclick="openapp('about');" ontouchstart="openapp('about');" oncontextmenu="return showcm(event,'desktop.icon',['about',-1]);" appname="about">
-        <img src="icon/about.svg">
-        <p>${lang('关于 Win12 网页版','about.name')}</p>
-    </div>
-    <div class="b" ondblclick="openapp('edge');" ontouchstart="openapp('edge');" oncontextmenu="return showcm(event,'desktop.icon',['edge',-1]);" appname="edge">
-        <img src="icon/edge.svg">
-        <p>Microsoft Edge</p>
-    </div>
-    <div class="b" ondblclick="shownotice('feedback');" ontouchstart="shownotice('feedback');;">
-        <img src="icon/feedback.svg">
-        <p>${lang('反馈中心','feedback.name')}</p>
-    </div>
-    <span class="choose">
-    </span>
-    <p style="background-color: rgba(11,45,14,0);z-index:1;position: absolute;top:0px;left:0px;height:100%;width:100%" oncontextmenu="return showcm(event,'desktop');"></p>`;
-        desktopItem = JSON.parse(localStorage.getItem('desktop'));
-        desktopItem.forEach((item) => {
-            $('#desktop')[0].innerHTML += item;
+if (!Array.isArray(JSON.parse(localStorage.getItem('desktop')))) 
+	{setData('desktop', '[]');}
+
+ const $desktop = $('#desktop')[0];
+ if (!$desktop) return;
+    
+ // 预设图标
+ const defaultIcons = [
+    { id: 'explorer', icon: 'apps/icons/explorer/thispc.svg', name: lang('此电脑','explorer.thispc'), specialClass: '' },
+    { id: 'setting', icon: 'icon/setting.svg', name: lang('设置','setting.name'), specialClass: 'b' },
+    { id: 'about', icon: 'icon/about.svg', name: lang('关于 Win12 网页版','about.name'), specialClass: 'b' },
+    { id: 'edge', icon: 'icon/edge.svg', name: 'Microsoft Edge', specialClass: 'b' },
+    { id: 'feedback', icon: 'icon/feedback.svg', name: lang('反馈中心','feedback.name'), specialClass: 'b', isNotice: true }
+ ];
+
+ let htmlBuffer = "";
+defaultIcons.forEach(item => {
+    // 拼接 HTML
+    htmlBuffer += `
+        <div class="${item.specialClass} desktop-icon" 
+             data-id="${item.id}" 
+                appname="${item.id}">
+             <img src="${item.icon}">
+             <p>${item.name}</p>
+        </div>`;
+ });
+
+    // 背景层和选择框
+    htmlBuffer += `
+        <span class="choose"></span>
+        <p class="desktop-bg-layer" style="background-color:rgba(0,0,0,0);z-index:1;position:absolute;top:0;left:0;height:100%;width:100%"></p>`;
+
+    $desktop.innerHTML = htmlBuffer;
+
+    // 修复element问题
+    $( $desktop ).find('.desktop-icon').each(function() {
+        const $this = $(this);
+        const appId = $this.attr('data-id');
+
+        // 移动端适配
+        if (isMobileDevice() || isTouchInputDevice()){
+            $this.on('click', () => {
+                if (appId === 'feedback') shownotice('feedback');
+                else openapp(appId);
+            });
+        } else {
+            // 桌面端选中
+            $this.on('click', (e) => {
+                e.stopPropagation();
+                $('.desktop-icon').removeClass('selected');
+                $this.addClass('selected');
+            });
+            // 桌面端打开
+            $this.on('dblclick', () => {
+                if (appId === 'feedback') shownotice('feedback');
+                else openapp(appId);
+            });
+        }
+
+        $this[0].oncontextmenu = (e) => showcm(e, 'desktop.icon', [appId, -1]);
+    });
+
+    // 点击桌面空白处取消选中
+    $('.desktop-bg-layer').on('click', () => $('.desktop-icon').removeClass('selected'));
+
+
+    // 插入背景功能层
+    const chooseSpan = document.createElement('span');
+    chooseSpan.className = 'choose';
+    $desktop.appendChild(chooseSpan);
+
+    const bgLayer = document.createElement('p');
+    bgLayer.style.cssText = "background-color: rgba(0,0,0,0); z-index:1; position: absolute; top:0; left:0; height:100%; width:100%";
+    bgLayer.oncontextmenu = (e) => showcm(e, 'desktop');
+    $desktop.appendChild(bgLayer);
+
+    const desktopItem = JSON.parse(localStorage.getItem('desktop'));
+    if (Array.isArray(desktopItem)) {
+        desktopItem.forEach((itemHtml) => {
+            const temp = document.createElement('div');
+            temp.innerHTML = itemHtml;
+            if (temp.firstElementChild) {
+                $desktop.appendChild(temp.firstElementChild);
+            }
         });
         addMenu();
     }
+
     if (Array.isArray(JSON.parse(localStorage.getItem('topmost')))) {
-        topmost = JSON.parse(localStorage.getItem('topmost'));
+        const topmost = JSON.parse(localStorage.getItem('topmost'));
         if (topmost.includes('taskmgr')) {
-            $('#tsk-setting-topmost')[0].checked = true;
+            const taskmgrCheck = $('#tsk-setting-topmost')[0];
+            if (taskmgrCheck) taskmgrCheck.checked = true;
         }
     }
+
     if (Array.isArray(JSON.parse(localStorage.getItem('sys_setting')))) {
-        var sys_setting_back = JSON.parse(localStorage.getItem('sys_setting'));
-        if (/^(1|0)+$/.test(sys_setting_back.join(''))/* 只含有0和1 */) {
-            sys_setting = sys_setting_back;
-            for (var i = 0; i < sys_setting.length; i++) {
-                document.getElementById('sys_setting_' + (i + 1))?.setAttribute("class", 'a checkbox' + (sys_setting[i] ? ' checked' : '')); //设置class属性
-                if (i == 5) {
-                    use_music = sys_setting[i] ? true : false;
+        const sys_setting_back = JSON.parse(localStorage.getItem('sys_setting'));
+        if (/^(1|0)+$/.test(sys_setting_back.join(''))) {
+            const sys_setting = sys_setting_back;
+            for (let i = 0; i < sys_setting.length; i++) {
+                const target = document.getElementById('sys_setting_' + (i + 1));
+                if (target) {
+                    target.setAttribute("class", 'a checkbox' + (sys_setting[i] ? ' checked' : ''));
                 }
-                if (i == 6) {
-                    use_mic_voice = sys_setting[i] ? true : false;
-                }
+                if (i == 5) use_music = !!sys_setting[i];
+                if (i == 6) use_mic_voice = !!sys_setting[i];
             }
         }
     }
+
     if (localStorage.getItem('root_class')) {
-        $(':root')[0].className = localStorage.getItem('root_class') + ' ' + (isDark ? 'dark' : '');
+        const root = $(':root')[0];
+        if (root) {
+            root.className = localStorage.getItem('root_class') + ' ' + (isDark ? 'dark' : '');
+        }
     }
 }
 
@@ -2434,9 +2531,50 @@ function setupGlobalKey(){
 
 setupGlobalKey();
 
+//@CsabaConsulting
+function getUserAgent() {
+    return navigator.userAgent || navigator.vendor || window.opera;
+}
 
 function isMobileDevice() {
-    return /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+    var userAgent = getUserAgent();
+        document.getElementById("userAgent").innerText = userAgent;
+        if (/(android|bb\d+|meego).+mobile|avantgo|bada\/|blackberry|blazer|compal|elaine|fennec|hiptop|iemobile|ip(hone|od|ad)|android|playbook|silk|iris|kindle|lge |maemo|midp|mmp|mobile.+firefox|netfront|opera m(ob|in)i|palm( os)?|phone|p(ixi|re)\/|plucker|pocket|psp|series(4|6)0|symbian|treo|up\.(browser|link)|vodafone|wap|windows ce|xda|xiino/i.test(userAgent) ||
+            /1207|6310|6590|3gso|4thp|50[1-6]i|770s|802s|a wa|abac|ac(er|oo|s\-)|ai(ko|rn)|al(av|ca|co)|amoi|an(ex|ny|yw)|aptu|ar(ch|go)|as(te|us)|attw|au(di|\-m|r |s )|avan|be(ck|ll|nq)|bi(lb|rd)|bl(ac|az)|br(e|v)w|bumb|bw\-(n|u)|c55\/|capi|ccwa|cdm\-|cell|chtm|cldc|cmd\-|co(mp|nd)|craw|da(it|ll|ng)|dbte|dc\-s|devi|dica|dmob|do(c|p)o|ds(12|\-d)|el(49|ai)|em(l2|ul)|er(ic|k0)|esl8|ez([4-7]0|os|wa|ze)|fetc|fly(\-|_)|g1 u|g560|gene|gf\-5|g\-mo|go(\.w|od)|gr(ad|un)|haie|hcit|hd\-(m|p|t)|hei\-|hi(pt|ta)|hp( i|ip)|hs\-c|ht(c(\-| |_|a|g|p|s|t)|tp)|hu(aw|tc)|i\-(20|go|ma)|i230|iac( |\-|\/)|ibro|idea|ig01|ikom|im1k|inno|ipaq|iris|ja(t|v)a|jbro|jemu|jigs|kddi|keji|kgt( |\/)|klon|kpt |kwc\-|kyo(c|k)|le(no|xi)|lg( g|\/(k|l|u)|50|54|\-[a-w])|libw|lynx|m1\-w|m3ga|m50\/|ma(te|ui|xo)|mc(01|21|ca)|m\-cr|me(rc|ri)|mi(o8|oa|ts)|mmef|mo(01|02|bi|de|do|t(\-| |o|v)|zz)|mt(50|p1|v )|mwbp|mywa|n10[0-2]|n20[2-3]|n30(0|2)|n50(0|2|5)|n7(0(0|1)|10)|ne((c|m)\-|on|tf|wf|wg|wt)|nok(6|i)|nzph|o2im|op(ti|wv)|oran|owg1|p800|pan(a|d|t)|pdxg|pg(13|\-([1-8]|c))|phil|pire|pl(ay|uc)|pn\-2|po(ck|rt|se)|prox|psio|pt\-g|qa\-a|qc(07|12|21|32|60|\-[2-7]|i\-)|qtek|r380|r600|raks|rim9|ro(ve|zo)|s55\/|sa(ge|ma|mm|ms|ny|va)|sc(01|h\-|oo|p\-)|sdk\/|se(c(\-|0|1)|47|mc|nd|ri)|sgh\-|shar|sie(\-|m)|sk\-0|sl(45|id)|sm(al|ar|b3|it|t5)|so(ft|ny)|sp(01|h\-|v\-|v )|sy(01|mb)|t2(18|50)|t6(00|10|18)|ta(gt|lk)|tcl\-|tdg\-|tel(i|m)|tim\-|t\-mo|to(pl|sh)|ts(70|m\-|m3|m5)|tx\-9|up(\.b|g1|si)|utst|v400|v750|veri|vi(rg|te)|vk(40|5[0-3]|\-v)|vm40|voda|vulc|vx(52|53|60|61|70|80|81|83|85|98)|w3c(\-| )|webc|whit|wi(g |nc|nw)|wmlb|wonu|x700|yas\-|your|zeto|zte\-/i.test(userAgent.substr(0, 4)))
+          return true;
+
+        try {
+          if (userAgent.match(/Macintosh/i) !== null) {
+            if (navigator.platform === "MacIntel" && navigator.maxTouchPoints <= 0) {
+              return false;
+            }
+
+            var canvas = document.createElement("canvas");
+            if (canvas !== null) {
+              var context = canvas.getContext("webgl") || canvas.getContext("experimental-webgl");
+              if (context) {
+                var info = context.getExtension("WEBGL_debug_renderer_info");
+                if (info) {
+                  var renderer = context.getParameter(info.UNMASKED_RENDERER_WEBGL);
+                  if (renderer.indexOf("Apple") !== -1) {
+                    return true;
+                  }
+                }
+              }
+            }
+          }
+        } catch(err) {
+          document.getElementById("error").innerText = err.message;
+        }
+
+        return false;
+}
+
+function isTouchInputDevice() {
+  return (
+	window.matchMedia("(pointer: coarse)").matches || 
+    window.matchMedia("(any-pointer: coarse)").matches
+	)
 }
 
 function checkOrientation() {
@@ -2447,6 +2585,19 @@ function checkOrientation() {
     } else {
         container.style.display = "none"; // 隐藏提示
     }
+}
+
+// 初始位置优化
+function getInitialPosition() {
+    if (isMobileDevice()) {
+        return {
+            x: window.innerWidth * 0.05,
+            y: 20,
+            width: "90%",
+            height: "75%"
+        };
+    }
+    return { x: 100, y: 100, width: "800px", height: "600px" };
 }
 
 // 监听屏幕方向变化
