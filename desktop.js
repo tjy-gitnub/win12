@@ -2574,6 +2574,7 @@ function isTouchInputDevice() {
   return (
 	window.matchMedia("(pointer: coarse)").matches || 
     window.matchMedia("(any-pointer: coarse)").matches
+	)
 }
 
 function checkOrientation() {
