@@ -2829,9 +2829,9 @@ body > .container > .image-container > .svg {
 }
 
 @media screen and (max-width: 768px) {
-    body .window {
-        width: 92vw !important;
-        height: 75vh !important;
+    body .window.window {
+        width: 92vw;
+        height: 75vh;
     }
 
 
