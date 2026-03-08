@@ -2827,3 +2827,23 @@ body > .container > .image-container > .svg {
     object-fit: cover;
     pointer-events: none;
 }
+
+@media screen and (max-width: 768px) {
+    body .window {
+        width: 92vw !important;
+        height: 75vh !important;
+    }
+
+
+    body .taskbar-icon {
+        padding: 0 10px;
+    }
+
+    body ::-webkit-scrollbar {
+        width: 4px;
+    }
+
+    html {
+      scrollbar-width: thin; 
+    }
+}
