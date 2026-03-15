@@ -1050,7 +1050,6 @@ let apps = {
                     }
                 }
             }
-            apps.explorer.goto($('#win-explorer>.path>.tit')[0].dataset.path, false);
             apps.explorer.pushLocalStoragePath(files, true)
         },
         paste: (path) => {
@@ -1150,7 +1149,6 @@ let apps = {
                 }
                 element = document.getElementById('new_name');
                 element.parentNode.removeChild(element);
-                apps.explorer.goto($('#win-explorer>.path>.tit')[0].dataset.path, false);
                 apps.explorer.pushLocalStoragePath(files, true)
             }
             apps.explorer.is_use2 = apps.explorer.is_use;
@@ -1380,7 +1378,7 @@ let apps = {
             });
             apps.explorer.pushLocalStoragePath(files, true)
         },
-        pushLocalStoragePath: (path, isRefresh) => {
+        pushLocalStoragePath: (path, isRefresh = false) => {
             const pathStr = JSON.stringify(path);
             localStorage.setItem("files_path", pathStr);
             if ((isRefresh ?? false) == true) {
