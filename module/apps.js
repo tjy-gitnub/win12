@@ -1058,7 +1058,7 @@ let apps = {
                     tmp = files['folder'][name];
                 }
             });
-            apps.explorer.pushLocalStoragePath(files)
+            apps.explorer.pushLocalStoragePath(files, true)
         },
         paste: (path) => {
             if (!apps.explorer.clipboard) {
@@ -1090,7 +1090,7 @@ let apps = {
                 tmp['folder'][clipboard[1][0]] = JSON.parse(JSON.stringify(clipboard[2])); // Deep copy the folder
             }
             apps.explorer.goto(path);
-            apps.explorer.pushLocalStoragePath(files)
+            apps.explorer.pushLocalStoragePath(files, true)
         },
         del_select: () => {
             if (apps.explorer.is_use >= 1 && apps.explorer.is_use2 != apps.explorer.is_use) {
@@ -1156,7 +1156,7 @@ let apps = {
                 element = document.getElementById('new_name');
                 element.parentNode.removeChild(element);
                 apps.explorer.goto($('#win-explorer>.path>.tit')[0].dataset.path, false);
-                apps.explorer.pushLocalStoragePath(files)
+                apps.explorer.pushLocalStoragePath(files, true)
             }
             apps.explorer.is_use2 = apps.explorer.is_use;
             elements = document.querySelectorAll('#win-explorer>.page>.main>.content>.view>.select');
@@ -1256,7 +1256,7 @@ let apps = {
             }
 
             // 检查是否是文件夹
-            if (type === 'folder') {
+            if (type === 'files') {
                 if (icon !== '') {
                     icon_ = icon;
                 } else {
@@ -1268,6 +1268,9 @@ let apps = {
                     tmp = { folder: {}, file: [] };
                     tmp.folder[name_] = { folder: {}, file: [] };
                 }
+                apps.explorer.pushLocalStoragePath(files, true);
+                apps.explorer.goto(path);
+                apps.explorer.rename(path + '/' + name_);
                 return;
             }
 
@@ -1300,7 +1303,7 @@ let apps = {
                 tmp = { folder: {}, file: [] };
                 tmp.file = [{ name: name_, ico: icon_, command: command }];
             }
-            apps.explorer.pushLocalStoragePath(files);
+            apps.explorer.pushLocalStoragePath(files, true);
             apps.explorer.goto(path);
             apps.explorer.rename(path + '/' + name_);
         },
@@ -1340,7 +1343,7 @@ let apps = {
                     apps.explorer.del_select();
                 }
             });
-            apps.explorer.pushLocalStoragePath(files)
+            apps.explorer.pushLocalStoragePath(files, false)
         },
         get_file_id: (name) => {  //只能找到已经打开了的文件夹的元素id
             var elements = document.getElementsByClassName('item');
@@ -1380,11 +1383,14 @@ let apps = {
                     item.splice(item.findIndex(elt => { return elt == path; }), 1);
                 }
             });
-            apps.explorer.pushLocalStoragePath(files)
+            apps.explorer.pushLocalStoragePath(files, true)
         },
-        pushLocalStoragePath: (path) => {
+        pushLocalStoragePath: (path, isRefresh) => {
             const pathStr = JSON.stringify(path);
             localStorage.setItem("files_path", pathStr);
+            if ((isRefresh ?? false) == true) {
+                apps.explorer.goto($('#win-explorer>.path>.tit')[0].dataset.path, false);
+            }
         },
         getPath: () => {
             const filesPath = localStorage.getItem("files_path");
