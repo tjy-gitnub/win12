@@ -1070,10 +1070,24 @@ let apps = {
             var clipboard = apps.explorer.clipboard;
             if (clipboard[0] == 'file') {
                 // Check for duplicate file name
-                if (tmp['file'].some(file => file.name === clipboard[1].name)) {
-                    shownotice('duplication file name');
-                    return;
-                }
+                if (tmp['file'] != null && tmp['folder'] != null) {
+                    if (tmp['file'].some(file => file.name === clipboard[1].name) && (tmp['folder'][clipboard[1][0]])) {
+                        shownotice('duplication file name');
+                        return;
+                    }
+                } else if (tmp['file'] == null && tmp['folder'] != null) {
+                    if (tmp['folder'][clipboard[1][0]]) {
+                        shownotice('duplication file name');
+                        return;
+                    } else {
+                        tmp['file'] = []
+                    }
+                } else if (tmp['file'] != null && tmp['folder'] == null) {
+                    if (tmp['file'].some(file => file.name === clipboard[1].name)) {
+                        shownotice('duplication file name');
+                        return;
+                    };
+                };
                 tmp['file'].push({ ...clipboard[1] }); // Create a copy of the file object
             } else {
                 // Check for duplicate folder name
@@ -1395,8 +1409,9 @@ let apps = {
             };
         },
         traverseDirectory(dir, name) {
-            if (dir['file'] == null && dir['folder'] == null)
+            if (dir['file'] == null || dir['folder'] == null)
                 return false;
+            console.log(name)
             for (var i = 0; i < dir['file'].length; i++) {
                 if (dir['file'][i]['name'] == name) {
                     return true;
