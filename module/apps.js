@@ -1051,13 +1051,6 @@ let apps = {
                 }
             }
             apps.explorer.goto($('#win-explorer>.path>.tit')[0].dataset.path, false);
-            pathl.forEach(name => {
-                if (tmp !== null) {
-                    tmp = tmp['folder'][name];
-                } else {
-                    tmp = files['folder'][name];
-                }
-            });
             apps.explorer.pushLocalStoragePath(files, true)
         },
         paste: (path) => {
@@ -1065,12 +1058,14 @@ let apps = {
                 return;
             }
             var pathl = path.split('/');
-            let tmp = apps.explorer.getPath();
+            let files = apps.explorer.getPath();
+            let tmp = null;
             pathl.forEach(name => {
-                if (!tmp['folder'][name]) {
-                    return;
+                if (tmp !== null) {
+                    tmp = tmp['folder'][name];
+                } else {
+                    tmp = files['folder'][name];
                 }
-                tmp = tmp['folder'][name];
             });
 
             var clipboard = apps.explorer.clipboard;
