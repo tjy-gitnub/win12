@@ -418,7 +418,16 @@ const cms = {
             if ($('#win-explorer>.path>.tit>.path>div.text').length > 1)
                 return ['<i class="bi bi-arrow-clockwise"></i> 刷新', 'apps.explorer.goto($(\'#win-explorer>.path>.tit\')[0].dataset.path, false)'];
             return ['<i class="bi bi-arrow-clockwise"></i> 刷新', 'apps.explorer.reset()'];
+        },
+        arg => {
+            if ($('#win-explorer>.path>.tit>.path>div.text').length <= 1 && apps.explorer.fsApiSupported)
+                return ['<i class="bi bi-usb-drive"></i> 挂载本地文件夹', 'apps.explorer.mountDrive()'];
+            return 'null';
         }
+    ],
+    'explorer.mounted': [
+        arg => ['<i class="bi bi-folder2-open"></i> 打开', `apps.explorer.goto('${arg}')`],
+        arg => ['<i class="bi bi-eject"></i> 卸载', `apps.explorer.unmountDrive('${arg}')`]
     ],
     'explorer.tab': [
         arg => {
@@ -859,6 +868,20 @@ const nts = {
             <p>Word在试图打开文件时遇到错误<br /></p>`),
         btn: [
             { type: 'main', text: lang(lang('关闭','close'),'close'), js: 'closenotice();' }
+        ]
+    },
+    'fs-api-unsupported': {
+        cnt: lang(`<p class="tit">不支持的功能</p>
+            <p>您的浏览器不支持文件系统访问 API。请使用 Chrome 或 Edge 浏览器。</p>`, 'nts.fs-api-unsupported'),
+        btn: [
+            { type: 'main', text: lang('确定','ok'), js: 'closenotice();' }
+        ]
+    },
+    'fs-mount-error': {
+        cnt: lang(`<p class="tit">挂载失败</p>
+            <p>无法挂载本地文件夹，权限可能被拒绝。</p>`, 'nts.fs-mount-error'),
+        btn: [
+            { type: 'main', text: lang('确定','ok'), js: 'closenotice();' }
         ]
     },
 };

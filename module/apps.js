@@ -922,6 +922,9 @@ let apps = {
         }
     },
     explorer: {
+        mounts: {},
+        nextDriveLetter: 'E',
+        fsApiSupported: ('showDirectoryPicker' in window),
         init: () => {
             apps.explorer.tabs = [];
             apps.explorer.len = 0;
@@ -932,11 +935,47 @@ let apps = {
             apps.explorer.is_use2 = 0;//千万不要删除它，它依托bug运行
             apps.explorer.old_name = '';
             apps.explorer.clipboard = null;
+            if (!apps.explorer.fsApiSupported) $('#explorer-mount-btn').hide();
             document.addEventListener('keydown', function (event) {
                 if (event.key === 'Delete' && $('.window.foc')[0].classList[1] == 'explorer') {
                     apps.explorer.del(apps.explorer.Process_Of_Select);
                 }
             });
+        },
+        mountDrive: async () => {
+            if (!apps.explorer.fsApiSupported) { shownotice('fs-api-unsupported'); return; }
+            try {
+                const dirHandle = await window.showDirectoryPicker({ mode: 'read' });
+                const letter = apps.explorer.nextDriveLetter + ':';
+                apps.explorer.nextDriveLetter = String.fromCharCode(
+                    apps.explorer.nextDriveLetter.charCodeAt(0) + 1);
+                apps.explorer.mounts[letter] = dirHandle;
+                apps.explorer.path.folder[letter] = { folder: {}, file: [], _mounted: true, _handle: dirHandle };
+                if (!apps.explorer.tabs[apps.explorer.now][2].length) apps.explorer.reset();
+            } catch (e) {
+                if (e.name !== 'AbortError') shownotice('fs-mount-error');
+            }
+        },
+        unmountDrive: (letter) => {
+            delete apps.explorer.mounts[letter];
+            delete apps.explorer.path.folder[letter];
+            if (!apps.explorer.tabs[apps.explorer.now][2].length) apps.explorer.reset();
+            else if (apps.explorer.tabs[apps.explorer.now][2].startsWith(letter)) apps.explorer.reset();
+        },
+        populateFromHandle: async (dirHandle, targetObj) => {
+            targetObj.folder = {};
+            targetObj.file = [];
+            for await (const entry of dirHandle.values()) {
+                if (entry.kind === 'directory') {
+                    targetObj.folder[entry.name] = { folder: {}, file: [], _mounted: true, _handle: entry };
+                } else {
+                    const ext = entry.name.split('.').pop().toLowerCase();
+                    let ico = 'icon/files/none.png';
+                    if (ext === 'txt') ico = 'icon/files/txt.png';
+                    else if (['png', 'jpg', 'bmp', 'jpeg'].includes(ext)) ico = 'icon/files/picture.png';
+                    targetObj.file.push({ name: entry.name, ico: ico, command: '', _handle: entry, _mounted: true });
+                }
+            }
         },
         tabs: [],
         now: null,
@@ -992,7 +1031,16 @@ let apps = {
             </div><p class="info">32.6 GB 可用, 共 143 GB</p></div></a><a class="a item act" ondblclick="apps.explorer.goto('D:')" ontouchend="apps.explorer.goto('D:')"
             oncontextmenu="showcm(event,'explorer.folder','D:');return stop(event);">
             <img src="apps/icons/explorer/disk.svg"><div><p class="name">本地磁盘 (D:)</p><div class="bar"><div class="content" style="width: 15%;"></div>
-            </div><p class="info">185.3 GB 可用, 共 216 GB</p></div></a></div>`;
+            </div><p class="info">185.3 GB 可用, 共 216 GB</p></div></a>`;
+            let mountHtml = '';
+            for (let letter in apps.explorer.mounts) {
+                const handle = apps.explorer.mounts[letter];
+                mountHtml += `<a class="a item act" ondblclick="apps.explorer.goto('${letter}')" ontouchend="apps.explorer.goto('${letter}')" oncontextmenu="showcm(event,'explorer.mounted','${letter}');return stop(event);">
+                <img src="apps/icons/explorer/disk.svg"><div><p class="name">${handle.name} (${letter})</p>
+                <div class="bar"><div class="content" style="width: 0%;"></div>
+                </div><p class="info">本地文件夹</p></div></a>`;
+            }
+            $('#win-explorer>.page>.main>.content>.view')[0].innerHTML += mountHtml + `</div>`;
             $('#win-explorer>.path>.tit')[0].innerHTML = '<div class="icon" style="background-image: url(\'./apps/icons/explorer/thispc.svg\')"></div><div class="path"><div class="text" onclick="apps.explorer.reset()">此电脑</div><div class="arrow">&gt;</div></div>';
             // if(rename){
             m_tab.rename('explorer', '<img src="./apps/icons/explorer/thispc.svg"> 此电脑');
@@ -1141,16 +1189,37 @@ let apps = {
             apps.explorer.Process_Of_Select = '';
         },
         goto: (path, clear = true) => {
+            if (path == '此电脑') { apps.explorer.reset(clear); return null; }
+            var pathl = path.split('/');
+            if (apps.explorer.mounts[pathl[0]]) {
+                apps.explorer._gotoAsync(path, clear);
+            } else {
+                apps.explorer._gotoSync(path, clear);
+            }
+        },
+        _gotoAsync: async (path, clear) => {
+            $('#win-explorer>.page>.main>.content>.view')[0].innerHTML = '<p class="info" style="opacity:0.6;">加载中...</p>';
+            var pathl = path.split('/');
+            let tmp = apps.explorer.path;
+            try {
+                for (let i = 0; i < pathl.length; i++) {
+                    tmp = tmp['folder'][pathl[i]];
+                    if (tmp._mounted && tmp._handle && Object.keys(tmp.folder).length === 0 && tmp.file.length === 0) {
+                        await apps.explorer.populateFromHandle(tmp._handle, tmp);
+                    }
+                }
+                apps.explorer._gotoSync(path, clear);
+            } catch (e) {
+                $('#win-explorer>.page>.main>.content>.view')[0].innerHTML = '<p class="info">无法读取此文件夹。</p>';
+            }
+        },
+        _gotoSync: (path, clear = true) => {
             apps.explorer.Process_Of_Select = '';
             $('#win-explorer>.page>.main>.content>.view')[0].innerHTML = '';
             var pathl = path.split('/');
             var pathqwq = '';
             var index_ = 0;
             let tmp = apps.explorer.path;
-            if (path == '此电脑') {
-                apps.explorer.reset(clear);
-                return null;
-            }
             $('#win-explorer>.path>.tit')[0].dataset.path = path;
             $('#win-explorer>.path>.tit>.path')[0].innerHTML = '<div class="text" onclick="apps.explorer.reset()">此电脑</div><div class="arrow">&gt;</div>';
             $('#win-explorer>.path>.tit>.icon')[0].style.marginTop = '0px';
@@ -1160,6 +1229,10 @@ let apps = {
                 m_tab.rename('explorer', '<img src="./apps/icons/explorer/diskwin.svg" style="margin-top:2.5px">' + pathl[pathl.length - 1]);
             }
             else if (pathl[pathl.length - 1] == 'D:') {
+                $('#win-explorer>.path>.tit>.icon')[0].style.backgroundImage = 'url("apps/icons/explorer/disk.svg")';
+                m_tab.rename('explorer', '<img src="./apps/icons/explorer/disk.svg">' + pathl[pathl.length - 1]);
+            }
+            else if (apps.explorer.mounts[pathl[pathl.length - 1]]) {
                 $('#win-explorer>.path>.tit>.icon')[0].style.backgroundImage = 'url("apps/icons/explorer/disk.svg")';
                 m_tab.rename('explorer', '<img src="./apps/icons/explorer/disk.svg">' + pathl[pathl.length - 1]);
             }
@@ -1207,8 +1280,6 @@ let apps = {
                 apps.explorer.pushHistory(apps.explorer.tabs[apps.explorer.now][0], $('#win-explorer>.path>.tit')[0].dataset.path);
             }
             apps.explorer.checkHistory(apps.explorer.tabs[apps.explorer.now][0]);
-
-            // $('#win-explorer>.path>.tit')[0].innerHTML = path;
         },
         add: (path, name_, type = 'file', command = '', icon = '') => { //type为文件类型，只有文件夹files和文件file
             var pathl = path.split('/');
