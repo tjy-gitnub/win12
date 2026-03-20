@@ -1009,7 +1009,7 @@ let apps = {
             apps.explorer.checkHistory(apps.explorer.tabs[c][0]);
         },
         reset: (clear = true) => {
-            $('#win-explorer>.page>.main>.content>.view')[0].innerHTML = `<style>#win-explorer>.page>.main>.content>.view>.class{margin: 5px 0 0 10px;display: flex;}
+            let resetHtml = `<style>#win-explorer>.page>.main>.content>.view>.class{margin: 5px 0 0 10px;display: flex;}
             #win-explorer>.page>.main>.content>.view>.class>img{width: 20px;height: 20px;margin-top: 3px;margin-right: 5px;filter:brightness(0.9);}
             #win-explorer>.page>.main>.content>.view>.group{display: flex;flex-wrap: wrap;padding: 10px 20px;}
             #win-explorer>.page>.main>.content>.view>.group>.item{width: 280px;margin: 5px;height:80px;
@@ -1032,15 +1032,15 @@ let apps = {
             oncontextmenu="showcm(event,'explorer.folder','D:');return stop(event);">
             <img src="apps/icons/explorer/disk.svg"><div><p class="name">本地磁盘 (D:)</p><div class="bar"><div class="content" style="width: 15%;"></div>
             </div><p class="info">185.3 GB 可用, 共 216 GB</p></div></a>`;
-            let mountHtml = '';
             for (let letter in apps.explorer.mounts) {
                 const handle = apps.explorer.mounts[letter];
-                mountHtml += `<a class="a item act" ondblclick="apps.explorer.goto('${letter}')" ontouchend="apps.explorer.goto('${letter}')" oncontextmenu="showcm(event,'explorer.mounted','${letter}');return stop(event);">
+                resetHtml += `<a class="a item act" ondblclick="apps.explorer.goto('${letter}')" ontouchend="apps.explorer.goto('${letter}')" oncontextmenu="showcm(event,'explorer.mounted','${letter}');return stop(event);">
                 <img src="apps/icons/explorer/disk.svg"><div><p class="name">${handle.name} (${letter})</p>
                 <div class="bar"><div class="content" style="width: 0%;"></div>
                 </div><p class="info">本地文件夹</p></div></a>`;
             }
-            $('#win-explorer>.page>.main>.content>.view')[0].innerHTML += mountHtml + `</div>`;
+            resetHtml += `</div>`;
+            $('#win-explorer>.page>.main>.content>.view')[0].innerHTML = resetHtml;
             $('#win-explorer>.path>.tit')[0].innerHTML = '<div class="icon" style="background-image: url(\'./apps/icons/explorer/thispc.svg\')"></div><div class="path"><div class="text" onclick="apps.explorer.reset()">此电脑</div><div class="arrow">&gt;</div></div>';
             // if(rename){
             m_tab.rename('explorer', '<img src="./apps/icons/explorer/thispc.svg"> 此电脑');
