@@ -1991,10 +1991,12 @@ toggletheme() 切换主题
 				<a class="a" onmouseover="showdp(this,'notepad.file',null)" onmouseleave="hidedp()" data-i18n="notepad.file">文件</a>
 				<a class="a" onmouseover="showdp(this,'notepad.edit',null)" onmouseleave="hidedp()" data-i18n="notepad.edit">编辑</a>
 				<a class="a" onmouseover="showdp(this,'notepad.view',null)" onmouseleave="hidedp()" data-i18n="notepad.format">格式</a>
+				<a class="a notepad-md-toggle" id="notepad-md-toggle" onclick="apps.notepad.togglePreview()" style="display:none;"><i class="bi bi-eye"></i> 预览</a>
 			</div>
 			<div class="text-box" contenteditable="true" spellcheck="false">
 				<p>在此输入...</p>
 			</div>
+			<div class="md-preview" id="notepad-md-preview" style="display:none;"></div>
 			<a href="" download="未命名.html" style="opacity: 0;" class="save">另存为</a>
 		</div>
 	</div>
@@ -3083,6 +3085,7 @@ toggletheme() 切换主题
 	<script defer src='https://cdnjs.cloudflare.com/ajax/libs/big.js/6.2.1/big.min.js'></script>
 	<script defer src="./scripts/calculator_kernel.js"></script>
 	<script defer src='https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.js'></script>
+	<script defer src='https://cdnjs.cloudflare.com/ajax/libs/marked/12.0.2/marked.min.js'></script>
 
 </body>
 

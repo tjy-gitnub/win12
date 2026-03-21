@@ -983,6 +983,7 @@ let apps = {
                         apps.notepad._pendingContent = text;
                         openapp('notepad');
                     }
+                    apps.notepad.setMdMode(ext === 'md');
                 } else if (['png', 'jpg', 'jpeg', 'bmp', 'gif', 'webp', 'svg', 'ico'].includes(ext)) {
                     const url = URL.createObjectURL(file);
                     apps.imgviewer.open(url, fileName);
@@ -1607,7 +1608,10 @@ let apps = {
         _pendingContent: null,
         _mountedFileHandle: null,
         _keyBound: false,
+        _isMd: false,
+        _previewing: false,
         init: () => {
+            apps.notepad._resetPreview();
             $('#win-notepad>.text-box').addClass('down');
             setTimeout(() => {
                 if (apps.notepad._pendingContent !== null) {
@@ -1627,6 +1631,33 @@ let apps = {
                         apps.notepad.saveMounted();
                     }
                 });
+            }
+        },
+        _resetPreview: () => {
+            apps.notepad._isMd = false;
+            apps.notepad._previewing = false;
+            $('#notepad-md-toggle').hide().removeClass('active').html('<i class="bi bi-eye"></i> 预览');
+            $('#notepad-md-preview').hide();
+            $('#win-notepad>.text-box').show();
+        },
+        setMdMode: (enabled) => {
+            apps.notepad._resetPreview();
+            apps.notepad._isMd = enabled;
+            if (enabled) {
+                $('#notepad-md-toggle').show();
+            }
+        },
+        togglePreview: () => {
+            apps.notepad._previewing = !apps.notepad._previewing;
+            if (apps.notepad._previewing) {
+                var text = $('#win-notepad>.text-box')[0].innerText;
+                $('#notepad-md-preview').html(marked.parse(text)).show();
+                $('#win-notepad>.text-box').hide();
+                $('#notepad-md-toggle').addClass('active').html('<i class="bi bi-pencil"></i> 编辑');
+            } else {
+                $('#notepad-md-preview').hide();
+                $('#win-notepad>.text-box').show();
+                $('#notepad-md-toggle').removeClass('active').html('<i class="bi bi-eye"></i> 预览');
             }
         },
         saveMounted: async () => {
