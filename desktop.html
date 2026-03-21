@@ -98,6 +98,8 @@ toggletheme() 切换主题
 	<link rel="stylesheet" href="apps/style/run.css">
 	<link rel="stylesheet" href="apps/style/whiteboard.css">
 	<link rel="stylesheet" href="apps/style/imgviewer.css">
+	<link rel="stylesheet" href="apps/style/code-editor.css">
+	<link rel="stylesheet" href="apps/style/mediaplayer.css">
 	<link rel="stylesheet" href="apps/style/defender.css">
 	<link rel="stylesheet" href="apps/style/taskmgr.css">
 	<link rel="stylesheet" href="apps/style/msstore.css">
@@ -2555,6 +2557,25 @@ toggletheme() 切换主题
 			</div>
 		</div>
 	</div>
+	<div class="window code-editor">
+		<div class="resize-bar"></div>
+		<div class="titbar">
+			<img src="icon/vscode.png" class="icon">
+			<p>代码编辑器</p>
+			<div>
+				<a class="a wbtg red" onclick="hidewin('code-editor')"><i class="bi bi-x-lg"></i></a>
+				<a class="a wbtg max" onclick="maxwin('code-editor')"><i class="bi bi-app"></i></a>
+				<a class="a wbtg" onclick="minwin('code-editor')"><i class="bi bi-dash-lg"></i></a>
+				<a class="a wbtg" onclick="apps.codeEditor.save()" win12_title="保存 Ctrl+S"><i class="bi bi-floppy"></i></a>
+			</div>
+		</div>
+		<div class="loadback">
+			<img src="icon/vscode.png" class="icon">
+		</div>
+		<div class="content" id="win-code-editor">
+			<div id="code-ace-editor"></div>
+		</div>
+	</div>
 	<div class="window imgviewer">
 		<div class="resize-bar"></div>
 		<div class="titbar">
@@ -2571,6 +2592,43 @@ toggletheme() 切换主题
 		</div>
 		<div class="content" id="win-imgviewer">
 			<img class="preview-img" src="" alt="">
+		</div>
+	</div>
+	<div class="window mediaplayer">
+		<div class="resize-bar"></div>
+		<div class="titbar">
+			<img src="icon/files/vidio.png" class="icon">
+			<p>媒体播放器</p>
+			<div>
+				<a class="a wbtg red" onclick="apps.mediaplayer.close()"><i class="bi bi-x-lg"></i></a>
+				<a class="a wbtg max" onclick="maxwin('mediaplayer')"><i class="bi bi-app"></i></a>
+				<a class="a wbtg" onclick="minwin('mediaplayer')"><i class="bi bi-dash-lg"></i></a>
+			</div>
+		</div>
+		<div class="loadback">
+			<img src="icon/files/vidio.png" class="icon">
+		</div>
+		<div class="content" id="win-mediaplayer">
+			<video id="mediaplayer-video" controls style="display:none;"></video>
+			<audio id="mediaplayer-audio" controls style="display:none;"></audio>
+		</div>
+	</div>
+	<div class="window pdfviewer">
+		<div class="resize-bar"></div>
+		<div class="titbar">
+			<img src="icon/files/pdf.svg" class="icon">
+			<p>PDF 查看器</p>
+			<div>
+				<a class="a wbtg red" onclick="apps.pdfviewer.close()"><i class="bi bi-x-lg"></i></a>
+				<a class="a wbtg max" onclick="maxwin('pdfviewer')"><i class="bi bi-app"></i></a>
+				<a class="a wbtg" onclick="minwin('pdfviewer')"><i class="bi bi-dash-lg"></i></a>
+			</div>
+		</div>
+		<div class="loadback">
+			<img src="icon/files/pdf.svg" class="icon">
+		</div>
+		<div class="content" id="win-pdfviewer">
+			<iframe id="pdfviewer-frame" src="" style="width:100%;height:100%;border:none;"></iframe>
 		</div>
 	</div>
 	<div class="window taskmgr">

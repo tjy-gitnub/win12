@@ -1820,7 +1820,10 @@ const icon = {
     // run: 'run.png',
     // whiteboard: 'whiteboard.png',
     taskmgr: 'taskmgr.png',
-    imgviewer: 'files/picture.png'
+    imgviewer: 'files/picture.png',
+    'code-editor': 'vscode.png',
+    mediaplayer: 'files/vidio.png',
+    pdfviewer: 'files/pdf.svg'
 };
 function geticon(name) {
     if (icon[name]) return icon[name];

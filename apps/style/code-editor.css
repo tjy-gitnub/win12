@@ -1,0 +1,22 @@
+#win-code-editor {
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+    user-select: all;
+}
+
+#win-code-editor *::-webkit-scrollbar {
+    background-color: #FFFFFF10;
+}
+
+#win-code-editor * {
+    scroll-behavior: initial !important;
+}
+
+#code-ace-editor {
+    font-size: 15px;
+    line-height: 1.4;
+    width: 100% !important;
+    height: 100% !important;
+    font-weight: 200;
+}

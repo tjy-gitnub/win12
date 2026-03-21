@@ -968,11 +968,14 @@ let apps = {
             if (!fileObj || !fileObj._mounted || !fileObj._handle) return;
             try {
                 const file = await fileObj._handle.getFile();
-                const textExts = ['txt', 'log', 'md', 'csv', 'ini', 'cfg',
-                    'js', 'ts', 'jsx', 'tsx', 'css', 'scss', 'less', 'html', 'htm', 'xml',
+                const codeExts = ['js', 'ts', 'jsx', 'tsx', 'css', 'scss', 'less', 'html', 'htm', 'xml',
                     'json', 'yaml', 'yml', 'py', 'java', 'c', 'cpp', 'h', 'cs', 'go',
-                    'rs', 'rb', 'php', 'sh', 'bat', 'ps1', 'sql'];
-                if (textExts.includes(ext)) {
+                    'rs', 'rb', 'php', 'sh', 'bat', 'ps1', 'sql', 'svg'];
+                const notepadExts = ['txt', 'log', 'md', 'csv', 'ini', 'cfg'];
+                if (codeExts.includes(ext)) {
+                    const text = await file.text();
+                    apps.codeEditor.open(text, fileName, fileObj._handle);
+                } else if (notepadExts.includes(ext)) {
                     const text = await file.text();
                     apps.notepad._mountedFileHandle = fileObj._handle;
                     if ($('#taskbar>.notepad').length != 0) {
@@ -984,9 +987,18 @@ let apps = {
                         openapp('notepad');
                     }
                     apps.notepad.setMdMode(ext === 'md');
-                } else if (['png', 'jpg', 'jpeg', 'bmp', 'gif', 'webp', 'svg', 'ico'].includes(ext)) {
+                } else if (['png', 'jpg', 'jpeg', 'bmp', 'gif', 'webp', 'ico'].includes(ext)) {
                     const url = URL.createObjectURL(file);
                     apps.imgviewer.open(url, fileName);
+                } else if (['mp4', 'webm', 'mov', 'avi', 'mkv', 'flv', 'wmv'].includes(ext)) {
+                    const url = URL.createObjectURL(file);
+                    apps.mediaplayer.open(url, fileName, 'video');
+                } else if (['mp3', 'wav', 'flac', 'ogg', 'aac', 'wma', 'm4a'].includes(ext)) {
+                    const url = URL.createObjectURL(file);
+                    apps.mediaplayer.open(url, fileName, 'audio');
+                } else if (ext === 'pdf') {
+                    const url = URL.createObjectURL(file);
+                    apps.pdfviewer.open(url, fileName);
                 } else {
                     shownotice('unsupported-file-type');
                 }
@@ -1021,7 +1033,7 @@ let apps = {
                     else if (['mp4', 'avi', 'mkv', 'mov', 'wmv', 'webm', 'flv'].includes(ext)) ico = 'icon/files/vidio.png';
                     else if (['exe', 'msi'].includes(ext)) ico = 'icon/files/exefile.png';
                     else if (['zip', 'rar', '7z', 'tar', 'gz'].includes(ext)) ico = 'icon/files/none.png';
-                    else if ('pdf' === ext) ico = 'icon/files/none.png';
+                    else if ('pdf' === ext) ico = 'icon/files/pdf.svg';
                     targetObj.file.push({ name: entry.name, ico: ico, command: '', _handle: entry, _mounted: true });
                 }
             }
@@ -1677,6 +1689,101 @@ let apps = {
             openapp('imgviewer');
             $('#win-imgviewer>.preview-img').attr('src', url);
             $('.window.imgviewer>.titbar>p').text(name || '图片查看器');
+        }
+    },
+    mediaplayer: {
+        _blobUrl: null,
+        init: () => {},
+        open: (url, name, type) => {
+            openapp('mediaplayer');
+            apps.mediaplayer._blobUrl = url;
+            $('.window.mediaplayer>.titbar>p').text(name || '媒体播放器');
+            if (type === 'video') {
+                $('#mediaplayer-video').attr('src', url).show()[0].load();
+                $('#mediaplayer-audio').hide()[0].pause();
+                $('.window.mediaplayer>.titbar>img').attr('src', 'icon/files/vidio.png');
+            } else {
+                $('#mediaplayer-audio').attr('src', url).show()[0].load();
+                $('#mediaplayer-video').hide()[0].pause();
+                $('.window.mediaplayer>.titbar>img').attr('src', 'icon/files/music.png');
+            }
+        },
+        close: () => {
+            $('#mediaplayer-video')[0].pause();
+            $('#mediaplayer-audio')[0].pause();
+            if (apps.mediaplayer._blobUrl) {
+                URL.revokeObjectURL(apps.mediaplayer._blobUrl);
+                apps.mediaplayer._blobUrl = null;
+            }
+            hidewin('mediaplayer');
+        }
+    },
+    pdfviewer: {
+        _blobUrl: null,
+        init: () => {},
+        open: (url, name) => {
+            openapp('pdfviewer');
+            apps.pdfviewer._blobUrl = url;
+            $('#pdfviewer-frame').attr('src', url);
+            $('.window.pdfviewer>.titbar>p').text(name || 'PDF 查看器');
+        },
+        close: () => {
+            $('#pdfviewer-frame').attr('src', '');
+            if (apps.pdfviewer._blobUrl) {
+                URL.revokeObjectURL(apps.pdfviewer._blobUrl);
+                apps.pdfviewer._blobUrl = null;
+            }
+            hidewin('pdfviewer');
+        }
+    },
+    codeEditor: {
+        editor: null,
+        _fileHandle: null,
+        _modeMap: {
+            js: 'javascript', jsx: 'jsx', ts: 'typescript', tsx: 'tsx',
+            css: 'css', scss: 'scss', less: 'less',
+            html: 'html', htm: 'html', xml: 'xml', svg: 'svg',
+            json: 'json', yaml: 'yaml', yml: 'yaml',
+            py: 'python', java: 'java', c: 'c_cpp', cpp: 'c_cpp', h: 'c_cpp',
+            cs: 'csharp', go: 'golang', rs: 'rust', rb: 'ruby',
+            php: 'php', sh: 'sh', bat: 'batchfile', ps1: 'powershell',
+            sql: 'sql', md: 'markdown'
+        },
+        init: () => { return null; },
+        load: () => {
+            ace.require('ace/ext/language_tools');
+            apps.codeEditor.editor = ace.edit('code-ace-editor');
+            apps.codeEditor.editor.setTheme('ace/theme/vibrant_ink');
+            apps.codeEditor.editor.setOptions({
+                enableBasicAutocompletion: true,
+                enableSnippets: true,
+                showPrintMargin: false,
+                enableLiveAutocompletion: true,
+                fontSize: 15
+            });
+            apps.codeEditor.editor.commands.addCommand({
+                name: 'save', bindKey: { win: 'Ctrl-S', mac: 'Command-S' },
+                exec: () => apps.codeEditor.save()
+            });
+        },
+        open: (text, fileName, fileHandle) => {
+            apps.codeEditor._fileHandle = fileHandle || null;
+            openapp('code-editor');
+            var ext = fileName.split('.').pop().toLowerCase();
+            var mode = apps.codeEditor._modeMap[ext] || 'text';
+            apps.codeEditor.editor.session.setMode('ace/mode/' + mode);
+            apps.codeEditor.editor.setValue(text, -1);
+            $('.window.code-editor>.titbar>p').text(fileName);
+        },
+        save: async () => {
+            if (!apps.codeEditor._fileHandle) return;
+            try {
+                const writable = await apps.codeEditor._fileHandle.createWritable();
+                await writable.write(apps.codeEditor.editor.getValue());
+                await writable.close();
+            } catch (e) {
+                shownotice('file-write-error');
+            }
         }
     },
     pythonEditor: {
