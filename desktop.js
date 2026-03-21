@@ -778,7 +778,7 @@ const nts = {
         cnt: `
             <p class="tit">关于 Windows 12 Copilot</p>
              <p>你可以使用此 AI 助手帮助你更快地完成工作，此AI助手基于 Qwen3-Max 模型 (有人用Win12工作?)<br>
-            也请适当使用，不要谈论敏感、违规话题，<br>请有身为一个人类最基本的道德底线。<br>
+            也请适当使用，不要谈论敏感、违规话题，<br>请有身为一个人类最基本的道德底线。<br>根据相关法律法规，我们不向欧盟用户提供服务。<br>
             在此特别感谢云智api(yunzhiapi.cn)为本项目提供赞助！</p>
             <a class="a" onclick="window.open('https://status.tangyuan0821.com/status/win12/','_blank');" win12_title="在浏览器新窗口打开链接">状态监测</a><br>
             <a class="a" onclick="window.open('https://www.yunzhiapi.cn/','_blank');" win12_title="在浏览器新窗口打开链接">云智API官网</a>
@@ -1691,7 +1691,7 @@ let copilot = {
         2.在浏览器中打开链接、搜索<br>
         3.发送对系统、AI助手的反馈<br>
         4.切换颜色主题<br>
-        若您在使用中出现异常可先至状态监测页面（https://status.tangyuan0821.com/status/win12/）查看状态，若确有异常请及时向我们反馈。</p></div>`);
+        需注意，根据相关法律法规，我们不向欧盟用户提供服务。</p></div>`);
         setTimeout(() => {
             $('#copilot>.chat').append(`<div class="line ai"><p class="text">欢迎使用 Windows 12，有什么可以帮您？</p></div>`);
             $('#copilot>.inputbox').removeClass('disable');
