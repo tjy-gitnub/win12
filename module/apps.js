@@ -981,10 +981,12 @@ let apps = {
                     const text = await file.text();
                     apps.notepad._mountedFileHandle = fileObj._handle;
                     apps.notepad._dirty = false;
+                    apps.notepad._loading = true;
                     if ($('#taskbar>.notepad').length != 0) {
                         $('#win-notepad>.text-box')[0].innerText = text;
                         if ($('.window.notepad').hasClass('min')) minwin('notepad');
                         focwin('notepad');
+                        requestAnimationFrame(() => { apps.notepad._loading = false; });
                     } else {
                         apps.notepad._pendingContent = text;
                         openapp('notepad');
@@ -1638,9 +1640,9 @@ let apps = {
         _isMd: false,
         _previewing: false,
         _dirty: false,
-        _fileName: '',
+        _loading: false,
         _markDirty: () => {
-            if (!apps.notepad._dirty && apps.notepad._mountedFileHandle) {
+            if (!apps.notepad._dirty && apps.notepad._mountedFileHandle && !apps.notepad._loading) {
                 apps.notepad._dirty = true;
                 var p = $('.window.notepad>.titbar>p');
                 if (!p.text().startsWith('* ')) p.text('* ' + p.text());
@@ -1649,6 +1651,7 @@ let apps = {
         init: () => {
             apps.notepad._resetPreview();
             apps.notepad._dirty = false;
+            apps.notepad._loading = true;
             $('#win-notepad>.text-box').addClass('down');
             setTimeout(() => {
                 if (apps.notepad._pendingContent !== null) {
@@ -1659,6 +1662,7 @@ let apps = {
                     apps.notepad._mountedFileHandle = null;
                 }
                 $('#win-notepad>.text-box').removeClass('down');
+                requestAnimationFrame(() => { apps.notepad._loading = false; });
             }, 200);
             if (!apps.notepad._keyBound) {
                 apps.notepad._keyBound = true;
@@ -1820,6 +1824,7 @@ let apps = {
         editor: null,
         _fileHandle: null,
         _dirty: false,
+        _loading: false,
         _wrap: false,
         _fontSize: 15,
         _modeMap: {
@@ -1874,7 +1879,7 @@ let apps = {
                 }
             });
             ed.on('change', () => {
-                if (!apps.codeEditor._dirty && apps.codeEditor._fileHandle) {
+                if (!apps.codeEditor._dirty && apps.codeEditor._fileHandle && !apps.codeEditor._loading) {
                     apps.codeEditor._dirty = true;
                     var p = $('.window.code-editor>.titbar>p');
                     if (!p.text().startsWith('* ')) p.text('* ' + p.text());
@@ -1910,8 +1915,10 @@ let apps = {
             }
             var ext = fileName.split('.').pop().toLowerCase();
             var mode = apps.codeEditor._modeMap[ext] || 'text';
+            apps.codeEditor._loading = true;
             apps.codeEditor.editor.session.setMode('ace/mode/' + mode);
             apps.codeEditor.editor.setValue(text, -1);
+            apps.codeEditor._loading = false;
             apps.codeEditor._dirty = false;
             $('.window.code-editor>.titbar>p').text(fileName);
             apps.codeEditor._updateStatus();
