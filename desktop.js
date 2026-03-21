@@ -920,6 +920,24 @@ const nts = {
             { type: 'main', text: lang('确定','ok'), js: 'closenotice();' }
         ]
     },
+    'unsaved-notepad': {
+        cnt: lang(`<p class="tit">是否保存更改？</p>
+            <p>文件有未保存的修改，关闭前是否保存？</p>`, 'nts.unsaved-changes'),
+        btn: [
+            { type: 'main', text: lang('保存','save'), js: 'closenotice();apps.notepad.saveMounted().then(()=>{apps.notepad._forceClose();})' },
+            { type: '', text: lang('不保存','discard'), js: 'closenotice();apps.notepad._forceClose();' },
+            { type: '', text: lang('取消','cancel'), js: 'closenotice();' }
+        ]
+    },
+    'unsaved-code-editor': {
+        cnt: lang(`<p class="tit">是否保存更改？</p>
+            <p>文件有未保存的修改，关闭前是否保存？</p>`, 'nts.unsaved-changes'),
+        btn: [
+            { type: 'main', text: lang('保存','save'), js: 'closenotice();apps.codeEditor.save().then(()=>{apps.codeEditor._forceClose();})' },
+            { type: '', text: lang('不保存','discard'), js: 'closenotice();apps.codeEditor._forceClose();' },
+            { type: '', text: lang('取消','cancel'), js: 'closenotice();' }
+        ]
+    },
 };
 function shownotice(name) {
     $('#notice>.cnt').html(nts[name].cnt);
