@@ -968,7 +968,11 @@ let apps = {
             if (!fileObj || !fileObj._mounted || !fileObj._handle) return;
             try {
                 const file = await fileObj._handle.getFile();
-                if (ext === 'txt') {
+                const textExts = ['txt', 'log', 'md', 'csv', 'ini', 'cfg',
+                    'js', 'ts', 'jsx', 'tsx', 'css', 'scss', 'less', 'html', 'htm', 'xml',
+                    'json', 'yaml', 'yml', 'py', 'java', 'c', 'cpp', 'h', 'cs', 'go',
+                    'rs', 'rb', 'php', 'sh', 'bat', 'ps1', 'sql'];
+                if (textExts.includes(ext)) {
                     const text = await file.text();
                     apps.notepad._mountedFileHandle = fileObj._handle;
                     if ($('#taskbar>.notepad').length != 0) {
@@ -979,7 +983,7 @@ let apps = {
                         apps.notepad._pendingContent = text;
                         openapp('notepad');
                     }
-                } else if (['png', 'jpg', 'jpeg', 'bmp', 'gif', 'webp', 'svg'].includes(ext)) {
+                } else if (['png', 'jpg', 'jpeg', 'bmp', 'gif', 'webp', 'svg', 'ico'].includes(ext)) {
                     const url = URL.createObjectURL(file);
                     apps.imgviewer.open(url, fileName);
                 } else {
@@ -1004,8 +1008,19 @@ let apps = {
                 } else {
                     const ext = entry.name.split('.').pop().toLowerCase();
                     let ico = 'icon/files/none.png';
-                    if (ext === 'txt') ico = 'icon/files/txt.png';
-                    else if (['png', 'jpg', 'bmp', 'jpeg'].includes(ext)) ico = 'icon/files/picture.png';
+                    if (['txt', 'log', 'md', 'csv', 'ini', 'cfg'].includes(ext)) ico = 'icon/files/txt.png';
+                    else if (['js', 'ts', 'jsx', 'tsx', 'css', 'scss', 'less', 'html', 'htm', 'xml',
+                              'json', 'yaml', 'yml', 'py', 'java', 'c', 'cpp', 'h', 'cs', 'go',
+                              'rs', 'rb', 'php', 'sh', 'bat', 'ps1', 'sql'].includes(ext)) ico = 'icon/files/txt.png';
+                    else if (['png', 'jpg', 'bmp', 'jpeg', 'gif', 'webp', 'svg', 'ico', 'tiff'].includes(ext)) ico = 'icon/files/picture.png';
+                    else if (['doc', 'docx', 'rtf', 'odt'].includes(ext)) ico = 'icon/files/word.png';
+                    else if (['xls', 'xlsx', 'ods'].includes(ext)) ico = 'icon/files/excel.png';
+                    else if (['ppt', 'pptx', 'odp'].includes(ext)) ico = 'icon/files/ppt.png';
+                    else if (['mp3', 'wav', 'flac', 'ogg', 'aac', 'wma', 'm4a'].includes(ext)) ico = 'icon/files/music.png';
+                    else if (['mp4', 'avi', 'mkv', 'mov', 'wmv', 'webm', 'flv'].includes(ext)) ico = 'icon/files/vidio.png';
+                    else if (['exe', 'msi'].includes(ext)) ico = 'icon/files/exefile.png';
+                    else if (['zip', 'rar', '7z', 'tar', 'gz'].includes(ext)) ico = 'icon/files/none.png';
+                    else if ('pdf' === ext) ico = 'icon/files/none.png';
                     targetObj.file.push({ name: entry.name, ico: ico, command: '', _handle: entry, _mounted: true });
                 }
             }
@@ -1195,10 +1210,16 @@ let apps = {
                 //这边可以适配更多的文件类型
 
                 aTag.innerHTML += inputTag.value;
+                var isMountedRename = !!apps.explorer.mounts[pathl[0]];
                 for (var j = 0; j < tmp['file'].length; j++) {
                     if (tmp['file'][j]['name'] == on) {
                         tmp['file'][j]['name'] = inputTag.value;
                         tmp['file'][j]['ico'] = icon_;
+                        if (isMountedRename && tmp._handle) {
+                            tmp._handle.getFileHandle(on).then(h =>
+                                h.move ? h.move(inputTag.value) : null
+                            ).catch(() => {});
+                        }
                     }
                 }
                 const keys = Object.keys(tmp['folder']);
@@ -1225,19 +1246,20 @@ let apps = {
             if (path == '此电脑') { apps.explorer.reset(clear); return null; }
             var pathl = path.split('/');
             if (apps.explorer.mounts[pathl[0]]) {
-                apps.explorer._gotoAsync(path, clear);
+                apps.explorer._gotoAsync(path, clear, !clear);
             } else {
                 apps.explorer._gotoSync(path, clear);
             }
         },
-        _gotoAsync: async (path, clear) => {
+        _gotoAsync: async (path, clear, forceRefresh = false) => {
             $('#win-explorer>.page>.main>.content>.view')[0].innerHTML = '<p class="info" style="opacity:0.6;">加载中...</p>';
             var pathl = path.split('/');
             let tmp = apps.explorer.path;
             try {
                 for (let i = 0; i < pathl.length; i++) {
                     tmp = tmp['folder'][pathl[i]];
-                    if (tmp._mounted && tmp._handle && Object.keys(tmp.folder).length === 0 && tmp.file.length === 0) {
+                    const needLoad = Object.keys(tmp.folder).length === 0 && tmp.file.length === 0;
+                    if (tmp._mounted && tmp._handle && (needLoad || (forceRefresh && i === pathl.length - 1))) {
                         await apps.explorer.populateFromHandle(tmp._handle, tmp);
                     }
                 }
@@ -1584,6 +1606,7 @@ let apps = {
     notepad: {
         _pendingContent: null,
         _mountedFileHandle: null,
+        _keyBound: false,
         init: () => {
             $('#win-notepad>.text-box').addClass('down');
             setTimeout(() => {
@@ -1596,6 +1619,15 @@ let apps = {
                 }
                 $('#win-notepad>.text-box').removeClass('down');
             }, 200);
+            if (!apps.notepad._keyBound) {
+                apps.notepad._keyBound = true;
+                document.addEventListener('keydown', function (e) {
+                    if (e.ctrlKey && e.key === 's' && $('.window.foc')[0]?.classList.contains('notepad')) {
+                        e.preventDefault();
+                        apps.notepad.saveMounted();
+                    }
+                });
+            }
         },
         saveMounted: async () => {
             if (!apps.notepad._mountedFileHandle) return;
