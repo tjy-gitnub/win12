@@ -2574,7 +2574,7 @@ toggletheme() 切换主题
 		<div class="resize-bar"></div>
 		<div class="titbar">
 			<img src="icon/vscode.png" class="icon">
-			<p>代码编辑器</p>
+			<p data-i18n="code-editor.name">代码编辑器</p>
 			<div>
 				<a class="a wbtg red" onclick="hidewin('code-editor')"><i class="bi bi-x-lg"></i></a>
 				<a class="a wbtg max" onclick="maxwin('code-editor')"><i class="bi bi-app"></i></a>
@@ -2593,9 +2593,9 @@ toggletheme() 切换主题
 		<div class="resize-bar"></div>
 		<div class="titbar">
 			<img src="icon/files/picture.png" class="icon">
-			<p>图片查看器</p>
+			<p data-i18n="imgviewer.name">图片查看器</p>
 			<div>
-				<a class="a wbtg red" onclick="hidewin('imgviewer')"><i class="bi bi-x-lg"></i></a>
+				<a class="a wbtg red" onclick="apps.imgviewer.close()"><i class="bi bi-x-lg"></i></a>
 				<a class="a wbtg max" onclick="maxwin('imgviewer')"><i class="bi bi-app"></i></a>
 				<a class="a wbtg" onclick="minwin('imgviewer')"><i class="bi bi-dash-lg"></i></a>
 			</div>
@@ -2603,15 +2603,21 @@ toggletheme() 切换主题
 		<div class="loadback">
 			<img src="icon/files/picture.png" class="icon">
 		</div>
-		<div class="content" id="win-imgviewer">
+		<div class="content" id="win-imgviewer" onwheel="event.preventDefault();event.deltaY<0?apps.imgviewer.zoomIn():apps.imgviewer.zoomOut()">
 			<img class="preview-img" src="" alt="">
+			<div class="imgviewer-toolbar">
+				<a class="a" onclick="apps.imgviewer.zoomIn()" title="放大"><i class="bi bi-zoom-in"></i></a>
+				<a class="a" onclick="apps.imgviewer.zoomOut()" title="缩小"><i class="bi bi-zoom-out"></i></a>
+				<a class="a" onclick="apps.imgviewer.rotateRight()" title="旋转"><i class="bi bi-arrow-clockwise"></i></a>
+				<a class="a" onclick="apps.imgviewer.resetView()" title="重置"><i class="bi bi-arrows-angle-contract"></i></a>
+			</div>
 		</div>
 	</div>
 	<div class="window mediaplayer">
 		<div class="resize-bar"></div>
 		<div class="titbar">
 			<img src="icon/files/vidio.png" class="icon">
-			<p>媒体播放器</p>
+			<p data-i18n="mediaplayer.name">媒体播放器</p>
 			<div>
 				<a class="a wbtg red" onclick="apps.mediaplayer.close()"><i class="bi bi-x-lg"></i></a>
 				<a class="a wbtg max" onclick="maxwin('mediaplayer')"><i class="bi bi-app"></i></a>
@@ -2630,7 +2636,7 @@ toggletheme() 切换主题
 		<div class="resize-bar"></div>
 		<div class="titbar">
 			<img src="icon/files/pdf.svg" class="icon">
-			<p>PDF 查看器</p>
+			<p data-i18n="pdfviewer.name">PDF 查看器</p>
 			<div>
 				<a class="a wbtg red" onclick="apps.pdfviewer.close()"><i class="bi bi-x-lg"></i></a>
 				<a class="a wbtg max" onclick="maxwin('pdfviewer')"><i class="bi bi-app"></i></a>
@@ -3157,6 +3163,7 @@ toggletheme() 切换主题
 	<script defer src="./scripts/calculator_kernel.js"></script>
 	<script defer src='https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.js'></script>
 	<script defer src='https://cdnjs.cloudflare.com/ajax/libs/marked/12.0.2/marked.min.js'></script>
+	<script defer src='https://cdnjs.cloudflare.com/ajax/libs/dompurify/3.0.8/purify.min.js'></script>
 
 </body>
 

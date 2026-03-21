@@ -379,7 +379,18 @@ const cms = {
             const drive = arg.split('/')[0];
             if (apps.explorer.mounts[drive])
                 return ['<i class="bi bi-folder2-open"></i> ' + lang('打开','open'), `apps.explorer.openMountedFile('${arg}')`];
-            return ['<i class="bi bi-folder2-open"></i> 打开（目前毛用没有）', ''];
+            // Find the file's command from virtual FS
+            var pathl = arg.split('/'), fileName = pathl.pop();
+            var tmp = apps.explorer.path;
+            pathl.forEach(n => { if (tmp && tmp.folder) tmp = tmp.folder[n]; });
+            var fileCmd = '';
+            if (tmp && tmp.file) {
+                var f = tmp.file.find(f => f.name === fileName);
+                if (f && f.command) fileCmd = f.command;
+            }
+            if (fileCmd)
+                return ['<i class="bi bi-folder2-open"></i> ' + lang('打开','open'), fileCmd];
+            return 'null';
         },
         arg => {
             if ($('#win-explorer>.path>.tit>.path>div.text').length > 1)
