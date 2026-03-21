@@ -97,6 +97,7 @@ toggletheme() 切换主题
 	<link rel="stylesheet" href="apps/style/pythonEditor.css">
 	<link rel="stylesheet" href="apps/style/run.css">
 	<link rel="stylesheet" href="apps/style/whiteboard.css">
+	<link rel="stylesheet" href="apps/style/imgviewer.css">
 	<link rel="stylesheet" href="apps/style/defender.css">
 	<link rel="stylesheet" href="apps/style/taskmgr.css">
 	<link rel="stylesheet" href="apps/style/msstore.css">
@@ -2550,6 +2551,24 @@ toggletheme() 切换主题
 			<div class="buttons">
 				<a class="a submit act" onclick="hidewin('winver');" data-i18n="ok">确定</a>
 			</div>
+		</div>
+	</div>
+	<div class="window imgviewer">
+		<div class="resize-bar"></div>
+		<div class="titbar">
+			<img src="icon/files/picture.png" class="icon">
+			<p>图片查看器</p>
+			<div>
+				<a class="a wbtg red" onclick="hidewin('imgviewer')"><i class="bi bi-x-lg"></i></a>
+				<a class="a wbtg max" onclick="maxwin('imgviewer')"><i class="bi bi-app"></i></a>
+				<a class="a wbtg" onclick="minwin('imgviewer')"><i class="bi bi-dash-lg"></i></a>
+			</div>
+		</div>
+		<div class="loadback">
+			<img src="icon/files/picture.png" class="icon">
+		</div>
+		<div class="content" id="win-imgviewer">
+			<img class="preview-img" src="" alt="">
 		</div>
 	</div>
 	<div class="window taskmgr">

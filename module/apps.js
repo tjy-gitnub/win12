@@ -945,7 +945,7 @@ let apps = {
         mountDrive: async () => {
             if (!apps.explorer.fsApiSupported) { shownotice('fs-api-unsupported'); return; }
             try {
-                const dirHandle = await window.showDirectoryPicker({ mode: 'read' });
+                const dirHandle = await window.showDirectoryPicker({ mode: 'readwrite' });
                 const letter = apps.explorer.nextDriveLetter + ':';
                 apps.explorer.nextDriveLetter = String.fromCharCode(
                     apps.explorer.nextDriveLetter.charCodeAt(0) + 1);
@@ -954,6 +954,39 @@ let apps = {
                 if (!apps.explorer.tabs[apps.explorer.now][2].length) apps.explorer.reset();
             } catch (e) {
                 if (e.name !== 'AbortError') shownotice('fs-mount-error');
+            }
+        },
+        openMountedFile: async (path) => {
+            var pathl = path.split('/');
+            var fileName = pathl[pathl.length - 1];
+            var ext = fileName.split('.').pop().toLowerCase();
+            let tmp = apps.explorer.path;
+            for (let i = 0; i < pathl.length - 1; i++) {
+                tmp = tmp['folder'][pathl[i]];
+            }
+            var fileObj = tmp['file'].find(f => f.name === fileName);
+            if (!fileObj || !fileObj._mounted || !fileObj._handle) return;
+            try {
+                const file = await fileObj._handle.getFile();
+                if (ext === 'txt') {
+                    const text = await file.text();
+                    apps.notepad._mountedFileHandle = fileObj._handle;
+                    if ($('#taskbar>.notepad').length != 0) {
+                        $('#win-notepad>.text-box')[0].innerText = text;
+                        if ($('.window.notepad').hasClass('min')) minwin('notepad');
+                        focwin('notepad');
+                    } else {
+                        apps.notepad._pendingContent = text;
+                        openapp('notepad');
+                    }
+                } else if (['png', 'jpg', 'jpeg', 'bmp', 'gif', 'webp', 'svg'].includes(ext)) {
+                    const url = URL.createObjectURL(file);
+                    apps.imgviewer.open(url, fileName);
+                } else {
+                    shownotice('unsupported-file-type');
+                }
+            } catch (e) {
+                shownotice('file-read-error');
             }
         },
         unmountDrive: (letter) => {
@@ -1262,7 +1295,11 @@ let apps = {
                 }
                 if (tmp['file']) {
                     tmp['file'].forEach(file => {
-                        ht += `<a class="a item file" id="file${index_}" onclick="apps.explorer.select('${path_}/${file['name']}','file${index_}');" ondblclick="${file['command']}" ontouchend="${file['command']}" oncontextmenu="showcm(event,'explorer.file','${path_}/${file['name']}');return stop(event);">
+                        let cmd = file['command'];
+                        if (file._mounted && file._handle) {
+                            cmd = `apps.explorer.openMountedFile('${path_}/${file['name']}')`;
+                        }
+                        ht += `<a class="a item file" id="file${index_}" onclick="apps.explorer.select('${path_}/${file['name']}','file${index_}');" ondblclick="${cmd}" ontouchend="${cmd}" oncontextmenu="showcm(event,'explorer.file','${path_}/${file['name']}');return stop(event);">
                             <img src="${file['ico']}">${file['name']}</a>`;
                         index_ += 1;
                     });
@@ -1284,6 +1321,7 @@ let apps = {
         add: (path, name_, type = 'file', command = '', icon = '') => { //type为文件类型，只有文件夹files和文件file
             var pathl = path.split('/');
             var icon_ = '';
+            var isMounted = !!apps.explorer.mounts[pathl[0]];
             let tmp = apps.explorer.path;
             pathl.forEach(name => {
                 tmp = tmp['folder'][name];
@@ -1295,7 +1333,7 @@ let apps = {
                 shownotice('duplication file name');
                 return;
             }
-            
+
             // 检查是否是文件夹
             if (type === 'folder') {
                 if (icon !== '') {
@@ -1304,7 +1342,14 @@ let apps = {
                     icon_ = 'icon/folder.png';
                 }
                 try {
-                    tmp.folder[name_] = { folder: {}, file: [] };
+                    if (isMounted && tmp._handle) {
+                        tmp.folder[name_] = { folder: {}, file: [], _mounted: true };
+                        tmp._handle.getDirectoryHandle(name_, { create: true }).then(h => {
+                            tmp.folder[name_]._handle = h;
+                        }).catch(() => shownotice('file-write-error'));
+                    } else {
+                        tmp.folder[name_] = { folder: {}, file: [] };
+                    }
                 } catch {
                     tmp = { folder: {}, file: [] };
                     tmp.folder[name_] = { folder: {}, file: [] };
@@ -1335,7 +1380,15 @@ let apps = {
             }
 
             try {
-                tmp.file.push({ name: name_, ico: icon_, command: command });
+                if (isMounted && tmp._handle) {
+                    var fileEntry = { name: name_, ico: icon_, command: '', _mounted: true };
+                    tmp.file.push(fileEntry);
+                    tmp._handle.getFileHandle(name_, { create: true }).then(h => {
+                        fileEntry._handle = h;
+                    }).catch(() => shownotice('file-write-error'));
+                } else {
+                    tmp.file.push({ name: name_, ico: icon_, command: command });
+                }
             }
             catch {
                 tmp = { folder: {}, file: [] };
@@ -1385,6 +1438,7 @@ let apps = {
         del: (path) => {
             var pathl = path.split('/');
             var name = pathl[pathl.length - 1];
+            var isMounted = !!apps.explorer.mounts[pathl[0]];
             pathl.pop();
             let tmp = apps.explorer.path;
             pathl.forEach(name => {
@@ -1398,6 +1452,9 @@ let apps = {
             }
             let tmp_files = tmp['folder'];
             delete tmp_files[name];
+            if (isMounted && tmp._handle) {
+                tmp._handle.removeEntry(name, { recursive: true }).catch(() => shownotice('file-write-error'));
+            }
             apps.explorer.goto(pathl.join('/'));
             apps.explorer.history.forEach(item => {
                 while (item.includes(path)) {
@@ -1525,12 +1582,38 @@ let apps = {
         }
     },
     notepad: {
+        _pendingContent: null,
+        _mountedFileHandle: null,
         init: () => {
             $('#win-notepad>.text-box').addClass('down');
             setTimeout(() => {
-                $('#win-notepad>.text-box').val('');
+                if (apps.notepad._pendingContent !== null) {
+                    $('#win-notepad>.text-box')[0].innerText = apps.notepad._pendingContent;
+                    apps.notepad._pendingContent = null;
+                } else {
+                    $('#win-notepad>.text-box').val('');
+                    apps.notepad._mountedFileHandle = null;
+                }
                 $('#win-notepad>.text-box').removeClass('down');
             }, 200);
+        },
+        saveMounted: async () => {
+            if (!apps.notepad._mountedFileHandle) return;
+            try {
+                const writable = await apps.notepad._mountedFileHandle.createWritable();
+                await writable.write($('#win-notepad>.text-box')[0].innerText);
+                await writable.close();
+            } catch (e) {
+                shownotice('file-write-error');
+            }
+        }
+    },
+    imgviewer: {
+        init: () => {},
+        open: (url, name) => {
+            openapp('imgviewer');
+            $('#win-imgviewer>.preview-img').attr('src', url);
+            $('.window.imgviewer>.titbar>p').text(name || '图片查看器');
         }
     },
     pythonEditor: {

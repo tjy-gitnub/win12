@@ -376,6 +376,9 @@ const cms = {
     ],
     'explorer.file': [
         arg => {
+            const drive = arg.split('/')[0];
+            if (apps.explorer.mounts[drive])
+                return ['<i class="bi bi-folder2-open"></i> ' + lang('打开','open'), `apps.explorer.openMountedFile('${arg}')`];
             return ['<i class="bi bi-folder2-open"></i> 打开（目前毛用没有）', ''];
         },
         arg => {
@@ -530,8 +533,9 @@ let font_window = false;
 // 下拉菜单
 const dps = {
     'notepad.file': [
-        ['<i class="bi bi-file-earmark-plus"></i> 新建', `hidedp(true);$('#win-notepad>.text-box').addClass('down');
+        ['<i class="bi bi-file-earmark-plus"></i> 新建', `hidedp(true);apps.notepad._mountedFileHandle=null;$('#win-notepad>.text-box').addClass('down');
         setTimeout(()=>{$('#win-notepad>.text-box').val('');$('#win-notepad>.text-box').removeClass('down')},200);`],
+        ['<i class="bi bi-floppy"></i> 保存 <info>Ctrl+S</info>', `hidedp(true);apps.notepad.saveMounted();`],
         ['<i class="bi bi-box-arrow-right"></i> 另存为', `hidedp(true);$('#win-notepad>.save').attr('href', window.URL.createObjectURL(new Blob([$('#win-notepad>.text-box').html()])));
         $('#win-notepad>.save')[0].click();`],
         '<hr>',
@@ -880,6 +884,27 @@ const nts = {
     'fs-mount-error': {
         cnt: lang(`<p class="tit">挂载失败</p>
             <p>无法挂载本地文件夹，权限可能被拒绝。</p>`, 'nts.fs-mount-error'),
+        btn: [
+            { type: 'main', text: lang('确定','ok'), js: 'closenotice();' }
+        ]
+    },
+    'unsupported-file-type': {
+        cnt: lang(`<p class="tit">无法打开文件</p>
+            <p>没有找到可以打开此类型文件的应用程序。</p>`, 'nts.unsupported-file-type'),
+        btn: [
+            { type: 'main', text: lang('确定','ok'), js: 'closenotice();' }
+        ]
+    },
+    'file-read-error': {
+        cnt: lang(`<p class="tit">读取失败</p>
+            <p>无法读取文件内容，权限可能已过期。</p>`, 'nts.file-read-error'),
+        btn: [
+            { type: 'main', text: lang('确定','ok'), js: 'closenotice();' }
+        ]
+    },
+    'file-write-error': {
+        cnt: lang(`<p class="tit">保存失败</p>
+            <p>无法写入文件，权限可能已过期。</p>`, 'nts.file-write-error'),
         btn: [
             { type: 'main', text: lang('确定','ok'), js: 'closenotice();' }
         ]
@@ -1794,7 +1819,8 @@ const icon = {
     winver: 'about.svg',
     // run: 'run.png',
     // whiteboard: 'whiteboard.png',
-    taskmgr: 'taskmgr.png'
+    taskmgr: 'taskmgr.png',
+    imgviewer: 'files/picture.png'
 };
 function geticon(name) {
     if (icon[name]) return icon[name];
