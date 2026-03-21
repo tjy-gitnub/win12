@@ -211,7 +211,7 @@ var run_cmd = '';
 const nomax = { 'calc': 0 , 'notepad-fonts': 0, 'camera-notice': 0, 'winver': 0, 'run': 0, 'wsa': 0 };
 const nomin = { 'notepad-fonts': 0, 'camera-notice': 0, 'run': 0 };
 var topmost = [];
-var sys_setting = [1, 1, 1, 0, 0, 1, 1];
+var sys_setting = [1, 1, 1, 0, 1, 1, 1];
 var use_music = true;
 var use_mic_voice = true;
 
@@ -326,7 +326,7 @@ const cms = {
             return ['<i class="bi bi-link-45deg"></i> 在桌面创建链接', 'var s=`<div class=\'b\' ondblclick=openapp(\'' + arg[0] + '\')  ontouchstart=openapp(\'' + arg[0] + '\') appname=\'' + arg[0] + '\'><img src=\'icon/' + geticon(arg[0]) + '\'><p>' + arg[1] + '</p></div>`;$(\'#desktop\').append(s);desktopItem[desktopItem.length]=s;addMenu();saveDesktop();'];
         },
         arg => {
-            return ['<i class="bi bi-x"></i> 取消固定', `$('#s-m-r>.pinned>.apps>.sm-app.${arg[0]}').remove()`];
+            return ['<i class="bi bi-x"></i> 取消固定', `$('#startmenu-r>.pinned>.apps>.sm-app.${arg[0]}').remove()`];
         }
     ],
     'smlapp': [
@@ -1774,13 +1774,13 @@ const date = {
     en:`${['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'][da.getDay()]}, ${['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'][da.getMonth()]} ${da.getDate().toString().padStart(2, '0')}, ${da.getFullYear()}`
 }[langcode];
 
-$('#s-m-r>.row1>.tool>.date').text(date);
+$('#startmenu-r>.row1>.tool>.date').text(date);
 $('.dock.date>.date').text(`${da.getFullYear()}/${(da.getMonth() + 1).toString().padStart(2, '0')}/${da.getDate().toString().padStart(2, '0')}`);
 $('#datebox>.tit>.date').text(date);
 function loadtime() {
     let d = new Date();
     let time = d.toLocaleTimeString();
-    $('#s-m-r>.row1>.tool>.time').text(time);
+    $('#startmenu-r>.row1>.tool>.time').text(time);
     $('.dock.date>.time').text(time);
     $('#datebox>.tit>.time').text(time);
     $('.settingTime').text(time);
@@ -1805,8 +1805,8 @@ for (let i = 1; i <= daysum; i++) {
     $('#datebox>.cont>.body')[0].innerHTML += `<p>${i}</p>`;
 }
 function pinapp(id, name, command) {
-    if ($('#s-m-r>.pinned>.apps>.a.sm-app.' + id).length) return;
-    $('#s-m-r>.pinned>.apps').append(`<a class='a sm-app enable ${id}' onclick='${command}';hide_startmenu();' oncontextmenu='return showcm(event,\"smapp\",[\"${id}\",\"${name}\"])'><img src='icon/${geticon(id)}'><p>${name}</p></a>`);
+    if ($('#startmenu-r>.pinned>.apps>.a.sm-app.' + id).length) return;
+    $('#startmenu-r>.pinned>.apps').append(`<a class='a sm-app enable ${id}' onclick='${command}';hide_startmenu();' oncontextmenu='return showcm(event,\"smapp\",[\"${id}\",\"${name}\"])'><img src='icon/${geticon(id)}'><p>${name}</p></a>`);
 }
 
 // 应用方法
@@ -2156,11 +2156,11 @@ var flyStatus = false;
 // 选择框
 let chstX, chstY;
 function ch(e) {
-    $('#desktop>.choose').css('left', Math.min(chstX, e.clientX));
-    $('#desktop>.choose').css('width', Math.abs(e.clientX - chstX));
-    $('#desktop>.choose').css('display', 'block');
-    $('#desktop>.choose').css('top', Math.min(chstY, e.clientY));
-    $('#desktop>.choose').css('height', Math.abs(e.clientY - chstY));
+    $('#desktop>.selection').css('left', Math.min(chstX, e.clientX));
+    $('#desktop>.selection').css('width', Math.abs(e.clientX - chstX));
+    $('#desktop>.selection').css('display', 'block');
+    $('#desktop>.selection').css('top', Math.min(chstY, e.clientY));
+    $('#desktop>.selection').css('height', Math.abs(e.clientY - chstY));
 }
 $('#desktop')[0].addEventListener('mousedown', e => {
     chstX = e.clientX;
@@ -2169,11 +2169,11 @@ $('#desktop')[0].addEventListener('mousedown', e => {
 });
 window.addEventListener('mouseup', e => {
     this.onmousemove = null;
-    $('#desktop>.choose').css('left', 0);
-    $('#desktop>.choose').css('top', 0);
-    $('#desktop>.choose').css('display', 'none');
-    $('#desktop>.choose').css('width', 0);
-    $('#desktop>.choose').css('height', 0);
+    $('#desktop>.selection').css('left', 0);
+    $('#desktop>.selection').css('top', 0);
+    $('#desktop>.selection').css('display', 'none');
+    $('#desktop>.selection').css('width', 0);
+    $('#desktop>.selection').css('height', 0);
 });
 let isDark = false;
 
@@ -2247,11 +2247,11 @@ function setIcon() {
         <img src="icon/edge.svg">
         <p>Microsoft Edge</p>
     </div>
-    <div class="b" ondblclick="shownotice('feedback');" ontouchstart="shownotice('feedback');;">
+    <div class="b" ondblclick="shownotice('feedback');" ontouchstart="shownotice('feedback');">
         <img src="icon/feedback.svg">
         <p>${lang('反馈中心','feedback.name')}</p>
     </div>
-    <span class="choose">
+    <span class="selection">
     </span>
     <p style="background-color: rgba(11,45,14,0);z-index:1;position: absolute;top:0px;left:0px;height:100%;width:100%" oncontextmenu="return showcm(event,'desktop');"></p>`;
         desktopItem = JSON.parse(localStorage.getItem('desktop'));
@@ -2283,6 +2283,10 @@ function setIcon() {
     }
     if (localStorage.getItem('root_class')) {
         $(':root')[0].className = localStorage.getItem('root_class') + ' ' + (isDark ? 'dark' : '');
+    }
+    
+    if(sys_setting[0]){
+        $(':root').addClass('corner_squ');
     }
 }
 
@@ -2420,7 +2424,7 @@ if (!location.href.match(/((\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.){3}(\d|[1-9]\d|
         checkUpdate();
     }
     if (localStorage.getItem('update') == 'true') {
-        $('.msg.update>.main>.tit').html('<i class="bi bi-stars" style="background-image: linear-gradient(100deg, var(--theme-1), var(--theme-2));-webkit-background-clip: text;-webkit-text-fill-color: transparent;text-shadow:3px 3px 5px var(--sd);filter:saturate(200%) brightness(0.9);"></i> ' + $('#win-about>.cnt.update>div>details:first-child>summary').text());
+        $('.msg.update>.main>.tit').html('<i class="bi bi-stars" style="background-image: linear-gradient(100deg, var(--theme-1), var(--theme-2));-webkit-background-clip: text;-webkit-text-fill-color: transparent;text-shadow:3px 3px 5px var(--shadow);filter:saturate(200%) brightness(0.9);"></i> ' + $('#win-about>.cnt.update>div>details:first-child>summary').text());
         $('.msg.update>.main>.cont').html($('#win-about>.cnt.update>div>details:first-child>p').html());
         $('#loadbackupdate').css('display', 'block');
         localStorage.setItem('update', false);

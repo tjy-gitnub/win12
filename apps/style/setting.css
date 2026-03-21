@@ -44,6 +44,11 @@
     align-items: center;
 }
 
+:root.corner_squ #win-setting>.menu>.user {
+    corner-shape: squircle;
+    border-radius: 25px;
+}
+
 #win-setting>.menu>.user:hover {
     background-color: var(--hover);
 }
@@ -69,7 +74,7 @@
 
 #win-setting>.menu>.user>svg {
     background-color: var(--hover-b);
-    /* box-shadow: 0 0 10px var(--sd); */
+    /* box-shadow: 0 0 10px var(--shadow); */
     width: 60px;
     min-width: 60px;
     height: 60px;
@@ -96,12 +101,13 @@
 }
 
 #win-setting>.menu>list>a:not(.enable) {
-    transform: none !important;
-    filter: contrast(0.6) brightness(0.8) opacity(0.3);
+    /* transform: none !important; */
+    filter: contrast(0.6) opacity(0.3);
+    pointer-events: none;
 }
 
 #win-setting>.menu>list>a.enable:not(.avlb) {
-    filter: contrast(0.7)  opacity(0.7) !important;
+    filter: opacity(0.5) !important;
 }
 
 #win-setting>.menu>list>a>p {
@@ -140,6 +146,23 @@
     display: block;
 }
 
+
+.setting-card {
+    background: var(--card);
+    border-radius: 10px;
+    margin-bottom: 10px;
+}
+
+:root.corner_squ .setting-card {
+    corner-shape: squircle;
+    border-radius: 25px;
+}
+
+.setting-card>.setting-list {
+    padding-bottom: 5px;
+    padding: 20px;
+}
+
 .setting-list {
     display: flex;
     flex-direction: column;
@@ -169,6 +192,11 @@
     align-items: center; 
 }
 
+:root.corner_squ .setting-list>* {
+    corner-shape: squircle;
+    border-radius: 20px;
+}
+
 .setting-list>a:hover {
     text-decoration: none;
     background-color: var(--hover);
@@ -186,8 +214,8 @@
 
 .setting-list>a.dp.show {
     /* border-bottom: none; */
-    border-bottom-left-radius: 0;
-    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0 !important;
+    border-bottom-right-radius: 0 !important;
     margin-bottom: 1px;
     box-shadow: 0 0.5px 1px 1px var(--s3d);
 }
@@ -210,8 +238,8 @@
 
 .setting-list>div.dp {
     border-top: none;
-    border-top-left-radius: 0;
-    border-top-right-radius: 0;
+    border-top-left-radius: 0 !important;
+    border-top-right-radius: 0 !important;
     max-height: 0;
     transition: max-height 300ms, padding 300ms 100ms, opacity 200ms;
     overflow: hidden;
@@ -326,7 +354,6 @@ div.app-color input[type=color] {
 .setting-list>*>.bi,
 .setting-list>*>.alr {
     flex-grow: 1;
-    margin-top: 15px;
     color: #7f7f7f;
     font-size: 20px;
 }
@@ -360,7 +387,7 @@ div.app-color input[type=color] {
     text-shadow: 1px 1px 3px #000;
     text-align: right;
     padding: 3px 8px;
-    box-shadow: 1px 1px 5px var(--sd);
+    box-shadow: 1px 1px 5px var(--shadow);
     margin: 7px 7px 0 0;
 }
 
@@ -423,7 +450,7 @@ div.app-color input[type=color] {
 	    width: 100px;
 	    height: 100px;
 	    background-color: var(--hover-b);
-	    /* box-shadow: 0 0 10px var(--sd); */
+	    /* box-shadow: 0 0 10px var(--shadow); */
 	    width: 60px;
 	    min-width: 60px;
 	    height: 60px;
@@ -467,9 +494,6 @@ div.app-color input[type=color] {
     align-content: center;
     justify-content: flex-start;
     align-items: center;
-}
-.settingTimeTitle{
-	
 }
 .settingTime{
 	font-size: 28px;

@@ -27,9 +27,7 @@ let apps = {
                             cnt.forEach(cn => {
                                 if (cn.name == 'theme.json') {
                                     $.getJSON('https://tjy-gitnub.github.io/win12-theme/' + cn.path).then(inf => {
-                                        // let infjs = inf;
-                                        if ($('#set-theme>loading').length)
-                                            $('#set-theme').html('');
+                                        $('#set-theme>loading').remove();
                                         $('#set-theme').append(`<a class="a act" onclick="apps.setting.theme_set('${c.name}')" style="background-image:url('https://tjy-gitnub.github.io/win12-theme/${c.name}/view.jpg')">${c.name}</a>`);
                                     });
                                 }
@@ -38,6 +36,7 @@ let apps = {
                     }
                 });
             })});
+            $('#set-theme').append(`<a class="a btn" onclick="$(':root').removeAttr('style');" style="background: #555;">默认主题</a>`);
         },
         theme_set: (infp) => {
             api('repos/tjy-gitnub/win12-theme/contents/' + infp).then(res => {res.json().then(cnt => {
@@ -71,8 +70,8 @@ let apps = {
             setTimeout(() => {
                 $('#win-setting>.page>.cnt.update>.lo>.update-main .notice')[0].innerText = '开发者暂未完善此功能';
                 $('#win-setting>.page>.cnt.update>.lo>.update-main .detail')[0].innerText = 'Windows 更新已被禁用';
-                $('#win-setting>.page>.cnt.update>.setting-list>.update-now>div>p:first-child')[0].innerText = '开发者暂未完善此功能';
-                $('#win-setting>.page>.cnt.update>.setting-list>.update-now>div>p:last-child')[0].innerText = 'Windows 更新已被禁用';
+                // $('#win-setting>.page>.cnt.update>.setting-list>.update-now>div>p:first-child')[0].innerText = '开发者暂未完善此功能';
+                // $('#win-setting>.page>.cnt.update>.setting-list>.update-now>div>p:last-child')[0].innerText = 'Windows 更新已被禁用';
                 // Keep buttons disabled as requested
                 $('#win-setting>.page>.cnt.update>.setting-list>.update-now').addClass('disabled');
                 $('#win-setting>.page>.cnt.update>.lo>.update-main>div:last-child').addClass('disabled');

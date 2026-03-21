@@ -64,7 +64,7 @@ toggletheme() 切换主题
 壹 常规 app
 	1. 界面与(伪)后端的开发，js 在 module/apps.js 中，css 和资源文件在 apps/style 和 apps/icons 中
 	2. 绘制图标，存储于 icon 中，注意后缀名，参考 desktop.js 中 @icon 的说明
-	3. 在开始菜单 (@s-m-l>list) 中添加你的应用
+	3. 在开始菜单 (@#startmenu-l>list) 中添加你的应用
 
 贰 webapp，即使用 iframe 嵌套网页的应用：
 	1. 确保目标网页不阻止跨域嵌套，允许 iframe 嵌套
@@ -75,7 +75,7 @@ toggletheme() 切换主题
 欢迎补充~
 -->
 <!DOCTYPE html>
-<html lang="en" style="height: 100%;">
+<html lang="en" class="mica">
 
 <head>
 	<meta charset="UTF-8" />
@@ -253,8 +253,8 @@ toggletheme() 切换主题
 
 	<div id="start-menu">
 		<!-- 开始菜单 -->
-		<div id="s-m-l">
-			<div id="s-m-user">
+		<div id="startmenu-l">
+			<div id="startmenu-user">
 				<svg viewBox="0,0,257,344" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" overflow="hidden"><defs><clipPath id="user-clip0"><rect x="382" y="195" width="257" height="344" /></clipPath><linearGradient x1="351.462" y1="233.56" x2="669.496" y2="500.422" gradientUnits="userSpaceOnUse" spreadMethod="reflect" id="user-fill1"><stop offset="0" stop-color="#A964C8" /><stop offset="0.35" stop-color="#A964C8" /><stop offset="0.87" stop-color="#2D8AD5" /><stop offset="1" stop-color="#2D8AD5" /></linearGradient><linearGradient x1="351.462" y1="233.56" x2="669.496" y2="500.422" gradientUnits="userSpaceOnUse" spreadMethod="reflect" id="user-fill2"><stop offset="0" stop-color="#A964C8" /><stop offset="0.35" stop-color="#A964C8" /><stop offset="0.87" stop-color="#2D8AD5" /><stop offset="1" stop-color="#2D8AD5" /></linearGradient></defs><g clip-path="url(#user-clip0)" transform="translate(-382 -195)"><path d="M637.755 433.872C642.215 515.221 579.577 537.983 508.011 537.983 436.444 537.983 376.676 507.833 383.513 437.11 383.109 425.234 389.59 414.133 398.634 409.891 413.82 402.768 444.753 402.936 507.484 402.997 570.214 403.058 609.164 402.279 621.521 407.947 633.878 413.614 638.011 424.609 637.755 433.872Z" fill="url(#user-fill1)" fill-rule="evenodd" /><path d="M422 285C422 235.847 461.623 196 510.5 196 559.377 196 599 235.847 599 285 599 334.153 559.377 374 510.5 374 461.623 374 422 334.153 422 285Z" fill="url(#user-fill2)" fill-rule="evenodd" /></g></svg>
 			</div>
 			<p style="width: 100%;text-align: center;margin: -50px 0 20px 0;font-size: 30px;">Administrator</p>
@@ -296,9 +296,9 @@ toggletheme() 切换主题
 					<img src="icon/notepad.svg">
 					<p data-i18n="notepad.name">记事本</p>
 				</a>
-				<a oncontextmenu="return showcm(event, 'smlapp', ['copilot', 'Windows 12 Copilot'])" onclick="$('#copilot').toggleClass('show');hide_startmenu();">
+				<a oncontextmenu="return showcm(event, 'smlapp', ['copilot', 'AI Chat'])" onclick="openapp('copilot');hide_startmenu();">
 					<img src="icon/copilot.svg">
-					<p>Windows 12 Copilot</p>
+					<p>AI Chat</p>
 				</a>
 				<a oncontextmenu="return showcm(event, 'smlapp', ['edge', 'Microsoft Edge'])" onclick="openapp('edge');hide_startmenu();">
 					<img src="icon/edge.svg">
@@ -359,7 +359,7 @@ toggletheme() 切换主题
 				</a>
 			</list>
 		</div>
-		<div id="s-m-r">
+		<div id="startmenu-r">
 			<div class="row1">
 				<div class="folder">
 					<a class="a sm-app enable"
@@ -384,10 +384,10 @@ toggletheme() 切换主题
 					<div class="pw">
 						<a class="a btn btn-icon big" win12_title="切换全屏" onclick="
 							if($('#start-menu').hasClass('max')){
-								$('#start-menu>#s-m-r>.row1>.tool>.pw>.btn-icon.big').html('<i class=\'bi bi-arrows-angle-expand\'></i>');
+								$('#start-menu>#startmenu-r>.row1>.tool>.pw>.btn-icon.big').html('<i class=\'bi bi-arrows-angle-expand\'></i>');
 								$('#start-menu').removeClass('max');
 							}else{
-								$('#start-menu>#s-m-r>.row1>.tool>.pw>.btn-icon.big').html('<i class=\'bi bi-arrows-angle-contract\'></i>');
+								$('#start-menu>#startmenu-r>.row1>.tool>.pw>.btn-icon.big').html('<i class=\'bi bi-arrows-angle-contract\'></i>');
 								$('#start-menu').addClass('max');
 							}
 							stop(event)
@@ -864,7 +864,7 @@ toggletheme() 切换主题
 	<div id="desktop">
 		<h1>无法处理桌面图标，请使用相对正常的浏览器访问。</h1>
 		<h1>Cannot process desktop icons, please use a relatively normal browser to access</h1>
-		<span class="choose">
+		<span class="selection">
 		</span>
 		<p style="background-color: rgba(11,45,14,0);z-index:1;position: absolute;top:0px;left:0px;height:100%;width:100%" oncontextmenu="return showcm(event,'desktop');"></p>
 	</div>
@@ -1301,7 +1301,7 @@ toggletheme() 切换主题
 				</a>
 				<input type="text" class="input" placeholder="查找设置" style="padding-left: 30px;" data-i18n-attr="placeholder" data-i18n-key="setting.sch">
 				<input-before class="bi bi-search"></input-before>
-				<list class="focs"><!--压缩行数-->
+				<list class="focs">
 					<a class="enable home check" onclick="apps.setting.page('home')"><img src="apps/icons/setting/home.png"><span data-i18n="home">主页</span></a><!-- 主页  @lh11117 (2023/9/31~2023/10/1) -->
 					<a class="enable system" onclick="apps.setting.page('system')"><img src="apps/icons/setting/system.png"><span data-i18n="setting.system">系统</span></a><!-- 系统  stsc 远古-->
 					<a class="enable blueteeth" onclick="apps.setting.page('blueteeth')"><img src="apps/icons/setting/blueteeth.png"><span data-i18n="setting.device">蓝牙和其他设备</span></a><!-- 蓝牙与设备  @Junchen Yi 2023-9-9-->
@@ -1477,37 +1477,37 @@ toggletheme() 切换主题
 								</svg>
 							</loading>
 						</div>
-						<div class="border-radius"><icon></icon><div><p data-i18n="setting.psnl.round">圆角</p><p data-i18n="setting.psnl.round-dt">设置系统界面中是否启用圆角</p></div>
+						<div><icon></icon><div><p data-i18n="setting.psnl.round">平滑圆角</p><p data-i18n="setting.psnl.round-dt">启用平滑圆角</p></div>
 							<div class="alr">
-								<a class="a checkbox checked" id="sys_setting_1" onclick="$(this).toggleClass('checked');$(':root').toggleClass('nobr');sys_setting[0]=1-sys_setting[0];saveDesktop();"></a>
+								<a class="a checkbox checked" id="sys_setting_1" onclick="sys_setting[0]=1-sys_setting[0];$(this).toggleClass('checked',sys_setting[0]);$(':root').toggleClass('corner_squ',sys_setting[0]);saveDesktop();"></a>
 							</div>
 						</div>
-						<div class="border-radius"><icon></icon><div><p data-i18n="setting.psnl.animation">动画</p><p data-i18n="setting.psnl.animation-dt">系统界面元素过渡动画</p></div>
+						<div><icon></icon><div><p data-i18n="setting.psnl.animation">动画</p><p data-i18n="setting.psnl.animation-dt">系统界面元素过渡动画</p></div>
 							<div class="alr">
-								<a class="a checkbox checked" id="sys_setting_2" onclick="$(this).toggleClass('checked');$(':root').toggleClass('notrans');sys_setting[1]=1-sys_setting[1];saveDesktop();"></a>
+								<a class="a checkbox checked" id="sys_setting_2" onclick="sys_setting[1]=1-sys_setting[1];$(this).toggleClass('checked', !sys_setting[1]);$(':root').toggleClass('notrans', !sys_setting[1]);saveDesktop();"></a>
 							</div>
 						</div>
-						<div class="border-radius"><icon></icon><div><p data-i18n="setting.psnl.shadow">阴影</p><p data-i18n="setting.psnl.shadow-dt">为系统界面元素添加阴影效果</p></div>
+						<div><icon></icon><div><p data-i18n="setting.psnl.shadow">阴影</p><p data-i18n="setting.psnl.shadow-dt">为系统界面元素添加阴影效果</p></div>
 							<div class="alr">
-								<a class="a checkbox checked" id="sys_setting_3" onclick="$(this).toggleClass('checked');$(':root').toggleClass('nosd');sys_setting[2]=1-sys_setting[2];saveDesktop();"></a>
+								<a class="a checkbox checked" id="sys_setting_3" onclick="sys_setting[2]=1-sys_setting[2];$(this).toggleClass('checked',!sys_setting[2]);$(':root').toggleClass('nosd',!sys_setting[2]);saveDesktop();"></a>
 							</div>
 						</div>
-						<div class="border-radius"><icon></icon><div><p data-i18n="setting.psnl.alltransp">多窗口透明</p><p data-i18n="setting.psnl.alltransp-dt">为所有窗口开启透明效果，而不是仅用于焦点窗口 <span class="a jump" win12_title="开启后将占用大量GPU,可能造成卡顿">详细</span></p></div>
+						<div><icon></icon><div><p data-i18n="setting.psnl.alltransp">多窗口透明</p><p data-i18n="setting.psnl.alltransp-dt">为所有窗口开启透明效果，而不是仅用于焦点窗口 <span class="a jump" win12_title="开启后将占用大量GPU,可能造成卡顿">详细</span></p></div>
 							<div class="alr">
-								<a class="a checkbox" id="sys_setting_4" onclick="$(this).toggleClass('checked');$(':root').toggleClass('moreblur');sys_setting[3]=1-sys_setting[3];saveDesktop();"></a>
+								<a class="a checkbox" id="sys_setting_4" onclick="sys_setting[3]=1-sys_setting[3];$(this).toggleClass('checked',sys_setting[3]);$(':root').toggleClass('moreblur',sys_setting[3]);saveDesktop();"></a>
 							</div>
 						</div>
-						<div class="border-radius"><icon>&#xE621;</icon><div><p data-i18n="setting.psnl.mica">Mica效果 (实验)</p><p data-i18n="setting.psnl.mica-dt">为焦点窗口开启mica效果 <a class="a jump" onclick="shownotice('feedback')">反馈</a></p></div>
+						<div><icon>&#xE621;</icon><div><p data-i18n="setting.psnl.mica">Mica效果</p><p data-i18n="setting.psnl.mica-dt">为焦点窗口开启mica效果</p></div>
 							<div class="alr">
-								<a class="a checkbox" id="sys_setting_5" onclick="$(this).toggleClass('checked');$(':root').toggleClass('mica');sys_setting[4]=1-sys_setting[4];saveDesktop();"></a>
+								<a class="a checkbox" id="sys_setting_5" onclick="sys_setting[4]=1-sys_setting[4];$(this).toggleClass('checked',sys_setting[4]);$(':root').toggleClass('mica',sys_setting[4]);saveDesktop();"></a>
 							</div>
 						</div>
-						<div class="border-radius"><icon><i class="bi bi-music-note-beamed"></i></icon><div><p data-i18n="setting.psnl.startup-sound">开机音乐</p><p data-i18n="setting.psnl.startup-sound-dt">是否启用开机音乐</p></div>
+						<div><icon><i class="bi bi-music-note-beamed"></i></icon><div><p data-i18n="setting.psnl.startup-sound">开机音乐</p><p data-i18n="setting.psnl.startup-sound-dt">是否启用开机音乐</p></div>
 							<div class="alr">
 								<a class="a checkbox checked" id="sys_setting_6" onclick="sys_setting[5]=1-sys_setting[5];document.getElementById('sys_setting_6').setAttribute('class', 'a checkbox' + (sys_setting[5]?' checked':''));saveDesktop();"></a>
 							</div>
 						</div>
-            <div class="border-radius"><icon><i class="bi bi-mic-fill"></i></icon><div><p data-i18n="setting.psnl.ball">语音输入球</p><p data-i18n="setting.psnl.ball-dt">是否启用语音输入球</p></div>
+            <div><icon><i class="bi bi-mic-fill"></i></icon><div><p data-i18n="setting.psnl.ball">语音输入球</p><p data-i18n="setting.psnl.ball-dt">是否启用语音输入球</p></div>
 							<div class="alr">
 								<a class="a checkbox checked" id="sys_setting_7" onclick="sys_setting[6]=1-sys_setting[6];document.querySelector('.rainbow-container-main').setAttribute('style', 'display:' + (sys_setting[6] ? 'block' : 'none')+ ';');document.getElementById('sys_setting_7').setAttribute('class', 'a checkbox' + (sys_setting[6]?' checked':''));updateVoiceBallStatus();saveDesktop();"></a>
 							</div>
@@ -1533,7 +1533,7 @@ toggletheme() 切换主题
 					<p class="title">账户</p>
 					<div style="display: flex;">
 						<a class="a user" style="display:flex">
-							<svg viewBox="0,0,257,344" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="width: 100px;height: 100px;background-color: var(--hover-b);/* box-shadow: 0 0 10px var(--sd); */width: 60px;width: 60px;height: 60px;border-radius: 50%;padding: 20px;margin-right: 15px;margin-bottom: 15px;" overflow="hidden"><defs><clipPath id="user-clip1"><rect x="382" y="195" width="257" height="344" /></clipPath><linearGradient x1="351.462" y1="233.56" x2="669.496" y2="500.422" gradientUnits="userSpaceOnUse" spreadMethod="reflect" id="user-fill3"><stop offset="0" stop-color="#A964C8" /><stop offset="0.35" stop-color="#A964C8" /><stop offset="0.87" stop-color="#2D8AD5" /><stop offset="1" stop-color="#2D8AD5" /></linearGradient><linearGradient x1="351.462" y1="233.56" x2="669.496" y2="500.422" gradientUnits="userSpaceOnUse" spreadMethod="reflect" id="user-fill4"><stop offset="0" stop-color="#A964C8" /><stop offset="0.35" stop-color="#A964C8" /><stop offset="0.87" stop-color="#2D8AD5" /><stop offset="1" stop-color="#2D8AD5" /></linearGradient></defs><g clip-path="url(#user-clip1)" transform="translate(-382 -195)"><path d="M637.755 433.872C642.215 515.221 579.577 537.983 508.011 537.983 436.444 537.983 376.676 507.833 383.513 437.11 383.109 425.234 389.59 414.133 398.634 409.891 413.82 402.768 444.753 402.936 507.484 402.997 570.214 403.058 609.164 402.279 621.521 407.947 633.878 413.614 638.011 424.609 637.755 433.872Z" fill="url(#user-fill3)" fill-rule="evenodd" /><path d="M422 285C422 235.847 461.623 196 510.5 196 559.377 196 599 235.847 599 285 599 334.153 559.377 374 510.5 374 461.623 374 422 334.153 422 285Z" fill="url(#user-fill4)" fill-rule="evenodd" /></g></svg>
+							<svg viewBox="0,0,257,344" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="width: 100px;height: 100px;background-color: var(--hover-b);/* box-shadow: 0 0 10px var(--shadow); */width: 60px;width: 60px;height: 60px;border-radius: 50%;padding: 20px;margin-right: 15px;margin-bottom: 15px;" overflow="hidden"><defs><clipPath id="user-clip1"><rect x="382" y="195" width="257" height="344" /></clipPath><linearGradient x1="351.462" y1="233.56" x2="669.496" y2="500.422" gradientUnits="userSpaceOnUse" spreadMethod="reflect" id="user-fill3"><stop offset="0" stop-color="#A964C8" /><stop offset="0.35" stop-color="#A964C8" /><stop offset="0.87" stop-color="#2D8AD5" /><stop offset="1" stop-color="#2D8AD5" /></linearGradient><linearGradient x1="351.462" y1="233.56" x2="669.496" y2="500.422" gradientUnits="userSpaceOnUse" spreadMethod="reflect" id="user-fill4"><stop offset="0" stop-color="#A964C8" /><stop offset="0.35" stop-color="#A964C8" /><stop offset="0.87" stop-color="#2D8AD5" /><stop offset="1" stop-color="#2D8AD5" /></linearGradient></defs><g clip-path="url(#user-clip1)" transform="translate(-382 -195)"><path d="M637.755 433.872C642.215 515.221 579.577 537.983 508.011 537.983 436.444 537.983 376.676 507.833 383.513 437.11 383.109 425.234 389.59 414.133 398.634 409.891 413.82 402.768 444.753 402.936 507.484 402.997 570.214 403.058 609.164 402.279 621.521 407.947 633.878 413.614 638.011 424.609 637.755 433.872Z" fill="url(#user-fill3)" fill-rule="evenodd" /><path d="M422 285C422 235.847 461.623 196 510.5 196 559.377 196 599 235.847 599 285 599 334.153 559.377 374 510.5 374 461.623 374 422 334.153 422 285Z" fill="url(#user-fill4)" fill-rule="evenodd" /></g></svg>
 							<div style="margin-top: 5px;">
 								<p>Administrator</p>
 								<p>starry-source@Windows12.com</p>
@@ -1801,9 +1801,16 @@ toggletheme() 切换主题
 		</div>
 		<div class="content" id="win-about">
 			<div class="menu">
-				<list class="focs about-menu">
-					<a class="enable check about avlb" onclick="$('#win-about>.about').addClass('show');$('.about-menu>.about').addClass('check');$('.about-menu>.update').removeClass('check');$('#win-about>.update').removeClass('show');"><span data-i18n="about.intro">简介</span></a>
-					<a class="enable update avlb" onclick="$('#win-about>.update').addClass('show');$('.about-menu>.update').addClass('check');$('.about-menu>.about').removeClass('check');$('#win-about>.about').removeClass('show');"><span data-i18n="about.update">更新记录</span></a>
+				<!-- <list class="focs">
+					<a onclick="$('#win-about>.about').addClass('show');$('#win-about>.update').removeClass('show');"><img src="apps/icons/about/info.svg" height="17px" width="19px"><span data-i18n="about.intro">简介</span></a>
+					<a onclick="$('#win-about>.update').addClass('show');$('#win-about>.about').removeClass('show');"><img src="apps/icons/about/update.svg" height="20px" width="18px"><span data-i18n="about.update">更新记录</span></a>
+				</list> -->
+
+				<list class="about-menu">
+					<a class="enable check about avlb" onclick="$('#win-about>.about').addClass('show');$('.about-menu>.about').addClass('check');$('.about-menu>.update').removeClass('check');$('#win-about>.update').removeClass('show');">
+						<span data-i18n="about.intro">简介</span></a>
+					<a class="enable update avlb" onclick="$('#win-about>.update').addClass('show');$('.about-menu>.update').addClass('check');$('.about-menu>.about').removeClass('check');$('#win-about>.about').removeClass('show');">
+						<span data-i18n="about.update">更新记录</span></a>
 				</list>
 			</div>
 			<div class="cnt about">
@@ -1853,7 +1860,13 @@ toggletheme() 切换主题
 			<div class="cnt update">
 				<h1 class="tit" data-i18n="about.update.name"><span></span>更新记录</h1>
 				<div style="margin-left: 20px;">
-					<details><summary><span>v10.1.0</span>增加对农历的支持</summary><p>
+					<details><summary><span>v10.2.0</span> 平滑圆角</summary><p>
+						&emsp;&emsp;-(更新来自 @tjy-gitnub)<br>
+						&emsp;&emsp;-修复一些沉积问题<br>
+						&emsp;&emsp;-引入平滑圆角（需较新浏览器）<br>
+						&emsp;&emsp;-细节优化和修复<br>
+					</p></details>
+					<details><summary><span>v10.1.0</span> 增加对农历的支持</summary><p>
 						&emsp;&emsp;-(更新来自 @stxttkx & @lingbopro)<br>
 						&emsp;&emsp;-现已可以显示农历日期。<br>
 					</p></details>
@@ -2261,7 +2274,7 @@ toggletheme() 切换主题
 		<div class="resize-bar"></div>
 		<div class="titbar">
 			<img src="icon/copilot.svg" class="icon">
-			<p>Windows 12 Copilot</p>
+			<p>AI Chat</p>
 			<div>
 				<a class="a wbtg red" onclick="hidewin('copilot')"><i class="bi bi-x-lg"></i></a>
 				<a class="a wbtg max" onclick="maxwin('copilot')"><i class="bi bi-app"></i></a>
