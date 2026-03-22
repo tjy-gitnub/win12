@@ -211,7 +211,7 @@ var run_cmd = '';
 const nomax = { 'calc': 0 , 'notepad-fonts': 0, 'camera-notice': 0, 'winver': 0, 'run': 0, 'wsa': 0 };
 const nomin = { 'notepad-fonts': 0, 'camera-notice': 0, 'run': 0 };
 var topmost = [];
-var sys_setting = [1, 1, 1, 0, 0, 1, 1];
+var sys_setting = [1, 1, 1, 0, 1, 1, 1];
 var use_music = true;
 var use_mic_voice = true;
 
@@ -326,7 +326,7 @@ const cms = {
             return ['<i class="bi bi-link-45deg"></i> 在桌面创建链接', 'var s=`<div class=\'b\' ondblclick=openapp(\'' + arg[0] + '\')  ontouchstart=openapp(\'' + arg[0] + '\') appname=\'' + arg[0] + '\'><img src=\'icon/' + geticon(arg[0]) + '\'><p>' + arg[1] + '</p></div>`;$(\'#desktop\').append(s);desktopItem[desktopItem.length]=s;addMenu();saveDesktop();'];
         },
         arg => {
-            return ['<i class="bi bi-x"></i> 取消固定', `$('#s-m-r>.pinned>.apps>.sm-app.${arg[0]}').remove()`];
+            return ['<i class="bi bi-x"></i> 取消固定', `$('#startmenu-r>.pinned>.apps>.sm-app.${arg[0]}').remove()`];
         }
     ],
     'smlapp': [
@@ -376,7 +376,21 @@ const cms = {
     ],
     'explorer.file': [
         arg => {
-            return ['<i class="bi bi-folder2-open"></i> 打开（目前毛用没有）', ''];
+            const drive = arg.split('/')[0];
+            if (apps.explorer.mounts[drive])
+                return ['<i class="bi bi-folder2-open"></i> ' + lang('打开','open'), `apps.explorer.openMountedFile('${arg}')`];
+            // Find the file's command from virtual FS
+            var pathl = arg.split('/'), fileName = pathl.pop();
+            var tmp = apps.explorer.path;
+            pathl.forEach(n => { if (tmp && tmp.folder) tmp = tmp.folder[n]; });
+            var fileCmd = '';
+            if (tmp && tmp.file) {
+                var f = tmp.file.find(f => f.name === fileName);
+                if (f && f.command) fileCmd = f.command;
+            }
+            if (fileCmd)
+                return ['<i class="bi bi-folder2-open"></i> ' + lang('打开','open'), fileCmd];
+            return 'null';
         },
         arg => {
             if ($('#win-explorer>.path>.tit>.path>div.text').length > 1)
@@ -418,7 +432,16 @@ const cms = {
             if ($('#win-explorer>.path>.tit>.path>div.text').length > 1)
                 return ['<i class="bi bi-arrow-clockwise"></i> 刷新', 'apps.explorer.goto($(\'#win-explorer>.path>.tit\')[0].dataset.path, false)'];
             return ['<i class="bi bi-arrow-clockwise"></i> 刷新', 'apps.explorer.reset()'];
+        },
+        arg => {
+            if ($('#win-explorer>.path>.tit>.path>div.text').length <= 1 && apps.explorer.fsApiSupported)
+                return ['<i class="bi bi-usb-drive"></i> 挂载本地文件夹', 'apps.explorer.mountDrive()'];
+            return 'null';
         }
+    ],
+    'explorer.mounted': [
+        arg => ['<i class="bi bi-folder2-open"></i> 打开', `apps.explorer.goto('${arg}')`],
+        arg => ['<i class="bi bi-eject"></i> 卸载', `apps.explorer.unmountDrive('${arg}')`]
     ],
     'explorer.tab': [
         arg => {
@@ -521,8 +544,9 @@ let font_window = false;
 // 下拉菜单
 const dps = {
     'notepad.file': [
-        ['<i class="bi bi-file-earmark-plus"></i> 新建', `hidedp(true);$('#win-notepad>.text-box').addClass('down');
+        ['<i class="bi bi-file-earmark-plus"></i> 新建', `hidedp(true);apps.notepad._mountedFileHandle=null;$('#win-notepad>.text-box').addClass('down');
         setTimeout(()=>{$('#win-notepad>.text-box').val('');$('#win-notepad>.text-box').removeClass('down')},200);`],
+        ['<i class="bi bi-floppy"></i> 保存 <info>Ctrl+S</info>', `hidedp(true);apps.notepad.saveMounted();`],
         ['<i class="bi bi-box-arrow-right"></i> 另存为', `hidedp(true);$('#win-notepad>.save').attr('href', window.URL.createObjectURL(new Blob([$('#win-notepad>.text-box').html()])));
         $('#win-notepad>.save')[0].click();`],
         '<hr>',
@@ -754,7 +778,7 @@ const nts = {
         cnt: `
             <p class="tit">关于 Windows 12 Copilot</p>
              <p>你可以使用此 AI 助手帮助你更快地完成工作，此AI助手基于 Qwen3-Max 模型 (有人用Win12工作?)<br>
-            也请适当使用，不要谈论敏感、违规话题，<br>请有身为一个人类最基本的道德底线。<br>
+            也请适当使用，不要谈论敏感、违规话题，<br>请有身为一个人类最基本的道德底线。<br>根据相关法律法规，我们不向欧盟用户提供服务。<br>
             在此特别感谢云智api(yunzhiapi.cn)为本项目提供赞助！</p>
             <a class="a" onclick="window.open('https://status.tangyuan0821.com/status/win12/','_blank');" win12_title="在浏览器新窗口打开链接">状态监测</a><br>
             <a class="a" onclick="window.open('https://www.yunzhiapi.cn/','_blank');" win12_title="在浏览器新窗口打开链接">云智API官网</a>
@@ -859,6 +883,59 @@ const nts = {
             <p>Word在试图打开文件时遇到错误<br /></p>`),
         btn: [
             { type: 'main', text: lang(lang('关闭','close'),'close'), js: 'closenotice();' }
+        ]
+    },
+    'fs-api-unsupported': {
+        cnt: lang(`<p class="tit">不支持的功能</p>
+            <p>您的浏览器不支持文件系统访问 API。请使用 Chrome 或 Edge 浏览器。</p>`, 'nts.fs-api-unsupported'),
+        btn: [
+            { type: 'main', text: lang('确定','ok'), js: 'closenotice();' }
+        ]
+    },
+    'fs-mount-error': {
+        cnt: lang(`<p class="tit">挂载失败</p>
+            <p>无法挂载本地文件夹，权限可能被拒绝。</p>`, 'nts.fs-mount-error'),
+        btn: [
+            { type: 'main', text: lang('确定','ok'), js: 'closenotice();' }
+        ]
+    },
+    'unsupported-file-type': {
+        cnt: lang(`<p class="tit">无法打开文件</p>
+            <p>没有找到可以打开此类型文件的应用程序。</p>`, 'nts.unsupported-file-type'),
+        btn: [
+            { type: 'main', text: lang('确定','ok'), js: 'closenotice();' }
+        ]
+    },
+    'file-read-error': {
+        cnt: lang(`<p class="tit">读取失败</p>
+            <p>无法读取文件内容，权限可能已过期。</p>`, 'nts.file-read-error'),
+        btn: [
+            { type: 'main', text: lang('确定','ok'), js: 'closenotice();' }
+        ]
+    },
+    'file-write-error': {
+        cnt: lang(`<p class="tit">保存失败</p>
+            <p>无法写入文件，权限可能已过期。</p>`, 'nts.file-write-error'),
+        btn: [
+            { type: 'main', text: lang('确定','ok'), js: 'closenotice();' }
+        ]
+    },
+    'unsaved-notepad': {
+        cnt: lang(`<p class="tit">是否保存更改？</p>
+            <p>文件有未保存的修改，关闭前是否保存？</p>`, 'nts.unsaved-changes'),
+        btn: [
+            { type: 'main', text: lang('保存','save'), js: 'closenotice();apps.notepad.saveMounted().then(()=>{apps.notepad._forceClose();})' },
+            { type: '', text: lang('不保存','discard'), js: 'closenotice();apps.notepad._forceClose();' },
+            { type: '', text: lang('取消','cancel'), js: 'closenotice();' }
+        ]
+    },
+    'unsaved-code-editor': {
+        cnt: lang(`<p class="tit">是否保存更改？</p>
+            <p>文件有未保存的修改，关闭前是否保存？</p>`, 'nts.unsaved-changes'),
+        btn: [
+            { type: 'main', text: lang('保存','save'), js: 'closenotice();apps.codeEditor.save().then(()=>{apps.codeEditor._forceClose();})' },
+            { type: '', text: lang('不保存','discard'), js: 'closenotice();apps.codeEditor._forceClose();' },
+            { type: '', text: lang('取消','cancel'), js: 'closenotice();' }
         ]
     },
 };
@@ -1614,7 +1691,7 @@ let copilot = {
         2.在浏览器中打开链接、搜索<br>
         3.发送对系统、AI助手的反馈<br>
         4.切换颜色主题<br>
-        若您在使用中出现异常可先至状态监测页面（https://status.tangyuan0821.com/status/win12/）查看状态，若确有异常请及时向我们反馈。</p></div>`);
+        需注意，根据相关法律法规，我们不向欧盟用户提供服务。</p></div>`);
         setTimeout(() => {
             $('#copilot>.chat').append(`<div class="line ai"><p class="text">欢迎使用 Windows 12，有什么可以帮您？</p></div>`);
             $('#copilot>.inputbox').removeClass('disable');
@@ -1726,13 +1803,13 @@ const date = {
     en:`${['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'][da.getDay()]}, ${['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'][da.getMonth()]} ${da.getDate().toString().padStart(2, '0')}, ${da.getFullYear()}`
 }[langcode];
 
-$('#s-m-r>.row1>.tool>.date').text(date);
+$('#startmenu-r>.row1>.tool>.date').text(date);
 $('.dock.date>.date').text(`${da.getFullYear()}/${(da.getMonth() + 1).toString().padStart(2, '0')}/${da.getDate().toString().padStart(2, '0')}`);
 $('#datebox>.tit>.date').text(date);
 function loadtime() {
     let d = new Date();
     let time = d.toLocaleTimeString();
-    $('#s-m-r>.row1>.tool>.time').text(time);
+    $('#startmenu-r>.row1>.tool>.time').text(time);
     $('.dock.date>.time').text(time);
     $('#datebox>.tit>.time').text(time);
     $('.settingTime').text(time);
@@ -1757,8 +1834,8 @@ for (let i = 1; i <= daysum; i++) {
     $('#datebox>.cont>.body')[0].innerHTML += `<p>${i}</p>`;
 }
 function pinapp(id, name, command) {
-    if ($('#s-m-r>.pinned>.apps>.a.sm-app.' + id).length) return;
-    $('#s-m-r>.pinned>.apps').append(`<a class='a sm-app enable ${id}' onclick='${command}';hide_startmenu();' oncontextmenu='return showcm(event,\"smapp\",[\"${id}\",\"${name}\"])'><img src='icon/${geticon(id)}'><p>${name}</p></a>`);
+    if ($('#startmenu-r>.pinned>.apps>.a.sm-app.' + id).length) return;
+    $('#startmenu-r>.pinned>.apps').append(`<a class='a sm-app enable ${id}' onclick='${command}';hide_startmenu();' oncontextmenu='return showcm(event,\"smapp\",[\"${id}\",\"${name}\"])'><img src='icon/${geticon(id)}'><p>${name}</p></a>`);
 }
 
 // 应用方法
@@ -1771,7 +1848,11 @@ const icon = {
     winver: 'about.svg',
     // run: 'run.png',
     // whiteboard: 'whiteboard.png',
-    taskmgr: 'taskmgr.png'
+    taskmgr: 'taskmgr.png',
+    imgviewer: 'files/picture.png',
+    'code-editor': 'vscode.png',
+    mediaplayer: 'files/vidio.png',
+    pdfviewer: 'files/pdf.svg'
 };
 function geticon(name) {
     if (icon[name]) return icon[name];
@@ -2104,11 +2185,11 @@ var flyStatus = false;
 // 选择框
 let chstX, chstY;
 function ch(e) {
-    $('#desktop>.choose').css('left', Math.min(chstX, e.clientX));
-    $('#desktop>.choose').css('width', Math.abs(e.clientX - chstX));
-    $('#desktop>.choose').css('display', 'block');
-    $('#desktop>.choose').css('top', Math.min(chstY, e.clientY));
-    $('#desktop>.choose').css('height', Math.abs(e.clientY - chstY));
+    $('#desktop>.selection').css('left', Math.min(chstX, e.clientX));
+    $('#desktop>.selection').css('width', Math.abs(e.clientX - chstX));
+    $('#desktop>.selection').css('display', 'block');
+    $('#desktop>.selection').css('top', Math.min(chstY, e.clientY));
+    $('#desktop>.selection').css('height', Math.abs(e.clientY - chstY));
 }
 $('#desktop')[0].addEventListener('mousedown', e => {
     chstX = e.clientX;
@@ -2117,11 +2198,11 @@ $('#desktop')[0].addEventListener('mousedown', e => {
 });
 window.addEventListener('mouseup', e => {
     this.onmousemove = null;
-    $('#desktop>.choose').css('left', 0);
-    $('#desktop>.choose').css('top', 0);
-    $('#desktop>.choose').css('display', 'none');
-    $('#desktop>.choose').css('width', 0);
-    $('#desktop>.choose').css('height', 0);
+    $('#desktop>.selection').css('left', 0);
+    $('#desktop>.selection').css('top', 0);
+    $('#desktop>.selection').css('display', 'none');
+    $('#desktop>.selection').css('width', 0);
+    $('#desktop>.selection').css('height', 0);
 });
 let isDark = false;
 
@@ -2195,11 +2276,11 @@ function setIcon() {
         <img src="icon/edge.svg">
         <p>Microsoft Edge</p>
     </div>
-    <div class="b" ondblclick="shownotice('feedback');" ontouchstart="shownotice('feedback');;">
+    <div class="b" ondblclick="shownotice('feedback');" ontouchstart="shownotice('feedback');">
         <img src="icon/feedback.svg">
         <p>${lang('反馈中心','feedback.name')}</p>
     </div>
-    <span class="choose">
+    <span class="selection">
     </span>
     <p style="background-color: rgba(11,45,14,0);z-index:1;position: absolute;top:0px;left:0px;height:100%;width:100%" oncontextmenu="return showcm(event,'desktop');"></p>`;
         desktopItem = JSON.parse(localStorage.getItem('desktop'));
@@ -2231,6 +2312,10 @@ function setIcon() {
     }
     if (localStorage.getItem('root_class')) {
         $(':root')[0].className = localStorage.getItem('root_class') + ' ' + (isDark ? 'dark' : '');
+    }
+    
+    if(sys_setting[0]){
+        $(':root').addClass('corner_squ');
     }
 }
 
@@ -2368,7 +2453,7 @@ if (!location.href.match(/((\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.){3}(\d|[1-9]\d|
         checkUpdate();
     }
     if (localStorage.getItem('update') == 'true') {
-        $('.msg.update>.main>.tit').html('<i class="bi bi-stars" style="background-image: linear-gradient(100deg, var(--theme-1), var(--theme-2));-webkit-background-clip: text;-webkit-text-fill-color: transparent;text-shadow:3px 3px 5px var(--sd);filter:saturate(200%) brightness(0.9);"></i> ' + $('#win-about>.cnt.update>div>details:first-child>summary').text());
+        $('.msg.update>.main>.tit').html('<i class="bi bi-stars" style="background-image: linear-gradient(100deg, var(--theme-1), var(--theme-2));-webkit-background-clip: text;-webkit-text-fill-color: transparent;text-shadow:3px 3px 5px var(--shadow);filter:saturate(200%) brightness(0.9);"></i> ' + $('#win-about>.cnt.update>div>details:first-child>summary').text());
         $('.msg.update>.main>.cont').html($('#win-about>.cnt.update>div>details:first-child>p').html());
         $('#loadbackupdate').css('display', 'block');
         localStorage.setItem('update', false);
