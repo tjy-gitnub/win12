@@ -2012,7 +2012,7 @@ toggletheme() 切换主题
 			<img src="icon/notepad.svg" class="icon">
 			<p data-i18n="notepad.name">记事本</p>
 			<div>
-				<a class="a wbtg red" onclick="hidewin('notepad');hidewin('notepad-fonts', 'configs')"><i
+				<a class="a wbtg red" onclick="apps.notepad.close()"><i
 						class="bi bi-x-lg"></i></a>
 				<a class="a wbtg max" onclick="maxwin('notepad')"><i class="bi bi-app"></i></a>
 				<a class="a wbtg" onclick="minwin('notepad')"><i class="bi bi-dash-lg"></i></a>
@@ -2594,28 +2594,60 @@ toggletheme() 切换主题
 		<div class="resize-bar"></div>
 		<div class="titbar">
 			<img src="icon/vscode.png" class="icon">
-			<p>代码编辑器</p>
+			<p data-i18n="code-editor.name">代码编辑器</p>
 			<div>
-				<a class="a wbtg red" onclick="hidewin('code-editor')"><i class="bi bi-x-lg"></i></a>
+				<a class="a wbtg red" onclick="apps.codeEditor.close()"><i class="bi bi-x-lg"></i></a>
 				<a class="a wbtg max" onclick="maxwin('code-editor')"><i class="bi bi-app"></i></a>
 				<a class="a wbtg" onclick="minwin('code-editor')"><i class="bi bi-dash-lg"></i></a>
-				<a class="a wbtg" onclick="apps.codeEditor.save()" win12_title="保存 Ctrl+S"><i class="bi bi-floppy"></i></a>
 			</div>
 		</div>
 		<div class="loadback">
 			<img src="icon/vscode.png" class="icon">
 		</div>
 		<div class="content" id="win-code-editor">
+			<div class="code-toolbar">
+				<div class="code-toolbar-left">
+					<a class="a code-tb-btn" onclick="apps.codeEditor.save()" title="保存 Ctrl+S"><i class="bi bi-floppy"></i></a>
+					<span class="code-tb-sep"></span>
+					<a class="a code-tb-btn" onclick="apps.codeEditor.editor?.undo()" title="撤销 Ctrl+Z"><i class="bi bi-arrow-counterclockwise"></i></a>
+					<a class="a code-tb-btn" onclick="apps.codeEditor.editor?.redo()" title="重做 Ctrl+Y"><i class="bi bi-arrow-clockwise"></i></a>
+					<span class="code-tb-sep"></span>
+					<a class="a code-tb-btn" onclick="apps.codeEditor.editor?.execCommand('find')" title="查找 Ctrl+F"><i class="bi bi-search"></i></a>
+					<a class="a code-tb-btn" onclick="apps.codeEditor.editor?.execCommand('replace')" title="替换 Ctrl+H"><i class="bi bi-arrow-left-right"></i></a>
+					<span class="code-tb-sep"></span>
+					<a class="a code-tb-btn" id="code-wrap-btn" onclick="apps.codeEditor.toggleWrap()" title="自动换行"><i class="bi bi-text-wrap"></i></a>
+					<a class="a code-tb-btn" onclick="apps.codeEditor.changeFontSize(1)" title="放大字体"><i class="bi bi-zoom-in"></i></a>
+					<a class="a code-tb-btn" onclick="apps.codeEditor.changeFontSize(-1)" title="缩小字体"><i class="bi bi-zoom-out"></i></a>
+				</div>
+				<div class="code-toolbar-right">
+					<select id="code-theme-select" onchange="apps.codeEditor.setTheme(this.value)" title="主题">
+						<option value="ace/theme/vibrant_ink">Vibrant Ink</option>
+						<option value="ace/theme/monokai">Monokai</option>
+						<option value="ace/theme/github">GitHub Light</option>
+						<option value="ace/theme/twilight">Twilight</option>
+						<option value="ace/theme/tomorrow_night">Tomorrow Night</option>
+						<option value="ace/theme/solarized_dark">Solarized Dark</option>
+						<option value="ace/theme/one_dark">One Dark</option>
+						<option value="ace/theme/dracula">Dracula</option>
+					</select>
+				</div>
+			</div>
 			<div id="code-ace-editor"></div>
+			<div class="code-statusbar">
+				<span id="code-status-cursor">行 1, 列 1</span>
+				<span id="code-status-lang">Text</span>
+				<span id="code-status-tab">空格: 4</span>
+				<span id="code-status-encoding">UTF-8</span>
+			</div>
 		</div>
 	</div>
 	<div class="window imgviewer">
 		<div class="resize-bar"></div>
 		<div class="titbar">
 			<img src="icon/files/picture.png" class="icon">
-			<p>图片查看器</p>
+			<p data-i18n="imgviewer.name">图片查看器</p>
 			<div>
-				<a class="a wbtg red" onclick="hidewin('imgviewer')"><i class="bi bi-x-lg"></i></a>
+				<a class="a wbtg red" onclick="apps.imgviewer.close()"><i class="bi bi-x-lg"></i></a>
 				<a class="a wbtg max" onclick="maxwin('imgviewer')"><i class="bi bi-app"></i></a>
 				<a class="a wbtg" onclick="minwin('imgviewer')"><i class="bi bi-dash-lg"></i></a>
 			</div>
@@ -2623,15 +2655,21 @@ toggletheme() 切换主题
 		<div class="loadback">
 			<img src="icon/files/picture.png" class="icon">
 		</div>
-		<div class="content" id="win-imgviewer">
+		<div class="content" id="win-imgviewer" onwheel="event.preventDefault();event.deltaY<0?apps.imgviewer.zoomIn():apps.imgviewer.zoomOut()">
 			<img class="preview-img" src="" alt="">
+			<div class="imgviewer-toolbar">
+				<a class="a" onclick="apps.imgviewer.zoomIn()" title="放大"><i class="bi bi-zoom-in"></i></a>
+				<a class="a" onclick="apps.imgviewer.zoomOut()" title="缩小"><i class="bi bi-zoom-out"></i></a>
+				<a class="a" onclick="apps.imgviewer.rotateRight()" title="旋转"><i class="bi bi-arrow-clockwise"></i></a>
+				<a class="a" onclick="apps.imgviewer.resetView()" title="重置"><i class="bi bi-arrows-angle-contract"></i></a>
+			</div>
 		</div>
 	</div>
 	<div class="window mediaplayer">
 		<div class="resize-bar"></div>
 		<div class="titbar">
 			<img src="icon/files/vidio.png" class="icon">
-			<p>媒体播放器</p>
+			<p data-i18n="mediaplayer.name">媒体播放器</p>
 			<div>
 				<a class="a wbtg red" onclick="apps.mediaplayer.close()"><i class="bi bi-x-lg"></i></a>
 				<a class="a wbtg max" onclick="maxwin('mediaplayer')"><i class="bi bi-app"></i></a>
@@ -2650,7 +2688,7 @@ toggletheme() 切换主题
 		<div class="resize-bar"></div>
 		<div class="titbar">
 			<img src="icon/files/pdf.svg" class="icon">
-			<p>PDF 查看器</p>
+			<p data-i18n="pdfviewer.name">PDF 查看器</p>
 			<div>
 				<a class="a wbtg red" onclick="apps.pdfviewer.close()"><i class="bi bi-x-lg"></i></a>
 				<a class="a wbtg max" onclick="maxwin('pdfviewer')"><i class="bi bi-app"></i></a>
@@ -3177,6 +3215,7 @@ toggletheme() 切换主题
 	<script defer src="./scripts/calculator_kernel.js"></script>
 	<script defer src='https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.js'></script>
 	<script defer src='https://cdnjs.cloudflare.com/ajax/libs/marked/12.0.2/marked.min.js'></script>
+	<script defer src='https://cdnjs.cloudflare.com/ajax/libs/dompurify/3.0.8/purify.min.js'></script>
 
 </body>
 

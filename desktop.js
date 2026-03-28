@@ -378,8 +378,19 @@ const cms = {
         arg => {
             const drive = arg.split('/')[0];
             if (apps.explorer.mounts[drive])
-                return ['<i class="bi bi-folder2-open"></i> ' + lang('打开', 'open'), `apps.explorer.openMountedFile('${arg}')`];
-            return ['<i class="bi bi-folder2-open"></i> 打开（目前毛用没有）', ''];
+                return ['<i class="bi bi-folder2-open"></i> ' + lang('打开','open'), `apps.explorer.openMountedFile('${arg}')`];
+            // Find the file's command from virtual FS
+            var pathl = arg.split('/'), fileName = pathl.pop();
+            var tmp = apps.explorer.path;
+            pathl.forEach(n => { if (tmp && tmp.folder) tmp = tmp.folder[n]; });
+            var fileCmd = '';
+            if (tmp && tmp.file) {
+                var f = tmp.file.find(f => f.name === fileName);
+                if (f && f.command) fileCmd = f.command;
+            }
+            if (fileCmd)
+                return ['<i class="bi bi-folder2-open"></i> ' + lang('打开','open'), fileCmd];
+            return 'null';
         },
         arg => {
             if ($('#win-explorer>.path>.tit>.path>div.text').length > 1)
@@ -767,7 +778,7 @@ const nts = {
         cnt: `
             <p class="tit">关于 Windows 12 Copilot</p>
              <p>你可以使用此 AI 助手帮助你更快地完成工作，此AI助手基于 Qwen3-Max 模型 (有人用Win12工作?)<br>
-            也请适当使用，不要谈论敏感、违规话题，<br>请有身为一个人类最基本的道德底线。<br>
+            也请适当使用，不要谈论敏感、违规话题，<br>请有身为一个人类最基本的道德底线。<br>根据相关法律法规，我们不向欧盟用户提供服务。<br>
             在此特别感谢云智api(yunzhiapi.cn)为本项目提供赞助！</p>
             <a class="a" onclick="window.open('https://status.tangyuan0821.com/status/win12/','_blank');" win12_title="在浏览器新窗口打开链接">状态监测</a><br>
             <a class="a" onclick="window.open('https://www.yunzhiapi.cn/','_blank');" win12_title="在浏览器新窗口打开链接">云智API官网</a>
@@ -907,6 +918,42 @@ const nts = {
             <p>无法写入文件，权限可能已过期。</p>`, 'nts.file-write-error'),
         btn: [
             { type: 'main', text: lang('确定', 'ok'), js: 'closenotice();' }
+        ]
+    },
+    'unsaved-notepad': {
+        cnt: lang(`<p class="tit">是否保存更改？</p>
+            <p>文件有未保存的修改，关闭前是否保存？</p>`, 'nts.unsaved-changes'),
+        btn: [
+            { type: 'main', text: lang('保存','save'), js: 'closenotice();apps.notepad.saveMounted().then(()=>{apps.notepad._forceClose();})' },
+            { type: '', text: lang('不保存','discard'), js: 'closenotice();apps.notepad._forceClose();' },
+            { type: '', text: lang('取消','cancel'), js: 'closenotice();' }
+        ]
+    },
+    'unsaved-code-editor': {
+        cnt: lang(`<p class="tit">是否保存更改？</p>
+            <p>文件有未保存的修改，关闭前是否保存？</p>`, 'nts.unsaved-changes'),
+        btn: [
+            { type: 'main', text: lang('保存','save'), js: 'closenotice();apps.codeEditor.save().then(()=>{apps.codeEditor._forceClose();})' },
+            { type: '', text: lang('不保存','discard'), js: 'closenotice();apps.codeEditor._forceClose();' },
+            { type: '', text: lang('取消','cancel'), js: 'closenotice();' }
+        ]
+    },
+    'unsaved-notepad': {
+        cnt: lang(`<p class="tit">是否保存更改？</p>
+            <p>文件有未保存的修改，关闭前是否保存？</p>`, 'nts.unsaved-changes'),
+        btn: [
+            { type: 'main', text: lang('保存','save'), js: 'closenotice();apps.notepad.saveMounted().then(()=>{apps.notepad._forceClose();})' },
+            { type: '', text: lang('不保存','discard'), js: 'closenotice();apps.notepad._forceClose();' },
+            { type: '', text: lang('取消','cancel'), js: 'closenotice();' }
+        ]
+    },
+    'unsaved-code-editor': {
+        cnt: lang(`<p class="tit">是否保存更改？</p>
+            <p>文件有未保存的修改，关闭前是否保存？</p>`, 'nts.unsaved-changes'),
+        btn: [
+            { type: 'main', text: lang('保存','save'), js: 'closenotice();apps.codeEditor.save().then(()=>{apps.codeEditor._forceClose();})' },
+            { type: '', text: lang('不保存','discard'), js: 'closenotice();apps.codeEditor._forceClose();' },
+            { type: '', text: lang('取消','cancel'), js: 'closenotice();' }
         ]
     },
 };
@@ -1660,7 +1707,7 @@ let copilot = {
         2.在浏览器中打开链接、搜索<br>
         3.发送对系统、AI助手的反馈<br>
         4.切换颜色主题<br>
-        若您在使用中出现异常可先至状态监测页面（https://status.tangyuan0821.com/status/win12/）查看状态，若确有异常请及时向我们反馈。</p></div>`);
+        需注意，根据相关法律法规，我们不向欧盟用户提供服务。</p></div>`);
         setTimeout(() => {
             $('#copilot>.chat').append(`<div class="line ai"><p class="text">欢迎使用 Windows 12，有什么可以帮您？</p></div>`);
             $('#copilot>.inputbox').removeClass('disable');
