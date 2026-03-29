@@ -2330,13 +2330,31 @@ function setIcon() {
         $(':root')[0].className = localStorage.getItem('root_class') + ' ' + (isDark ? 'dark' : '');
     }
 
-    if (!CSS.supports('corner-shape', 'squircle')) {
-        sys_setting[0] = true;
-        $('#toggle-corner-squ').html('<span style="color:#888;font-size:14px;">' + lang('浏览器不支持', 'setting.psnl.round-unav') + '</span>')
+    const root = $(':root');
+    const cornerSupported = CSS.supports('corner-shape', 'squircle');
+    const $cornerToggle = $('#sys_setting_1');
+    const $cornerHint = $('#toggle-corner-squ>.corner-disabled-hint');
+    if (!cornerSupported) {
+        sys_setting[0] = 0;
+        $cornerToggle.removeClass('checked').addClass('disabled');
+        $cornerToggle.removeAttr('onclick');
+        root.removeClass('corner_squ');
+        const message = lang('浏览器不支持', 'setting.psnl.round-unav');
+        if ($cornerHint.length) {
+            $cornerHint.text(message);
+        }
+        else {
+            $('#toggle-corner-squ').append(`<span class="corner-disabled-hint">${message}</span>`);
+        }
+        saveDesktop();
     }
-    if (sys_setting[0]) {
-        if (CSS.supports('corner-shape', 'squircle')) {
-            $(':root').addClass('corner_squ');
+    else {
+        $cornerHint.remove();
+        if (sys_setting[0]) {
+            root.addClass('corner_squ');
+        }
+        else {
+            root.removeClass('corner_squ');
         }
     }
 }

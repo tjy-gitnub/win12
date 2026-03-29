@@ -325,6 +325,18 @@
     left: 18px;
 }
 
+.checkbox.disabled {
+    opacity: 0.5;
+    pointer-events: none;
+}
+
+.corner-disabled-hint {
+    color: #888;
+    font-size: 14px;
+    margin-left: 10px;
+    display: inline-block;
+}
+
 div.app-color .color {
     width: 30px;
     height: 30px;
