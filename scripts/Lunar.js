@@ -51,7 +51,7 @@ async function getLunar() {
     }
 
     if (lunarCache?.['农历']) {
-        const lunarContent = lunarCache.['农历'];
+        const lunarContent = lunarCache['农历'];
         lunarDisplay.textContent = lunarContent;
     }
 }
