@@ -54,11 +54,9 @@
 
 ## 在线体验
 
-点击[此处](tjy-gitnub.github.io/win12/desktop.html)即可体验。
+点击[此处](https://win12.tech)即可体验。
 
 ## 效果展示
-
-> 新的版本有很多变化，仅供参考，请以实物为准（你点一下 [这里](https://tjy-gitnub.github.io/win12/desktop.html) 就知道了啊，不麻烦`-_-)o` ）
 
 ![image](https://tjy-gitnub.github.io/win12/img/start-menu.png)
 
