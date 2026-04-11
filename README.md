@@ -1,8 +1,24 @@
 
 > [!WARNING]
 > 本仓库已转移到 [win12-online/win12](https://github.com/win12-online/win12)。
-> 请不要再提交 commit, PR 或 issue，也不要对这个仓库 star 或 fork。本仓库将在完成迁移后弃用。
+> 
+> 请不要再提交 commit, PR 或 issue，也不要对这个仓库 star 或 fork。
+>
+> 本仓库将在完成迁移后弃用。
 
+> [!WARNING]
+> 本仓库已转移到 [win12-online/win12](https://github.com/win12-online/win12)。
+> 
+> 请不要再提交 commit, PR 或 issue，也不要对这个仓库 star 或 fork。
+>
+> 本仓库将在完成迁移后弃用。
+
+> [!WARNING]
+> 本仓库已转移到 [win12-online/win12](https://github.com/win12-online/win12)。
+> 
+> 请不要再提交 commit, PR 或 issue，也不要对这个仓库 star 或 fork。
+>
+> 本仓库将在完成迁移后弃用。
 
 <p align="center">
     <img src="./icon/windows12.svg" width="100" height="100">
